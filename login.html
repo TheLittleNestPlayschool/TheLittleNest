@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Little Nest - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Header Section -->
+            <h1 class="login-title">The Little Nest Playschool</h1>
+            <p class="login-subtitle">Where Little Success Stories Begin</p>
+
+            <!-- Form Section -->
+            <h2 class="form-section-title">Login</h2>
+            
+            <div class="login-input-group">
+                <input type="email" id="email" class="login-input" placeholder="Email">
+                <input type="password" id="password" class="login-input" placeholder="Password">
+            </div>
+            
+            <div class="login-action-row">
+                <span class="sign-in-text">Sign in</span>
+                <button type="button" onclick="handleLogin()" class="btn-submit">→</button>
+            </div>
+
+            <div id="errorMessage" style="color: red; margin-top: 10px;"></div>
+        </div>
+    </div>
+
+    <script>
+        localStorage.clear();
+        const XANO_BASE_URL = 'https://x8ki-letl-twmt.n7.xano.io/api:wtEDiEuV';
+
+        async function handleLogin() {
+            const emailInput = document.getElementById('email').value.trim();
+            const passwordInput = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
+            
+            errorDiv.textContent = '';
+
+            if (!emailInput || !passwordInput) {
+                errorDiv.textContent = 'Please fill out all fields.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${XANO_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailInput, password: passwordInput })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || 'Invalid credentials.');
+
+                const franchiseId = data.franchise_id || data.user?.franchise_id;
+                
+                localStorage.setItem('authToken', data.authToken);
+                localStorage.setItem('userId', data.user);
+                localStorage.setItem('admin_type_id', data.admin_type_id);
+                localStorage.setItem('teacher_id', data.teacher_id || data.user?.teacher_id || '');
+                localStorage.setItem('franchise_id', franchiseId);
+                localStorage.setItem('franchise_name', data.franchise_name || data.user?.franchise_name || '');
+
+                if (data.admin_type_id === 10) {
+                    window.location.href = './parentdashboard/dashboard.html';
+                } else if (data.admin_type_id === 4) {
+                    window.location.href = './uploader/uploadermenu.html';
+                } else {
+                    throw new Error('Invalid Admin Type');
+                }
+
+            } catch (error) {
+                errorDiv.textContent = error.message;
+            }
+        }
+    </script>
+</body>
+</html>
