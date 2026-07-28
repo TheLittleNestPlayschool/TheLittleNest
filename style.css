@@ -1,0 +1,16 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background: linear-gradient(to bottom, #ffedf0, #e0f7fa);
+}
+.modal {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: white;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+}
