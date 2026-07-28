@@ -66,13 +66,9 @@
                 localStorage.setItem('franchise_id', franchiseId);
                 localStorage.setItem('franchise_name', data.franchise_name || data.user?.franchise_name || '');
 
-                if (data.admin_type_id === 10) {
-                    window.location.href = './parentdashboard/dashboard.html';
-                } else if (data.admin_type_id === 4) {
-                    window.location.href = './uploader/uploadermenu.html';
-                } else {
-                    throw new Error('Invalid Admin Type');
-                }
+                
+                 window.location.href = '/dashboard.html';
+               
 
             } catch (error) {
                 errorDiv.textContent = error.message;
