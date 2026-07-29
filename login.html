@@ -5,8 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Little Nest - Login</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="background.css">
 </head>
 <body>
+
+    <!-- Background Elements -->
+    <div class="app-background">
+      <div class="cloud-blob top-left"></div>
+      <div class="cloud-blob top-right"></div>
+      <div class="gradient-overlay"></div>
+    </div>
 
     <div class="login-container">
         <div class="login-card">
@@ -66,9 +74,7 @@
                 localStorage.setItem('franchise_id', franchiseId);
                 localStorage.setItem('franchise_name', data.franchise_name || data.user?.franchise_name || '');
 
-                
-                 window.location.href = 'dashboard.html';
-               
+                window.location.href = 'dashboard.html';
 
             } catch (error) {
                 errorDiv.textContent = error.message;
