@@ -1,12 +1,13 @@
-
 /* story.css - Horizontal Scrolling Class Memories Story Reel */
 .story-reel-section {
     position: relative;
-    width: 100%;
-    margin: 15px 0;
+    width: 75%;
+    margin: 15px auto;
     padding: 12px 16px;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     box-sizing: border-box;
@@ -74,13 +75,4 @@
     object-fit: cover;
     display: block;
     pointer-events: none; /* Allows smooth drag scrolling over media */
-}
-
-.story-reel-subtitle {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #475569;
-    text-align: center;
-    margin-top: 8px;
-    letter-spacing: 0.2px;
 }
