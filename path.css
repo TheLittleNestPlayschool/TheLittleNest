@@ -1,4 +1,4 @@
-/* path.css - Isometric Staircase Style */
+/* path.css - Static Background Stairs & Milestone Overlay */
 .learning-path-section {
     position: relative;
     width: 100%;
@@ -18,104 +18,55 @@
     letter-spacing: 0.3px;
 }
 
-.path-winding-container {
+/* Wrapper to hold the background stairs image and overlay container together */
+.path-visual-wrapper {
     position: relative;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    /* Increase gap to allow steps to overlap vertically */
-    gap: -5px; 
-    min-height: 400px;
-    padding-bottom: 50px;
+    max-width: 400px; /* Adjust as needed for your dashboard layout width */
+    margin: 0 auto;
 }
 
-/* Base row layout for steps */
-.path-step-row {
-    display: flex;
+/* The stairs image asset */
+.path-background-image {
     width: 100%;
-    position: relative;
-    height: 40px; /* Taller container for isometric height */
-    align-items: center;
-    z-index: 1;
+    height: auto;
+    display: block;
+    pointer-events: none;
 }
 
-.path-step-row.left-side {
-    justify-content: flex-start;
-    /* Adjust padding to control horizontal position */
-    padding-left: 15%; 
-}
-
-.path-step-row.right-side {
-    justify-content: flex-end;
-    padding-right: 15%;
-}
-
-/* The Isometric Geometric Block (Replaces previous styles) */
-.stone-step-graphic {
-    width: 100px;
-    height: 25px;
-    background-color: #b0aeb0; /* Fallback */
-    
-    /* Create geometric perspective using skew */
-    transform: skew(-35deg);
-    
-    /* Flat top face color */
-    background: linear-gradient(135deg, #d1d0d1 0%, #b0aeb0 100%);
-    
-    /* Sharp border */
-    border: 1px solid #8c8a8c;
-    
-    /* Simple drop shadow for the whole block */
-    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.15);
-    
-    /* Ensure stacking so they overlap correctly */
-    position: relative;
-}
-
-/* Create the "front face" and "side face" using pseudo-elements */
-/* This is crucial for the 3D effect */
-
-/* Front Face (lighter grey) */
-.stone-step-graphic::before {
-    content: '';
+/* Overlay container spanning the exact dimensions of the image */
+.milestone-bubbles-container {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 15px; /* Height of the riser */
-    background: linear-gradient(to bottom, #c4c2c4 0%, #a19fa1 100%);
-    top: 100%; /* Position below the top face */
-    left: -5px; /* Offset to align with skew */
-    transform: skewY(55deg); /* Adjust angle to match perspective */
-    border: 1px solid #8c8a8c;
-    border-top: none;
-}
-
-/* Side Face (darkest grey) */
-.stone-step-graphic::after {
-    content: '';
-    position: absolute;
-    width: 15px; /* Width of the side */
     height: 100%;
-    background: linear-gradient(to right, #949294 0%, #737173 100%);
-    top: -5px; /* Offset to align with skew */
-    left: 100%; /* Position to the right of the top face */
-    transform: skewX(55deg); /* Adjust angle */
-    border: 1px solid #8c8a8c;
-    border-left: none;
+    pointer-events: none; /* Allows clicks to pass through except on active slots */
 }
 
-/* Adjust Z-index stacking so the path looks like it's going "up" visually */
-/* The script generates elements from top to bottom. 
-   To make it look like a staircase, later steps should appear "behind" or "above" earlier ones.
-   We need to reverse the z-index order. */
+/* Base style for each milestone slot mapped onto the stairs */
+.milestone-slot {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
 
-.path-step-row:nth-child(1) { z-index: 15; }
-.path-step-row:nth-child(2) { z-index: 14; }
-.path-step-row:nth-child(3) { z-index: 13; }
-.path-step-row:nth-child(4) { z-index: 12; }
-.path-step-row:nth-child(5) { z-index: 11; }
-.path-step-row:nth-child(6) { z-index: 10; }
-.path-step-row:nth-child(7) { z-index: 9; }
-.path-step-row:nth-child(8) { z-index: 8; }
-.path-step-row:nth-child(9) { z-index: 7; }
-.path-step-row:nth-child(10) { z-index: 6; }
-.path-step-row:nth-child(11) { z-index: 5; }
+/* 
+  Approximate percentage coordinates for the 9 slots along stairs.png 
+  (We can fine-tune these percentages once you test it visually!)
+*/
+#slot-1 { bottom: 8%;  left: 48%; }
+#slot-2 { bottom: 22%; left: 75%; }
+#slot-3 { bottom: 36%; left: 55%; }
+#slot-4 { bottom: 48%; left: 30%; }
+#slot-5 { bottom: 58%; left: 24%; }
+#slot-6 { bottom: 68%; left: 62%; }
+#slot-7 { bottom: 78%; left: 78%; }
+#slot-8 { bottom: 88%; left: 50%; }
+#slot-9 { bottom: 95%; left: 22%; }
