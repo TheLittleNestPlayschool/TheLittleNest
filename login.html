@@ -6,6 +6,7 @@
     <title>The Little Nest - Login</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="background.css">
+    <link rel="stylesheet" href="path.css">
 </head>
 <body>
 
@@ -50,6 +51,16 @@
 
     <script>
         localStorage.clear();
+        sessionStorage.clear();
+        
+        if ('caches' in window) {
+            caches.keys().then((names) => {
+                names.forEach((name) => {
+                    caches.delete(name);
+                });
+            });
+        }
+
         const XANO_BASE_URL = 'https://x8ki-letl-twmt.n7.xano.io/api:wtEDiEuV';
 
         async function handleLogin() {
