@@ -1,6 +1,90 @@
-<section class="story-reel-section">
-    <h3>Class Memories Story Reel</h3>
-    <div class="reel-scroll">
-        <div class="reel-item">Photo Placeholder</div>
+<style>
+    .story-reel-section {
+        width: 100%;
+        padding: 10px 20px 16px 20px;
+        box-sizing: border-box;
+    }
+
+    .story-reel-title {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 10px;
+        letter-spacing: 0.5px;
+    }
+
+    .story-reel-container-scroll {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .story-reel-container-scroll::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+    .story-card {
+        flex: 0 0 110px;
+        height: 110px;
+        background: rgba(255, 255, 255, 0.85);
+        border: 2px solid rgba(217, 119, 6, 0.3);
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 8px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .story-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.1);
+        border-color: #d97706;
+    }
+
+    .story-card-icon {
+        font-size: 1.8rem;
+        margin-bottom: 4px;
+    }
+
+    .story-card-text {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #334155;
+        line-height: 1.2;
+    }
+</style>
+
+<div class="story-reel-section">
+    <div class="story-reel-title">Class Memories Story Reel</div>
+    
+    <!-- Horizontal Scrollable Photo / Memory Cards -->
+    <div class="story-reel-container-scroll">
+        <div class="story-card">
+            <div class="story-card-icon">🎨</div>
+            <div class="story-card-text">Finger Painting Fun</div>
+        </div>
+        <div class="story-card">
+            <div class="story-card-icon">🧩</div>
+            <div class="story-card-text">Puzzle Master</div>
+        </div>
+        <div class="story-card">
+            <div class="story-card-icon">🎶</div>
+            <div class="story-card-text">Music & Rhythm</div>
+        </div>
+        <div class="story-card">
+            <div class="story-card-icon">🌳</div>
+            <div class="story-card-text">Outdoor Play</div>
+        </div>
+        <div class="story-card">
+            <div class="story-card-icon">📖</div>
+            <div class="story-card-text">Storytime Circle</div>
+        </div>
     </div>
-</section>
+</div>
