@@ -1,14 +1,12 @@
-
-// story.js
+// story.js - Class Memories Story Reel Loader
 (function () {
-    function initStoryReel() {
+    function populateStoryReel() {
         const track = document.getElementById("story-reel-track");
         if (!track) return;
 
-        // Prevent duplicate population
+        // Prevent duplicate population if already loaded
         if (track.children.length > 0) return;
 
-        // List of the 10 assets provided (photo5 is mp4, others are jpg)
         const mediaAssets = [
             { id: 1, type: "image", src: "photo1.jpg", alt: "Class Memory 1" },
             { id: 2, type: "image", src: "photo2.jpg", alt: "Class Memory 2" },
@@ -33,7 +31,6 @@
                 videoEl.muted = true;
                 videoEl.loop = true;
                 videoEl.playsInline = true;
-                // Auto-play muted video preview on loop
                 videoEl.autoplay = true;
                 itemDiv.appendChild(videoEl);
             } else {
@@ -43,7 +40,6 @@
                 itemDiv.appendChild(imgEl);
             }
 
-            // Click interaction handler for individual memory preview/lightbox
             itemDiv.addEventListener("click", () => {
                 console.log(`Story item ${asset.id} clicked`);
             });
@@ -51,47 +47,34 @@
             track.appendChild(itemDiv);
         });
 
-        // Enable mouse-drag-to-scroll functionality for desktop convenience
+        // Enable smooth drag-to-scroll for desktop
         let isDown = false;
-        let startX;
-        let scrollLeft;
+        let startX, scrollLeft;
 
         track.addEventListener("mousedown", (e) => {
             isDown = true;
-            track.classList.add("active");
             startX = e.pageX - track.offsetLeft;
             scrollLeft = track.scrollLeft;
         });
-
-        track.addEventListener("mouseleave", () => {
-            isDown = false;
-        });
-
-        track.addEventListener("mouseup", () => {
-            isDown = false;
-        });
-
+        track.addEventListener("mouseleave", () => { isDown = false; });
+        track.addEventListener("mouseup", () => { isDown = false; });
         track.addEventListener("mousemove", (e) => {
             if (!isDown) return;
             e.preventDefault();
             const x = e.pageX - track.offsetLeft;
-            const walk = (x - startX) * 2; // Scroll speed multiplier
+            const walk = (x - startX) * 2;
             track.scrollLeft = scrollLeft - walk;
         });
     }
 
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initStoryReel);
+    // Run immediately if DOM is ready, otherwise wait
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        setTimeout(populateStoryReel, 50);
     } else {
-        initStoryReel();
+        document.addEventListener("DOMContentLoaded", populateStoryReel);
     }
 
-    // Mutation observer fallback for dynamic rendering
-    const observer = new MutationObserver(() => {
-        const track = document.getElementById("story-reel-track");
-        if (track && track.children.length === 0) {
-            initStoryReel();
-        }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
+    // Fallback interval check to force-render if injected dynamically
+    window.addEventListener("load", populateStoryReel);
+    setInterval(populateStoryReel, 500);
 })();
