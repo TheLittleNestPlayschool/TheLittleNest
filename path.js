@@ -1,10 +1,10 @@
 // path.js
 (function () {
-    function initStonePath() {
+    function buildStonePath() {
         const container = document.getElementById("stone-path-container");
         if (!container) return;
-
-        // Prevent double rendering if script runs twice
+        
+        // Prevent duplicate injection
         if (container.children.length > 0) return;
 
         let html = '';
@@ -38,8 +38,17 @@
     }
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initStonePath);
+        document.addEventListener("DOMContentLoaded", buildStonePath);
     } else {
-        initStonePath();
+        buildStonePath();
     }
+
+    // Fallback observer in case container is populated dynamically later
+    const observer = new MutationObserver(() => {
+        const container = document.getElementById("stone-path-container");
+        if (container && container.children.length === 0) {
+            buildStonePath();
+        }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
 })();
