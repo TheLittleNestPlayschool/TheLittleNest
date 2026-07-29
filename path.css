@@ -70,7 +70,46 @@
 #slot-8 { bottom: 78%; left: 74%; }
 #slot-9 { bottom: 90%; left: 22%; }
 
-/* Milestone Node Styling */
+/* ==========================================
+   Individual Milestone Node Customizations
+   ================================---------- */
+#slot-1 .milestone-node {
+    /* Customize milestone 1 here */
+}
+
+#slot-2 .milestone-node {
+    /* Customize milestone 2 here */
+}
+
+#slot-3 .milestone-node {
+    /* Customize milestone 3 here */
+}
+
+#slot-4 .milestone-node {
+    /* Customize milestone 4 here */
+}
+
+#slot-5 .milestone-node {
+    /* Customize milestone 5 here */
+}
+
+#slot-6 .milestone-node {
+    /* Customize milestone 6 here */
+}
+
+#slot-7 .milestone-node {
+    /* Customize milestone 7 here */
+}
+
+#slot-8 .milestone-node {
+    /* Customize milestone 8 here */
+}
+
+#slot-9 .milestone-node {
+    /* Customize milestone 9 here */
+}
+
+/* Base Milestone Node Styling */
 .milestone-node {
     width: 32px;
     height: 32px;
