@@ -1,5 +1,7 @@
 <!-- background.html -->
 <div class="app-background">
+  <div class="cloud-blob top-left"></div>
+  <div class="cloud-blob top-right"></div>
   <div class="gradient-overlay"></div>
 </div>
 
@@ -10,9 +12,35 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -1; /* Ensures it sits behind all content layers */
+    z-index: -1;
     overflow: hidden;
-    background: linear-gradient(135deg, #fbcfe8 0%, #fed7aa 40%, #a5f3fc 100%);
+    /* Smooth multi-stop gradient matching the dreamy pastel look: pink top-left, soft warm peach center, soft teal/cyan right */
+    background: linear-gradient(135deg, #fbcfe8 0%, #fed7aa 35%, #99f6e4 100%);
+  }
+
+  /* Soft, hazy cloud/glow patches like the reference image */
+  .cloud-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  .cloud-blob.top-left {
+    top: -10%;
+    left: -10%;
+    width: 60vw;
+    height: 60vh;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(251, 207, 232, 0.4) 70%, transparent 100%);
+  }
+
+  .cloud-blob.top-right {
+    top: 5%;
+    right: -10%;
+    width: 50vw;
+    height: 50vh;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(153, 246, 228, 0.3) 70%, transparent 100%);
   }
 
   .gradient-overlay {
@@ -21,7 +49,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+    background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.5) 0%, transparent 70%);
     pointer-events: none;
   }
 </style>
