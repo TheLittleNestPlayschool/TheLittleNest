@@ -1,17 +1,17 @@
 // path.js
 (function () {
     function initMilestonePath() {
-        // Data or states for the 9 milestones
+        // Data for the 9 milestones
         const milestones = [
-            { id: 1, title: "Step 1", status: "current" },
-            { id: 2, title: "Step 2", status: "current" },
-            { id: 3, title: "Step 3", status: "current" },
-            { id: 4, title: "Step 4", status: "current" },
-            { id: 5, title: "Step 5", status: "current" },
-            { id: 6, title: "Step 6", status: "current" },
-            { id: 7, title: "Step 7", status: "current" },
-            { id: 8, title: "Step 8", status: "current" },
-            { id: 9, title: "Step 9", status: "current" }
+            { id: 1, title: "Step 1" },
+            { id: 2, title: "Step 2" },
+            { id: 3, title: "Step 3" },
+            { id: 4, title: "Step 4" },
+            { id: 5, title: "Step 5" },
+            { id: 6, title: "Step 6" },
+            { id: 7, title: "Step 7" },
+            { id: 8, title: "Step 8" },
+            { id: 9, title: "Step 9" }
         ];
 
         milestones.forEach((milestone) => {
@@ -23,7 +23,7 @@
 
             // Create the milestone node element
             const node = document.createElement("div");
-            node.className = `milestone-node ${milestone.status}`;
+            node.className = "milestone-node";
             node.setAttribute("data-id", milestone.id);
             node.innerHTML = `<span>${milestone.id}</span>`;
 
@@ -35,17 +35,17 @@
             slot.appendChild(node);
         });
 
-        // Data or states for the 9 badges
+        // Data for the 9 badges
         const badges = [
-            { id: 1, status: "completed", symbol: "★" },
-            { id: 2, status: "completed", symbol: "★" },
-            { id: 3, status: "completed", symbol: "★" },
-            { id: 4, status: "completed", symbol: "★" },
-            { id: 5, status: "completed", symbol: "★" },
-            { id: 6, status: "completed", symbol: "★" },
-            { id: 7, status: "completed", symbol: "★" },
-            { id: 8, status: "completed", symbol: "★" },
-            { id: 9, status: "completed", symbol: "★" }
+            { id: 1, symbol: "★" },
+            { id: 2, symbol: "★" },
+            { id: 3, symbol: "★" },
+            { id: 4, symbol: "★" },
+            { id: 5, symbol: "★" },
+            { id: 6, symbol: "★" },
+            { id: 7, symbol: "★" },
+            { id: 8, symbol: "★" },
+            { id: 9, symbol: "★" }
         ];
 
         badges.forEach((badge) => {
@@ -57,7 +57,7 @@
 
             // Create the badge node element
             const badgeEl = document.createElement("div");
-            badgeEl.className = `milestone-badge ${badge.status}`;
+            badgeEl.className = "milestone-badge";
             badgeEl.setAttribute("data-badge-id", badge.id);
             badgeEl.innerHTML = `<span>${badge.symbol}</span>`;
 
