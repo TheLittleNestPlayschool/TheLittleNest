@@ -1,11 +1,10 @@
-
 /* path.css */
 .learning-path-section {
     position: relative;
     width: 100%;
     flex: 1;
-    min-height: 65vh;
-    padding: 2px 16px;
+    min-height: 70vh;
+    padding: 10px 16px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -16,7 +15,7 @@
     font-size: 0.8rem;
     font-weight: 800;
     color: #1e293b;
-    margin-bottom: 4px;
+    margin-bottom: 12px;
     letter-spacing: 0.3px;
 }
 
@@ -30,139 +29,31 @@
     padding: 10px 0;
 }
 
-/* Row wrapping the stone step and its milestone card */
+/* Base row layout for steps */
 .path-step-row {
     display: flex;
-    align-items: center;
     width: 100%;
     position: relative;
-    margin: 4px 0;
+    height: 32px;
+    align-items: center;
 }
 
-/* Alternating layout: Left side vs Right side */
 .path-step-row.left-side {
     justify-content: flex-start;
-    padding-right: 35%;
+    padding-left: 15%;
 }
 
 .path-step-row.right-side {
     justify-content: flex-end;
-    padding-left: 35%;
+    padding-right: 15%;
 }
 
-/* Individual 3D Stone Step Block */
+/* Organic 3D Stone Graphic */
 .stone-step-graphic {
-    position: absolute;
-    width: 110px;
-    height: 24px;
+    width: 75px;
+    height: 20px;
     background: linear-gradient(180deg, #94a3b8 0%, #64748b 50%, #475569 100%);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25), inset 0 2px 3px rgba(255, 255, 255, 0.4);
-    z-index: 1;
-}
-
-.path-step-row.left-side .stone-step-graphic {
-    right: 15%;
-    transform: rotate(-8deg);
-}
-
-.path-step-row.right-side .stone-step-graphic {
-    left: 15%;
-    transform: rotate(8deg);
-}
-
-/* Circular Milestone Node sitting on/near the stone */
-.path-stone-node {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.92);
-    border: 2px solid rgba(245, 158, 11, 0.4);
-    border-radius: 30px;
-    padding: 6px 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 2;
-}
-
-.path-stone-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.path-stone-icon {
-    font-size: 1.1rem;
-}
-
-.path-stone-label {
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: #334155;
-    line-height: 1.1;
-}
-
-.path-badge-side {
-    position: absolute;
-    width: 50px;
-    display: flex;
-    justify-content: center;
-    z-index: 2;
-}
-
-.path-step-row.left-side .path-badge-side {
-    right: 2%;
-}
-
-.path-step-row.right-side .path-badge-side {
-    left: 2%;
-}
-
-.achievement-badge {
-    background: linear-gradient(135deg, #fbbf24, #f59e0b);
-    border: 1.5px solid #fff;
-    border-radius: 8px;
-    padding: 2px 4px;
-    font-size: 0.45rem;
-    font-weight: 800;
-    color: #78350f;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-    text-transform: uppercase;
-}
-
-.achievement-badge.locked {
-    background: rgba(255, 255, 255, 0.6);
-    border: 1.5px dashed rgba(148, 163, 184, 0.7);
-    color: #94a3b8;
-    font-weight: 600;
-}
-
-.path-gauge-circle {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: conic-gradient(#3b82f6 0deg, #e2e8f0 0deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.path-gauge-circle::before {
-    content: '';
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    background: #ffffff;
-    border-radius: 50%;
-}
-
-.path-gauge-text {
-    position: relative;
-    font-size: 0.45rem;
-    font-weight: 800;
-    color: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 10px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), inset 0 2px 2px rgba(255, 255, 255, 0.4);
 }
