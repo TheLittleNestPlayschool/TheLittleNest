@@ -1,19 +1,19 @@
 /* path.css */
 .learning-path-section {
-    position: relative;
-    width: 100%;
-    min-height: 500px;
-    padding: 10px 16px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 300px;
+    z-index: 2;
+    padding: 10px;
     box-sizing: border-box;
-    display: block;
-    z-index: 1;
 }
 
 .learning-path-title {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 800;
     color: #1e293b;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     letter-spacing: 0.3px;
 }
 
@@ -22,7 +22,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
 }
 
 /* Base row layout for steps */
@@ -30,24 +30,24 @@
     display: flex;
     width: 100%;
     position: relative;
-    height: 32px;
+    height: 28px;
     align-items: center;
 }
 
 .path-step-row.left-side {
     justify-content: flex-start;
-    padding-left: 15%;
+    padding-left: 10%;
 }
 
 .path-step-row.right-side {
     justify-content: flex-end;
-    padding-right: 15%;
+    padding-right: 10%;
 }
 
 /* Organic 3D Stone Graphic */
 .stone-step-graphic {
-    width: 75px;
-    height: 20px;
+    width: 65px;
+    height: 18px;
     background: linear-gradient(180deg, #94a3b8 0%, #64748b 50%, #475569 100%);
     border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 10px;
