@@ -1,5 +1,4 @@
-
-/* path.css */
+/* path.css - Isometric Staircase Style */
 .learning-path-section {
     position: relative;
     width: 100%;
@@ -24,8 +23,10 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    min-height: 300px;
+    /* Increase gap to allow steps to overlap vertically */
+    gap: -5px; 
+    min-height: 400px;
+    padding-bottom: 50px;
 }
 
 /* Base row layout for steps */
@@ -33,54 +34,88 @@
     display: flex;
     width: 100%;
     position: relative;
-    height: 32px;
+    height: 40px; /* Taller container for isometric height */
     align-items: center;
+    z-index: 1;
 }
 
 .path-step-row.left-side {
     justify-content: flex-start;
-    padding-left: 20%;
+    /* Adjust padding to control horizontal position */
+    padding-left: 15%; 
 }
 
 .path-step-row.right-side {
     justify-content: flex-end;
-    padding-right: 20%;
+    padding-right: 15%;
 }
 
-/* Organic 3D Stone Graphic (Updated) */
+/* The Isometric Geometric Block (Replaces previous styles) */
 .stone-step-graphic {
-    width: 80px; /* Slightly wider for better shape */
-    height: 25px; /* Slightly taller */
-    border-radius: 50px / 25px; /* Creates a perfect pill/pebble shape */
+    width: 100px;
+    height: 25px;
+    background-color: #b0aeb0; /* Fallback */
     
-    /* Deep 3D Gradient: Simulates light hitting a rounded surface */
-    background: radial-gradient(circle at 50% 30%, #e2e8f0 0%, #94a3b8 40%, #64748b 70%, #475569 100%);
+    /* Create geometric perspective using skew */
+    transform: skew(-35deg);
     
-    /* Borders & Shadows for realism */
-    border: 1px solid #475569; /* Dark edge */
-    box-shadow: 
-        0 4px 6px rgba(0, 0, 0, 0.3), /* Outer shadow for depth */
-        inset 0 -5px 6px rgba(0, 0, 0, 0.2), /* Inner shadow on bottom for roundness */
-        inset 0 3px 4px rgba(255, 255, 255, 0.4); /* Highlight on top */
+    /* Flat top face color */
+    background: linear-gradient(135deg, #d1d0d1 0%, #b0aeb0 100%);
     
-    /* Ensure content inside is centered if you add labels later */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    color: #1e293b;
-    font-weight: 600;
-    text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+    /* Sharp border */
+    border: 1px solid #8c8a8c;
     
-    /* smooth transition for hover effects later */
-    transition: all 0.2s ease;
+    /* Simple drop shadow for the whole block */
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.15);
+    
+    /* Ensure stacking so they overlap correctly */
+    position: relative;
 }
 
-/* Optional: Add a subtle hover effect */
-.stone-step-graphic:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-        0 6px 8px rgba(0, 0, 0, 0.35),
-        inset 0 -5px 6px rgba(0, 0, 0, 0.2),
-        inset 0 3px 4px rgba(255, 255, 255, 0.5);
+/* Create the "front face" and "side face" using pseudo-elements */
+/* This is crucial for the 3D effect */
+
+/* Front Face (lighter grey) */
+.stone-step-graphic::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 15px; /* Height of the riser */
+    background: linear-gradient(to bottom, #c4c2c4 0%, #a19fa1 100%);
+    top: 100%; /* Position below the top face */
+    left: -5px; /* Offset to align with skew */
+    transform: skewY(55deg); /* Adjust angle to match perspective */
+    border: 1px solid #8c8a8c;
+    border-top: none;
 }
+
+/* Side Face (darkest grey) */
+.stone-step-graphic::after {
+    content: '';
+    position: absolute;
+    width: 15px; /* Width of the side */
+    height: 100%;
+    background: linear-gradient(to right, #949294 0%, #737173 100%);
+    top: -5px; /* Offset to align with skew */
+    left: 100%; /* Position to the right of the top face */
+    transform: skewX(55deg); /* Adjust angle */
+    border: 1px solid #8c8a8c;
+    border-left: none;
+}
+
+/* Adjust Z-index stacking so the path looks like it's going "up" visually */
+/* The script generates elements from top to bottom. 
+   To make it look like a staircase, later steps should appear "behind" or "above" earlier ones.
+   We need to reverse the z-index order. */
+
+.path-step-row:nth-child(1) { z-index: 15; }
+.path-step-row:nth-child(2) { z-index: 14; }
+.path-step-row:nth-child(3) { z-index: 13; }
+.path-step-row:nth-child(4) { z-index: 12; }
+.path-step-row:nth-child(5) { z-index: 11; }
+.path-step-row:nth-child(6) { z-index: 10; }
+.path-step-row:nth-child(7) { z-index: 9; }
+.path-step-row:nth-child(8) { z-index: 8; }
+.path-step-row:nth-child(9) { z-index: 7; }
+.path-step-row:nth-child(10) { z-index: 6; }
+.path-step-row:nth-child(11) { z-index: 5; }
