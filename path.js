@@ -1,3 +1,4 @@
+
 // path.js
 (function () {
     function buildStonePath() {
