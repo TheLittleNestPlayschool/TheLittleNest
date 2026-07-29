@@ -58,7 +58,7 @@
 }
 
 /* 
-  Approximate percentage coordinates for the 9 slots along stair.png 
+  Approximate percentage coordinates for the 9 milestone node slots along stair.png 
 */
 #slot-1 { bottom: 7%;  left: 52%; }
 #slot-2 { bottom: 20%; left: 25%; }
@@ -73,41 +73,15 @@
 /* ==========================================
    Individual Milestone Node Customizations
    ================================---------- */
-#slot-1 .milestone-node {
-    /* Customize milestone 1 here */
-}
-
-#slot-2 .milestone-node {
-    /* Customize milestone 2 here */
-}
-
-#slot-3 .milestone-node {
-    /* Customize milestone 3 here */
-}
-
-#slot-4 .milestone-node {
-    /* Customize milestone 4 here */
-}
-
-#slot-5 .milestone-node {
-    /* Customize milestone 5 here */
-}
-
-#slot-6 .milestone-node {
-    /* Customize milestone 6 here */
-}
-
-#slot-7 .milestone-node {
-    /* Customize milestone 7 here */
-}
-
-#slot-8 .milestone-node {
-    /* Customize milestone 8 here */
-}
-
-#slot-9 .milestone-node {
-    /* Customize milestone 9 here */
-}
+#slot-1 .milestone-node { /* Customize milestone 1 here */ }
+#slot-2 .milestone-node { /* Customize milestone 2 here */ }
+#slot-3 .milestone-node { /* Customize milestone 3 here */ }
+#slot-4 .milestone-node { /* Customize milestone 4 here */ }
+#slot-5 .milestone-node { /* Customize milestone 5 here */ }
+#slot-6 .milestone-node { /* Customize milestone 6 here */ }
+#slot-7 .milestone-node { /* Customize milestone 7 here */ }
+#slot-8 .milestone-node { /* Customize milestone 8 here */ }
+#slot-9 .milestone-node { /* Customize milestone 9 here */ }
 
 /* Base Milestone Node Styling */
 .milestone-node {
@@ -147,4 +121,58 @@
     background-color: #94a3b8;
     border-color: #64748b;
     color: #f1f5f9;
+}
+
+
+/* =========================================================================
+   TEXT SLOTS: Independent Coordinate Mapping & Styling for Text Labels 1-9
+   ========================================================================= */
+
+/* Base style for each text slot wrapper */
+.text-slot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+/* 
+  Percentage coordinates for the 9 text slots. 
+  (Adjust these independently to place each text label exactly where you want it)
+*/
+#text-slot-1 { bottom: 3%;  left: 52%; }
+#text-slot-2 { bottom: 15%; left: 25%; }
+#text-slot-3 { bottom: 18%; left: 76%; }
+#text-slot-4 { bottom: 35%; left: 63%; }
+#text-slot-5 { bottom: 41%; left: 23%; }
+#text-slot-6 { bottom: 53%; left: 78%; }
+#text-slot-7 { bottom: 66%; left: 30%; }
+#text-slot-8 { bottom: 73%; left: 74%; }
+#text-slot-9 { bottom: 85%; left: 22%; }
+
+/* ==========================================
+   Individual Text Label Customizations
+   ================================---------- */
+#text-slot-1 .milestone-text { /* Customize text 1 here */ }
+#text-slot-2 .milestone-text { /* Customize text 2 here */ }
+#text-slot-3 .milestone-text { /* Customize text 3 here */ }
+#text-slot-4 .milestone-text { /* Customize text 4 here */ }
+#text-slot-5 .milestone-text { /* Customize text 5 here */ }
+#text-slot-6 .milestone-text { /* Customize text 6 here */ }
+#text-slot-7 .milestone-text { /* Customize text 7 here */ }
+#text-slot-8 .milestone-text { /* Customize text 8 here */ }
+#text-slot-9 .milestone-text { /* Customize text 9 here */ }
+
+/* Base Milestone Text Styling (Applies to all text elements by default) */
+.milestone-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1e293b;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 2px 6px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
 }
