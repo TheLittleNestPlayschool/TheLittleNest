@@ -176,3 +176,76 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     white-space: nowrap;
 }
+
+
+/* =========================================================================
+   BADGE SLOTS: Independent Coordinate Mapping & Styling for Badges 1-9
+   ========================================================================= */
+
+/* Base style for each badge slot wrapper */
+.badge-slot {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+/* 
+  Percentage coordinates for the 9 badge slots. 
+  (Adjust these independently to place each badge exactly where you want it)
+*/
+#badge-slot-1 { bottom: 11%; left: 52%; }
+#badge-slot-2 { bottom: 24%; left: 25%; }
+#badge-slot-3 { bottom: 27%; left: 76%; }
+#badge-slot-4 { bottom: 44%; left: 63%; }
+#badge-slot-5 { bottom: 50%; left: 23%; }
+#badge-slot-6 { bottom: 62%; left: 78%; }
+#badge-slot-7 { bottom: 75%; left: 30%; }
+#badge-slot-8 { bottom: 82%; left: 74%; }
+#badge-slot-9 { bottom: 94%; left: 22%; }
+
+/* ==========================================
+   Individual Badge Customizations
+   ================================---------- */
+#badge-slot-1 .milestone-badge { /* Customize badge 1 here */ }
+#badge-slot-2 .milestone-badge { /* Customize badge 2 here */ }
+#badge-slot-3 .milestone-badge { /* Customize badge 3 here */ }
+#badge-slot-4 .milestone-badge { /* Customize badge 4 here */ }
+#badge-slot-5 .milestone-badge { /* Customize badge 5 here */ }
+#badge-slot-6 .milestone-badge { /* Customize badge 6 here */ }
+#badge-slot-7 .milestone-badge { /* Customize badge 7 here */ }
+#badge-slot-8 .milestone-badge { /* Customize badge 8 here */ }
+#badge-slot-9 .milestone-badge { /* Customize badge 9 here */ }
+
+/* Base Milestone Badge Styling (Matches milestone node sizing & style pattern) */
+.milestone-badge {
+    width: 32px;
+    height: 32px;
+    background-color: #fef08a;
+    border: 2px solid #eab308;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #854d0e;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.milestone-badge:hover {
+    transform: scale(1.1);
+}
+
+.milestone-badge.locked {
+    background-color: #94a3b8;
+    border-color: #64748b;
+    color: #f1f5f9;
+}
