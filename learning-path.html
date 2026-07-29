@@ -2,18 +2,18 @@
     .learning-path-section {
         width: 100%;
         flex: 1;
-        min-height: 55vh; /* Takes up the lion's share of mobile screen vertical space */
-        padding: 4px 12px;
+        min-height: 65vh; /* Dominates the vertical screen space */
+        padding: 2px 12px;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
     }
 
     .learning-path-title {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         font-weight: 800;
         color: #1e293b;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
         letter-spacing: 0.3px;
     }
 
@@ -23,8 +23,8 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: space-around; /* Spreads milestones evenly to fill the 75% height */
-        padding: 4px 0;
+        justify-content: space-between; /* Stretches nodes across the large vertical area */
+        padding: 2px 0;
     }
 
     .path-step-row {
@@ -35,7 +35,7 @@
     }
 
     .path-badge-side {
-        width: 65px;
+        width: 60px;
         display: flex;
         justify-content: center;
     }
@@ -43,9 +43,9 @@
     .achievement-badge {
         background: linear-gradient(135deg, #fbbf24, #f59e0b);
         border: 1.5px solid #fff;
-        border-radius: 10px;
-        padding: 4px 6px;
-        font-size: 0.6rem;
+        border-radius: 8px;
+        padding: 3px 5px;
+        font-size: 0.55rem;
         font-weight: 800;
         color: #78350f;
         text-align: center;
@@ -64,8 +64,8 @@
         flex: 1;
         background: rgba(255, 255, 255, 0.95);
         border: 2px solid rgba(217, 119, 6, 0.35);
-        border-radius: 16px;
-        padding: 10px 14px;
+        border-radius: 14px;
+        padding: 8px 12px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -80,19 +80,19 @@
     }
 
     .path-stone-icon {
-        font-size: 1.25rem;
+        font-size: 1.15rem;
     }
 
     .path-stone-label {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         font-weight: 700;
         color: #334155;
         line-height: 1.1;
     }
 
     .path-gauge-circle {
-        width: 32px;
-        height: 32px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
         background: conic-gradient(#3b82f6 0deg, #e2e8f0 0deg);
         display: flex;
@@ -104,15 +104,15 @@
     .path-gauge-circle::before {
         content: '';
         position: absolute;
-        width: 25px;
-        height: 25px;
+        width: 22px;
+        height: 22px;
         background: #ffffff;
         border-radius: 50%;
     }
 
     .path-gauge-text {
         position: relative;
-        font-size: 0.55rem;
+        font-size: 0.5rem;
         font-weight: 800;
         color: #1e293b;
     }
