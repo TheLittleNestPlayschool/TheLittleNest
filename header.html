@@ -1,81 +1,39 @@
-<style>
-    .header-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 8px 16px 4px 16px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .header-global-stats {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #d97706;
-        margin-bottom: 2px;
-        letter-spacing: 0.5px;
-    }
-
-    .header-school-title {
-        font-size: 1.2rem;
-        font-weight: 800;
-        color: #1e293b;
-        text-transform: uppercase;
-        margin: 0;
-        letter-spacing: 0.5px;
-    }
-
-    .header-location {
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #475569;
-        text-transform: uppercase;
-        margin-top: 1px;
-        margin-bottom: 6px;
-        letter-spacing: 0.5px;
-    }
-
-    .header-achievement-banner {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(255, 255, 255, 0.7);
-        border: 1px solid rgba(217, 119, 6, 0.3);
-        border-radius: 30px;
-        padding: 4px 12px;
-        font-size: 0.75rem;
-        color: #334155;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        max-width: 100%;
-    }
-
-    .header-achievement-banner .star-icon {
-        color: #f59e0b;
-        margin-right: 4px;
-    }
-
-    .header-achievement-banner .student-name {
-        font-weight: 700;
-        color: #0f172a;
-    }
-</style>
-
-<div class="header-section">
-    <!-- Global Stats -->
-    <div class="header-global-stats">
-        Little Nest Global Network 22,513+ Learning Hours & Counting!
+<!-- header.html -->
+<div class="dashboard-header">
+    <!-- Left Badge: Student & Guardian Info -->
+    <div class="header-badge student-badge">
+        <div class="badge-icon">⭐</div>
+        <div class="badge-content">
+            <span class="badge-title">Student Milestone</span>
+            <span class="student-name">Elleisha Stoyko</span>
+            <span class="achievement-text">unlocked 7 hours!</span>
+            <span class="guardian-text">Guardian: Dave Stoyko</span>
+        </div>
     </div>
 
-    <!-- School Title -->
-    <h1 class="header-school-title">The Little Nest Playschool</h1>
+    <!-- Center Logo: Bird in Nest Branding -->
+    <div class="header-logo-container">
+        <div class="brand-title">The Little Nest</div>
+        <div class="nest-graphic-wrapper">
+            <div class="bird-in-nest-graphic">
+                <!-- Bird icon/illustration placeholder -->
+                <div class="bird-character">🐦</div>
+                <!-- Nest structure holding the location -->
+                <div class="nest-base">
+                    <span class="nest-location">Sto. Tomas</span>
+                </div>
+            </div>
+        </div>
+        <div class="brand-subtitle">Playschool</div>
+    </div>
 
-    <!-- Location -->
-    <div class="header-location">Sto. Tomas</div>
-
-    <!-- Student Achievement & Guardian Banner -->
-    <div class="header-achievement-banner">
-        <span class="star-icon">★</span>
-        <span><span class="student-name">Elleisha Stoyko</span> unlocked 7 hours! • Guardian: Dave Stoyko</span>
+    <!-- Right Badge: Global Network Learning Hours -->
+    <div class="header-badge network-badge">
+        <div class="badge-icon">🌍</div>
+        <div class="badge-content">
+            <span class="network-title">Global Network</span>
+            <span class="hours-count">22,513+ Hours</span>
+            <span class="counting-text">& Counting!</span>
+        </div>
     </div>
 </div>
