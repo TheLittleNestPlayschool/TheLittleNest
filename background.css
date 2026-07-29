@@ -7,41 +7,42 @@
   height: 100vh;
   z-index: -1;
   overflow: hidden;
-  /* Rich, warm magical sky gradient matching the reference art style */
+  /* Vivid, high-contrast split gradient with sharper color transitions */
   background: linear-gradient(
-    180deg, 
-    #fce7f3 0%, 
-    #fbcfe8 20%, 
-    #fed7aa 50%, 
-    #99f6e4 85%, 
-    #6ee7b7 100%
+    135deg, 
+    #3b0764 0%, 
+    #f472b6 25%, 
+    #ffffff 42%, 
+    #fb923c 55%, 
+    #2dd4bf 80%, 
+    #0f766e 100%
   );
 }
 
 .cloud-blob {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(35px);
+  border-radius: 40%;
+  filter: blur(15px); /* Much tighter blur to create those distinct fuzzy boundary lines */
   pointer-events: none;
-  opacity: 0.85;
+  opacity: 0.95;
 }
 
-/* Vivid glowing pink/lavender aura on the left (matching the reference image's left side) */
+/* Sharp, vivid pink cloud bank on the upper-left with a crisp edge against white */
 .cloud-blob.top-left {
   top: -5%;
-  left: -20%;
-  width: 70vw;
-  height: 60vh;
-  background: radial-gradient(circle, rgba(244, 114, 182, 0.9) 0%, rgba(244, 63, 94, 0.4) 50%, transparent 80%);
+  left: -10%;
+  width: 60vw;
+  height: 50vh;
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(244, 114, 182, 0.95) 45%, rgba(219, 39, 119, 0.8) 75%, transparent 100%);
 }
 
-/* Vivid glowing turquoise/teal aura on the right (matching the reference image's right side) */
+/* Sharp, vivid turquoise cloud bank on the upper-right with a distinct horizon/line */
 .cloud-blob.top-right {
   top: 5%;
-  right: -20%;
-  width: 70vw;
-  height: 60vh;
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.85) 0%, rgba(20, 184, 166, 0.4) 50%, transparent 80%);
+  right: -10%;
+  width: 60vw;
+  height: 50vh;
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(45, 212, 191, 0.95) 45%, rgba(13, 148, 136, 0.8) 75%, transparent 100%);
 }
 
 .gradient-overlay {
@@ -50,6 +51,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at 50% 25%, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.1) 45%, transparent 75%);
+  background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.85) 0%, transparent 60%);
   pointer-events: none;
 }
