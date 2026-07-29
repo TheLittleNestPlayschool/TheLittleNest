@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="background.css">
     <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="path.css">
 </head>
 <body>
     <!-- Background Elements -->
@@ -28,6 +29,9 @@
     <div id="messageus-modal" class="modal"></div>
     <div id="mybadges-modal" class="modal"></div>
 
+    <!-- Path Script Included Globally for Dynamic Injection -->
+    <script src="path.js" defer></script>
+
     <script>
         // Simple fetch loader to inject the modular component placeholders
         async function loadComponent(file, containerId) {
@@ -42,16 +46,16 @@
             }
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            loadComponent('header.html', 'header-container');
-            loadComponent('story-reel.html', 'story-reel-container');
-            loadComponent('learning-path.html', 'learning-path-container');
-            loadComponent('bottom-nav.html', 'bottom-nav-container');
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadComponent('header.html', 'header-container');
+            await loadComponent('story-reel.html', 'story-reel-container');
+            await loadComponent('learning-path.html', 'learning-path-container');
+            await loadComponent('bottom-nav.html', 'bottom-nav-container');
             
-            loadComponent('mydata.html', 'mydata-modal');
-            loadComponent('mygallery.html', 'mygallery-modal');
-            loadComponent('messageus.html', 'messageus-modal');
-            loadComponent('mybadges.html', 'mybadges-modal');
+            await loadComponent('mydata.html', 'mydata-modal');
+            await loadComponent('mygallery.html', 'mygallery-modal');
+            await loadComponent('messageus.html', 'messageus-modal');
+            await loadComponent('mybadges.html', 'mybadges-modal');
         });
     </script>
 </body>
