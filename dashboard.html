@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TLNP</title>
+    <title>The Little Nest Playschool - Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="background.css">
     <link rel="stylesheet" href="animations.css">
@@ -16,24 +16,43 @@
       <div class="gradient-overlay"></div>
     </div>
 
-    <!-- Temporary Placeholder Text -->
-    <div style="padding: 40px; font-family: sans-serif; text-align: center; position: relative; z-index: 10;">
-        <h1 style="color: #333; font-size: 2.5rem;">Dashboard is Live!</h1>
-        <p style="color: #666; font-size: 1.2rem;">The structural shell is working.</p>
-    </div>
-
+    <!-- Modular Sections -->
     <div id="header-container"></div>
     <div id="story-reel-container"></div>
     <div id="learning-path-container"></div>
-    <div id="awards-container"></div>
     <div id="bottom-nav-container"></div>
 
-    <!-- Pop-up Modals -->
+    <!-- Pop-up Modals (Triggered via Bottom Nav) -->
     <div id="mydata-modal" class="modal"></div>
     <div id="mygallery-modal" class="modal"></div>
     <div id="messageus-modal" class="modal"></div>
     <div id="mybadges-modal" class="modal"></div>
 
-    <script src="app.js"></script>
+    <script>
+        // Simple fetch loader to inject the modular component placeholders
+        async function loadComponent(file, containerId) {
+            try {
+                const response = await fetch(file);
+                if (response.ok) {
+                    const html = await response.text();
+                    document.getElementById(containerId).innerHTML = html;
+                }
+            } catch (error) {
+                console.error(`Error loading ${file}:`, error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadComponent('header.html', 'header-container');
+            loadComponent('story-reel.html', 'story-reel-container');
+            loadComponent('learning-path.html', 'learning-path-container');
+            loadComponent('bottom-nav.html', 'bottom-nav-container');
+            
+            loadComponent('mydata.html', 'mydata-modal');
+            loadComponent('mygallery.html', 'mygallery-modal');
+            loadComponent('messageus.html', 'messageus-modal');
+            loadComponent('mybadges.html', 'mybadges-modal');
+        });
+    </script>
 </body>
 </html>
