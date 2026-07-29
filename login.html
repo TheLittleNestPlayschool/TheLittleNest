@@ -6,6 +6,7 @@
     <title>The Little Nest - Login</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="background.css">
+    <link rel="stylesheet" href="path.css">
 </head>
 <body>
 
@@ -14,6 +15,12 @@
       <div class="cloud-blob top-left"></div>
       <div class="cloud-blob top-right"></div>
       <div class="gradient-overlay"></div>
+    </div>
+
+    <!-- Learning Path Section Added -->
+    <div class="learning-path-section">
+        <div class="learning-path-title">Learning Path & Milestones</div>
+        <div class="path-winding-container" id="stone-path-container"></div>
     </div>
 
     <div class="login-container">
@@ -38,6 +45,9 @@
             <div id="errorMessage" style="color: red; margin-top: 10px;"></div>
         </div>
     </div>
+
+    <!-- External path script kept separate for future Xano data integration -->
+    <script src="path.js" defer></script>
 
     <script>
         localStorage.clear();
