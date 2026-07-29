@@ -1,78 +1,15 @@
-<style>
-    .story-reel-section {
-        width: 100%;
-        padding: 2px 12px 4px 12px;
-        box-sizing: border-box;
-    }
-
-    .story-reel-title {
-        font-size: 0.75rem;
-        font-weight: 800;
-        color: #1e293b;
-        margin-bottom: 3px;
-        letter-spacing: 0.3px;
-    }
-
-    .story-reel-container-scroll {
-        display: flex;
-        gap: 6px;
-        overflow-x: auto;
-        padding-bottom: 2px;
-        scrollbar-width: none;
-    }
-
-    .story-reel-container-scroll::-webkit-scrollbar {
-        display: none;
-    }
-
-    .story-card {
-        flex: 0 0 auto;
-        background: rgba(255, 255, 255, 0.85);
-        border: 1.5px solid rgba(217, 119, 6, 0.3);
-        border-radius: 20px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        padding: 3px 8px 3px 6px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-        cursor: pointer;
-    }
-
-    .story-card-icon {
-        font-size: 0.85rem;
-    }
-
-    .story-card-text {
-        font-size: 0.6rem;
-        font-weight: 700;
-        color: #334155;
-        white-space: nowrap;
-    }
-</style>
+<!-- story-reel.html -->
+<link rel="stylesheet" href="story.css">
 
 <div class="story-reel-section">
-    <div class="story-reel-title">Class Memories</div>
-    
-    <div class="story-reel-container-scroll">
-        <div class="story-card">
-            <span class="story-card-icon">🎨</span>
-            <span class="story-card-text">Painting</span>
-        </div>
-        <div class="story-card">
-            <span class="story-card-icon">🧩</span>
-            <span class="story-card-text">Puzzles</span>
-        </div>
-        <div class="story-card">
-            <span class="story-card-icon">🎶</span>
-            <span class="story-card-text">Music</span>
-        </div>
-        <div class="story-card">
-            <span class="story-card-icon">🌳</span>
-            <span class="story-card-text">Outdoor</span>
-        </div>
-        <div class="story-card">
-            <span class="story-card-icon">📖</span>
-            <span class="story-card-text">Storytime</span>
-        </div>
+    <div class="story-reel-title">Class Memories Story Reel</div>
+
+    <!-- Horizontal scrollable track container -->
+    <div class="story-reel-track" id="story-reel-track">
+        <!-- Dynamically injected via story.js -->
     </div>
+
+    <div class="story-reel-subtitle">Classroom Stories</div>
 </div>
+
+<script src="story.js"></script>
