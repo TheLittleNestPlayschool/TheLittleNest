@@ -36,10 +36,10 @@
     <script src="path.js" defer></script>
 
     <script>
-        // Simple fetch loader to inject the modular component placeholders
+        // Simple fetch loader with cache-busting to inject component placeholders instantly
         async function loadComponent(file, containerId) {
             try {
-                const response = await fetch(file);
+                const response = await fetch(`${file}?v=${Date.now()}`);
                 if (response.ok) {
                     const html = await response.text();
                     document.getElementById(containerId).innerHTML = html;
