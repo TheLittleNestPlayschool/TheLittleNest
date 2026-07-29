@@ -1,5 +1,208 @@
-<section class="learning-path-section">
-    <div class="path-container">
-        <!-- Winding path nodes placeholder -->
+<style>
+    .learning-path-section {
+        width: 100%;
+        padding: 10px 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .learning-path-title {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 15px;
+        letter-spacing: 0.5px;
+        align-self: flex-start;
+    }
+
+    /* Main Winding Path Wrapper */
+    .path-winding-container {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding: 10px 0;
+    }
+
+    /* Individual Step Row with Side Badges */
+    .path-step-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        width: 100%;
+    }
+
+    /* Side Achievement Badges */
+    .path-badge-side {
+        width: 75px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .achievement-badge {
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        border: 2px solid #fff;
+        border-radius: 12px;
+        padding: 6px 8px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: #78350f;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .achievement-badge.locked {
+        background: rgba(255, 255, 255, 0.4);
+        border: 2px dashed rgba(148, 163, 184, 0.5);
+        color: #94a3b8;
+        font-weight: 600;
+    }
+
+    /* Central Winding Stone Node */
+    .path-stone-node {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid rgba(217, 119, 6, 0.3);
+        border-radius: 20px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        max-width: 220px;
+    }
+
+    .path-stone-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .path-stone-icon {
+        font-size: 1.5rem;
+    }
+
+    .path-stone-label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #334155;
+        line-height: 1.2;
+    }
+
+    /* Circular Gauge Indicator */
+    .path-gauge-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: conic-gradient(#3b82f6 0deg, #e2e8f0 0deg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .path-gauge-circle::before {
+        content: '';
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        background: #ffffff;
+        border-radius: 50%;
+    }
+
+    .path-gauge-text {
+        position: relative;
+        font-size: 0.65rem;
+        font-weight: 800;
+        color: #1e293b;
+    }
+
+    /* Offset layout for winding stair effect */
+    .path-step-row:nth-child(odd) {
+        flex-direction: row;
+    }
+    .path-step-row:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+</style>
+
+<div class="learning-path-section">
+    <div class="learning-path-title">Learning Path & Milestones</div>
+
+    <div class="path-winding-container">
+        <!-- Step 1 -->
+        <div class="path-step-row">
+            <div class="path-badge-side">
+                <div class="achievement-badge">Literacy 1</div>
+            </div>
+            <div class="path-stone-node">
+                <div class="path-stone-info">
+                    <span class="path-stone-icon">👂</span>
+                    <span class="path-stone-label">Receptive Language</span>
+                </div>
+                <div class="path-gauge-circle" style="background: conic-gradient(#3b82f6 360deg, #e2e8f0 0deg);">
+                    <span class="path-gauge-text">100%</span>
+                </div>
+            </div>
+            <div class="path-badge-side"></div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="path-step-row">
+            <div class="path-badge-side"></div>
+            <div class="path-stone-node">
+                <div class="path-stone-info">
+                    <span class="path-stone-icon">🗣️</span>
+                    <span class="path-stone-label">Expressive Language</span>
+                </div>
+                <div class="path-gauge-circle" style="background: conic-gradient(#3b82f6 270deg, #e2e8f0 0deg);">
+                    <span class="path-gauge-text">75%</span>
+                </div>
+            </div>
+            <div class="path-badge-side">
+                <div class="achievement-badge locked">Locked</div>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="path-step-row">
+            <div class="path-badge-side">
+                <div class="achievement-badge locked">Locked</div>
+            </div>
+            <div class="path-stone-node">
+                <div class="path-stone-info">
+                    <span class="path-stone-icon">🔢</span>
+                    <span class="path-stone-label">Numeracy Basics</span>
+                </div>
+                <div class="path-gauge-circle" style="background: conic-gradient(#3b82f6 144deg, #e2e8f0 0deg);">
+                    <span class="path-gauge-text">40%</span>
+                </div>
+            </div>
+            <div class="path-badge-side"></div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="path-step-row">
+            <div class="path-badge-side"></div>
+            <div class="path-stone-node">
+                <div class="path-stone-info">
+                    <span class="path-stone-icon">🤸</span>
+                    <span class="path-stone-label">Gross Motor Skills</span>
+                </div>
+                <div class="path-gauge-circle" style="background: conic-gradient(#3b82f6 72deg, #e2e8f0 0deg);">
+                    <span class="path-gauge-text">20%</span>
+                </div>
+            </div>
+            <div class="path-badge-side">
+                <div class="achievement-badge locked">Locked</div>
+            </div>
+        </div>
     </div>
-</section>
+</div>
