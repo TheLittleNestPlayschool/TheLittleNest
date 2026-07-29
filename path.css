@@ -1,0 +1,146 @@
+/* path.css */
+.learning-path-section {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    min-height: 65vh;
+    padding: 2px 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    z-index: 1; /* Sits cleanly on top of app-background */
+}
+
+.learning-path-title {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+}
+
+.path-winding-container {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 4px 0;
+}
+
+/* Individual stone step tier with alternating left/right layout (Total 9 nodes: 5 left, 4 right) */
+.path-step-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+
+.path-step-row.left-side {
+    flex-direction: row;
+}
+
+.path-step-row.right-side {
+    flex-direction: row-reverse;
+}
+
+/* Organic stone-slab styling mimicking the reference image */
+.path-stone-node {
+    flex: 1;
+    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 18px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.18), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+    max-width: 220px;
+    position: relative;
+}
+
+/* Organic stone texture overlay lines */
+.path-stone-node::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    left: 10px;
+    right: 10px;
+    height: 1px;
+    background: rgba(15, 23, 42, 0.4);
+    pointer-events: none;
+}
+
+.path-stone-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.path-stone-icon {
+    font-size: 1.15rem;
+}
+
+.path-stone-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #f8fafc;
+    line-height: 1.1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.path-badge-side {
+    width: 60px;
+    display: flex;
+    justify-content: center;
+}
+
+.achievement-badge {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    border: 1.5px solid #fff;
+    border-radius: 8px;
+    padding: 3px 5px;
+    font-size: 0.55rem;
+    font-weight: 800;
+    color: #78350f;
+    text-align: center;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    text-transform: uppercase;
+}
+
+.achievement-badge.locked {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1.5px dashed rgba(100, 116, 139, 0.6);
+    color: #64748b;
+    font-weight: 600;
+}
+
+.path-gauge-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: conic-gradient(#3b82f6 0deg, #cbd5e1 0deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.path-gauge-circle::before {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: #ffffff;
+    border-radius: 50%;
+}
+
+.path-gauge-text {
+    position: relative;
+    font-size: 0.5rem;
+    font-weight: 800;
+    color: #1e293b;
+}
