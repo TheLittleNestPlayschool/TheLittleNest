@@ -1,16 +1,15 @@
-
 /* story.css - Horizontal Scrolling Class Memories Story Reel */
 .story-reel-section {
     position: relative;
     width: 75%;
-    margin: 15px auto;
-    padding: 12px 16px;
-    background: rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin: 10px auto;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -18,46 +17,48 @@
 }
 
 .story-reel-title {
-    font-size: 0.9rem;
-    font-weight: 800;
-    color: #1e293b;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #334155;
     text-align: center;
-    margin-bottom: 10px;
-    letter-spacing: 0.3px;
+    margin-top: 0;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
 }
 
 /* Horizontal Scrolling Track Container */
 .story-reel-track {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     overflow-x: auto;
     scroll-behavior: smooth;
-    padding-bottom: 8px;
+    padding-bottom: 4px;
     scrollbar-width: thin;
-    scrollbar-color: rgba(203, 213, 225, 0.8) transparent;
+    scrollbar-color: rgba(203, 213, 225, 0.6) transparent;
 }
 
 /* Custom scrollbar styling for Webkit browsers */
 .story-reel-track::-webkit-scrollbar {
-    height: 5px;
+    height: 4px;
 }
 .story-reel-track::-webkit-scrollbar-track {
     background: transparent;
 }
 .story-reel-track::-webkit-scrollbar-thumb {
-    background-color: rgba(203, 213, 225, 0.8);
+    background-color: rgba(203, 213, 225, 0.6);
     border-radius: 10px;
 }
 
 /* Individual Card Item */
 .story-item {
     flex: 0 0 auto;
-    width: 75px;
-    height: 75px;
-    border-radius: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
     overflow: hidden;
-    border: 2px solid #ffffff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    border: 1.5px solid #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #f1f5f9;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -65,7 +66,7 @@
 
 .story-item:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Media element sizing inside the card */
