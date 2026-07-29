@@ -3,13 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("stone-path-container");
     if (!container) return;
 
-    // Structure mapping based on your path description:
-    // 1. First step (Left) with circle location placeholder
-    // 2. 5 steps going down and to the right
-    // 3. Next circle location placeholder (Right)
-    // 4. 5 steps going down to the left
-    // 5. Final circle location placeholder (Left)
-    
     let html = '';
 
     // Step 1: Starting point (Left)
