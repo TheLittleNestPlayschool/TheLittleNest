@@ -1,54 +1,53 @@
-
 // path.js
 (function () {
-    function buildStonePath() {
-        const container = document.getElementById("stone-path-container");
-        if (!container) return;
-        
-        // Prevent duplicate injection
-        if (container.children.length > 0) return;
+    function initMilestonePath() {
+        // Data or states for the 9 milestones
+        // You can map your student progress or milestone status here
+        const milestones = [
+            { id: 1, title: "Step 1", status: "completed" },
+            { id: 2, title: "Step 2", status: "completed" },
+            { id: 3, title: "Step 3", status: "current" },
+            { id: 4, title: "Step 4", status: "locked" },
+            { id: 5, title: "Step 5", status: "locked" },
+            { id: 6, title: "Step 6", status: "locked" },
+            { id: 7, title: "Step 7", status: "locked" },
+            { id: 8, title: "Step 8", status: "locked" },
+            { id: 9, title: "Step 9", status: "locked" }
+        ];
 
-        let html = '';
+        milestones.forEach((milestone) => {
+            const slot = document.getElementById(`slot-${milestone.id}`);
+            if (!slot) return;
 
-        // Step 1: Starting point (Left)
-        html += `
-            <div class="path-step-row left-side">
-                <div class="stone-step-graphic"></div>
-            </div>
-        `;
+            // Prevent duplicate rendering
+            if (slot.children.length > 0) return;
 
-        // 5 steps going down and to the right
-        for (let i = 0; i < 5; i++) {
-            html += `
-                <div class="path-step-row right-side">
-                    <div class="stone-step-graphic"></div>
-                </div>
-            `;
-        }
+            // Create the milestone node element
+            const node = document.createElement("div");
+            node.className = `milestone-node ${milestone.status}`;
+            node.setAttribute("data-id", milestone.id);
+            node.innerHTML = `<span>${milestone.id}</span>`;
 
-        // 5 steps going down to the left
-        for (let i = 0; i < 5; i++) {
-            html += `
-                <div class="path-step-row left-side">
-                    <div class="stone-step-graphic"></div>
-                </div>
-            `;
-        }
+            // Optional click handler for milestone interaction
+            node.addEventListener("click", () => {
+                console.log(`Milestone ${milestone.id} clicked`);
+            });
 
-        container.innerHTML = html;
+            slot.appendChild(node);
+        });
     }
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", buildStonePath);
+        document.addEventListener("DOMContentLoaded", initMilestonePath);
     } else {
-        buildStonePath();
+        initMilestonePath();
     }
 
-    // Fallback observer in case container is populated dynamically later
+    // Fallback observer in case container is loaded dynamically
     const observer = new MutationObserver(() => {
-        const container = document.getElementById("stone-path-container");
-        if (container && container.children.length === 0) {
-            buildStonePath();
+        const slot1 = document.getElementById("slot-1");
+        if (slot1 && slot1.children.length === 0) {
+            initMilestonePath();
         }
     });
     observer.observe(document.body, { childList: true, subtree: true });
