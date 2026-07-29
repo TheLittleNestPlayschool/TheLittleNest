@@ -1,31 +1,46 @@
 <!-- header.html -->
 <div class="dashboard-header">
-    <!-- Left Badge: Student & Guardian Info -->
-    <div class="header-badge student-badge">
-        <div class="badge-icon">⭐</div>
-        <div class="badge-content">
+    <!-- Left: Student Milestone with topbadge.png -->
+    <div class="custom-badge-container student-badge-bg">
+        <img src="topbadge.png" alt="Badge Background" class="badge-bg-img">
+        <div class="badge-inner-content">
+            <div class="badge-icon">⭐</div>
             <span class="student-name">Elleisha Stoyko</span>
             <span class="achievement-text">unlocked 7 hours!</span>
             <span class="guardian-text">Guardian: Dave Stoyko</span>
         </div>
     </div>
 
-    <!-- Center Logo: Momma Bird Image & Nest Branding -->
+    <!-- Center: Curved Title, Momma Bird Logo, and Playschool -->
     <div class="header-logo-container">
-        <div class="brand-title">The Little Nest</div>
+        <!-- Curved text over the top -->
+        <div class="curved-title-wrap">
+            <svg class="curved-svg" viewBox="0 0 160 35">
+                <path id="curvePath" d="M 10,30 Q 80,0 150,30" fill="transparent" />
+                <text>
+                    <textPath href="#curvePath" startOffset="50%" text-anchor="middle">
+                        THE LITTLE NEST
+                    </textPath>
+                </text>
+            </svg>
+        </div>
+
+        <!-- Momma Bird Graphic -->
         <div class="nest-graphic-wrapper">
             <div class="bird-in-nest-graphic">
                 <img src="mommabird.png" alt="Momma Bird in Nest" class="mommabird-img">
                 <div class="nest-location">Sto. Tomas</div>
             </div>
         </div>
-        <div class="brand-title">Playschool</div>
+
+        <div class="brand-title-bottom">Playschool</div>
     </div>
 
-    <!-- Right Badge: Global Network Learning Hours -->
-    <div class="header-badge network-badge">
-        <div class="badge-icon">🌍</div>
-        <div class="badge-content">
+    <!-- Right: Global Network Hours with topbadge.png -->
+    <div class="custom-badge-container network-badge-bg">
+        <img src="topbadge.png" alt="Badge Background" class="badge-bg-img">
+        <div class="badge-inner-content">
+            <div class="badge-icon">🌍</div>
             <span class="hours-count-full">22,513+ Hours of Learning & Counting!</span>
         </div>
     </div>
