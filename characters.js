@@ -2,8 +2,16 @@ window.addEventListener("load", function () {
 
     console.log("Page Loaded");
 
-    const bird = document.getElementById("bird7");
+    const object = document.getElementById("bird7");
 
-    console.log("Bird Object:", bird);
+    const svg = object.contentDocument;
+
+    console.log(svg);
+
+    const body = svg.getElementById("body");
+
+    console.log(body);
+
+    body.setAttribute("fill", "#22C55E");
 
 });
