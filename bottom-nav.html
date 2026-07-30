@@ -1,44 +1,34 @@
-
 <link rel="stylesheet" href="bottom-nav.css">
 
 <!-- BOTTOM NAVIGATION CHARACTER NODES LAYER -->
 <div class="bottom-nav-layer">
     <!-- Node 1: My Data -->
-    <div id="nav-node-1" class="nav-slot" onclick="openModal('mydata-modal')">
+    <div id="nav-node-1" class="nav-slot" onclick="switchView('mydata.html')">
         <div class="nav-character-node">📊</div>
     </div>
     <!-- Node 2: Gallery -->
-    <div id="nav-node-2" class="nav-slot" onclick="openModal('mygallery-modal')">
+    <div id="nav-node-2" class="nav-slot" onclick="switchView('mygallery.html')">
         <div class="nav-character-node">🖼️</div>
     </div>
     <!-- Node 3: Learning (Centerpiece) -->
-    <div id="nav-node-3" class="nav-slot center-node" onclick="openModal('learning-modal')">
+    <div id="nav-node-3" class="nav-slot center-node" onclick="switchView('learning-path.html')">
         <div class="nav-character-node">📚</div>
     </div>
     <!-- Node 4: Message Us -->
-    <div id="nav-node-4" class="nav-slot" onclick="openModal('messageus-modal')">
+    <div id="nav-node-4" class="nav-slot" onclick="switchView('messageus.html')">
         <div class="nav-character-node">💬</div>
     </div>
     <!-- Node 5: Badges -->
-    <div id="nav-node-5" class="nav-slot" onclick="openModal('mybadges-modal')">
+    <div id="nav-node-5" class="nav-slot" onclick="switchView('mybadges.html')">
         <div class="nav-character-node">🏆</div>
     </div>
 </div>
 
 <!-- BOTTOM NAVIGATION TEXT NODES LAYER -->
 <div class="bottom-text-layer">
-    <div id="nav-text-1" class="nav-text-slot" onclick="openModal('mydata-modal')"><div class="nav-text-node">My Data</div></div>
-    <div id="nav-text-2" class="nav-text-slot" onclick="openModal('mygallery-modal')"><div class="nav-text-node">Gallery</div></div>
-    <div id="nav-text-3" class="nav-text-slot center-text" onclick="openModal('learning-modal')"><div class="nav-text-node">Learning</div></div>
-    <div id="nav-text-4" class="nav-text-slot" onclick="openModal('messageus-modal')"><div class="nav-text-node">Message</div></div>
-    <div id="nav-text-5" class="nav-text-slot" onclick="openModal('mybadges-modal')"><div class="nav-text-node">Badges</div></div>
+    <div id="nav-text-1" class="nav-text-slot" onclick="switchView('mydata.html')"><div class="nav-text-node">My Data</div></div>
+    <div id="nav-text-2" class="nav-text-slot" onclick="switchView('mygallery.html')"><div class="nav-text-node">Gallery</div></div>
+    <div id="nav-text-3" class="nav-text-slot center-text" onclick="switchView('learning-path.html')"><div class="nav-text-node">Learning</div></div>
+    <div id="nav-text-4" class="nav-text-slot" onclick="switchView('messageus.html')"><div class="nav-text-node">Message</div></div>
+    <div id="nav-text-5" class="nav-text-slot" onclick="switchView('mybadges.html')"><div class="nav-text-node">Badges</div></div>
 </div>
-
-<script>
-    function openModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
-        }
-    }
-</script>
