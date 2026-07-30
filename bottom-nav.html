@@ -1,61 +1,36 @@
-<style>
-    .bottom-nav-section {
-        position: sticky;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(8px);
-        border-top: 1px solid rgba(217, 119, 6, 0.2);
-        padding: 4px 8px;
-        box-sizing: border-box;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        z-index: 100;
-    }
+<link rel="stylesheet" href="bottom-nav.css">
 
-    .nav-button {
-        background: transparent;
-        border: none;
-        padding: 2px 6px;
-        font-size: 0.55rem;
-        font-weight: 700;
-        color: #475569;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1px;
-        transition: color 0.2s ease;
-    }
+<!-- BOTTOM NAVIGATION CHARACTER NODES LAYER -->
+<div class="bottom-nav-layer">
+    <!-- Node 1: My Data -->
+    <div id="nav-node-1" class="nav-slot" onclick="openModal('mydata-modal')">
+        <div class="nav-character-node">📊</div>
+    </div>
+    <!-- Node 2: Gallery -->
+    <div id="nav-node-2" class="nav-slot" onclick="openModal('mygallery-modal')">
+        <div class="nav-character-node">🖼️</div>
+    </div>
+    <!-- Node 3: Learning (Centerpiece) -->
+    <div id="nav-node-3" class="nav-slot center-node" onclick="openModal('learning-modal')">
+        <div class="nav-character-node">📚</div>
+    </div>
+    <!-- Node 4: Message Us -->
+    <div id="nav-node-4" class="nav-slot" onclick="openModal('messageus-modal')">
+        <div class="nav-character-node">💬</div>
+    </div>
+    <!-- Node 5: Badges -->
+    <div id="nav-node-5" class="nav-slot" onclick="openModal('mybadges-modal')">
+        <div class="nav-character-node">🏆</div>
+    </div>
+</div>
 
-    .nav-button:hover {
-        color: #d97706;
-    }
-
-    .nav-icon {
-        font-size: 0.85rem;
-    }
-</style>
-
-<div class="bottom-nav-section">
-    <button class="nav-button" onclick="openModal('mydata-modal')">
-        <span class="nav-icon">📊</span>
-        <span>My Data</span>
-    </button>
-    <button class="nav-button" onclick="openModal('mygallery-modal')">
-        <span class="nav-icon">🖼️</span>
-        <span>Gallery</span>
-    </button>
-    <button class="nav-button" onclick="openModal('messageus-modal')">
-        <span class="nav-icon">💬</span>
-        <span>Message</span>
-    </button>
-    <button class="nav-button" onclick="openModal('mybadges-modal')">
-        <span class="nav-icon">🏆</span>
-        <span>Badges</span>
-    </button>
+<!-- BOTTOM NAVIGATION TEXT NODES LAYER -->
+<div class="bottom-text-layer">
+    <div id="nav-text-1" class="nav-text-slot" onclick="openModal('mydata-modal')"><div class="nav-text-node">My Data</div></div>
+    <div id="nav-text-2" class="nav-text-slot" onclick="openModal('mygallery-modal')"><div class="nav-text-node">Gallery</div></div>
+    <div id="nav-text-3" class="nav-text-slot center-text" onclick="openModal('learning-modal')"><div class="nav-text-node">Learning</div></div>
+    <div id="nav-text-4" class="nav-text-slot" onclick="openModal('messageus-modal')"><div class="nav-text-node">Message</div></div>
+    <div id="nav-text-5" class="nav-text-slot" onclick="openModal('mybadges-modal')"><div class="nav-text-node">Badges</div></div>
 </div>
 
 <script>
