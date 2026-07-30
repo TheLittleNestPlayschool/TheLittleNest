@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +10,7 @@
     <link rel="stylesheet" href="animations.css">
     <link rel="stylesheet" href="path.css">
     <link rel="stylesheet" href="characters.css">
+    <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="bottom-nav.css">
 </head>
 <body>
@@ -20,6 +20,9 @@
       <div class="cloud-blob top-right"></div>
       <div class="gradient-overlay"></div>
     </div>
+
+    <!-- Top Header Container -->
+    <div id="header-container"></div>
 
     <!-- Main Learning Path Container (Expansive Canvas) -->
     <div id="learning-path-container"></div>
@@ -53,6 +56,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', async () => {
+            await loadComponent('header.html', 'header-container');
             await loadComponent('learning-path.html', 'learning-path-container');
             await loadComponent('bottom-nav.html', 'bottom-nav-container');
             
