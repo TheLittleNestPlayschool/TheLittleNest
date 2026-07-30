@@ -1,20 +1,14 @@
 /* login.css */
 
-/* Stair Background Image Integration */
-.login-stairs-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
+/* Stair Background & Container Setup */
+body, html {
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: 1;
-    opacity: 0.85; /* Softens background so the login card stands out */
+    overflow: hidden;
 }
 
-/* Ensure background layer sits behind everything */
 .app-background {
     position: fixed;
     top: 0;
@@ -22,61 +16,104 @@
     width: 100vw;
     height: 100vh;
     z-index: 0;
-    overflow: hidden;
 }
 
-/* Absolute Nodes Layer for Characters and Animations */
+.login-stairs-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('loginstairs.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+
+.login-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.login-card {
+    pointer-events: auto;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 24px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 340px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================
+   Login Path Slots & Positioning
+   ========================================== */
 .login-nodes-layer {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Lets clicks pass through to inputs/buttons */
-    z-index: 3;
-}
-
-.login-node {
-    position: absolute;
-    pointer-events: auto; /* Re-enables interaction for specific nodes if needed */
-}
-
-.node-mascot-img {
-    width: 60px;
-    height: auto;
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
-}
-
-.mini-floating-badge {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 800;
-    color: #0f172a;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-}
-
-/* Positioning wrapper for the login card to sit cleanly over the stairs */
-.login-container {
-    position: relative;
     z-index: 5;
-    width: 100%;
-    height: 100vh;
+    pointer-events: none;
+}
+
+.login-slot {
+    position: absolute;
+    transform: translate(-50%, 50%);
+    pointer-events: auto;
+}
+
+#slot-1 { bottom: 7%;  left: 52%; }
+#slot-2 { bottom: 20%; left: 25%; }
+#slot-3 { bottom: 23%; left: 76%; }
+#slot-4 { bottom: 40%; left: 63%; }
+#slot-5 { bottom: 46%; left: 23%; }
+#slot-6 { bottom: 58%; left: 78%; }
+#slot-7 { bottom: 71%; left: 30%; }
+#slot-8 { bottom: 78%; left: 74%; }
+#slot-9 { bottom: 90%; left: 22%; }
+
+/* ==========================================
+   Individual Login Node Customizations
+   ========================================== */
+#slot-1 .login-node { /* Customize login node 1 here */ }
+#slot-2 .login-node { /* Customize login node 2 here */ }
+#slot-3 .login-node { /* Customize login node 3 here */ }
+#slot-4 .login-node { /* Customize login node 4 here */ }
+#slot-5 .login-node { /* Customize login node 5 here */ }
+#slot-6 .login-node { /* Customize login node 6 here */ }
+#slot-7 .login-node { /* Customize login node 7 here */ }
+#slot-8 .login-node { /* Customize login node 8 here */ }
+#slot-9 .login-node { /* Customize login node 9 here */ }
+
+/* Base Login Node Styling */
+.login-node {
+    width: 32px;
+    height: 32px;
+    background-color: #3b82f6;
+    border: 2px solid #1d4ed8;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    box-sizing: border-box;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
-/* Bounce Animation for Characters */
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-.animate-bounce {
-    animation: bounce 2.5s infinite ease-in-out;
+.login-node:hover {
+    transform: scale(1.1);
 }
