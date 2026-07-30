@@ -58,11 +58,11 @@ body, html {
 }
 
 /* Character Node Coordinates (Move these freely) */
-#nav-node-1 { bottom: 55px; left: 15%; }
-#nav-node-2 { bottom: 55px; left: 32%; }
-#nav-node-3 { bottom: 55px; left: 50%; }
-#nav-node-4 { bottom: 55px; left: 68%; }
-#nav-node-5 { bottom: 55px; left: 85%; }
+#nav-node-1 { bottom: 45px; left: 15%; }
+#nav-node-2 { bottom: 45px; left: 32%; }
+#nav-node-3 { bottom: 30px; left: 50%; }
+#nav-node-4 { bottom: 45px; left: 68%; }
+#nav-node-5 { bottom: 45px; left: 85%; }
 
 
 /* ==========================================
@@ -111,11 +111,11 @@ body, html {
 }
 
 /* Text Node Coordinates (Adjust bottom/left independently from the character nodes) */
-#nav-text-1 { bottom: 25px; left: 15%; }
-#nav-text-2 { bottom: 25px; left: 32%; }
-#nav-text-3 { bottom: 25px; left: 50%; }
-#nav-text-4 { bottom: 25px; left: 68%; }
-#nav-text-5 { bottom: 25px; left: 85%; }
+#nav-text-1 { bottom: 22px; left: 15%; }
+#nav-text-2 { bottom: 22px; left: 32%; }
+#nav-text-3 { bottom: 22px; left: 50%; }
+#nav-text-4 { bottom: 22px; left: 68%; }
+#nav-text-5 { bottom: 22px; left: 85%; }
 
 
 /* ==========================================
