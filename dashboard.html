@@ -24,18 +24,11 @@
     <!-- Top Header Container -->
     <div id="header-container"></div>
 
-    <!-- Main Learning Path Container (Expansive Canvas) -->
-    <div id="learning-path-container"></div>
+    <!-- Main Viewport Container (Dynamically swaps active views) -->
+    <div id="main-viewport"></div>
 
     <!-- Bottom Navigation Layer -->
     <div id="bottom-nav-container"></div>
-
-    <!-- Pop-up Modals (Triggered via Bottom Nav Nodes) -->
-    <div id="mydata-modal" class="modal"></div>
-    <div id="mygallery-modal" class="modal"></div>
-    <div id="learning-modal" class="modal"></div>
-    <div id="messageus-modal" class="modal"></div>
-    <div id="mybadges-modal" class="modal"></div>
 
     <!-- Path Script Included Globally for Dynamic Injection -->
     <script src="path.js" defer></script>
@@ -55,17 +48,17 @@
             }
         }
 
+        // Global function to swap views dynamically inside the main viewport
+        async function switchView(viewFile) {
+            await loadComponent(viewFile, 'main-viewport');
+        }
+
         window.addEventListener('DOMContentLoaded', async () => {
             await loadComponent('header.html', 'header-container');
-            await loadComponent('learning-path.html', 'learning-path-container');
             await loadComponent('bottom-nav.html', 'bottom-nav-container');
             
-            // Load respective modals for the bottom nav options
-            await loadComponent('mydata.html', 'mydata-modal');
-            await loadComponent('mygallery.html', 'mygallery-modal');
-            await loadComponent('learning.html', 'learning-modal');
-            await loadComponent('messageus.html', 'messageus-modal');
-            await loadComponent('mybadges.html', 'mybadges-modal');
+            // Default view on login: Load the Learning Path into the viewport
+            await switchView('learning-path.html');
         });
     </script>
 </body>
