@@ -1,19 +1,9 @@
-console.log("characters.js loaded");
+window.addEventListener("load", function () {
 
-window.addEventListener("load", () => {
+    console.log("Page Loaded");
 
-    const object = document.getElementById("bird7");
+    const bird = document.getElementById("bird7");
 
-    object.addEventListener("load", () => {
-
-        const svg = object.contentDocument;
-
-        const body = svg.getElementById("body");
-
-        body.setAttribute("fill", "#22C55E");
-
-        console.log("Bird loaded!");
-
-    });
+    console.log("Bird Object:", bird);
 
 });
