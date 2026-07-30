@@ -1,3 +1,5 @@
+console.log("characters.js loaded");
+
 window.addEventListener("load", () => {
 
     const object = document.getElementById("bird7");
