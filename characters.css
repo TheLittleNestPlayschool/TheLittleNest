@@ -1,0 +1,16 @@
+.character {
+
+    width:70px;
+    height:70px;
+
+    position:relative;
+
+}
+
+.character img,
+.character object{
+
+    width:100%;
+    height:100%;
+
+}
