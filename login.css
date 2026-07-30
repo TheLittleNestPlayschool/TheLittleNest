@@ -9,7 +9,7 @@ body, html {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Background Layer Setup */
+/* Background Layer Setup (Relying purely on background.css for universal background) */
 .app-background {
     position: fixed;
     top: 0;
@@ -20,16 +20,7 @@ body, html {
 }
 
 .login-stairs-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('loginstairs.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: 1;
+    display: none;
 }
 
 /* Centered Transparent Card Container */
