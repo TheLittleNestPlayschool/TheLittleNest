@@ -8,40 +8,29 @@ body, html {
 }
 
 /* ==========================================
-   BOTTOM NAVIGATION LAYER
+   1. BOTTOM NAVIGATION CHARACTER NODES LAYER
    ========================================== */
 .bottom-nav-layer {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 85px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-top: 1px solid rgba(217, 119, 6, 0.2);
+    height: 100%;
     z-index: 100;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-sizing: border-box;
+    pointer-events: none;
 }
 
 .nav-slot {
     position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     pointer-events: auto;
+    cursor: pointer;
 }
 
 /* Base Character/Node Button Styling */
 .nav-character-node {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     background-color: #3b82f6;
     border: 2px solid #1d4ed8;
     border-radius: 50%;
@@ -49,54 +38,84 @@ body, html {
     align-items: center;
     justify-content: center;
     font-size: 1.1rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .nav-slot:hover .nav-character-node {
-    transform: scale(1.1);
+    transform: scale(1.12);
     background-color: #2563eb;
 }
 
 /* Centerpiece Node Styling */
 .nav-slot.center-node .nav-character-node {
-    width: 52px;
-    height: 52px;
+    width: 56px;
+    height: 56px;
     background: linear-gradient(135deg, #f59e0b, #d97706);
     border: 3px solid #ffffff;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     box-shadow: 0 6px 16px rgba(217, 119, 6, 0.4);
 }
 
-/* Attached Text Label Styling */
-.nav-label {
-    padding: 2px 8px;
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid #cbd5e1;
-    border-radius: 10px;
+/* Character Node Coordinates (Move these freely) */
+#nav-node-1 { bottom: 55px; left: 15%; }
+#nav-node-2 { bottom: 55px; left: 32%; }
+#nav-node-3 { bottom: 55px; left: 50%; }
+#nav-node-4 { bottom: 55px; left: 68%; }
+#nav-node-5 { bottom: 55px; left: 85%; }
+
+
+/* ==========================================
+   2. BOTTOM NAVIGATION TEXT NODES LAYER
+   ========================================== */
+.bottom-text-layer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    pointer-events: none;
+}
+
+.nav-text-slot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* Independent Text Node Styling */
+.nav-text-node {
+    padding: 4px 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1.5px solid #3b82f6;
+    border-radius: 14px;
     font-weight: 700;
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     color: #0f172a;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
     white-space: nowrap;
+    text-align: center;
     transition: transform 0.2s ease;
 }
 
-.nav-slot:hover .nav-label {
+.nav-text-slot:hover .nav-text-node {
     transform: scale(1.05);
 }
 
-.nav-slot.center-node .nav-label {
+.nav-text-slot.center-text .nav-text-node {
     border-color: #d97706;
-    color: #b45309;
+    background: rgba(255, 250, 240, 0.95);
 }
 
-/* Precise Horizontal Positioning Across the Bottom Bar */
-#nav-node-1 { bottom: 15px; left: 15%; }
-#nav-node-2 { bottom: 15px; left: 32%; }
-#nav-node-3 { bottom: 20px; left: 50%; }
-#nav-node-4 { bottom: 15px; left: 68%; }
-#nav-node-5 { bottom: 15px; left: 85%; }
+/* Text Node Coordinates (Adjust bottom/left independently from the character nodes) */
+#nav-text-1 { bottom: 25px; left: 15%; }
+#nav-text-2 { bottom: 25px; left: 32%; }
+#nav-text-3 { bottom: 25px; left: 50%; }
+#nav-text-4 { bottom: 25px; left: 68%; }
+#nav-text-5 { bottom: 25px; left: 85%; }
 
 
 /* ==========================================
