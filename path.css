@@ -1,4 +1,22 @@
 /* path.css - Static Background Stairs & Milestone Overlay */
+/* Ensure the learning path section respects the viewport boundaries and scales to fit */
+.learning-path-section {
+    max-height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.path-visual-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 340px; /* Slightly reduced max-width so it scales nicely */
+    max-height: 65vh;  /* Restricts height so it never spills past the viewport bounds */
+    margin: 0 auto;
+}
+
 .learning-path-section {
     position: relative;
     width: 100%;
