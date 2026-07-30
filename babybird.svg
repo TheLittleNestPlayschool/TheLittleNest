@@ -5,69 +5,99 @@
      height="100"
      viewBox="0 0 100 100">
 
-    <!-- Body -->
-    <ellipse
-        id="body"
-        cx="50"
-        cy="58"
-        rx="24"
-        ry="22"
-        fill="#4DA6FF"
-        stroke="#1D4ED8"
-        stroke-width="3"/>
+    <g id="bird">
 
-    <!-- Left Wing -->
-    <ellipse
-        id="leftWing"
-        cx="35"
-        cy="58"
-        rx="10"
-        ry="16"
-        fill="#6CB8FF"
-        stroke="#1D4ED8"
-        stroke-width="2"/>
+        <!-- Left Wing -->
+        <ellipse
+            id="leftWing"
+            cx="35"
+            cy="58"
+            rx="10"
+            ry="16"
+            fill="#6CB8FF"
+            stroke="#1D4ED8"
+            stroke-width="2"/>
 
-    <!-- Right Wing -->
-    <ellipse
-        id="rightWing"
-        cx="65"
-        cy="58"
-        rx="10"
-        ry="16"
-        fill="#6CB8FF"
-        stroke="#1D4ED8"
-        stroke-width="2"/>
+        <!-- Right Wing -->
+        <ellipse
+            id="rightWing"
+            cx="65"
+            cy="58"
+            rx="10"
+            ry="16"
+            fill="#6CB8FF"
+            stroke="#1D4ED8"
+            stroke-width="2"/>
 
-    <!-- Head -->
-    <circle
-        id="head"
-        cx="50"
-        cy="30"
-        r="18"
-        fill="#4DA6FF"
-        stroke="#1D4ED8"
-        stroke-width="3"/>
+        <!-- Body -->
+        <ellipse
+            id="body"
+            cx="50"
+            cy="58"
+            rx="24"
+            ry="22"
+            fill="#22C55E"
+            stroke="#1D4ED8"
+            stroke-width="3"/>
 
-    <!-- Left Eye -->
-    <circle
-        id="leftEye"
-        cx="44"
-        cy="27"
-        r="2.5"
-        fill="#111"/>
+        <!-- Head -->
+        <circle
+            id="head"
+            cx="50"
+            cy="30"
+            r="18"
+            fill="#4DA6FF"
+            stroke="#1D4ED8"
+            stroke-width="3"/>
 
-    <!-- Right Eye -->
-    <circle
-        id="rightEye"
-        cx="56"
-        cy="27"
-        r="2.5"
-        fill="#111"/>
+        <!-- Eyes -->
+        <g id="eyes">
 
-    <!-- Beak -->
-    <polygon
-        id="beak"
-        points="50,31 45,37 55,37"
-        fill="#F59E0B"/>
+            <circle
+                id="leftEye"
+                cx="44"
+                cy="27"
+                r="2.5"
+                fill="#111"/>
+
+            <circle
+                id="rightEye"
+                cx="56"
+                cy="27"
+                r="2.5"
+                fill="#111"/>
+
+        </g>
+
+        <!-- Closed Eyes -->
+        <g id="eyesClosed" visibility="hidden">
+
+            <line
+                x1="41"
+                y1="27"
+                x2="47"
+                y2="27"
+                stroke="#111"
+                stroke-width="2"
+                stroke-linecap="round"/>
+
+            <line
+                x1="53"
+                y1="27"
+                x2="59"
+                y2="27"
+                stroke="#111"
+                stroke-width="2"
+                stroke-linecap="round"/>
+
+        </g>
+
+        <!-- Beak -->
+        <polygon
+            id="beak"
+            points="50,31 45,37 55,37"
+            fill="#F59E0B"/>
+
+    </g>
 
 </svg>
