@@ -6,15 +6,26 @@
     <title>The Little Nest - Login</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="background.css">
+    <link rel="stylesheet" href="login.css">
 </head>
-    
 <body>
 
-    <!-- Background Elements -->
+    <!-- Background Elements with loginstairs.png -->
     <div class="app-background">
-      <div class="cloud-blob top-left"></div>
-      <div class="cloud-blob top-right"></div>
-      <div class="gradient-overlay"></div>
+        <div class="gradient-overlay"></div>
+        <div class="login-stairs-bg" style="background-image: url('loginstairs.png');"></div>
+    </div>
+
+    <!-- Node Layer for Characters and Animations -->
+    <div class="login-nodes-layer">
+        <!-- Example Node 1: Mascot / Character Positioned on Stairs -->
+        <div class="login-node mascot-node" style="top: 35%; left: 28%;">
+            <img src="mommabird.png" alt="Mascot" class="node-mascot-img animate-bounce">
+        </div>
+        <!-- Example Node 2: Floating Badge or Icon Node -->
+        <div class="login-node badge-node" style="top: 25%; right: 25%;">
+            <div class="mini-floating-badge">🌟 Welcome!</div>
+        </div>
     </div>
 
     <div class="login-container">
