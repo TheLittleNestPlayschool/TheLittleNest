@@ -1,5 +1,5 @@
 /* ==========================================
-   BOTTOM NAVIGATION CHARACTER NODES LAYER
+   BOTTOM NAVIGATION LAYERS
    ========================================== */
 .bottom-nav-layer {
     position: fixed;
@@ -48,16 +48,16 @@
     box-shadow: 0 6px 16px rgba(217, 119, 6, 0.4);
 }
 
-/* Initial Bottom Coordinates for 5 Nodes (Left to Right) */
+/* Coordinates for 5 Nodes */
 #nav-node-1 { bottom: 35px; left: 15%; }
 #nav-node-2 { bottom: 35px; left: 32%; }
-#nav-node-3 { bottom: 45px; left: 50%; } /* Center item raised slightly */
+#nav-node-3 { bottom: 45px; left: 50%; }
 #nav-node-4 { bottom: 35px; left: 68%; }
 #nav-node-5 { bottom: 35px; left: 85%; }
 
 
 /* ==========================================
-   BOTTOM NAVIGATION TEXT NODES LAYER
+   BOTTOM TEXT LAYER
    ========================================== */
 .bottom-text-layer {
     position: fixed;
@@ -76,7 +76,6 @@
     cursor: pointer;
 }
 
-/* Text Pill Styling */
 .nav-text-node {
     padding: 4px 10px;
     background: rgba(255, 255, 255, 0.9);
@@ -101,9 +100,27 @@
     background: rgba(255, 250, 240, 0.95);
 }
 
-/* Initial Bottom Coordinates for Text Labels (Matched below their nodes) */
+/* Coordinates for Text Labels */
 #nav-text-1 { bottom: 5px; left: 15%; }
 #nav-text-2 { bottom: 5px; left: 32%; }
 #nav-text-3 { bottom: 5px; left: 50%; }
 #nav-text-4 { bottom: 5px; left: 68%; }
 #nav-text-5 { bottom: 5px; left: 85%; }
+
+
+/* ==========================================
+   MODAL OVERLAY FIX (Hides them by default)
+   ========================================== */
+.modal {
+    display: none; /* Hidden by default until triggered */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
