@@ -1,14 +1,15 @@
 /* login.css */
 
-/* Stair Background & Container Setup */
 body, html {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
+    font-family: system-ui, -apple-system, sans-serif;
 }
 
+/* Ensure background layer covers screen properly */
 .app-background {
     position: fixed;
     top: 0;
@@ -18,6 +19,7 @@ body, html {
     z-index: 0;
 }
 
+/* Fixed loginstairs.png rendering */
 .login-stairs-bg {
     position: absolute;
     top: 0;
@@ -31,6 +33,7 @@ body, html {
     z-index: 1;
 }
 
+/* Centered container for the login card */
 .login-container {
     position: relative;
     z-index: 10;
@@ -42,20 +45,65 @@ body, html {
     pointer-events: none;
 }
 
+/* Smaller, fully transparent frosted login card */
 .login-card {
     pointer-events: auto;
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    padding: 24px;
-    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 20px;
+    border-radius: 16px;
     width: 100%;
-    max-width: 340px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    max-width: 280px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.form-section-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.login-input {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.login-action-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+}
+
+.sign-in-text {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.btn-submit {
+    background: #0f172a;
+    color: #ffffff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 /* ==========================================
-   Login Path Slots & Positioning
+   3 Custom Text Nodes Layout Slots
    ========================================== */
 .login-nodes-layer {
     position: absolute;
@@ -73,47 +121,30 @@ body, html {
     pointer-events: auto;
 }
 
-#slot-1 { bottom: 7%;  left: 52%; }
-#slot-2 { bottom: 20%; left: 25%; }
-#slot-3 { bottom: 23%; left: 76%; }
-#slot-4 { bottom: 40%; left: 63%; }
-#slot-5 { bottom: 46%; left: 23%; }
-#slot-6 { bottom: 58%; left: 78%; }
-#slot-7 { bottom: 71%; left: 30%; }
-#slot-8 { bottom: 78%; left: 74%; }
-#slot-9 { bottom: 90%; left: 22%; }
+/* 3 custom positions for your text nodes */
+#slot-1 { bottom: 20%; left: 30%; }
+#slot-2 { bottom: 50%; left: 70%; }
+#slot-3 { bottom: 80%; left: 40%; }
 
-/* ==========================================
-   Individual Login Node Customizations
-   ========================================== */
-#slot-1 .login-node { /* Customize login node 1 here */ }
-#slot-2 .login-node { /* Customize login node 2 here */ }
-#slot-3 .login-node { /* Customize login node 3 here */ }
-#slot-4 .login-node { /* Customize login node 4 here */ }
-#slot-5 .login-node { /* Customize login node 5 here */ }
-#slot-6 .login-node { /* Customize login node 6 here */ }
-#slot-7 .login-node { /* Customize login node 7 here */ }
-#slot-8 .login-node { /* Customize login node 8 here */ }
-#slot-9 .login-node { /* Customize login node 9 here */ }
-
-/* Base Login Node Styling */
+/* Text Node Styling (Widened to fit text nicely) */
 .login-node {
-    width: 32px;
-    height: 32px;
-    background-color: #3b82f6;
-    border: 2px solid #1d4ed8;
-    border-radius: 50%;
+    padding: 6px 12px;
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 2px solid #3b82f6;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 0.85rem;
-    color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-size: 0.8rem;
+    color: #1e293b;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     cursor: pointer;
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
     transition: transform 0.2s ease;
 }
 
 .login-node:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
 }
