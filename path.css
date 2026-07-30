@@ -1,53 +1,49 @@
 /* path.css - Static Background Stairs & Milestone Overlay */
+
 /* Ensure the learning path section respects the viewport boundaries and scales to fit */
 .learning-path-section {
-    max-height: 100%;
-    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+    padding: 10px 16px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.path-visual-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 340px; /* Slightly reduced max-width so it scales nicely */
-    max-height: 65vh;  /* Restricts height so it never spills past the viewport bounds */
-    margin: 0 auto;
-}
-
-.learning-path-section {
-    position: relative;
-    width: 100%;
-    margin-top: 35px; /* Increased from 15px to push it down from Class Memories */
-    padding: 0 16px 20px 16px; /* Added bottom padding for breathing room */
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
+    overflow: hidden;
     z-index: 2;
 }
 
 .learning-path-title {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 800;
     color: #1e293b;
-    margin-bottom: 15px; /* Slightly increased gap under the title */
+    margin-bottom: 8px;
     letter-spacing: 0.3px;
+    flex-shrink: 0;
 }
 
 /* Wrapper to hold the background stairs image and overlay container together */
 .path-visual-wrapper {
     position: relative;
     width: 100%;
-    max-width: 400px;
+    max-width: 310px;
+    height: 100%;
+    max-height: calc(100vh - 240px);
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* The stairs image asset */
 .path-background-image {
     width: 100%;
-    height: auto;
+    height: 100%;
+    max-height: 100%;
+    object-fit: contain;
     display: block;
     pointer-events: none;
 }
