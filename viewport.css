@@ -1,8 +1,7 @@
-
 #main-viewport {
     position: fixed;
-    top: 70px;
-    bottom: 80px;
+    top: 85px;     /* Push it down slightly below the top header */
+    bottom: 110px; /* Pull it up higher so it clears the bottom navigation bar completely */
     left: 0;
     width: 100%;
     overflow-y: auto;
