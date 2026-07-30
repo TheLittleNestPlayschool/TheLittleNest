@@ -6,10 +6,10 @@ body, html {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Ensure background layer covers screen properly */
+/* Background Layer Setup */
 .app-background {
     position: fixed;
     top: 0;
@@ -19,7 +19,6 @@ body, html {
     z-index: 0;
 }
 
-/* Fixed loginstairs.png rendering */
 .login-stairs-bg {
     position: absolute;
     top: 0;
@@ -33,7 +32,7 @@ body, html {
     z-index: 1;
 }
 
-/* Centered container for the login card */
+/* Centered Transparent Card Container */
 .login-container {
     position: relative;
     z-index: 10;
@@ -45,7 +44,6 @@ body, html {
     pointer-events: none;
 }
 
-/* Smaller, fully transparent frosted login card */
 .login-card {
     pointer-events: auto;
     background: rgba(255, 255, 255, 0.25);
@@ -67,23 +65,35 @@ body, html {
     margin-bottom: 12px;
 }
 
+.login-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
 .login-input {
     width: 100%;
     padding: 8px 10px;
-    margin-bottom: 10px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.6);
     background: rgba(255, 255, 255, 0.6);
     font-size: 0.85rem;
     box-sizing: border-box;
     outline: none;
+    transition: all 0.2s ease;
+}
+
+.login-input:focus {
+    border-color: #3b82f6;
+    background: rgba(255, 255, 255, 0.85);
 }
 
 .login-action-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 4px;
+    margin-top: 6px;
 }
 
 .sign-in-text {
@@ -100,10 +110,53 @@ body, html {
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-submit:hover {
+    background: #1e293b;
 }
 
 /* ==========================================
-   3 Custom Text Nodes Layout Slots
+   1. THREE TEXT NODES SECTION
+   ========================================== */
+.login-text-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 6;
+    pointer-events: none;
+}
+
+.text-slot {
+    position: absolute;
+    transform: translate(-50%, 50%);
+    pointer-events: auto;
+}
+
+/* Text Node Slot Coordinates */
+#text-slot-1 { bottom: 25%; left: 32%; }
+#text-slot-2 { bottom: 53%; left: 72%; }
+#text-slot-3 { bottom: 78%; left: 41%; }
+
+/* Text Pill Styling */
+.login-text-node {
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 2px solid #3b82f6;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: #0f172a;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+}
+
+/* ==========================================
+   2. NINE CHARACTER / ANIMATION NODES SECTION
    ========================================== */
 .login-nodes-layer {
     position: absolute;
@@ -121,30 +174,35 @@ body, html {
     pointer-events: auto;
 }
 
-/* 3 custom positions for your text nodes */
-#slot-1 { bottom: 20%; left: 30%; }
-#slot-2 { bottom: 50%; left: 70%; }
-#slot-3 { bottom: 80%; left: 40%; }
+/* 9 Stair Node Coordinates */
+#slot-1 { bottom: 7%;  left: 52%; }
+#slot-2 { bottom: 20%; left: 25%; }
+#slot-3 { bottom: 23%; left: 76%; }
+#slot-4 { bottom: 40%; left: 63%; }
+#slot-5 { bottom: 46%; left: 23%; }
+#slot-6 { bottom: 58%; left: 78%; }
+#slot-7 { bottom: 71%; left: 30%; }
+#slot-8 { bottom: 78%; left: 74%; }
+#slot-9 { bottom: 90%; left: 22%; }
 
-/* Text Node Styling (Widened to fit text nicely) */
+/* Base Character/Node Styling */
 .login-node {
-    padding: 6px 12px;
-    background-color: rgba(255, 255, 255, 0.85);
-    border: 2px solid #3b82f6;
-    border-radius: 16px;
+    width: 32px;
+    height: 32px;
+    background-color: #3b82f6;
+    border: 2px solid #1d4ed8;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 0.8rem;
-    color: #1e293b;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    font-size: 0.85rem;
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    backdrop-filter: blur(4px);
-    white-space: nowrap;
     transition: transform 0.2s ease;
 }
 
 .login-node:hover {
-    transform: scale(1.08);
+    transform: scale(1.1);
 }
