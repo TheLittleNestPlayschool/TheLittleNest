@@ -1,4 +1,4 @@
-# 13-api-endpoints.md
+# api-endpoints
 
 **Status:** Draft
 **Version:** 1.0
