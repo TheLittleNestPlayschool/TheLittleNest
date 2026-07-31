@@ -1,7 +1,7 @@
 # Design Principles
 
 **Status:** Draft
-**Version:** 1.1
+**Version:** 1.2
 **Last Updated:** 2026-07-31
 **Owner:** Dave Stoyko
 
@@ -202,18 +202,6 @@ Every shared moment strengthens the connection between the family, the child, an
 
 ---
 
-## Final Principle
-
-Whenever there is uncertainty, ask these three questions before designing or building a feature:
-
-1. Why does this feature exist?
-
-2. How should the parent feel after using it?
-
-3. Does it strengthen the connection between parent and child?
-
-If the answer to any of these questions is "no," the feature should be reconsidered.
-
 ## 17. Every Interaction Should Add Value
 
 Every interaction within The Little Nest should have a purpose.
@@ -232,6 +220,8 @@ Every interaction should accomplish at least one of the following:
 Animations, characters, notifications, badges, and visual effects should never exist simply because they look attractive.
 
 Every interaction should leave the parent feeling that their time with the application was worthwhile.
+
+---
 
 ## 18. Design for Emotion
 
@@ -253,3 +243,67 @@ Every feature within The Little Nest should create at least one positive emotion
 Features should be evaluated not only by what they do, but by how they make parents and children feel.
 
 The emotional experience is as important as the technical implementation.
+
+---
+
+## 19. Celebrate Growth, Not Comparison
+
+Children should never feel that they are competing against one another.
+
+Parents should never feel encouraged to compare their child with another child.
+
+Every design decision should reinforce one simple idea:
+
+**The only meaningful comparison is with yesterday.**
+
+The application exists to celebrate each child's personal journey of growth.
+
+---
+
+## 20. Design for Lifelong Learning
+
+The purpose of education is not simply to transfer knowledge.
+
+It is to help children develop confidence, curiosity, resilience, kindness, and a love of learning.
+
+Every feature should encourage children to explore, discover, ask questions, and enjoy learning.
+
+Our goal is not simply to educate preschool children.
+
+Our goal is to help children become lifelong learners.
+
+---
+
+## 21. Measure Progress. Celebrate Growth.
+
+Some things can be measured.
+
+Many of the most important things cannot.
+
+Assessments measure learning progress.
+
+Teachers observe confidence.
+
+Parents celebrate memories.
+
+The Little Nest should value both measurable achievement and meaningful moments.
+
+Together they tell the complete story of a child's development.
+
+---
+
+# Final Principle
+
+Whenever there is uncertainty, ask these five questions before designing or building a feature:
+
+1. Why does this feature exist?
+
+2. How should the parent feel after using it?
+
+3. Does it strengthen the connection between parent and child?
+
+4. Does it encourage growth rather than comparison?
+
+5. Will this create a memory worth remembering?
+
+If the answer to any of these questions is "no," the feature should be reconsidered.
