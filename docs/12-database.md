@@ -1,4 +1,4 @@
-# 12-database.md
+# database
 
 **Status:** Draft
 **Version:** 1.0
