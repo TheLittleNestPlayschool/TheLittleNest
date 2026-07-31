@@ -145,6 +145,32 @@ Every shared moment strengthens both the family relationship and the Little Nest
 
 ---
 
+# Memory Nest
+
+Every meaningful milestone should become a lasting memory.
+
+When a child earns a badge, reaches an important milestone, or experiences a special celebration, the application should preserve that moment as a replayable memory.
+
+Parents and children are not always together when these moments occur.
+
+By preserving them, families can experience those celebrations together whenever they choose.
+
+The goal is not to create content for social media.
+
+The goal is to preserve childhood memories.
+
+Sharing those memories with family and friends becomes a natural extension of preserving them.
+
+---
+
+## Design Intent
+
+The Little Nest should become a digital memory book that grows alongside the child.
+
+Years from now, parents should be able to revisit these moments with their children and relive the excitement, pride, and joy they felt when they first happened.
+
+Every replay should remind families not only of what their child achieved, but how that achievement felt.
+
 # Continuous Growth
 
 There is no finish line.
