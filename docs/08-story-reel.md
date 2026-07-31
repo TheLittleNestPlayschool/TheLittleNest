@@ -1,4 +1,4 @@
-# 08-story-reel.md
+# story-reel
 
 **Status:** Draft
 **Version:** 1.0
