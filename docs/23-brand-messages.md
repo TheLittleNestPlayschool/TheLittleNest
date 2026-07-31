@@ -1,7 +1,7 @@
 # Brand Messages
 
 **Status:** Living Document
-**Version:** 1.0
+**Version:** 1.1
 **Last Updated:** 2026-07-31
 **Owner:** Dave Stoyko
 
@@ -21,11 +21,17 @@ Some may be spoken by teachers.
 
 Some may become part of our culture.
 
+Every message should reflect who we are and what we believe.
+
 ---
 
 # Growth
 
 Today I am a little better than I was yesterday.
+
+Learning is not the destination.
+
+Growth is.
 
 Every child grows at their own pace.
 
@@ -44,6 +50,10 @@ Celebrate effort.
 Celebrate curiosity.
 
 Celebrate growth.
+
+Every small step matters.
+
+The journey matters more than the finish line.
 
 ---
 
@@ -65,6 +75,10 @@ Today's memories become tomorrow's stories.
 
 Open another chapter.
 
+Don't miss today's little moment.
+
+One day, today's ordinary moment will become an extraordinary memory.
+
 ---
 
 # Teachers
@@ -79,6 +93,10 @@ You are shaping childhood.
 
 The moments you notice become the memories families treasure.
 
+The smallest encouragement can change a child's future.
+
+Every child is waiting for someone to notice their progress.
+
 ---
 
 # Families
@@ -92,6 +110,10 @@ The smallest moments often become the biggest memories.
 Childhood is made of moments.
 
 Some memories deserve to last forever.
+
+The best family conversations often begin with:
+
+"Guess what happened today?"
 
 ---
 
@@ -109,6 +131,8 @@ We build futures.
 
 Together.
 
+A community grows stronger when it celebrates every child's journey.
+
 ---
 
 # Learning
@@ -122,6 +146,12 @@ Curiosity is the beginning of learning.
 Learning is a lifelong journey.
 
 The greatest lesson is learning to love learning.
+
+Knowledge opens doors.
+
+Confidence gives children the courage to walk through them.
+
+Every lesson is another opportunity to grow.
 
 ---
 
@@ -145,6 +175,36 @@ People always come first.
 
 Every decision should strengthen the connection between parent and child.
 
+Every feature should create an emotion.
+
+Every interaction should add value.
+
+---
+
+# Things We Celebrate
+
+First words.
+
+First friendships.
+
+First acts of kindness.
+
+First moments of confidence.
+
+First discoveries.
+
+First attempts.
+
+First successes.
+
+The courage to try again.
+
+Progress.
+
+Growth.
+
+Childhood.
+
 ---
 
 # Marketing Ideas
@@ -164,3 +224,15 @@ Where childhood is remembered.
 Watch childhood unfold.
 
 The story is just beginning.
+
+Growing hearts.
+
+Growing minds.
+
+Growing together.
+
+Where every day becomes a memory.
+
+More than a school.
+
+A childhood worth remembering.
