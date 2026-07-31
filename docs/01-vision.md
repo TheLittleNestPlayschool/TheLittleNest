@@ -1,4 +1,4 @@
-# 01-vision.md
+# vision
 
 **Status:** Draft
 **Version:** 1.0
