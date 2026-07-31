@@ -1,4 +1,4 @@
-# 07-gallery.md
+# gallery
 
 **Status:** Draft
 **Version:** 1.0
