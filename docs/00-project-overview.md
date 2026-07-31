@@ -134,5 +134,6 @@ Before any new feature is approved for development, it should answer the followi
 5. Does it strengthen the connection between parent and child?
 6. Does it follow the Design Principles?
 7. How will it be implemented?
+8. Would this make a parent more excited to tell someone about their child?
 
 If these questions cannot be answered clearly, the feature should be refined before implementation.
