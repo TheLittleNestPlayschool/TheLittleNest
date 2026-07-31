@@ -1,8 +1,8 @@
 # Design Intents
 
 **Status:** Living Document
-**Version:** 1.2
-**Last Updated:** 2026-07-31
+**Version:** 1.3
+**Last Updated:** 2026-08-01
 **Owner:** Dave Stoyko
 
 **Related Documents:**
@@ -53,6 +53,18 @@ It might create hope.
 
 It might create connection.
 
+We begin every feature by asking:
+
+**"What moment are we trying to create?"**
+
+Only after we can answer that question do we begin designing the feature itself.
+
+Features create moments.
+
+Moments create memories.
+
+Memories create lifelong relationships with The Little Nest.
+
 If a feature performs a task but creates no emotional value, we should ask whether it belongs in The Little Nest.
 
 The best experiences happen when technology disappears and families simply enjoy the moment together.
@@ -73,7 +85,7 @@ They smile before they even begin reading.
 
 # Moment 002 — First Badge
 
-Mama Eagle lands beside the Learning Path.
+Tita Mayumi lands beside the Learning Path.
 
 She smiles.
 
@@ -105,7 +117,7 @@ Memory Nest.
 
 Five years ago.
 
-Mama Eagle appears exactly as she did years before.
+Tita Mayumi appears exactly as she did years before.
 
 Little five-year-old Emma earns her very first Literacy Badge.
 
@@ -129,7 +141,7 @@ He watches today's Story Reel.
 
 His child painted a butterfly.
 
-Mama Eagle explains today's activity.
+Tita Mayumi explains today's activity.
 
 For a few minutes, he doesn't feel thousands of kilometers away.
 
@@ -191,7 +203,7 @@ No fireworks.
 
 No competition.
 
-Mama Eagle smiles.
+Tita Mayumi smiles.
 
 "You learned something new today."
 
@@ -249,6 +261,210 @@ The application quietly teaches parents to celebrate growth instead of compariso
 
 ---
 
+# Moment 010 — The First Smile
+
+A mother arrives carrying her two-year-old daughter.
+
+The little girl won't leave her mother's lap.
+
+She cries.
+
+She hides her face.
+
+She isn't ready.
+
+A teacher smiles from across the room.
+
+She doesn't rush.
+
+She doesn't insist.
+
+She simply visits every few minutes.
+
+A smile.
+
+A wave.
+
+A gentle invitation.
+
+The classroom continues as normal.
+
+A few minutes later, the little girl reaches for a toy.
+
+Soon after, she smiles.
+
+Then she quietly walks into the classroom on her own.
+
+Her mother watches in amazement.
+
+For the first time that morning, she relaxes.
+
+She realizes she isn't simply leaving her child at school.
+
+She is leaving her child with someone she trusts.
+
+The lesson didn't begin with letters.
+
+It began with belonging.
+
+---
+
+# Moment 011 — Every Little Nest
+
+A family moves to another town.
+
+They visit a different Little Nest for the first time.
+
+The teachers are different.
+
+The classroom looks a little different.
+
+The children are different.
+
+But something feels familiar.
+
+The smiles.
+
+The welcome.
+
+The kindness.
+
+The celebrations.
+
+The feeling.
+
+It still feels like Little Nest.
+
+The family realizes they didn't just choose a playschool.
+
+They became part of a community.
+
+---
+
+# Moment 012 — The Conversation After School
+
+A parent sits beside their child after dinner.
+
+They open today's Story Reel.
+
+Tita Mayumi smiles.
+
+Pico excitedly points to today's adventure.
+
+The parent asks,
+
+"What happened here?"
+
+The child begins talking.
+
+One story becomes another.
+
+The conversation lasts far longer than the Story Reel itself.
+
+The greatest success wasn't the animation.
+
+It was the conversation that followed.
+
+---
+
+# Moment 013 — The Invisible Teacher
+
+A parent opens Memory Nest.
+
+They watch a celebration from months ago.
+
+They remember the moment.
+
+They remember the child.
+
+Then they remember the teacher.
+
+Not because the teacher appeared on screen.
+
+Because the teacher made the moment possible.
+
+The best teachers rarely become the center of attention.
+
+Their impact is seen through the confidence they help children build.
+
+---
+
+# Moment 014 — Childhood Preserved
+
+A family gathers during the holidays.
+
+Someone asks,
+
+"Do you remember when you were little?"
+
+Instead of trying to remember...
+
+They open Memory Nest.
+
+Five-year-old Emma appears.
+
+Tita Mayumi smiles.
+
+Pico laughs.
+
+The family laughs together.
+
+The application has quietly become part of the family's history.
+
+---
+
+# Moment 015 — Learning Feels Safe
+
+A child walks into class.
+
+Today they don't want to join the activity.
+
+No one forces them.
+
+No one embarrasses them.
+
+A teacher smiles.
+
+"That's okay."
+
+The child watches.
+
+Later...
+
+They join on their own.
+
+The child learns something far more important than today's lesson.
+
+They learn that this is a safe place.
+
+---
+
+# Moment 016 — A Teacher Sees Potential
+
+A child struggles to hold a pencil.
+
+The worksheet isn't finished.
+
+Nothing impressive happened today.
+
+But the teacher notices something.
+
+Yesterday the child would have given up.
+
+Today they tried again.
+
+The teacher smiles.
+
+The effort becomes today's story.
+
+The parent smiles that evening.
+
+Growth was never about the worksheet.
+
+It was about the child.
+
+---
+
 # Living Document
 
 This document will continue to grow throughout the life of the project.
@@ -262,6 +478,8 @@ When designing a new feature, ask:
 - Will this moment be remembered?
 - Does this strengthen the connection between parent and child?
 - Does it celebrate growth rather than comparison?
+- Will this create a conversation between parent and child?
+- Would this become a treasured memory years from now?
 
 The best features are often discovered by asking one question:
 
