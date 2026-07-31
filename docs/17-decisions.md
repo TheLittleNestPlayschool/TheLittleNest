@@ -1,7 +1,7 @@
 # Decisions
 
 **Status:** Active
-**Version:** 1.0
+**Version:** 1.1
 **Last Updated:** 2026-07-31
 **Owner:** Dave Stoyko
 
@@ -10,6 +10,7 @@
 - 01-vision.md
 - 02-design-principles.md
 
+---
 
 This document records significant design and architectural decisions made during the development of The Little Nest.
 
@@ -20,7 +21,20 @@ Each decision should include:
 - Date
 - Decision
 - Reason
+- Design Intent
 - Affected Documents
+
+---
+
+# Decision Management
+
+Decisions are historical records and should not be rewritten.
+
+If a decision changes, create a new decision that supersedes the previous one.
+
+The original decision remains part of the project's history and should not be modified except to correct typographical errors.
+
+This preserves the evolution of the product and the reasoning behind every major change.
 
 ---
 
@@ -39,6 +53,10 @@ Instead, the application will present the child's development as an ongoing stor
 **Reason**
 
 Parents should feel emotionally connected to their child's growth rather than simply informed about it.
+
+**Design Intent**
+
+Parents should feel like they are opening the next chapter of their child's story every time they open the application.
 
 **Affected Documents**
 
@@ -68,6 +86,12 @@ Experience has shown that presenting an ending reduces excitement and long-term 
 
 The application should continually reinforce that children are always growing and learning.
 
+**Design Intent**
+
+Parents should never feel that their child's journey has ended.
+
+Every celebration should create anticipation for the next adventure.
+
 **Affected Documents**
 
 - 01 Vision
@@ -93,6 +117,12 @@ Major accomplishments deserve celebration.
 **Reason**
 
 Celebrating progress strengthens the connection between parents and their children while reinforcing positive learning experiences.
+
+**Design Intent**
+
+Parents should smile often while using the application because their child's progress is consistently celebrated.
+
+Children should feel proud of every achievement, regardless of size.
 
 **Affected Documents**
 
@@ -121,6 +151,12 @@ The application exists to create an outstanding experience for families.
 
 Technology is the tool—not the goal.
 
+**Design Intent**
+
+Parents should never notice the technology.
+
+They should only notice how enjoyable and meaningful the experience feels.
+
 **Affected Documents**
 
 - 00 Project Overview
@@ -145,6 +181,10 @@ Those events enhance the experience but are never required for parents to feel t
 **Reason**
 
 Every family deserves the same high-quality experience regardless of which franchise they attend.
+
+**Design Intent**
+
+Regardless of location, every parent should feel that they received the complete Little Nest experience.
 
 **Affected Documents**
 
@@ -171,8 +211,68 @@ Individual features can be copied.
 
 A thoughtfully designed ecosystem of experiences, characters, storytelling, celebrations, and continuous engagement is significantly more difficult to reproduce.
 
+**Design Intent**
+
+Parents should feel that The Little Nest is unlike any other playschool experience they have encountered.
+
+The application should become one of the reasons families remain engaged with The Little Nest year after year.
+
 **Affected Documents**
 
 - 01 Vision
 - 02 Design Principles
 - 15 Design System
+
+---
+
+# Decision 007
+
+**Date:** 2026-07-31
+
+**Topic:** Preserve Moments Before Sharing Them
+
+**Decision**
+
+The Little Nest will preserve important learning moments as replayable memories before offering parents the option to share them externally.
+
+Important celebrations should first become part of the family's Memory Nest, where they can be replayed and experienced together at any time.
+
+Sharing those memories with relatives or social media is a secondary action, not the primary purpose.
+
+**Reason**
+
+Parents and children are not always together when meaningful moments occur.
+
+By preserving celebrations first, families can experience those moments together later, creating stronger emotional connections and lasting memories.
+
+The goal is to preserve childhood before encouraging sharing.
+
+**Design Intent**
+
+Years after leaving The Little Nest, a parent opens Memory Nest.
+
+A notification appears:
+
+**"On this day..."**
+
+Their child is now ten years old.
+
+Together they replay the moment their five-year-old earned their very first Literacy Badge.
+
+Mama Eagle still flies in.
+
+Pico still celebrates.
+
+The child laughs.
+
+The parent smiles.
+
+The application is no longer simply software.
+
+It has become part of the family's history.
+
+**Affected Documents**
+
+- 04 Parent Journey
+- 07 Gallery
+- 08 Story Reel
