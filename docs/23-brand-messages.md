@@ -1,11 +1,13 @@
 # Brand Messages
 
 **Status:** Living Document
-**Version:** 1.1
-**Last Updated:** 2026-07-31
+**Version:** 1.2
+**Last Updated:** 2026-08-01
 **Owner:** Dave Stoyko
 
-**Purpose**
+---
+
+# Purpose
 
 This document captures memorable phrases that express the philosophy, vision, culture, and emotional experience of The Little Nest.
 
@@ -55,6 +57,10 @@ Every small step matters.
 
 The journey matters more than the finish line.
 
+Confidence creates curiosity.
+
+Curiosity creates lifelong learners.
+
 ---
 
 # Parents
@@ -79,6 +85,10 @@ Don't miss today's little moment.
 
 One day, today's ordinary moment will become an extraordinary memory.
 
+The greatest gift we can give a parent is a reason to smile after work.
+
+Distance should never prevent connection.
+
 ---
 
 # Teachers
@@ -96,6 +106,20 @@ The moments you notice become the memories families treasure.
 The smallest encouragement can change a child's future.
 
 Every child is waiting for someone to notice their progress.
+
+Great teachers teach the child before they teach the lesson.
+
+Connection comes before instruction.
+
+Children learn best when they feel safe.
+
+Teaching begins with trust.
+
+The greatest lessons are often invisible.
+
+The best teachers don't create perfect students.
+
+They create confident learners.
 
 ---
 
@@ -115,6 +139,10 @@ The best family conversations often begin with:
 
 "Guess what happened today?"
 
+Every Story Reel is an invitation to talk.
+
+Home is where today's story is retold.
+
 ---
 
 # Community
@@ -132,6 +160,24 @@ We build futures.
 Together.
 
 A community grows stronger when it celebrates every child's journey.
+
+Different teachers.
+
+The same warmth.
+
+Different classrooms.
+
+The same encouragement.
+
+Different communities.
+
+The same Little Nest feeling.
+
+Every family belongs.
+
+Together we are building more than schools.
+
+We are building communities.
 
 ---
 
@@ -152,6 +198,20 @@ Knowledge opens doors.
 Confidence gives children the courage to walk through them.
 
 Every lesson is another opportunity to grow.
+
+We don't prepare children only for school.
+
+We prepare them for life.
+
+Learning begins with belonging.
+
+Play is learning.
+
+Mistakes are proof that learning is happening.
+
+The goal isn't to finish learning.
+
+The goal is to love learning.
 
 ---
 
@@ -179,6 +239,22 @@ Every feature should create an emotion.
 
 Every interaction should add value.
 
+Before we teach people how we operate...
+
+We teach them who we are.
+
+Features create moments.
+
+Moments create memories.
+
+Memories create lifelong relationships.
+
+Software supports the experience.
+
+People create the experience.
+
+Culture is our greatest feature.
+
 ---
 
 # Things We Celebrate
@@ -204,6 +280,20 @@ Progress.
 Growth.
 
 Childhood.
+
+---
+
+# Our Promise
+
+Every child deserves to be seen.
+
+Every parent deserves to feel connected.
+
+Every teacher deserves to know they make a difference.
+
+Every family deserves memories worth keeping.
+
+Every Little Nest should feel like home.
 
 ---
 
@@ -236,3 +326,25 @@ Where every day becomes a memory.
 More than a school.
 
 A childhood worth remembering.
+
+Where children love learning.
+
+Where parents stay connected.
+
+Where every child has a story.
+
+Every day, another chapter.
+
+More than education.
+
+A childhood remembered.
+
+Small moments.
+
+Lasting memories.
+
+Helping children become a little better every day.
+
+The journey begins here.
+
+Because growing up deserves to be remembered.
