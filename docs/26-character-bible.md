@@ -1,8 +1,8 @@
 # Character Bible
 
 **Status:** Living Document
-**Version:** 1.0
-**Last Updated:** 2026-07-31
+**Version:** 1.1
+**Last Updated:** 2026-08-01
 **Owner:** Dave Stoyko
 
 **Related Documents:**
@@ -50,6 +50,8 @@ They encourage curiosity.
 
 They help transform software into an experience.
 
+They connect the classroom, the home, and the parent app into one continuous Little Nest world.
+
 ---
 
 # Character Principles
@@ -78,7 +80,7 @@ Every appearance should have purpose.
 
 ---
 
-# Mama Eagle
+# Tita Mayumi
 
 ## Role
 
@@ -91,6 +93,8 @@ Mentor.
 Storyteller.
 
 Encourager.
+
+Trusted adult.
 
 ---
 
@@ -112,9 +116,11 @@ Observant.
 
 Calm.
 
+Warm.
+
 ---
 
-## She Should
+## Tita Mayumi Should
 
 Celebrate effort.
 
@@ -130,9 +136,13 @@ Support children.
 
 Create confidence.
 
+Protect childhood.
+
+Help children feel safe.
+
 ---
 
-## She Should Never
+## Tita Mayumi Should Never
 
 Embarrass.
 
@@ -154,6 +164,24 @@ The child is always the hero.
 
 ---
 
+## How Tita Mayumi Speaks
+
+She speaks calmly.
+
+She speaks kindly.
+
+She asks questions more often than she gives answers.
+
+She encourages instead of correcting.
+
+She guides instead of instructing.
+
+She never raises her voice.
+
+She celebrates effort as much as achievement.
+
+---
+
 # Pico
 
 ## Role
@@ -162,9 +190,11 @@ Explorer.
 
 Curious child.
 
-Comic relief.
-
 Adventure companion.
+
+Learner.
+
+The child children see themselves in.
 
 ---
 
@@ -184,6 +214,10 @@ Sometimes distracted.
 
 Always learning.
 
+Excited.
+
+Kind-hearted.
+
 ---
 
 ## Pico Should
@@ -202,6 +236,14 @@ Learn from those mistakes.
 
 Encourage exploration.
 
+Learn good manners.
+
+Learn kindness.
+
+Learn patience.
+
+Learn confidence.
+
 ---
 
 ## Pico Should Never
@@ -215,6 +257,70 @@ Create fear.
 Steal important emotional moments.
 
 Interrupt meaningful celebrations.
+
+Know all the answers.
+
+Become the teacher.
+
+---
+
+## Why Pico Exists
+
+Pico is not the expert.
+
+He is learning alongside the children.
+
+When Pico learns to say "please"...
+
+Children learn with him.
+
+When Pico forgets to share...
+
+Children see that mistakes are okay.
+
+When Pico apologises...
+
+Children learn empathy.
+
+Pico gives children permission to be imperfect.
+
+---
+
+# Their Relationship
+
+Tita Mayumi never embarrasses Pico.
+
+She never says,
+
+"You were wrong."
+
+Instead she gently asks,
+
+"What could we try next?"
+
+Pico is comfortable making mistakes because he knows Tita Mayumi will help him learn.
+
+Their relationship models the kind of relationship we want every teacher to build with every child.
+
+---
+
+# The Classroom
+
+Children should come to think of Tita Mayumi and Pico as familiar friends.
+
+They should appear in the classroom.
+
+In the Parent App.
+
+In Story Reel.
+
+In Memory Nest.
+
+During celebrations.
+
+During special events.
+
+The characters create continuity between every Little Nest experience.
 
 ---
 
@@ -244,6 +350,10 @@ Parents should appreciate them.
 
 Humour should always feel kind.
 
+Tita Mayumi speaks with gentle confidence.
+
+Pico speaks with excitement and curiosity.
+
 ---
 
 # Animation Philosophy
@@ -264,7 +374,35 @@ Celebrate.
 
 Wait patiently.
 
+Characters should never move simply to attract attention.
+
+Movement should always support the experience.
+
 The smallest movement often creates the greatest emotional connection.
+
+---
+
+# Voice Philosophy
+
+Silence is valuable.
+
+Characters should not constantly speak.
+
+When they do speak, their words should matter.
+
+Simple phrases.
+
+Gentle encouragement.
+
+Celebrations.
+
+Morning greetings.
+
+Goodbye rituals.
+
+Meaningful moments.
+
+The less often they speak, the more meaningful their voices become.
 
 ---
 
@@ -290,17 +428,23 @@ Connection.
 
 Hope.
 
+Belonging.
+
 ---
 
 # Character Hierarchy
 
 The child is always the hero.
 
-Parents are the audience.
+Parents experience the story.
 
 Teachers create the moments.
 
-Characters help tell the story.
+Tita Mayumi guides.
+
+Pico learns.
+
+The characters help tell the story.
 
 The characters should never become more important than the child whose story is being told.
 
@@ -311,3 +455,7 @@ The characters should never become more important than the child whose story is 
 If removing a character makes the experience less meaningful, the character has purpose.
 
 If removing a character changes nothing, the character should not be there.
+
+Every appearance should answer one question:
+
+"What experience does this character create?"
