@@ -415,3 +415,92 @@ Families should remember both the milestones that were achieved and the moments 
 - 10 Teacher Experience
 - 21 Design Intents
 - 24 Things We Believe
+
+- ---
+
+# Decision 011
+
+**Date:** 2026-08-01
+
+**Topic:** Belonging Before Learning
+
+### Decision
+
+The Little Nest will always prioritize helping children feel safe, welcomed, and emotionally secure before expecting them to participate in learning activities.
+
+Teachers should invite participation rather than force it.
+
+Building trust is the first lesson.
+
+### Reason
+
+Children learn best when they feel safe.
+
+A trusting relationship encourages curiosity, confidence, participation, and a willingness to make mistakes.
+
+Learning begins with belonging.
+
+### Design Intent
+
+Children should never feel pressured to participate.
+
+Parents should feel confident that their child is understood as an individual.
+
+Teachers should patiently build relationships before expecting performance.
+
+### Affected Documents
+
+- 02 Design Principles
+- 21 Design Intents
+- 22 Training Philosophy
+- 25 Child Development Philosophy
+- 28 The Little Nest Method
+
+---
+
+# Decision 012
+
+**Date:** 2026-08-01
+
+**Topic:** Consistency Creates Community
+
+### Decision
+
+Every Little Nest location should provide a familiar experience regardless of its location, teachers, or community.
+
+Individual personalities should be celebrated.
+
+The Little Nest experience should remain consistent.
+
+### Reason
+
+Families recommend experiences they trust.
+
+Children should feel at home in every Little Nest.
+
+Consistency strengthens the brand, builds trust, and creates a shared culture across every franchise.
+
+### Design Intent
+
+Different teachers.
+
+The same warmth.
+
+Different classrooms.
+
+The same encouragement.
+
+Different communities.
+
+The same Little Nest feeling.
+
+Parents should immediately recognize they are part of the same Little Nest family wherever they visit.
+
+### Affected Documents
+
+- 01 Vision
+- 02 Design Principles
+- 22 Training Philosophy
+- 24 Things We Believe
+- 28 The Little Nest Method
+- 29 Little Nest Traditions
