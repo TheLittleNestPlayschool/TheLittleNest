@@ -213,3 +213,22 @@ Whenever there is uncertainty, ask these three questions before designing or bui
 3. Does it strengthen the connection between parent and child?
 
 If the answer to any of these questions is "no," the feature should be reconsidered.
+
+## 17. Every Interaction Should Add Value
+
+Every interaction within The Little Nest should have a purpose.
+
+Parents should never tap, click, or open something that feels unnecessary or disappointing.
+
+Every interaction should accomplish at least one of the following:
+
+- Teach something.
+- Celebrate progress.
+- Encourage continued learning.
+- Explain what is happening.
+- Create delight.
+- Strengthen the connection between parent and child.
+
+Animations, characters, notifications, badges, and visual effects should never exist simply because they look attractive.
+
+Every interaction should leave the parent feeling that their time with the application was worthwhile.
