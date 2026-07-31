@@ -1,4 +1,4 @@
-# 19-furture-ideas.md
+# furture-ideas
 
 **Status:** Draft
 **Version:** 1.0
