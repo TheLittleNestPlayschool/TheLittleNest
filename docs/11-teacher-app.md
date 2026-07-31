@@ -1,4 +1,4 @@
-# 11-teacher-app.md
+# teacher-app
 
 **Status:** Draft
 **Version:** 1.0
