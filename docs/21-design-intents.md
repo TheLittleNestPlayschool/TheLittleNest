@@ -1,7 +1,7 @@
 # Design Intents
 
 **Status:** Living Document
-**Version:** 1.1
+**Version:** 1.2
 **Last Updated:** 2026-07-31
 **Owner:** Dave Stoyko
 
@@ -181,6 +181,74 @@ If The Little Nest consistently creates moments like this, we have succeeded.
 
 ---
 
+# Moment 007 — A Little Better Than Yesterday
+
+A child finishes today's activities.
+
+There is no grand celebration.
+
+No fireworks.
+
+No competition.
+
+Mama Eagle smiles.
+
+"You learned something new today."
+
+The child doesn't wonder whether they were the best.
+
+They don't compare themselves with anyone else.
+
+They simply leave with one quiet thought.
+
+**"Today I am a little better than I was yesterday."**
+
+That feeling becomes part of who they are.
+
+---
+
+# Moment 008 — The Teacher Notices
+
+During snack time, a teacher smiles.
+
+Today, a child put away their own cup without being asked.
+
+No assessment measured it.
+
+No badge required it.
+
+No report would normally mention it.
+
+The teacher quietly records the moment.
+
+Weeks later, the parent discovers it in Memory Nest.
+
+A simple observation becomes one of their favorite memories.
+
+Not everything important can be measured.
+
+Some things simply need to be noticed.
+
+---
+
+# Moment 009 — Growth, Not Comparison
+
+A parent opens two children's profiles.
+
+They never wonder:
+
+"Which child is ahead?"
+
+Instead, they find themselves remembering where their own child started.
+
+The focus is never on another child's progress.
+
+The focus is always on their own child's journey.
+
+The application quietly teaches parents to celebrate growth instead of comparison.
+
+---
+
 # Living Document
 
 This document will continue to grow throughout the life of the project.
@@ -193,6 +261,7 @@ When designing a new feature, ask:
 - Who experiences that emotion?
 - Will this moment be remembered?
 - Does this strengthen the connection between parent and child?
+- Does it celebrate growth rather than comparison?
 
 The best features are often discovered by asking one question:
 
