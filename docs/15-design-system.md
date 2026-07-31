@@ -1,4 +1,4 @@
-# 15-ui-standards.md
+# 15-design-system.md
 
 **Status:** Draft
 **Version:** 1.0
