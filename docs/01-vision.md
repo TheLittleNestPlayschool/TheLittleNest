@@ -1,7 +1,7 @@
 # Vision
 
 **Status:** Draft
-**Version:** 1.0
+**Version:** 1.1
 **Last Updated:** 2026-07-31
 **Owner:** Dave Stoyko
 
@@ -16,11 +16,15 @@
 
 The Little Nest exists to strengthen the connection between parents and their children by making every learning milestone visible, meaningful, and worth celebrating.
 
-We believe that education should not end when a child leaves the classroom. Parents should be able to see, understand, and celebrate their child's development every day.
+We believe that education should not end when a child leaves the classroom. Parents should be able to see, understand, celebrate, and participate in their child's development every day.
 
 Rather than presenting attendance records, grades, or reports, The Little Nest tells the story of a child's growth through play, discovery, creativity, and achievement.
 
 Every interaction within the app should reinforce that story.
+
+Parents are not simply opening an application.
+
+They are opening the next chapter in their child's learning journey.
 
 ---
 
@@ -28,11 +32,13 @@ Every interaction within the app should reinforce that story.
 
 Traditional playschools teach children.
 
-The Little Nest teaches children while also engaging parents.
+The Little Nest teaches children while actively engaging parents throughout the learning journey.
 
-We are building an experience that families want to return to, not because they have to, but because every visit helps them discover something new about their child's journey.
+We are building an experience that families want to return to, not because they have to, but because every visit helps them discover something new about their child's growth.
 
-The application is designed to create moments of pride, curiosity, and conversation between parents and children.
+The application is designed to create moments of pride, curiosity, conversation, celebration, and family connection.
+
+While other playschools may copy pricing, curriculum, colours, or classroom layouts, the complete parent experience is much more difficult to replicate. Every part of the system works together to create a journey that families remember and value.
 
 ---
 
@@ -47,8 +53,23 @@ Every feature should support at least one of the following goals:
 - Reward curiosity.
 - Inspire conversation.
 - Strengthen the family connection.
+- Give parents meaningful moments they are proud to share with others.
 
 If a feature does not support these goals, it should be reconsidered.
+
+---
+
+# Continuous Growth
+
+Learning is a journey without a finish line.
+
+The Little Nest does not present education as something that ends after a fixed number of sessions or milestones.
+
+Children continue to grow, explore, discover, and achieve throughout their time with us.
+
+Every celebration represents a new beginning rather than a conclusion.
+
+The application should continually encourage parents to look forward to the next achievement, the next discovery, and the next chapter of their child's story.
 
 ---
 
@@ -56,6 +77,18 @@ If a feature does not support these goals, it should be reconsidered.
 
 The Little Nest is not simply a playschool management system.
 
-It is the foundation of a connected learning ecosystem that helps families experience education together through storytelling, celebration, and meaningful engagement.
+It is the foundation of a connected learning ecosystem that helps families experience education together through storytelling, celebration, meaningful engagement, and continuous growth.
+
+Our goal is not to build the application with the most features.
+
+Our goal is to create the parent experience that families value, remember, recommend, and cannot imagine being without.
 
 Every design decision should contribute toward that vision.
+
+---
+
+# Our Guiding Belief
+
+Every child has a story.
+
+Every parent deserves to see it.
