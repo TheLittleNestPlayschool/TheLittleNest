@@ -1,4 +1,4 @@
-# 10-parent-app.md
+# parent-app
 
 **Status:** Draft
 **Version:** 1.0
