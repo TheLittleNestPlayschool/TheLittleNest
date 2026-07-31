@@ -1,4 +1,4 @@
-# 14-aws-storage.md
+# aws-storage
 
 **Status:** Draft
 **Version:** 1.0
