@@ -1,4 +1,4 @@
-# 17-decisions.md
+# decisions
 
 **Status:** Draft
 **Version:** 1.0
