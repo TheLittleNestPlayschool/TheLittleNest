@@ -1,4 +1,4 @@
-# 09-notifications.md
+# notifications
 
 **Status:** Draft
 **Version:** 1.0
