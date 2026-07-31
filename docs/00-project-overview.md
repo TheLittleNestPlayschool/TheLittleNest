@@ -116,3 +116,9 @@ The Little Nest is designed around the parent experience.
 Technical implementation exists to support that experience.
 
 Whenever a technical decision conflicts with the intended user experience, the user experience should be reconsidered first before changing the product vision.
+
+Every feature should answer three questions before implementation:
+
+Why does it exist?
+How should the user feel?
+How will it be implemented?
