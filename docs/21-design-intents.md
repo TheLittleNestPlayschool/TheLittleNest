@@ -1,7 +1,7 @@
 # Design Intents
 
 **Status:** Living Document
-**Version:** 1.0
+**Version:** 1.1
 **Last Updated:** 2026-07-31
 **Owner:** Dave Stoyko
 
@@ -24,6 +24,38 @@ They are emotional goals.
 Whenever multiple design solutions are possible, choose the one that best creates these moments.
 
 Every feature should help create one or more of these experiences.
+
+Technology will continue to evolve.
+
+Features will change.
+
+The emotions we want families to experience should remain constant.
+
+---
+
+# Design Philosophy
+
+We are not designing screens.
+
+We are not designing features.
+
+We are designing emotions.
+
+Every feature should make a parent or child feel something.
+
+It might create joy.
+
+It might create curiosity.
+
+It might create pride.
+
+It might create hope.
+
+It might create connection.
+
+If a feature performs a task but creates no emotional value, we should ask whether it belongs in The Little Nest.
+
+The best experiences happen when technology disappears and families simply enjoy the moment together.
 
 ---
 
@@ -121,11 +153,46 @@ The application rewards curiosity.
 
 ---
 
+# Moment 006 — A Proud Parent
+
+A parent earns nothing.
+
+There are no rewards for adults.
+
+No points.
+
+No badges.
+
+No levels.
+
+Yet they immediately open Messenger.
+
+Or Facebook.
+
+Or call a grandparent.
+
+"Look what my child did today."
+
+For a few moments, they aren't thinking about tuition, schedules, or responsibilities.
+
+They are simply proud.
+
+If The Little Nest consistently creates moments like this, we have succeeded.
+
+---
+
 # Living Document
 
 This document will continue to grow throughout the life of the project.
 
 Whenever we imagine a meaningful family moment that aligns with the vision of The Little Nest, it should be added here.
+
+When designing a new feature, ask:
+
+- What emotion does this create?
+- Who experiences that emotion?
+- Will this moment be remembered?
+- Does this strengthen the connection between parent and child?
 
 The best features are often discovered by asking one question:
 
