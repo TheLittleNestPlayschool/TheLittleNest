@@ -1,8 +1,8 @@
 # Child Development Philosophy
 
 **Status:** Living Document
-**Version:** 1.0
-**Last Updated:** 2026-07-31
+**Version:** 1.1
+**Last Updated:** 2026-08-01
 **Owner:** Dave Stoyko
 
 **Related Documents:**
@@ -44,6 +44,32 @@ Education is not simply about what children know.
 
 It is about who they become.
 
+We are not preparing children only for school.
+
+We are preparing them for life.
+
+---
+
+# Before Learning Comes Belonging
+
+Children learn best when they feel safe.
+
+Children participate more when they feel accepted.
+
+Children explore more when they feel confident.
+
+Before children are ready to learn...
+
+They need to feel welcomed.
+
+They need to feel understood.
+
+They need to feel that they belong.
+
+Great teachers create those feelings before they begin teaching.
+
+Connection comes before instruction.
+
 ---
 
 # Childhood Should Be Celebrated
@@ -78,6 +104,8 @@ Different is normal.
 
 Growth matters more than speed.
 
+Every child deserves the opportunity to grow at their own pace.
+
 ---
 
 # Learning Through Play
@@ -103,6 +131,30 @@ Solve problems.
 Develop friendships.
 
 Play allows children to develop naturally while enjoying the process.
+
+Children should never feel that learning is something being done to them.
+
+Learning is something they are invited to enjoy.
+
+---
+
+# Follow the Child
+
+Children arrive at school with different emotions.
+
+Some are excited.
+
+Some are curious.
+
+Some are cautious.
+
+Some simply need a little more time.
+
+Great teachers meet children where they are.
+
+They patiently invite each child forward.
+
+Learning should never be rushed simply to complete a lesson.
 
 ---
 
@@ -130,6 +182,8 @@ Mistakes should never stop exploration.
 
 Children should leave every class wanting to discover something new tomorrow.
 
+Curiosity is one of the greatest gifts education can protect.
+
 ---
 
 # Mistakes Are Part of Learning
@@ -142,6 +196,36 @@ Every mistake teaches something.
 
 Children should feel safe trying something new.
 
+Children should never fear making mistakes.
+
+Fear limits curiosity.
+
+Curiosity creates growth.
+
+---
+
+# Character Matters
+
+Education is about more than knowledge.
+
+It is also about becoming.
+
+Kindness.
+
+Patience.
+
+Confidence.
+
+Persistence.
+
+Respect.
+
+Friendship.
+
+Empathy.
+
+These qualities deserve to be celebrated just as much as academic achievements.
+
 ---
 
 # Parents Are Partners
@@ -151,6 +235,8 @@ Parents are a child's first teachers.
 The Little Nest exists to strengthen the relationship between parents and children.
 
 Parents should experience their child's learning journey, not simply receive reports about it.
+
+The best conversations at home begin with meaningful moments experienced at school.
 
 ---
 
@@ -172,6 +258,10 @@ Their role extends beyond teaching lessons.
 
 They help shape childhood.
 
+Great teachers do not teach the lesson first.
+
+They teach the child first.
+
 ---
 
 # Observation Is As Important As Assessment
@@ -188,7 +278,37 @@ A moment of courage.
 
 A small act of independence.
 
+A first attempt.
+
+A first smile.
+
 Teachers should notice these moments because families will remember them.
+
+The invisible moments of childhood are often the most important.
+
+---
+
+# The Growth Journey
+
+Learning is not a straight line.
+
+It is a journey.
+
+Safety creates trust.
+
+Trust creates confidence.
+
+Confidence creates curiosity.
+
+Curiosity creates participation.
+
+Participation creates learning.
+
+Learning creates growth.
+
+Growth inspires the next adventure.
+
+Every child travels this journey differently.
 
 ---
 
@@ -200,6 +320,8 @@ It is to help children love learning.
 
 Children who enjoy learning today become adults who continue learning tomorrow.
 
+Learning never truly ends.
+
 ---
 
 # Success
@@ -207,6 +329,8 @@ Children who enjoy learning today become adults who continue learning tomorrow.
 Success is not measured by comparison.
 
 Success is not measured by perfection.
+
+Success is not measured by finishing first.
 
 Success is helping every child leave today believing:
 
