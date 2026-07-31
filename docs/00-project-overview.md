@@ -122,3 +122,17 @@ Every feature should answer three questions before implementation:
 Why does it exist?
 How should the user feel?
 How will it be implemented?
+
+# Feature Evaluation
+
+Before any new feature is approved for development, it should answer the following questions:
+
+1. Why does this feature exist?
+2. Which document defines its purpose?
+3. Where does it fit within the Parent Journey?
+4. How should the parent feel after using it?
+5. Does it strengthen the connection between parent and child?
+6. Does it follow the Design Principles?
+7. How will it be implemented?
+
+If these questions cannot be answered clearly, the feature should be refined before implementation.
