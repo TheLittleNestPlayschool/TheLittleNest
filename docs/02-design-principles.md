@@ -232,3 +232,24 @@ Every interaction should accomplish at least one of the following:
 Animations, characters, notifications, badges, and visual effects should never exist simply because they look attractive.
 
 Every interaction should leave the parent feeling that their time with the application was worthwhile.
+
+## 18. Design for Emotion
+
+People rarely remember features.
+
+They remember how those features made them feel.
+
+Every feature within The Little Nest should create at least one positive emotional response, such as:
+
+- Joy
+- Pride
+- Curiosity
+- Surprise
+- Wonder
+- Encouragement
+- Connection
+- Hope
+
+Features should be evaluated not only by what they do, but by how they make parents and children feel.
+
+The emotional experience is as important as the technical implementation.
