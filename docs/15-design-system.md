@@ -1,4 +1,4 @@
-# 15-design-system.md
+# design-system
 
 **Status:** Draft
 **Version:** 1.0
