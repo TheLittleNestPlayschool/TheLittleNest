@@ -1,7 +1,7 @@
 # Design Principles
 
 **Status:** Draft
-**Version:** 1.0
+**Version:** 1.1
 **Last Updated:** 2026-07-31
 **Owner:** Dave Stoyko
 
@@ -26,6 +26,10 @@ The parent experience is our highest priority.
 
 Every screen should help parents feel connected to their child's growth.
 
+Every decision should begin by asking:
+
+**"How does this improve the parent's experience?"**
+
 ---
 
 ## 2. Tell a Story
@@ -34,45 +38,65 @@ Parents should never feel like they are checking school records.
 
 They should feel like they are opening another chapter in their child's learning journey.
 
----
-
-## 3. Celebrate Progress
-
-Every improvement deserves recognition.
-
-Small achievements should feel meaningful.
-
-Large achievements should feel exciting.
+Every screen should contribute to that story.
 
 ---
 
-## 4. Learning Should Feel Like Play
+## 3. Celebrate Every Milestone
+
+Progress should never go unnoticed.
+
+Small achievements deserve recognition.
+
+Major achievements deserve celebration.
+
+The application should continuously reinforce the child's growth through encouragement, visual progress, memorable moments, and meaningful recognition.
+
+---
+
+## 4. Growth Never Ends
+
+Learning is a continuous journey.
+
+The Little Nest should never present learning as something that is finished.
+
+Every celebration is the beginning of the next adventure.
+
+Parents should always feel that there is another milestone waiting just ahead.
+
+---
+
+## 5. Learning Should Feel Like Play
 
 Children learn best through play.
 
-The application should reflect that philosophy through its design, animations, characters, and interactions.
+The application should reflect that philosophy through its design, animations, characters, interactions, and rewards.
 
 ---
 
-## 5. Every Screen Has a Purpose
+## 6. Every Screen Has a Purpose
 
-Every screen should answer one question:
+Every screen should answer one simple question:
 
-"Why would a parent want to open this today?"
+**"Why would a parent want to open this today?"**
 
 If a screen cannot answer that question, it should be redesigned.
 
 ---
 
-## 6. Simplicity Wins
+## 7. Simplicity Wins
 
-Information should be easy to understand.
+Information should always be easy to understand.
 
 Complexity belongs behind the scenes.
 
+The user should experience simplicity regardless of how complex the system becomes.
+
 ---
 
-## 7. Delight Through Small Details
+## 8. Delight Through Small Details
+
+Small moments create lasting memories.
 
 Tiny animations.
 
@@ -82,43 +106,55 @@ Unexpected surprises.
 
 Celebration moments.
 
-These create emotional attachment.
+Seasonal decorations.
+
+Hidden discoveries.
+
+These details create emotional attachment.
 
 ---
 
-## 8. Characters Have Purpose
+## 9. Characters Have Purpose
 
 Characters are not decoration.
 
-Every character should help teach, guide, encourage, celebrate, or entertain.
+Every character should teach, guide, encourage, celebrate, entertain, or explain.
+
+Every appearance should have a purpose.
 
 ---
 
-## 9. Reward Curiosity
+## 10. Reward Curiosity
 
 Parents who explore the application should occasionally discover something unexpected.
 
-The application should encourage exploration.
+The application should encourage exploration without requiring it.
+
+Curiosity should always be rewarded.
 
 ---
 
-## 10. Make Growth Visible
+## 11. Make Growth Visible
 
 Parents should always be able to see that their child is making progress.
 
 Progress should be visual.
 
-Progress should feel rewarding.
+Progress should feel meaningful.
+
+Progress should tell a story.
 
 ---
 
-## 11. Build for the Long Term
+## 12. Build for the Long Term
 
 Features should be designed so they can expand over time without requiring major redesigns.
 
+The application should grow alongside the child.
+
 ---
 
-## 12. Consistency Creates Trust
+## 13. Consistency Creates Trust
 
 Buttons.
 
@@ -126,7 +162,7 @@ Animations.
 
 Characters.
 
-Colors.
+Colours.
 
 Messages.
 
@@ -134,22 +170,46 @@ Interactions.
 
 Everything should behave consistently throughout the application.
 
+Consistency builds confidence.
+
 ---
 
-## 13. Technology Serves the Experience
+## 14. Technology Serves the Experience
 
-Technical decisions should support the experience we want parents to have.
+Technical decisions exist to support the experience we want parents to have.
 
-We do not sacrifice the experience simply because another implementation would be easier.
+We do not sacrifice the parent experience simply because another implementation would be easier.
+
+The experience always comes first.
+
+---
+
+## 15. The Core Experience Must Stand Alone
+
+The core parent experience should never depend on optional franchise activities.
+
+Recognition Days, local celebrations, and special events should enhance the experience, but every family should receive a complete and meaningful journey regardless of which franchise they attend.
+
+---
+
+## 16. Build Moments Worth Sharing
+
+Parents naturally enjoy celebrating their children's achievements.
+
+The application should create authentic moments that parents are proud to share with family and friends.
+
+Every shared moment strengthens the connection between the family, the child, and The Little Nest.
 
 ---
 
 ## Final Principle
 
-Whenever there is uncertainty, ask these three questions:
+Whenever there is uncertainty, ask these three questions before designing or building a feature:
 
 1. Why does this feature exist?
 
 2. How should the parent feel after using it?
 
 3. Does it strengthen the connection between parent and child?
+
+If the answer to any of these questions is "no," the feature should be reconsidered.
