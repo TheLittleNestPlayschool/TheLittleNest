@@ -1,4 +1,4 @@
-# 00-project-overview.md
+# project-overview
 
 **Status:** Draft
 **Version:** 1.0
