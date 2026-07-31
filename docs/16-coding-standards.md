@@ -1,4 +1,4 @@
-# 16-coding-standards.md
+# coding-standards
 
 **Status:** Draft
 **Version:** 1.0
