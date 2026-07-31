@@ -1,4 +1,4 @@
-# 05-learning-path.md
+# learning-path
 
 **Status:** Draft
 **Version:** 1.0
