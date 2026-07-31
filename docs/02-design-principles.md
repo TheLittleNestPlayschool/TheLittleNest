@@ -1,4 +1,4 @@
-# 02-design-principles.md
+# design-principles
 
 **Status:** Draft
 **Version:** 1.0
