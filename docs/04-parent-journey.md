@@ -1,4 +1,4 @@
-# 04-parent-journey.md
+# parent-journey
 
 **Status:** Draft
 **Version:** 1.0
