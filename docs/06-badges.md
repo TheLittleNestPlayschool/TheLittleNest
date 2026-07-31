@@ -1,4 +1,4 @@
-# 06-badges.md
+# badges
 
 **Status:** Draft
 **Version:** 1.0
