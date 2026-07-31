@@ -1,4 +1,4 @@
-# 03-characters.md
+# characters
 
 **Status:** Draft
 **Version:** 1.0
