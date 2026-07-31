@@ -10,9 +10,6 @@
 - 01-vision.md
 - 02-design-principles.md
 
----
-
-# Decisions
 
 This document records significant design and architectural decisions made during the development of The Little Nest.
 
