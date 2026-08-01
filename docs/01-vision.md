@@ -1,8 +1,8 @@
 # Vision
 
 **Status:** Draft
-**Version:** 1.1
-**Last Updated:** 2026-07-31
+**Version:** 1.2
+**Last Updated:** 2026-08-02
 **Owner:** Dave Stoyko
 
 **Related Documents:**
@@ -39,6 +39,32 @@ We are building an experience that families want to return to, not because they 
 The application is designed to create moments of pride, curiosity, conversation, celebration, and family connection.
 
 While other playschools may copy pricing, curriculum, colours, or classroom layouts, the complete parent experience is much more difficult to replicate. Every part of the system works together to create a journey that families remember and value.
+
+---
+
+# A Living Experience
+
+The Little Nest is designed as a living experience rather than a static application.
+
+Every time a family opens The Little Nest, the experience should adapt to where they are in their child's journey.
+
+Sometimes they will discover today's chapter.
+
+Sometimes they will celebrate a new achievement.
+
+Sometimes they will relive a treasured memory.
+
+Sometimes they will simply look forward to tomorrow's adventure.
+
+The application should never feel like a collection of screens or features.
+
+It should feel like returning to a place that understands the family's journey and gently welcomes them into the most meaningful experience available at that moment.
+
+Technology quietly prepares the experience.
+
+The child remains the hero.
+
+The family experiences the story together.
 
 ---
 
