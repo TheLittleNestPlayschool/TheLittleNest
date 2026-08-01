@@ -52,6 +52,10 @@ They help transform software into an experience.
 
 They connect the classroom, the home, and the parent app into one continuous Little Nest world.
 
+They welcome families back into that world every time they return.
+
+They help transform each visit into a meaningful experience rather than simply another interaction with software.
+
 ---
 
 # Character Principles
@@ -301,6 +305,28 @@ Instead she gently asks,
 Pico is comfortable making mistakes because he knows Tita Mayumi will help him learn.
 
 Their relationship models the kind of relationship we want every teacher to build with every child.
+
+---
+
+# Characters and the Living Stage
+
+Every time a family opens The Little Nest, the characters help welcome them into the next chapter of their child's story.
+
+Tita Mayumi gently introduces meaningful moments.
+
+Pico helps families discover them.
+
+Sometimes they celebrate.
+
+Sometimes they remember.
+
+Sometimes they simply build excitement for tomorrow.
+
+The characters should never force an experience.
+
+They should invite families into it with warmth, curiosity, and kindness.
+
+Like great hosts, they make every visit feel personal without becoming the centre of attention.
 
 ---
 
