@@ -1,8 +1,8 @@
 # Design Principles
 
 **Status:** Draft
-**Version:** 1.2
-**Last Updated:** 2026-07-31
+**Version:** 1.3
+**Last Updated:** 2026-08-02
 **Owner:** Dave Stoyko
 
 **Related Documents:**
@@ -184,7 +184,29 @@ The experience always comes first.
 
 ---
 
-## 15. The Core Experience Must Stand Alone
+## 15. Build a Living Experience
+
+The Little Nest should never feel like a static application.
+
+Every time a family opens the application, it should welcome them with the most meaningful experience available at that moment in their journey.
+
+The experience should adapt naturally as the child's story grows.
+
+Sometimes the experience begins with Today's Chapter.
+
+Sometimes it begins with a celebration.
+
+Sometimes it begins with a treasured memory.
+
+Sometimes it simply builds anticipation for tomorrow.
+
+Parents should always feel welcomed rather than presented with a dashboard.
+
+The application should behave like a thoughtful host, quietly preparing the next meaningful experience while always allowing parents the freedom to explore.
+
+---
+
+## 16. The Core Experience Must Stand Alone
 
 The core parent experience should never depend on optional franchise activities.
 
@@ -192,17 +214,17 @@ Recognition Days, local celebrations, and special events should enhance the expe
 
 ---
 
-## 16. Build Moments Worth Sharing
+## 17. Build Moments Worth Sharing
 
-Parents naturally enjoy celebrating their children's achievements.
+Parents naturally enjoy sharing meaningful moments with the people they love.
 
-The application should create authentic moments that parents are proud to share with family and friends.
+The application should create experiences that families want to enjoy together before choosing to share them with others.
 
 Every shared moment strengthens the connection between the family, the child, and The Little Nest.
 
 ---
 
-## 17. Every Interaction Should Add Value
+## 18. Every Interaction Should Add Value
 
 Every interaction within The Little Nest should have a purpose.
 
@@ -223,7 +245,7 @@ Every interaction should leave the parent feeling that their time with the appli
 
 ---
 
-## 18. Design for Emotion
+## 19. Design for Emotion
 
 People rarely remember features.
 
@@ -246,7 +268,7 @@ The emotional experience is as important as the technical implementation.
 
 ---
 
-## 19. Celebrate Growth, Not Comparison
+## 20. Celebrate Growth, Not Comparison
 
 Children should never feel that they are competing against one another.
 
@@ -260,7 +282,7 @@ The application exists to celebrate each child's personal journey of growth.
 
 ---
 
-## 20. Design for Lifelong Learning
+## 21. Design for Lifelong Learning
 
 The purpose of education is not simply to transfer knowledge.
 
@@ -274,7 +296,7 @@ Our goal is to help children become lifelong learners.
 
 ---
 
-## 21. Measure Progress. Celebrate Growth.
+## 22. Measure Progress. Celebrate Growth.
 
 Some things can be measured.
 
