@@ -70,6 +70,28 @@ Replay should recreate the feeling of the original moment as closely as possible
 
 ---
 
+# Replay Together
+
+The most meaningful replay is rarely experienced alone.
+
+Parents should naturally want to invite others into the moment.
+
+A parent watches today's memory.
+
+Later that evening, they replay it with their child.
+
+The next weekend, they replay it with grandparents.
+
+Years later, they replay it as a family.
+
+Memory Nest should encourage these shared experiences.
+
+The greatest success is not that a memory is replayed.
+
+It is that every replay creates another conversation, another smile, and another family memory.
+
+---
+
 # On This Day
 
 One of Memory Nest's most meaningful experiences is remembering.
@@ -192,7 +214,7 @@ Memory Nest should never feel like cloud storage.
 
 It should never feel like browsing files.
 
-It should feel like opening a family keepsake box.
+It should feel like opening a treasured family keepsake box filled with stories waiting to be experienced again.
 
 Every interaction should invite discovery.
 
