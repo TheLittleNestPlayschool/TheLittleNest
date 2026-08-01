@@ -1,6 +1,6 @@
 # Design Intents
 
-**Status:** Living Document
+**Status:** Approved
 **Version:** 1.3
 **Last Updated:** 2026-08-01
 **Owner:** Dave Stoyko
@@ -435,7 +435,9 @@ They join on their own.
 
 The child learns something far more important than today's lesson.
 
-They learn that this is a safe place.
+The application should behave like a thoughtful host, quietly preparing the next meaningful experience while always allowing parents the freedom to explore.
+
+It should recommend experiences rather than dictate them, respecting that every family may have a different reason for opening The Little Nest today.
 
 ---
 
