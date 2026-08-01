@@ -152,6 +152,14 @@ We believe simplicity creates confidence.
 
 We believe great technology becomes almost invisible.
 
+We believe technology should understand context before presenting information.
+
+We believe every family should be welcomed with the most meaningful experience available at that moment.
+
+We believe technology should recommend experiences rather than control them.
+
+We believe software should quietly prepare the stage while the child remains the hero.
+
 Technology should support learning.
 
 It should never become the focus of learning.
