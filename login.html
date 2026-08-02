@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>The Little Nest Playschool</title>
+
+    <!-- Universal background first -->
+    <link rel="stylesheet" href="background.css">
+
+    <!-- Page-specific stairs overlay and styles second -->
+    <link rel="stylesheet" href="login.css">
+
+    <!-- Shared character styles -->
+    <link rel="stylesheet" href="characters.css">
+</head>
+
+<body>
+
+    <!-- Background Elements with loginstairs.png layered on top -->
+    <div class="app-background" aria-hidden="true">
+        <div class="gradient-overlay"></div>
+        <div class="login-stairs-bg"></div>
+    </div>
+
+    <!-- 3 SEPARATE TEXT NODES -->
+    <div class="login-text-layer" aria-hidden="true">
+        <div id="text-slot-1" class="text-slot">
+            <div class="login-text-node">The Little Nest Playschool</div>
+        </div>
+
+        <div id="text-slot-2" class="text-slot">
+            <div class="login-text-node">Where Little Success Stories Begin</div>
+        </div>
+
+        <div id="text-slot-3" class="text-slot">
+            <div class="login-text-node">Grow</div>
+        </div>
+    </div>
+
+    <!-- 9 SEPARATE CHARACTER / ANIMATION SLOTS -->
+    <div class="login-nodes-layer" aria-hidden="true">
+        <div id="slot-1" class="login-slot">
+            <div class="login-node">1</div>
+        </div>
+
+        <div id="slot-2" class="login-slot">
+            <div class="login-node">2</div>
+        </div>
+
+        <div id="slot-3" class="login-slot">
+            <div class="login-node">3</div>
+        </div>
+
+        <div id="slot-4" class="login-slot">
+            <div class="login-node">4</div>
+        </div>
+
+        <div id="slot-5" class="login-slot">
+            <div class="login-node">5</div>
+        </div>
+
+        <div id="slot-6" class="login-slot">
+            <div class="login-node">6</div>
+        </div>
+
+        <div id="slot-7" class="login-slot">
+            <div class="character">
+                <object
+                    id="bird7"
+                    type="image/svg+xml"
+                    data="babybird.svg"
+                    aria-label="Pico">
+                </object>
+            </div>
+        </div>
+
+        <div id="slot-8" class="login-slot">
+            <div class="login-node">8</div>
+        </div>
+
+        <div id="slot-9" class="login-slot">
+            <div class="login-node">9</div>
+        </div>
+    </div>
+
+    <!-- Login Container -->
+    <main class="login-container">
+        <div class="login-card">
+            <h1 class="form-section-title">Login</h1>
+
+            <form id="loginForm" novalidate>
+                <div class="login-input-group">
+                    <label for="email" class="visually-hidden">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        class="login-input"
+                        placeholder="Email"
+                        autocomplete="email"
+                        inputmode="email"
+                        required
+                    >
+
+                    <label for="password" class="visually-hidden">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        class="login-input"
+                        placeholder="Password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <div class="login-action-row">
+                    <span id="signInText" class="sign-in-text">Sign in</span>
+
+                    <button
+                        id="loginButton"
+                        type="submit"
+                        class="btn-submit"
+                        aria-label="Sign in"
+                    >
+                        →
+                    </button>
+                </div>
+
+                <div
+                    id="errorMessage"
+                    role="alert"
+                    aria-live="polite"
+                    style="color: red; margin-top: 10px; font-size: 0.8rem;"
+                ></div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        const XANO_BASE_URL =
+            'https://x8ki-letl-twmt.n7.xano.io/api:wtEDiEuV';
+
+        const LOGIN_DESTINATION = 'livingstage.html';
+
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const signInText = document.getElementById('signInText');
+        const errorMessage = document.getElementById('errorMessage');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+
+        /*
+         * Login begins a new authenticated session.
+         *
+         * Clear previous Little Nest authentication values rather than
+         * deleting every localStorage item owned by the browser origin.
+         */
+        clearPreviousSession();
+
+        loginForm.addEventListener('submit', handleLogin);
+
+        function clearPreviousSession() {
+            const sessionKeys = [
+                'authToken',
+                'userId',
+                'admin_type_id',
+                'teacher_id',
+                'parent_id',
+                'franchise_id',
+                'franchise_name'
+            ];
+
+            sessionKeys.forEach((key) => {
+                localStorage.removeItem(key);
+            });
+
+            sessionStorage.clear();
+        }
+
+        function setLoadingState(isLoading) {
+            loginButton.disabled = isLoading;
+            emailInput.disabled = isLoading;
+            passwordInput.disabled = isLoading;
+
+            signInText.textContent = isLoading
+                ? 'Opening The Little Nest...'
+                : 'Sign in';
+
+            loginButton.textContent = isLoading ? '…' : '→';
+        }
+
+        function getUserId(data) {
+            if (data.user_id) {
+                return data.user_id;
+            }
+
+            if (
+                data.user &&
+                typeof data.user === 'object' &&
+                data.user.id
+            ) {
+                return data.user.id;
+            }
+
+            if (
+                typeof data.user === 'number' ||
+                typeof data.user === 'string'
+            ) {
+                return data.user;
+            }
+
+            return '';
+        }
+
+        function getValue(data, topLevelKey, userKey = topLevelKey) {
+            if (
+                data[topLevelKey] !== undefined &&
+                data[topLevelKey] !== null
+            ) {
+                return data[topLevelKey];
+            }
+
+            if (
+                data.user &&
+                typeof data.user === 'object' &&
+                data.user[userKey] !== undefined &&
+                data.user[userKey] !== null
+            ) {
+                return data.user[userKey];
+            }
+
+            return '';
+        }
+
+        function saveAuthenticatedSession(data) {
+            const authToken =
+                data.authToken ||
+                data.auth_token ||
+                data.token;
+
+            if (!authToken) {
+                throw new Error(
+                    'Login succeeded, but no authentication token was returned.'
+                );
+            }
+
+            const userId = getUserId(data);
+
+            const values = {
+                authToken,
+                userId,
+                admin_type_id: getValue(data, 'admin_type_id'),
+                teacher_id: getValue(data, 'teacher_id'),
+                parent_id: getValue(data, 'parent_id'),
+                franchise_id: getValue(data, 'franchise_id'),
+                franchise_name: getValue(data, 'franchise_name')
+            };
+
+            Object.entries(values).forEach(([key, value]) => {
+                localStorage.setItem(
+                    key,
+                    value === undefined || value === null
+                        ? ''
+                        : String(value)
+                );
+            });
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            errorMessage.textContent = '';
+
+            if (!email || !password) {
+                errorMessage.textContent =
+                    'Please enter your email and password.';
+                return;
+            }
+
+            setLoadingState(true);
+
+            try {
+                const response = await fetch(
+                    `${XANO_BASE_URL}/auth/login`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email,
+                            password
+                        })
+                    }
+                );
+
+                let data;
+
+                try {
+                    data = await response.json();
+                } catch {
+                    throw new Error(
+                        'The server returned an invalid response.'
+                    );
+                }
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message ||
+                        data.error ||
+                        'The email or password is incorrect.'
+                    );
+                }
+
+                saveAuthenticatedSession(data);
+
+                /*
+                 * Authentication is complete.
+                 * The Living Stage will load all parent-experience data.
+                 */
+                window.location.replace(LOGIN_DESTINATION);
+
+            } catch (error) {
+                console.error('Login failed:', error);
+
+                errorMessage.textContent =
+                    error instanceof Error
+                        ? error.message
+                        : 'Unable to sign in. Please try again.';
+
+                setLoadingState(false);
+                passwordInput.focus();
+            }
+        }
+    </script>
+
+    <script src="characters.js"></script>
+
+</body>
+</html>
