@@ -3,10 +3,9 @@
 window.LivingStage = window.LivingStage || {};
 
 window.LivingStage.Config = {
-    /*
-     * Replace this with the complete URL from the
-     * Xano "the_stage" API group.
-     */
+    processStudentAttendanceApiUrl:
+        'https://x8ki-letl-twmt.n7.xano.io/api:4fS4yUb-/process-student-attendance',
+
     livingStageApiUrl:
         'https://x8ki-letl-twmt.n7.xano.io/api:4fS4yUb-/living-stage'
 };
@@ -27,17 +26,14 @@ async function initializeLivingStage() {
         localStorage.getItem('authToken');
 
     if (!authToken) {
-        /*
-         * This only handles an expired or missing session.
-         * Normal successful login already redirects into
-         * livingstage.html.
-         */
         window.location.replace('login.html');
         return;
     }
 
     try {
         await loadSharedComponents();
+
+        await processStudentAttendance(authToken);
 
         const stageData =
             await loadLivingStageData(authToken);
@@ -89,6 +85,30 @@ async function loadSharedComponents() {
     ]);
 }
 
+async function processStudentAttendance(authToken) {
+    const apiUrl =
+        window.LivingStage.Config
+            .processStudentAttendanceApiUrl;
+
+    if (!apiUrl) {
+        throw new Error(
+            'The student attendance processing API URL is missing.'
+        );
+    }
+
+    return window.LivingStage.Utils.fetchJson(
+        apiUrl,
+        {
+            method: 'POST',
+
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${authToken}`
+            }
+        }
+    );
+}
+
 async function loadLivingStageData(authToken) {
     const apiUrl =
         window.LivingStage.Config
@@ -100,10 +120,6 @@ async function loadLivingStageData(authToken) {
             'PASTE_YOUR_LIVING_STAGE_API_URL_HERE'
         )
     ) {
-        /*
-         * Temporary response while the Xano endpoint
-         * is still being built.
-         */
         return createTemporaryStageData();
     }
 
