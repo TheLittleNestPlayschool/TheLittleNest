@@ -8,7 +8,7 @@ window.LivingStage.Config = {
      * Xano "the_stage" API group.
      */
     livingStageApiUrl:
-        'PASTE_YOUR_LIVING_STAGE_API_URL_HERE'
+        'https://x8ki-letl-twmt.n7.xano.io/api:4fS4yUb-/living-stage'
 };
 
 window.addEventListener(
