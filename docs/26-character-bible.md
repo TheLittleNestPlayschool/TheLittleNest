@@ -192,17 +192,25 @@ She celebrates effort as much as achievement.
 
 Explorer.
 
+Role
+
+Explorer.
+
 Curious child.
 
 Adventure companion.
 
 Learner.
 
+Friend.
+
+Encourager.
+
+Hope giver.
+
 The child children see themselves in.
 
----
-
-## Personality
+Personality
 
 Energetic.
 
@@ -214,19 +222,27 @@ Playful.
 
 Imaginative.
 
+Kind-hearted.
+
+Optimistic.
+
+Brave in small ways.
+
 Sometimes distracted.
+
+Sometimes nervous.
 
 Always learning.
 
-Excited.
+Always hopeful.
 
-Kind-hearted.
+Always ready to try again.
 
----
-
-## Pico Should
+Pico Should
 
 Ask questions.
+
+Wonder out loud.
 
 Discover surprises.
 
@@ -234,11 +250,21 @@ Celebrate with children.
 
 Model curiosity.
 
+Model courage.
+
+Help friends.
+
+Notice when someone feels left out.
+
 Make mistakes.
 
 Learn from those mistakes.
 
+Try again.
+
 Encourage exploration.
+
+Celebrate effort.
 
 Learn good manners.
 
@@ -248,15 +274,25 @@ Learn patience.
 
 Learn confidence.
 
----
+Help children believe they can learn.
 
-## Pico Should Never
+Help children believe they are never alone.
+
+Remind children that asking questions is a strength.
+
+Show that trying is always worthwhile.
+
+Pico Should Never
 
 Ridicule.
 
 Mock.
 
+Embarrass.
+
 Create fear.
+
+Create shame.
 
 Steal important emotional moments.
 
@@ -266,13 +302,31 @@ Know all the answers.
 
 Become the teacher.
 
----
+Always succeed.
 
-## Why Pico Exists
+Pretend to be fearless.
+
+Be the hero of someone else's story.
+
+Why Pico Exists
 
 Pico is not the expert.
 
 He is learning alongside the children.
+
+He asks the questions many children are afraid to ask.
+
+He wonders about everything.
+
+Sometimes he gets things wrong.
+
+Sometimes he worries.
+
+Sometimes he needs help.
+
+Sometimes he is afraid to try.
+
+Yet he keeps trying.
 
 When Pico learns to say "please"...
 
@@ -286,26 +340,89 @@ When Pico apologises...
 
 Children learn empathy.
 
+When Pico is nervous...
+
+Children learn that courage is not the absence of fear.
+
+It is choosing to try anyway.
+
 Pico gives children permission to be imperfect.
 
----
+He reminds them that learning is an adventure, not a test.
 
-# Their Relationship
+How Pico Speaks
 
-Tita Mayumi never embarrasses Pico.
+Pico speaks with excitement.
 
-She never says,
+He speaks with curiosity.
 
-"You were wrong."
+He asks far more questions than he answers.
 
-Instead she gently asks,
+He wonders out loud.
 
-"What could we try next?"
+He notices little things others miss.
 
-Pico is comfortable making mistakes because he knows Tita Mayumi will help him learn.
+He celebrates discoveries more than achievements.
 
-Their relationship models the kind of relationship we want every teacher to build with every child.
+He laughs easily.
 
+He is amazed by ordinary things.
+
+He never pretends to know everything.
+
+He often says things like:
+
+"I wonder..."
+
+"What do you think?"
+
+"Should we try?"
+
+"Let's find out together!"
+
+Pico's Purpose
+
+Pico does not teach lessons.
+
+He creates curiosity.
+
+He does not inspire children by being perfect.
+
+He inspires them by trying.
+
+Children should see themselves in Pico.
+
+They should laugh with him.
+
+Wonder with him.
+
+Make mistakes with him.
+
+Grow with him.
+
+Over time, Pico helps children discover something very important:
+
+That learning is joyful.
+
+That asking questions is brave.
+
+That kindness is strength.
+
+That imagination has no limits.
+
+That they are capable of far more than they believed yesterday.
+
+I think there's one sentence that belongs in Pico's character because it captures everything we've talked about tonight:
+
+Pico is not the child who always knows what to do. He is the child who always believes it is worth trying.
+
+To me, that's the heart of his character.
+
+He isn't leading because he's the smartest. He's leading because when everyone else hesitates, he's the one who quietly says:
+
+"Let's see what happens."
+
+And that is exactly the kind of companion I'd want beside a child who is just beginning to discover the world.
 ---
 
 # Characters and the Living Stage
