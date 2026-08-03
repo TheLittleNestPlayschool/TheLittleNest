@@ -12,9 +12,22 @@
     </main>
 
     <script>
+        const API_BASE_URL =
+            'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0';
+
+        const API_ENDPOINTS = {
+            getContext: `${API_BASE_URL}/ta_get_context`,
+            determineTeacherState: `${API_BASE_URL}/ta_determine_teacher_state`,
+            getSessionAttendance: `${API_BASE_URL}/ta_get_session_attendance`
+        };
+
         const authToken = localStorage.getItem('authToken');
         const teacherId = localStorage.getItem('teacher_id');
         const teacherStatus = document.getElementById('teacherStatus');
+
+        let teacherContext = null;
+        let teacherState = null;
+        let sessionAttendance = null;
 
         if (!authToken || !teacherId) {
             window.location.replace('ta_loginteacher.html');
@@ -24,6 +37,166 @@
 
         async function startTeacherApp() {
             teacherStatus.textContent = "Loading today's context...";
+
+            try {
+                teacherContext = await getTeacherContext();
+
+                teacherState = await determineTeacherState(teacherContext);
+
+                const relevantSession = getRelevantSession(teacherState);
+
+                if (relevantSession?.id) {
+                    teacherStatus.textContent = 'Loading session attendance...';
+
+                    sessionAttendance = await getSessionAttendance(
+                        relevantSession.id,
+                        getTodayDateForApi()
+                    );
+                }
+
+                console.log('Teacher context:', teacherContext);
+                console.log('Teacher state:', teacherState);
+                console.log('Session attendance:', sessionAttendance);
+
+                teacherStatus.textContent = buildStatusMessage(
+                    teacherContext,
+                    teacherState,
+                    sessionAttendance
+                );
+            } catch (error) {
+                console.error('Teacher app startup failed:', error);
+
+                teacherStatus.textContent =
+                    error instanceof Error
+                        ? error.message
+                        : 'Unable to load the teacher app.';
+            }
+        }
+
+        async function getTeacherContext() {
+            return apiRequest(API_ENDPOINTS.getContext, {
+                method: 'GET'
+            });
+        }
+
+        async function determineTeacherState(context) {
+            return apiRequest(API_ENDPOINTS.determineTeacherState, {
+                method: 'POST',
+                body: {
+                    teacher: context.teacher,
+                    sessions: context.sessions,
+                    today_day_name: context.today_day_name,
+                    current_time: context.current_time
+                }
+            });
+        }
+
+        async function getSessionAttendance(sessionId, sessionDate) {
+            const query = new URLSearchParams({
+                session_id: String(sessionId),
+                session_date: sessionDate
+            });
+
+            return apiRequest(
+                `${API_ENDPOINTS.getSessionAttendance}?${query.toString()}`,
+                {
+                    method: 'GET'
+                }
+            );
+        }
+
+        async function apiRequest(url, options = {}) {
+            const method = options.method || 'GET';
+
+            const requestOptions = {
+                method,
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${authToken}`
+                }
+            };
+
+            if (options.body !== undefined) {
+                requestOptions.headers['Content-Type'] = 'application/json';
+                requestOptions.body = JSON.stringify(options.body);
+            }
+
+            const response = await fetch(url, requestOptions);
+
+            let data;
+
+            try {
+                data = await response.json();
+            } catch {
+                throw new Error('The server returned an invalid response.');
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    data.message ||
+                    data.error ||
+                    `Request failed with status ${response.status}.`
+                );
+            }
+
+            return data;
+        }
+
+        function getRelevantSession(stateData) {
+            switch (stateData.teacher_state) {
+                case 'IN_SESSION':
+                    return stateData.current_session;
+
+                case 'BETWEEN_SESSIONS':
+                    return stateData.previous_session;
+
+                case 'BEFORE_FIRST_SESSION':
+                    return stateData.next_session;
+
+                case 'AFTER_LAST_SESSION':
+                    return stateData.previous_session;
+
+                default:
+                    return null;
+            }
+        }
+
+        function getTodayDateForApi() {
+            const parts = new Intl.DateTimeFormat('en-CA', {
+                timeZone: 'Asia/Shanghai',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).formatToParts(new Date());
+
+            const values = Object.fromEntries(
+                parts
+                    .filter((part) => part.type !== 'literal')
+                    .map((part) => [part.type, part.value])
+            );
+
+            return `${values.year}-${values.month}-${values.day}`;
+        }
+
+        function buildStatusMessage(context, stateData, attendanceData) {
+            const teacherName =
+                context?.teacher?.first_name ||
+                context?.user?.name ||
+                'Teacher';
+
+            const state = stateData?.teacher_state || 'UNKNOWN';
+            const expectedCount = Array.isArray(attendanceData?.expected_students)
+                ? attendanceData.expected_students.length
+                : 0;
+            const recordedCount = Array.isArray(attendanceData?.attendance_records)
+                ? attendanceData.attendance_records.length
+                : 0;
+
+            if (attendanceData) {
+                return `${teacherName} — ${state}. ${expectedCount} expected students; ${recordedCount} attendance records.`;
+            }
+
+            return `${teacherName} — ${state}.`;
         }
     </script>
 </body>
