@@ -423,6 +423,8 @@ He isn't leading because he's the smartest. He's leading because when everyone e
 "Let's see what happens."
 
 And that is exactly the kind of companion I'd want beside a child who is just beginning to discover the world.
+
+Pico is not the child who always knows what to do. He is the child who always believes it is worth trying.
 ---
 
 # Characters and the Living Stage
