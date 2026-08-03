@@ -170,6 +170,8 @@
                     return teacherState.next_session;
 
                 case 'BETWEEN_SESSIONS':
+                    return teacherState.next_session;
+
                 case 'AFTER_LAST_SESSION':
                     return teacherState.previous_session;
 
@@ -211,17 +213,47 @@
             const state =
                 teacherState.teacher_state || 'UNKNOWN';
 
-            const expectedStudentCount =
+            const studentCount =
                 attendance?.expected_students?.length ?? 0;
 
-            teacherStatus.textContent =
-                `${teacherName} — ${state}` +
-                (
-                    attendance
-                        ? ` — ${expectedStudentCount} expected student` +
-                          (expectedStudentCount === 1 ? '' : 's')
-                        : ''
-                );
+            const studentWord =
+                studentCount === 1 ? 'student' : 'students';
+
+            let message;
+
+            switch (state) {
+                case 'BEFORE_FIRST_SESSION':
+                    message =
+                        `Good morning ${teacherName}. ` +
+                        `Your first session has ${studentCount} ` +
+                        `enrolled ${studentWord}.`;
+                    break;
+
+                case 'IN_SESSION':
+                    message =
+                        `Your current session has ${studentCount} ` +
+                        `enrolled ${studentWord}.`;
+                    break;
+
+                case 'BETWEEN_SESSIONS':
+                    message =
+                        `Your next session has ${studentCount} ` +
+                        `enrolled ${studentWord}.`;
+                    break;
+
+                case 'AFTER_LAST_SESSION':
+                    message =
+                        `Today's final session had ${studentCount} ` +
+                        `enrolled ${studentWord}.`;
+                    break;
+
+                default:
+                    message =
+                        `Hello ${teacherName}. ` +
+                        `Unable to determine today's schedule.`;
+            }
+
+            teacherStatus.textContent = message;
         }
     </script>
 </body>
