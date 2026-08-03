@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,12 +14,16 @@
     <script>
         const authToken = localStorage.getItem('authToken');
         const teacherId = localStorage.getItem('teacher_id');
+        const teacherStatus = document.getElementById('teacherStatus');
 
         if (!authToken || !teacherId) {
-            window.location.replace('loginteacher.html');
+            window.location.replace('ta_loginteacher.html');
         } else {
-            document.getElementById('teacherStatus').textContent =
-                'Teacher session is active.';
+            startTeacherApp();
+        }
+
+        async function startTeacherApp() {
+            teacherStatus.textContent = "Loading today's context...";
         }
     </script>
 </body>
