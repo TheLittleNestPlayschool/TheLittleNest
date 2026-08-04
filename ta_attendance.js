@@ -1,76 +1,52 @@
-import {
-    getState
-} from './ta_state.js';
+import {getState} from './ta_state.js';
+import {getWorkspace,clearWorkspace} from './ta_ui.js';
+import {showStudentPicker} from './ta_student_picker.js';
+import {postAttendance} from './ta_attendance_post.js';
 
-import {
-    getWorkspace,
-    clearWorkspace
-} from './ta_ui.js';
+let addedStudents=[];
 
-import {
-    showStudentPicker
-} from './ta_student_picker.js';
-
-let addedStudents = [];
-
-export function renderAttendanceModule() {
-    addedStudents = [];
-
+export function renderAttendanceModule(){
+    addedStudents=[];
     clearWorkspace();
-
     renderAttendanceForm();
 }
 
-function renderAttendanceForm() {
-    const state = getState();
+function renderAttendanceForm(){
+    const state=getState();
+    const expectedStudents=state.attendance?.expected_students||[];
+    const workspace=getWorkspace();
 
-    const expectedStudents =
-        state.attendance?.expected_students || [];
+    workspace.innerHTML='';
 
-    const workspace = getWorkspace();
+    const form=document.createElement('form');
+    form.id='attendanceForm';
 
-    workspace.innerHTML = '';
+    expectedStudents.forEach(student=>{
+        form.appendChild(
+            createAttendanceRow(
+                student,
+                'scheduled'
+            )
+        );
+    });
 
-    const form =
-        document.createElement('form');
+    addedStudents.forEach(student=>{
+        form.appendChild(
+            createAttendanceRow(
+                student,
+                student.attendance_source,
+                true
+            )
+        );
+    });
 
-    form.id = 'attendanceForm';
-
-    expectedStudents.forEach(
-        (student) => {
-            form.appendChild(
-                createAttendanceRow(
-                    student,
-                    'scheduled'
-                )
-            );
-        }
-    );
-
-    addedStudents.forEach(
-        (student) => {
-            form.appendChild(
-                createAttendanceRow(
-                    student,
-                    student.attendance_source,
-                    true
-                )
-            );
-        }
-    );
-
-    const findStudentText =
-        document.createElement('p');
-
-    findStudentText.textContent =
+    const findStudentText=document.createElement('p');
+    findStudentText.textContent=
         "Don't see the student here?";
 
-    const findStudentButton =
-        document.createElement('button');
-
-    findStudentButton.type = 'button';
-
-    findStudentButton.textContent =
+    const findStudentButton=document.createElement('button');
+    findStudentButton.type='button';
+    findStudentButton.textContent=
         'View All Location Students';
 
     findStudentButton.addEventListener(
@@ -78,12 +54,9 @@ function renderAttendanceForm() {
         openStudentPicker
     );
 
-    const submitButton =
-        document.createElement('button');
-
-    submitButton.type = 'button';
-
-    submitButton.textContent =
+    const submitButton=document.createElement('button');
+    submitButton.type='button';
+    submitButton.textContent=
         'Collect Attendance';
 
     submitButton.addEventListener(
@@ -93,9 +66,7 @@ function renderAttendanceForm() {
 
     form.appendChild(findStudentText);
     form.appendChild(findStudentButton);
-    form.appendChild(
-        document.createElement('br')
-    );
+    form.appendChild(document.createElement('br'));
     form.appendChild(submitButton);
 
     workspace.appendChild(form);
@@ -104,18 +75,16 @@ function renderAttendanceForm() {
 function createAttendanceRow(
     student,
     attendanceSource,
-    canRemove = false
-) {
-    const row =
-        document.createElement('div');
+    canRemove=false
+){
+    const row=document.createElement('div');
+    row.className='attendance-row';
 
-    row.className = 'attendance-row';
-
-    const studentName =
-        student.name ||
+    const studentName=
+        student.name||
         `Student ${student.id}`;
 
-    row.innerHTML = `
+    row.innerHTML=`
         <h3>${studentName}</h3>
 
         <label>
@@ -137,29 +106,30 @@ function createAttendanceRow(
         </label>
     `;
 
-    row.dataset.attendanceSource =
+    row.dataset.attendanceSource=
         attendanceSource;
 
-    if (canRemove) {
-        const sourceText =
+    if(canRemove){
+
+        const sourceText=
             document.createElement('p');
 
-        sourceText.textContent =
+        sourceText.textContent=
             `Attendance source: ${
                 formatAttendanceSource(
                     attendanceSource
                 )
             }`;
 
-        const removeButton =
+        const removeButton=
             document.createElement('button');
 
-        removeButton.type = 'button';
-        removeButton.textContent = 'Remove';
+        removeButton.type='button';
+        removeButton.textContent='Remove';
 
         removeButton.addEventListener(
             'click',
-            () => {
+            ()=>{
                 removeAddedStudent(
                     student.id
                 );
@@ -177,74 +147,76 @@ function createAttendanceRow(
     return row;
 }
 
-function openStudentPicker() {
-    const state = getState();
+function openStudentPicker(){
 
-    const expectedStudents =
-        state.attendance?.expected_students || [];
+    const state=getState();
 
-    const excludedStudentIds = [
+    const expectedStudents=
+        state.attendance?.expected_students||[];
+
+    const excludedStudentIds=[
         ...expectedStudents.map(
-            (student) => student.id
+            student=>student.id
         ),
         ...addedStudents.map(
-            (student) => student.id
+            student=>student.id
         )
     ];
 
     showStudentPicker({
         locationStudents:
-            state.locationStudents || [],
-
+            state.locationStudents||[],
         excludedStudentIds,
-
         onStudentSelected:
             addStudentToAttendance,
-
         onCancel:
             renderAttendanceForm
     });
+
 }
 
-function addStudentToAttendance(
-    student
-) {
+function addStudentToAttendance(student){
     addedStudents.push(student);
-
     renderAttendanceForm();
 }
 
-function removeAddedStudent(
-    studentId
-) {
-    addedStudents =
+function removeAddedStudent(studentId){
+    addedStudents=
         addedStudents.filter(
-            (student) =>
-                student.id !== studentId
+            student=>
+                student.id!==studentId
         );
 
     renderAttendanceForm();
 }
 
-function handleAttendanceSubmit() {
-    const attendanceDraft =
+async function handleAttendanceSubmit(){
+
+    const attendanceDraft=
         getAttendanceDraft();
 
+    const result=
+        await postAttendance(
+            attendanceDraft
+        );
+
     console.log(
-        'Attendance Draft:',
-        attendanceDraft
+        'ta_post_attendance:',
+        result
     );
+
 }
 
-export function getAttendanceDraft() {
-    const state = getState();
+export function getAttendanceDraft(){
 
-    const expectedStudents =
-        state.attendance?.expected_students || [];
+    const state=getState();
 
-    const allStudents = [
+    const expectedStudents=
+        state.attendance?.expected_students||[];
+
+    const allStudents=[
         ...expectedStudents.map(
-            (student) => ({
+            student=>({
                 ...student,
                 attendance_source:
                     'scheduled'
@@ -253,32 +225,34 @@ export function getAttendanceDraft() {
         ...addedStudents
     ];
 
-    return allStudents.map(
-        (student) => {
-            const selected =
-                document.querySelector(
-                    `input[name="student_${student.id}"]:checked`
-                );
+    return allStudents.map(student=>{
 
-            return {
-                student_id: student.id,
+        const selected=
+            document.querySelector(
+                `input[name="student_${student.id}"]:checked`
+            );
 
-                status:
-                    selected
-                        ? selected.value
-                        : null,
+        return{
+            student_id:
+                student.id,
 
-                attendance_source:
-                    student.attendance_source
-            };
-        }
-    );
+            status:
+                selected
+                    ? selected.value
+                    : null,
+
+            attendance_source:
+                student.attendance_source
+        };
+
+    });
+
 }
 
-function formatAttendanceSource(
-    source
-) {
-    switch (source) {
+function formatAttendanceSource(source){
+
+    switch(source){
+
         case 'makeup':
             return 'Makeup Class';
 
@@ -293,5 +267,7 @@ function formatAttendanceSource(
 
         default:
             return source;
+
     }
+
 }
