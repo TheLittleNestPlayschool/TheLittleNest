@@ -2,28 +2,22 @@ import {getState} from './ta_state.js';
 import {getWorkspace,clearWorkspace} from './ta_ui.js';
 import {showStudentPicker} from './ta_student_picker.js';
 import {postAttendance} from './ta_attendance_post.js';
-
 let addedStudents=[];
 let attendanceSelections={};
-
 export function renderAttendanceModule(){
     addedStudents=[];
     attendanceSelections={};
     clearWorkspace();
     renderAttendanceForm();
 }
-
 function renderAttendanceForm(){
     const state=getState();
     const expectedStudents=
         state.attendance?.expected_students||[];
     const workspace=getWorkspace();
-
     workspace.innerHTML='';
-
     const form=document.createElement('form');
     form.id='attendanceForm';
-
     expectedStudents.forEach(student=>{
         form.appendChild(
             createAttendanceRow(
@@ -32,7 +26,6 @@ function renderAttendanceForm(){
             )
         );
     });
-
     addedStudents.forEach(student=>{
         form.appendChild(
             createAttendanceRow(
@@ -43,15 +36,10 @@ function renderAttendanceForm(){
         );
     });
 
-    const findStudentText=
-        document.createElement('p');
-
+    const findStudentText=document.createElement('p');
     findStudentText.textContent=
         "Don't see the student here?";
-
-    const findStudentButton=
-        document.createElement('button');
-
+    const findStudentButton=document.createElement('button');
     findStudentButton.type='button';
     findStudentButton.textContent=
         'View All Location Students';
