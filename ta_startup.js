@@ -1,4 +1,4 @@
-import { API_URLS } from './ta_config.js';
+import {API_URLS} from './ta_config.js';
 
 import {
     apiRequest,
@@ -15,28 +15,28 @@ import {
 } from './ta_state.js';
 
 import {
-    renderAttendanceModule
-} from './ta_attendance.js';
+    startTeacherExperience
+} from './ta_experience_director.js';
 
-const teacherStatus =
+const teacherStatus=
     document.getElementById('teacherStatus');
 
-export async function startTeacherApp() {
+export async function startTeacherApp(){
 
-    if (!requireTeacherLogin()) {
+    if(!requireTeacherLogin()){
         return;
     }
 
-    try {
+    try{
 
-        teacherStatus.textContent =
+        teacherStatus.textContent=
             "Loading today's context...";
 
         //------------------------------------
         // Teacher Context
         //------------------------------------
 
-        const context =
+        const context=
             await apiRequest(
                 API_URLS.getContext
             );
@@ -52,7 +52,7 @@ export async function startTeacherApp() {
         // Teacher State
         //------------------------------------
 
-        const stateUrl =
+        const stateUrl=
             new URL(
                 API_URLS.determineTeacherState
             );
@@ -60,28 +60,28 @@ export async function startTeacherApp() {
         stateUrl.searchParams.set(
             'teacher',
             JSON.stringify(
-                context.teacher || {}
+                context.teacher||{}
             )
         );
 
         stateUrl.searchParams.set(
             'sessions',
             JSON.stringify(
-                context.sessions || []
+                context.sessions||[]
             )
         );
 
         stateUrl.searchParams.set(
             'today_day_name',
-            context.today_day_name || ''
+            context.today_day_name||''
         );
 
         stateUrl.searchParams.set(
             'current_time',
-            context.current_time || ''
+            context.current_time||''
         );
 
-        const teacherState =
+        const teacherState=
             await apiRequest(
                 stateUrl.toString()
             );
@@ -99,7 +99,7 @@ export async function startTeacherApp() {
         // Relevant Session
         //------------------------------------
 
-        const relevantSession =
+        const relevantSession=
             getRelevantSession(
                 teacherState
             );
@@ -112,12 +112,12 @@ export async function startTeacherApp() {
         // Session Attendance
         //------------------------------------
 
-        if (relevantSession?.id) {
+        if(relevantSession?.id){
 
-            teacherStatus.textContent =
+            teacherStatus.textContent=
                 'Loading session attendance...';
 
-            const attendanceUrl =
+            const attendanceUrl=
                 new URL(
                     API_URLS.getSessionAttendance
                 );
@@ -134,7 +134,7 @@ export async function startTeacherApp() {
                 getTodayDate()
             );
 
-            const attendance =
+            const attendance=
                 await apiRequest(
                     attendanceUrl.toString()
                 );
@@ -153,10 +153,10 @@ export async function startTeacherApp() {
         // All Location Students
         //------------------------------------
 
-        teacherStatus.textContent =
+        teacherStatus.textContent=
             'Loading location students...';
 
-        const locationStudents =
+        const locationStudents=
             await apiRequest(
                 API_URLS.getLocationStudents
             );
@@ -174,7 +174,7 @@ export async function startTeacherApp() {
         // Startup Complete
         //------------------------------------
 
-        teacherStatus.textContent =
+        teacherStatus.textContent=
             'Teacher session loaded.';
 
         console.log(
@@ -182,16 +182,16 @@ export async function startTeacherApp() {
             getState()
         );
 
-        renderAttendanceModule();
+        startTeacherExperience();
 
-    } catch (error) {
+    }catch(error){
 
         console.error(
             'Teacher app startup failed:',
             error
         );
 
-        teacherStatus.textContent =
+        teacherStatus.textContent=
             error instanceof Error
                 ? error.message
                 : 'Unable to load Teacher App.';
@@ -200,45 +200,45 @@ export async function startTeacherApp() {
 
 function getRelevantSession(
     teacherState
-) {
+){
 
-    switch (
+    switch(
         teacherState.teacher_state
-    ) {
+    ){
 
         case 'IN_SESSION':
-            return (
+            return(
                 teacherState.current_session
             );
 
         case 'BEFORE_FIRST_SESSION':
-            return (
+            return(
                 teacherState.next_session
             );
 
         case 'BETWEEN_SESSIONS':
-            return (
+            return(
                 teacherState.next_session
             );
 
         case 'AFTER_LAST_SESSION':
-            return (
+            return(
                 teacherState.previous_session
             );
 
         default:
-            return (
-                teacherState.current_session ||
-                teacherState.previous_session ||
-                teacherState.next_session ||
+            return(
+                teacherState.current_session||
+                teacherState.previous_session||
+                teacherState.next_session||
                 null
             );
     }
 }
 
-function getTodayDate() {
+function getTodayDate(){
 
-    const parts =
+    const parts=
         new Intl.DateTimeFormat(
             'en-CA',
             {
@@ -255,19 +255,19 @@ function getTodayDate() {
             new Date()
         );
 
-    const values =
+    const values=
         Object.fromEntries(
             parts.map(
-                (part) => [
+                part=>[
                     part.type,
                     part.value
                 ]
             )
         );
 
-    return (
-        `${values.year}-` +
-        `${values.month}-` +
+    return(
+        `${values.year}-`+
+        `${values.month}-`+
         `${values.day}`
     );
 }
