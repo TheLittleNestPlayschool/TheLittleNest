@@ -1,0 +1,231 @@
+/*==================================================
+  Teacher Stage
+  Dynamic Module Card System
+==================================================*/
+
+.teacher-stage-context{
+    flex:0 0 auto;
+    padding:14px 18px;
+    background:rgba(255,255,255,.82);
+    border:1px solid rgba(255,255,255,.72);
+    border-radius:18px;
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    box-shadow:0 8px 22px rgba(15,23,42,.12);
+    font-size:.95rem;
+    font-weight:600;
+    color:#334155;
+}
+
+/*==================================================
+  Module Card
+==================================================*/
+
+.teacher-module-card{
+    flex:0 0 auto;
+    width:100%;
+    background:rgba(255,255,255,.86);
+    border:1px solid rgba(255,255,255,.8);
+    border-radius:20px;
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    box-shadow:0 8px 22px rgba(15,23,42,.13);
+    overflow:hidden;
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        background-color .2s ease,
+        border-color .2s ease;
+}
+
+.teacher-module-card.is-expanded{
+    background:rgba(255,255,255,.95);
+    box-shadow:0 12px 30px rgba(15,23,42,.18);
+}
+
+.teacher-module-card.is-collapsed{
+    cursor:pointer;
+}
+
+.teacher-module-card.is-collapsed:hover{
+    transform:translateY(-2px);
+    box-shadow:0 11px 26px rgba(15,23,42,.17);
+}
+
+.teacher-module-card.is-collapsed:active{
+    transform:translateY(0);
+}
+
+/*==================================================
+  Module Header
+==================================================*/
+
+.teacher-module-header{
+    min-height:68px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:15px 18px;
+    outline:none;
+}
+
+.teacher-module-card.is-expanded .teacher-module-header{
+    border-bottom:1px solid rgba(148,163,184,.22);
+}
+
+.teacher-module-card.is-collapsed .teacher-module-header:focus-visible{
+    box-shadow:inset 0 0 0 3px rgba(59,130,246,.32);
+}
+
+.teacher-module-identity{
+    min-width:0;
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.teacher-module-icon{
+    flex:0 0 auto;
+    width:42px;
+    height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    background:linear-gradient(
+        145deg,
+        rgba(255,255,255,.98),
+        rgba(241,245,249,.9)
+    );
+    border:1px solid rgba(148,163,184,.22);
+    box-shadow:0 4px 10px rgba(15,23,42,.1);
+    font-size:1.35rem;
+    line-height:1;
+}
+
+.teacher-module-text{
+    min-width:0;
+}
+
+.teacher-module-title{
+    margin:0;
+    color:#1e293b;
+    font-size:1.05rem;
+    font-weight:800;
+    line-height:1.2;
+}
+
+.teacher-module-subtitle{
+    margin:4px 0 0;
+    color:#64748b;
+    font-size:.83rem;
+    font-weight:600;
+    line-height:1.35;
+}
+
+.teacher-module-status{
+    flex:0 0 auto;
+    padding:5px 10px;
+    border-radius:999px;
+    background:#fef08a;
+    border:1px solid #eab308;
+    color:#854d0e;
+    font-size:.72rem;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+/*==================================================
+  Module Content
+==================================================*/
+
+.teacher-module-content{
+    padding:18px;
+}
+
+.teacher-module-placeholder{
+    margin:0;
+    padding:8px 0;
+    color:#64748b;
+    font-size:.9rem;
+    line-height:1.5;
+}
+
+/*==================================================
+  Module States
+==================================================*/
+
+.teacher-module-card.is-completed{
+    border-color:rgba(13,148,136,.45);
+}
+
+.teacher-module-card.is-completed .teacher-module-header{
+    background:rgba(45,212,191,.1);
+}
+
+.teacher-module-card.is-completed .teacher-module-icon{
+    background:rgba(204,251,241,.95);
+    border-color:rgba(13,148,136,.28);
+}
+
+.teacher-module-card.needs-attention{
+    border-color:rgba(234,179,8,.58);
+}
+
+.teacher-module-card.needs-attention .teacher-module-header{
+    background:rgba(254,240,138,.17);
+}
+
+.teacher-module-card.needs-attention .teacher-module-icon{
+    background:rgba(254,249,195,.96);
+    border-color:rgba(234,179,8,.32);
+}
+
+/*==================================================
+  Responsive
+==================================================*/
+
+@media(max-width:600px){
+
+    .teacher-stage-context{
+        padding:12px 14px;
+        border-radius:16px;
+        font-size:.88rem;
+    }
+
+    .teacher-module-card{
+        border-radius:17px;
+    }
+
+    .teacher-module-header{
+        min-height:62px;
+        gap:10px;
+        padding:12px 14px;
+    }
+
+    .teacher-module-icon{
+        width:38px;
+        height:38px;
+        border-radius:12px;
+        font-size:1.2rem;
+    }
+
+    .teacher-module-title{
+        font-size:1rem;
+    }
+
+    .teacher-module-subtitle{
+        font-size:.78rem;
+    }
+
+    .teacher-module-status{
+        padding:4px 8px;
+        font-size:.66rem;
+    }
+
+    .teacher-module-content{
+        padding:15px;
+    }
+
+}
