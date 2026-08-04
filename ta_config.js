@@ -13,7 +13,10 @@ const API_URLS = {
         `${API_BASE_URL}/ta_get_session_attendance`,
 
     getLocationStudents:
-        `${API_BASE_URL}/ta_get_location_students`
+        `${API_BASE_URL}/ta_get_location_students`,
+
+    postAttendance:
+        `${API_BASE_URL}/ta_post_attendance`
 
 };
 
