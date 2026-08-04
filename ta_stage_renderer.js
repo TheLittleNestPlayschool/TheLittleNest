@@ -1,12 +1,14 @@
 import {
-    getTeacherStage,
-    setActiveWorkspace
+    getTeacherStage
 } from './ta_ui.js';
 
 import {
-    getModule,
-    moduleCanRender
+    getModule
 } from './ta_module_registry.js';
+
+import {
+    renderModule
+} from './ta_module_manager.js';
 
 export function renderStage(stagePlan){
     const stage=getTeacherStage();
@@ -240,7 +242,6 @@ function createModuleCard(
     return{
         card,
         content,
-        module,
         modulePlan,
         isExpanded
     };
@@ -251,7 +252,6 @@ function activateModuleCard(
 ){
     const {
         content,
-        module,
         modulePlan,
         isExpanded
     }=moduleCard;
@@ -263,27 +263,10 @@ function activateModuleCard(
         return;
     }
 
-    if(moduleCanRender(modulePlan.id)){
-        setActiveWorkspace(
-            content.id
-        );
-
-        module.renderer();
-
-        return;
-    }
-
-    const message=
-        document.createElement('p');
-
-    message.className=
-        'teacher-module-placeholder';
-
-    message.textContent=
-        module?.description||
-        'This module is not available yet.';
-
-    content.appendChild(message);
+    renderModule(
+        modulePlan.id,
+        content
+    );
 }
 
 function expandModule(
