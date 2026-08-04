@@ -4,16 +4,19 @@ import {showStudentPicker} from './ta_student_picker.js';
 import {postAttendance} from './ta_attendance_post.js';
 
 let addedStudents=[];
+let attendanceSelections={};
 
 export function renderAttendanceModule(){
     addedStudents=[];
+    attendanceSelections={};
     clearWorkspace();
     renderAttendanceForm();
 }
 
 function renderAttendanceForm(){
     const state=getState();
-    const expectedStudents=state.attendance?.expected_students||[];
+    const expectedStudents=
+        state.attendance?.expected_students||[];
     const workspace=getWorkspace();
 
     workspace.innerHTML='';
@@ -40,11 +43,15 @@ function renderAttendanceForm(){
         );
     });
 
-    const findStudentText=document.createElement('p');
+    const findStudentText=
+        document.createElement('p');
+
     findStudentText.textContent=
         "Don't see the student here?";
 
-    const findStudentButton=document.createElement('button');
+    const findStudentButton=
+        document.createElement('button');
+
     findStudentButton.type='button';
     findStudentButton.textContent=
         'View All Location Students';
@@ -54,7 +61,9 @@ function renderAttendanceForm(){
         openStudentPicker
     );
 
-    const submitButton=document.createElement('button');
+    const submitButton=
+        document.createElement('button');
+
     submitButton.type='button';
     submitButton.textContent=
         'Collect Attendance';
@@ -66,7 +75,9 @@ function renderAttendanceForm(){
 
     form.appendChild(findStudentText);
     form.appendChild(findStudentButton);
-    form.appendChild(document.createElement('br'));
+    form.appendChild(
+        document.createElement('br')
+    );
     form.appendChild(submitButton);
 
     workspace.appendChild(form);
@@ -109,11 +120,59 @@ function createAttendanceRow(
     row.dataset.attendanceSource=
         attendanceSource;
 
-    if(canRemove){
+    const presentInput=
         row.querySelector(
             'input[value="present"]'
-        ).checked=true;
+        );
 
+    const absentInput=
+        row.querySelector(
+            'input[value="absent"]'
+        );
+
+    if(
+        canRemove&&
+        !attendanceSelections[student.id]
+    ){
+        attendanceSelections[student.id]=
+            'present';
+    }
+
+    if(
+        attendanceSelections[student.id]===
+        'present'
+    ){
+        presentInput.checked=true;
+    }
+
+    if(
+        attendanceSelections[student.id]===
+        'absent'
+    ){
+        absentInput.checked=true;
+    }
+
+    presentInput.addEventListener(
+        'change',
+        ()=>{
+            if(presentInput.checked){
+                attendanceSelections[student.id]=
+                    'present';
+            }
+        }
+    );
+
+    absentInput.addEventListener(
+        'change',
+        ()=>{
+            if(absentInput.checked){
+                attendanceSelections[student.id]=
+                    'absent';
+            }
+        }
+    );
+
+    if(canRemove){
         const sourceText=
             document.createElement('p');
 
@@ -168,9 +227,12 @@ function openStudentPicker(){
     showStudentPicker({
         locationStudents:
             state.locationStudents||[],
+
         excludedStudentIds,
+
         onStudentSelected:
             addStudentToAttendance,
+
         onCancel:
             renderAttendanceForm
     });
@@ -178,6 +240,10 @@ function openStudentPicker(){
 
 function addStudentToAttendance(student){
     addedStudents.push(student);
+
+    attendanceSelections[student.id]=
+        'present';
+
     renderAttendanceForm();
 }
 
@@ -187,6 +253,10 @@ function removeAddedStudent(studentId){
             student=>
                 student.id!==studentId
         );
+
+    delete attendanceSelections[
+        studentId
+    ];
 
     renderAttendanceForm();
 }
@@ -223,25 +293,18 @@ export function getAttendanceDraft(){
         ...addedStudents
     ];
 
-    return allStudents.map(student=>{
-        const selected=
-            document.querySelector(
-                `input[name="student_${student.id}"]:checked`
-            );
+    return allStudents.map(student=>({
+        student_id:
+            student.id,
 
-        return{
-            student_id:
-                student.id,
+        status:
+            attendanceSelections[
+                student.id
+            ]||null,
 
-            status:
-                selected
-                    ? selected.value
-                    : null,
-
-            attendance_source:
-                student.attendance_source
-        };
-    });
+        attendance_source:
+            student.attendance_source
+    }));
 }
 
 function formatAttendanceSource(source){
