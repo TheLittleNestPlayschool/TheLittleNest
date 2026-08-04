@@ -3,258 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>The Little Nest Playschool — Teacher App</title>
 </head>
+
 <body>
     <main>
         <h1>Teacher Experience Builder</h1>
-        <p id="teacherStatus">Loading teacher session...</p>
+
+        <p id="teacherStatus">
+            Loading teacher session...
+        </p>
+
+        <section
+            id="teacherWorkspace"
+            aria-live="polite"
+        ></section>
     </main>
 
-    <script>
-        const API_BASE_URL =
-            'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0';
+    <script type="module">
+        import {
+            startTeacherApp
+        } from './ta_startup.js';
 
-        const API_URLS = {
-            getContext: `${API_BASE_URL}/ta_get_context`,
-            determineTeacherState:
-                `${API_BASE_URL}/ta_determine_teacher_state`,
-            getSessionAttendance:
-                `${API_BASE_URL}/ta_get_session_attendance`
-        };
-
-        const authToken = localStorage.getItem('authToken');
-        const teacherId = localStorage.getItem('teacher_id');
-        const teacherStatus = document.getElementById('teacherStatus');
-
-        if (!authToken || !teacherId) {
-            window.location.replace('ta_loginteacher.html');
-        } else {
-            startTeacherApp();
-        }
-
-        async function startTeacherApp() {
-            try {
-                teacherStatus.textContent =
-                    "Loading today's context...";
-
-                const context = await apiRequest(
-                    API_URLS.getContext
-                );
-
-                console.log('ta_get_context:', context);
-
-                const stateUrl = new URL(
-                    API_URLS.determineTeacherState
-                );
-
-                stateUrl.searchParams.set(
-                    'teacher',
-                    JSON.stringify(context.teacher || {})
-                );
-
-                stateUrl.searchParams.set(
-                    'sessions',
-                    JSON.stringify(context.sessions || [])
-                );
-
-                stateUrl.searchParams.set(
-                    'today_day_name',
-                    context.today_day_name || ''
-                );
-
-                stateUrl.searchParams.set(
-                    'current_time',
-                    context.current_time || ''
-                );
-
-                const teacherState = await apiRequest(
-                    stateUrl.toString()
-                );
-
-                console.log(
-                    'ta_determine_teacher_state:',
-                    teacherState
-                );
-
-                const relevantSession =
-                    getRelevantSession(teacherState);
-
-                let attendance = null;
-
-                if (relevantSession && relevantSession.id) {
-                    teacherStatus.textContent =
-                        'Loading session attendance...';
-
-                    const attendanceUrl = new URL(
-                        API_URLS.getSessionAttendance
-                    );
-
-                    attendanceUrl.searchParams.set(
-                        'session_id',
-                        String(relevantSession.id)
-                    );
-
-                    attendanceUrl.searchParams.set(
-                        'session_date',
-                        getTodayDate()
-                    );
-
-                    attendance = await apiRequest(
-                        attendanceUrl.toString()
-                    );
-
-                    console.log(
-                        'ta_get_session_attendance:',
-                        attendance
-                    );
-                }
-
-                window.teacherAppData = {
-                    context,
-                    teacherState,
-                    attendance
-                };
-
-                renderStartupStatus(
-                    context,
-                    teacherState,
-                    attendance
-                );
-
-            } catch (error) {
-                console.error('Teacher app startup failed:', error);
-
-                teacherStatus.textContent =
-                    error instanceof Error
-                        ? error.message
-                        : 'Unable to load the teacher app.';
-            }
-        }
-
-        async function apiRequest(url) {
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                }
-            });
-
-            let data;
-
-            try {
-                data = await response.json();
-            } catch {
-                data = null;
-            }
-
-            if (!response.ok) {
-                const message =
-                    data?.message ||
-                    data?.error ||
-                    `Request failed with status ${response.status}.`;
-
-                throw new Error(message);
-            }
-
-            return data;
-        }
-
-        function getRelevantSession(teacherState) {
-            switch (teacherState.teacher_state) {
-                case 'IN_SESSION':
-                    return teacherState.current_session;
-
-                case 'BEFORE_FIRST_SESSION':
-                    return teacherState.next_session;
-
-                case 'BETWEEN_SESSIONS':
-                    return teacherState.next_session;
-
-                case 'AFTER_LAST_SESSION':
-                    return teacherState.previous_session;
-
-                default:
-                    return (
-                        teacherState.current_session ||
-                        teacherState.previous_session ||
-                        teacherState.next_session ||
-                        null
-                    );
-            }
-        }
-
-        function getTodayDate() {
-            const parts = new Intl.DateTimeFormat('en-CA', {
-                timeZone: 'Asia/Shanghai',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            }).formatToParts(new Date());
-
-            const values = Object.fromEntries(
-                parts.map((part) => [part.type, part.value])
-            );
-
-            return `${values.year}-${values.month}-${values.day}`;
-        }
-
-        function renderStartupStatus(
-            context,
-            teacherState,
-            attendance
-        ) {
-            const teacherName =
-                context.teacher?.first_name ||
-                context.user?.name ||
-                'Teacher';
-
-            const state =
-                teacherState.teacher_state || 'UNKNOWN';
-
-            const studentCount =
-                attendance?.expected_students?.length ?? 0;
-
-            const studentWord =
-                studentCount === 1 ? 'student' : 'students';
-
-            let message;
-
-            switch (state) {
-                case 'BEFORE_FIRST_SESSION':
-                    message =
-                        `Good morning ${teacherName}. ` +
-                        `Your first session has ${studentCount} ` +
-                        `enrolled ${studentWord}.`;
-                    break;
-
-                case 'IN_SESSION':
-                    message =
-                        `Your current session has ${studentCount} ` +
-                        `enrolled ${studentWord}.`;
-                    break;
-
-                case 'BETWEEN_SESSIONS':
-                    message =
-                        `Your next session has ${studentCount} ` +
-                        `enrolled ${studentWord}.`;
-                    break;
-
-                case 'AFTER_LAST_SESSION':
-                    message =
-                        `Today's final session had ${studentCount} ` +
-                        `enrolled ${studentWord}.`;
-                    break;
-
-                default:
-                    message =
-                        `Hello ${teacherName}. ` +
-                        `Unable to determine today's schedule.`;
-            }
-
-            teacherStatus.textContent = message;
-        }
+        startTeacherApp();
     </script>
 </body>
 </html>
