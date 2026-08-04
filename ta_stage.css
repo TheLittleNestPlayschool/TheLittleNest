@@ -28,7 +28,7 @@
         box-shadow .2s ease;
 }
 .teacher-module-card.is-expanded{
-    background:rgba(255,255,255,.05);
+    background:rgba(255,255,255,.18);
      box-shadow:
         0 12px 36px
         rgba(0,0,0,.16);
@@ -38,7 +38,7 @@
 }
 .teacher-module-card.is-collapsed:hover{
     transform:translateY(-1px);
-    background:rgba(255,255,255,.05);
+    background:rgba(255,255,255,.12);
 }
 .teacher-module-card.is-collapsed:active{
     transform:translateY(0);
