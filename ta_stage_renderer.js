@@ -1,6 +1,5 @@
 import {
     getTeacherStage,
-    clearTeacherStage,
     setActiveWorkspace
 } from './ta_ui.js';
 
@@ -10,13 +9,13 @@ import {
 } from './ta_module_registry.js';
 
 export function renderStage(stagePlan){
-    clearTeacherStage();
-
     const stage=getTeacherStage();
 
     if(!stage){
         return;
     }
+
+    stage.innerHTML='';
 
     if(stagePlan.context){
         stage.appendChild(
@@ -29,13 +28,27 @@ export function renderStage(stagePlan){
     const modules=
         stagePlan.modules||[];
 
-    modules.slice(0,6).forEach(
-        (modulePlan,index)=>{
-            stage.appendChild(
+    const moduleCards=
+        modules.slice(0,6).map(
+            (modulePlan,index)=>
                 createModuleCard(
                     modulePlan,
                     index
                 )
+        );
+
+    moduleCards.forEach(
+        moduleCard=>{
+            stage.appendChild(
+                moduleCard.card
+            );
+        }
+    );
+
+    moduleCards.forEach(
+        moduleCard=>{
+            activateModuleCard(
+                moduleCard
             );
         }
     );
@@ -118,20 +131,46 @@ function createModuleCard(
 
     card.appendChild(header);
 
-    if(!isExpanded){
-        return card;
+    let content=null;
+
+    if(isExpanded){
+        content=
+            document.createElement('div');
+
+        content.className=
+            'teacher-module-content';
+
+        content.id=
+            `teacherModule_${modulePlan.id}`;
+
+        card.appendChild(content);
     }
 
-    const content=
-        document.createElement('div');
+    return{
+        card,
+        content,
+        module,
+        modulePlan,
+        isExpanded
+    };
+}
 
-    content.className=
-        'teacher-module-content';
+function activateModuleCard(
+    moduleCard
+){
+    const {
+        content,
+        module,
+        modulePlan,
+        isExpanded
+    }=moduleCard;
 
-    content.id=
-        `teacherModule_${modulePlan.id}`;
-
-    card.appendChild(content);
+    if(
+        !isExpanded||
+        !content
+    ){
+        return;
+    }
 
     if(moduleCanRender(modulePlan.id)){
         setActiveWorkspace(
@@ -139,19 +178,19 @@ function createModuleCard(
         );
 
         module.renderer();
-    }else{
-        const message=
-            document.createElement('p');
 
-        message.className=
-            'teacher-module-placeholder';
-
-        message.textContent=
-            module?.description||
-            'This module is not available yet.';
-
-        content.appendChild(message);
+        return;
     }
 
-    return card;
+    const message=
+        document.createElement('p');
+
+    message.className=
+        'teacher-module-placeholder';
+
+    message.textContent=
+        module?.description||
+        'This module is not available yet.';
+
+    content.appendChild(message);
 }
