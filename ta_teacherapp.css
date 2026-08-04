@@ -1,20 +1,13 @@
-/*==================================================
-  Teacher Experience Builder
-  Application Shell
-==================================================*/
-
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
-
 html,
 body{
     width:100%;
     min-height:100%;
 }
-
 body{
     overflow:hidden;
 
@@ -27,26 +20,13 @@ body{
 
     color:#1e293b;
 }
-
-/*==================================================
-  Main Application
-==================================================*/
-
 .teacher-app{
     position:relative;
-
     width:100vw;
     height:100vh;
-
     padding:16px;
-
     z-index:1;
 }
-
-/*==================================================
-  Startup Status
-==================================================*/
-
 .teacher-status{
     position:absolute;
 
@@ -62,296 +42,169 @@ body{
     white-space:nowrap;
     border:0;
 }
-
-/*==================================================
-  Teacher Stage
-==================================================*/
-
 .teacher-stage{
     width:100%;
     height:100%;
-
     max-width:900px;
-
     margin:0 auto;
-
     display:flex;
     flex-direction:column;
-
     gap:12px;
-
     overflow-y:auto;
     overflow-x:hidden;
-
     padding:4px 4px 28px;
-
     scrollbar-width:thin;
     scrollbar-color:
         rgba(30,41,59,.35)
         transparent;
 }
+.teacher-stage::-webkit-scrollbar{width:7px;}
+.teacher-stage::-webkit-scrollbar-track{background:transparent;}
 
-.teacher-stage::-webkit-scrollbar{
-    width:7px;
-}
-
-.teacher-stage::-webkit-scrollbar-track{
-    background:transparent;
-}
-
-.teacher-stage::-webkit-scrollbar-thumb{
-    background:
+.teacher-stage::-webkit-scrollbar-thumb{background:
         rgba(30,41,59,.28);
-
     border-radius:999px;
 }
-
-/*==================================================
-  Optional Stage Context
-==================================================*/
-
 .teacher-stage-context{
     flex:0 0 auto;
-
     padding:14px 18px;
-
     background:
         rgba(255,255,255,.82);
-
     border:
         1px solid
         rgba(255,255,255,.72);
-
     border-radius:18px;
-
     backdrop-filter:
         blur(12px);
-
     -webkit-backdrop-filter:
         blur(12px);
-
     box-shadow:
         0 8px 22px
         rgba(15,23,42,.12);
-
     font-size:.95rem;
     font-weight:600;
-
     color:#334155;
 }
-
-/*==================================================
-  Module Card Shell
-==================================================*/
-
 .teacher-module-card{
     flex:0 0 auto;
-
     width:100%;
-
     background:
         rgba(255,255,255,.86);
-
     border:
         1px solid
         rgba(255,255,255,.8);
-
     border-radius:20px;
-
     backdrop-filter:
         blur(12px);
-
     -webkit-backdrop-filter:
         blur(12px);
-
     box-shadow:
         0 8px 22px
         rgba(15,23,42,.13);
-
     overflow:hidden;
-
     transition:
         box-shadow .2s ease,
         transform .2s ease,
         background-color .2s ease;
 }
-
 .teacher-module-card.is-expanded{
-    background:
-        rgba(255,255,255,.94);
-
+    background:rgba(255,255,255,.94);
     box-shadow:
         0 12px 30px
         rgba(15,23,42,.18);
 }
-
 .teacher-module-card.is-collapsed{
     cursor:pointer;
 }
-
 .teacher-module-card.is-collapsed:hover{
     transform:
         translateY(-1px);
-
     box-shadow:
         0 10px 25px
         rgba(15,23,42,.17);
 }
-
-/*==================================================
-  Module Header
-==================================================*/
-
 .teacher-module-header{
     min-height:62px;
-
     display:flex;
     align-items:center;
     justify-content:space-between;
-
     gap:12px;
-
     padding:16px 18px;
 }
-
 .teacher-module-card.is-expanded
 .teacher-module-header{
     border-bottom:
-        1px solid
-        rgba(148,163,184,.22);
+        1px solid rgba(148,163,184,.22);
 }
-
 .teacher-module-title{
     font-size:1.05rem;
     font-weight:800;
-
     line-height:1.25;
-
     color:#1e293b;
 }
-
 .teacher-module-status{
     flex:0 0 auto;
-
     padding:5px 10px;
-
     border-radius:999px;
-
     background:#fef08a;
-
     border:
         1px solid
         #eab308;
-
     color:#854d0e;
-
     font-size:.72rem;
     font-weight:800;
-
     white-space:nowrap;
 }
-
-/*==================================================
-  Module Content
-==================================================*/
-
 .teacher-module-content{
     padding:18px;
 }
-
 .teacher-module-placeholder{
     padding:12px 0;
-
     font-size:.9rem;
-
     color:#64748b;
 }
-
-/*==================================================
-  Module States
-==================================================*/
-
 .teacher-module-card.is-completed{
-    border-color:
-        rgba(13,148,136,.42);
+    border-color: rgba(13,148,136,.42);
 }
-
 .teacher-module-card.is-completed
 .teacher-module-header{
-    background:
-        rgba(45,212,191,.1);
+    background: rgba(45,212,191,.1);
 }
 
 .teacher-module-card.needs-attention{
     border-color:
         rgba(234,179,8,.55);
 }
-
 .teacher-module-card.needs-attention
 .teacher-module-header{
-    background:
-        rgba(254,240,138,.17);
+    background: rgba(254,240,138,.17);
 }
-
-/*==================================================
-  Tablet
-==================================================*/
-
 @media(max-width:900px){
-
     .teacher-app{
         padding:14px;
     }
-
     .teacher-stage{
         max-width:720px;
     }
-
 }
-
-/*==================================================
-  Phone
-==================================================*/
-
-@media(max-width:600px){
-
-    .teacher-app{
-        padding:10px;
-    }
-
-    .teacher-stage{
-        gap:10px;
-
-        padding:
-            2px
-            2px
-            24px;
-    }
-
+@media(max-width:600px){.teacher-app{padding:10px;}
+    .teacher-stage{gap:10px;padding:2px 2px 24px;}
     .teacher-stage-context{
         padding:12px 14px;
-
         border-radius:16px;
-
         font-size:.88rem;
     }
-
     .teacher-module-card{
         border-radius:17px;
     }
-
     .teacher-module-header{
         min-height:56px;
-
         padding:14px 15px;
     }
-
     .teacher-module-title{
         font-size:1rem;
     }
-
     .teacher-module-content{
         padding:15px;
     }
-
 }
