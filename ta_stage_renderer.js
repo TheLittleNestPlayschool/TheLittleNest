@@ -32,6 +32,7 @@ export function renderStage(stagePlan){
         modules.slice(0,6).map(
             (modulePlan,index)=>
                 createModuleCard(
+                    stagePlan,
                     modulePlan,
                     index
                 )
@@ -68,6 +69,7 @@ function createStageContext(context){
 }
 
 function createModuleCard(
+    stagePlan,
     modulePlan,
     index
 ){
@@ -98,11 +100,44 @@ function createModuleCard(
         !isExpanded
     );
 
+    if(modulePlan.state==='completed'){
+        card.classList.add(
+            'is-completed'
+        );
+    }
+
+    if(modulePlan.state==='needs_attention'){
+        card.classList.add(
+            'needs-attention'
+        );
+    }
+
     const header=
         document.createElement('header');
 
     header.className=
         'teacher-module-header';
+
+    const identity=
+        document.createElement('div');
+
+    identity.className=
+        'teacher-module-identity';
+
+    const icon=
+        document.createElement('span');
+
+    icon.className=
+        'teacher-module-icon';
+
+    icon.textContent=
+        module?.icon||'';
+
+    const text=
+        document.createElement('div');
+
+    text.className=
+        'teacher-module-text';
 
     const title=
         document.createElement('h2');
@@ -114,7 +149,24 @@ function createModuleCard(
         module?.title||
         modulePlan.id;
 
-    header.appendChild(title);
+    const subtitle=
+        document.createElement('p');
+
+    subtitle.className=
+        'teacher-module-subtitle';
+
+    subtitle.textContent=
+        module?.subtitle||
+        module?.description||
+        '';
+
+    text.appendChild(title);
+    text.appendChild(subtitle);
+
+    identity.appendChild(icon);
+    identity.appendChild(text);
+
+    header.appendChild(identity);
 
     if(modulePlan.status){
         const status=
@@ -130,6 +182,45 @@ function createModuleCard(
     }
 
     card.appendChild(header);
+
+    if(!isExpanded){
+        header.addEventListener(
+            'click',
+            ()=>{
+                expandModule(
+                    stagePlan,
+                    modulePlan.id
+                );
+            }
+        );
+
+        header.setAttribute(
+            'role',
+            'button'
+        );
+
+        header.setAttribute(
+            'tabindex',
+            '0'
+        );
+
+        header.addEventListener(
+            'keydown',
+            event=>{
+                if(
+                    event.key==='Enter'||
+                    event.key===' '
+                ){
+                    event.preventDefault();
+
+                    expandModule(
+                        stagePlan,
+                        modulePlan.id
+                    );
+                }
+            }
+        );
+    }
 
     let content=null;
 
@@ -193,4 +284,30 @@ function activateModuleCard(
         'This module is not available yet.';
 
     content.appendChild(message);
+}
+
+function expandModule(
+    stagePlan,
+    moduleId
+){
+    const updatedPlan={
+        ...stagePlan,
+
+        modules:
+            (stagePlan.modules||[])
+                .map(
+                    modulePlan=>({
+                        ...modulePlan,
+
+                        state:
+                            modulePlan.id===moduleId
+                                ? 'active'
+                                : modulePlan.state==='completed'
+                                    ? 'completed'
+                                    : 'collapsed'
+                    })
+                )
+    };
+
+    renderStage(updatedPlan);
 }
