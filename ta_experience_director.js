@@ -5,6 +5,7 @@ import {
 export function startTeacherExperience(){
     const stagePlan={
         context:null,
+
         modules:[
             {
                 id:'attendance',
@@ -32,6 +33,14 @@ export function startTeacherExperience(){
             },
             {
                 id:'see_tomorrow',
+                state:'collapsed'
+            },
+            {
+                id:'head_office_messages',
+                state:'collapsed'
+            },
+            {
+                id:'teacher_information',
                 state:'collapsed'
             }
         ]
