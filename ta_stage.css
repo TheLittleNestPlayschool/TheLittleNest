@@ -2,10 +2,10 @@
 .teacher-stage-context{
     flex:0 0 auto;
     padding:14px 18px;
-    background:rgba(255,255,255,.25);
+    background:rgba(255,255,255,.18);
     backdrop-filter:blur(8px);
     -webkit-backdrop-filter:blur(8px);
-    border:1px solid rgba(255,255,255,.4);
+    border:1px solid rgba(255,255,255,.22);
     border-radius:16px;
     box-shadow:0 8px 32px rgba(0,0,0,.1);
     font-size:.95rem;
@@ -15,10 +15,10 @@
 .teacher-module-card{
     flex:0 0 auto;
     width:100%;
-    background:rgba(255,255,255,.25);
+    background:rgba(255,255,255,.18);
     backdrop-filter:blur(8px);
     -webkit-backdrop-filter:blur(8px);
-    border:1px solid rgba(255,255,255,.4);
+    border:1px solid rgba(255,255,255,.22);
     border-radius:16px;
     box-shadow:0 8px 32px rgba(0,0,0,.1);
     overflow:hidden;
@@ -28,7 +28,10 @@
         box-shadow .2s ease;
 }
 .teacher-module-card.is-expanded{
-    background:rgba(255,255,255,.30);
+    background:rgba(255,255,255,.24);
+     box-shadow:
+        0 12px 36px
+        rgba(0,0,0,.16);
 }
 .teacher-module-card.is-collapsed{
     cursor:pointer;
