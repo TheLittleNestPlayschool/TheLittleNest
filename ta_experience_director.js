@@ -5,7 +5,6 @@ import {
 export function startTeacherExperience(){
     const stagePlan={
         context:null,
-
         modules:[
             {
                 id:'attendance',
