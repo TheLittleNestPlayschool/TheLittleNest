@@ -1,4 +1,3 @@
-
 import {
     renderAttendanceModule
 } from './ta_attendance.js';
@@ -71,6 +70,27 @@ const moduleRegistry={
         subtitle:"Prepare tomorrow's class lists.",
         description:
             'Review tomorrow’s sessions and prepare class lists for families.',
+        renderer:null,
+        isAvailable:false
+    },
+
+    head_office_messages:{
+        id:'head_office_messages',
+        icon:'🏫',
+        title:'Head Office Messages',
+        subtitle:'Send and receive messages from head office.',
+        description:'Communicate directly with head office.',
+        renderer:null,
+        isAvailable:false
+    },
+
+    teacher_information:{
+        id:'teacher_information',
+        icon:'👩‍🏫',
+        title:'Teacher Information',
+        subtitle:'View the signed-in teacher and session details.',
+        description:
+            'View teacher, location, and current session information.',
         renderer:null,
         isAvailable:false
     }
