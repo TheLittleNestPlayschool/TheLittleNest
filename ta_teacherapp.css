@@ -1,0 +1,200 @@
+/*==================================================
+  Teacher Experience Builder
+  Application Shell
+==================================================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+
+    font-family:
+        "Segoe UI",
+        Tahoma,
+        Geneva,
+        Verdana,
+        sans-serif;
+
+    color:#1e293b;
+}
+
+/*==================================================
+  Main Application
+==================================================*/
+
+.teacher-app{
+    position:relative;
+
+    width:100vw;
+    height:100vh;
+
+    display:flex;
+    flex-direction:column;
+
+    padding:20px;
+
+    z-index:1;
+}
+
+/*==================================================
+  Header
+==================================================*/
+
+.teacher-header{
+
+    flex:0 0 auto;
+
+    background:
+        rgba(255,255,255,.82);
+
+    backdrop-filter:blur(10px);
+
+    border-radius:18px;
+
+    padding:20px;
+
+    box-shadow:
+        0 8px 20px
+        rgba(0,0,0,.12);
+
+    margin-bottom:18px;
+}
+
+.teacher-title{
+
+    font-size:1.8rem;
+
+    font-weight:700;
+
+    color:#1e293b;
+
+    margin-bottom:8px;
+}
+
+.teacher-status{
+
+    font-size:.95rem;
+
+    color:#475569;
+
+    min-height:22px;
+}
+
+/*==================================================
+  Teacher Stage
+==================================================*/
+
+.teacher-stage{
+
+    flex:1;
+
+    display:grid;
+
+    grid-template-columns:
+        2fr
+        340px;
+
+    gap:20px;
+
+    min-height:0;
+}
+
+/*==================================================
+  Primary Area
+==================================================*/
+
+.teacher-primary{
+
+    background:
+        rgba(255,255,255,.82);
+
+    backdrop-filter:
+        blur(10px);
+
+    border-radius:20px;
+
+    padding:20px;
+
+    overflow-y:auto;
+
+    box-shadow:
+        0 8px 20px
+        rgba(0,0,0,.12);
+}
+
+/*==================================================
+  Actions Area
+==================================================*/
+
+.teacher-actions{
+
+    background:
+        rgba(255,255,255,.82);
+
+    backdrop-filter:
+        blur(10px);
+
+    border-radius:20px;
+
+    padding:20px;
+
+    overflow-y:auto;
+
+    box-shadow:
+        0 8px 20px
+        rgba(0,0,0,.12);
+}
+
+/*==================================================
+  Tablet
+==================================================*/
+
+@media (max-width:1000px){
+
+    .teacher-stage{
+
+        grid-template-columns:
+            1fr;
+
+        grid-template-rows:
+            auto
+            auto;
+    }
+
+}
+
+/*==================================================
+  Phone
+==================================================*/
+
+@media (max-width:700px){
+
+    .teacher-app{
+
+        padding:12px;
+    }
+
+    .teacher-header{
+
+        padding:16px;
+    }
+
+    .teacher-title{
+
+        font-size:1.45rem;
+    }
+
+    .teacher-primary,
+    .teacher-actions{
+
+        padding:16px;
+    }
+
+}
