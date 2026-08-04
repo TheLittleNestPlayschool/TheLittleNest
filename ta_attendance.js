@@ -110,6 +110,9 @@ function createAttendanceRow(
         attendanceSource;
 
     if(canRemove){
+        row.querySelector(
+            'input[value="present"]'
+        ).checked=true;
 
         const sourceText=
             document.createElement('p');
@@ -148,7 +151,6 @@ function createAttendanceRow(
 }
 
 function openStudentPicker(){
-
     const state=getState();
 
     const expectedStudents=
@@ -172,7 +174,6 @@ function openStudentPicker(){
         onCancel:
             renderAttendanceForm
     });
-
 }
 
 function addStudentToAttendance(student){
@@ -191,7 +192,6 @@ function removeAddedStudent(studentId){
 }
 
 async function handleAttendanceSubmit(){
-
     const attendanceDraft=
         getAttendanceDraft();
 
@@ -204,11 +204,9 @@ async function handleAttendanceSubmit(){
         'ta_post_attendance:',
         result
     );
-
 }
 
 export function getAttendanceDraft(){
-
     const state=getState();
 
     const expectedStudents=
@@ -226,7 +224,6 @@ export function getAttendanceDraft(){
     ];
 
     return allStudents.map(student=>{
-
         const selected=
             document.querySelector(
                 `input[name="student_${student.id}"]:checked`
@@ -244,15 +241,11 @@ export function getAttendanceDraft(){
             attendance_source:
                 student.attendance_source
         };
-
     });
-
 }
 
 function formatAttendanceSource(source){
-
     switch(source){
-
         case 'makeup':
             return 'Makeup Class';
 
@@ -267,7 +260,5 @@ function formatAttendanceSource(source){
 
         default:
             return source;
-
     }
-
 }
