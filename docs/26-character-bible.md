@@ -90,6 +90,11 @@ Every appearance should have purpose.
 
 Teacher.
 
+Tita Mayumi
+Role
+
+Teacher.
+
 Guide.
 
 Mentor.
@@ -100,9 +105,11 @@ Encourager.
 
 Trusted adult.
 
----
+Protector of childhood.
 
-## Personality
+The calm heart of The Little Nest.
+
+Personality
 
 Patient.
 
@@ -112,41 +119,81 @@ Kind.
 
 Gentle.
 
-Encouraging.
-
-Optimistic.
-
-Observant.
+Warm.
 
 Calm.
 
-Warm.
+Observant.
 
----
+Optimistic.
 
-## Tita Mayumi Should
+Compassionate.
+
+Thoughtful.
+
+Present.
+
+Never hurried.
+
+Tita Mayumi Believes
+
+Every child learns at their own pace.
+
+Every child deserves to feel safe.
+
+Connection comes before instruction.
+
+Curiosity grows where children feel accepted.
+
+Mistakes are part of learning.
+
+Confidence grows through encouragement.
+
+Children remember how you made them feel long after they forget what you taught.
+
+Every child has something wonderful waiting to be discovered.
+
+Tita Mayumi Should
+
+Notice children before correcting them.
 
 Celebrate effort.
 
-Notice growth.
+Celebrate kindness.
+
+Celebrate curiosity.
+
+Notice growth, even when it is small.
+
+Listen before speaking.
+
+Ask thoughtful questions.
 
 Explain patiently.
 
-Encourage curiosity.
+Support children without taking over.
 
-Help parents understand.
-
-Support children.
-
-Create confidence.
+Help parents understand their child's journey.
 
 Protect childhood.
 
-Help children feel safe.
+Create confidence.
 
----
+Create belonging.
 
-## Tita Mayumi Should Never
+Help children feel seen.
+
+Help children feel safe enough to explore.
+
+Help children believe they are capable.
+
+Guide without controlling.
+
+Lead without demanding.
+
+Walk beside children, never in front of them.
+
+Tita Mayumi Should Never
 
 Embarrass.
 
@@ -158,21 +205,51 @@ Create fear.
 
 Use shame.
 
+Raise her voice.
+
 Be sarcastic.
 
-Make children feel they have failed.
+Dismiss feelings.
+
+Solve every problem herself.
+
+Take credit for a child's achievement.
 
 Become the centre of attention.
 
-The child is always the hero.
+Forget that the child is always the hero.
 
----
+How Tita Mayumi Teaches
 
-## How Tita Mayumi Speaks
+Tita Mayumi rarely begins by giving answers.
+
+She begins by creating safety.
+
+She notices.
+
+She listens.
+
+She asks gentle questions.
+
+She invites children to think.
+
+She celebrates trying as much as succeeding.
+
+She understands that confidence grows one small success at a time.
+
+She knows that curiosity cannot be forced.
+
+It must be welcomed.
+
+Like the very best teachers, she helps children discover answers rather than simply giving them.
+
+How Tita Mayumi Speaks
 
 She speaks calmly.
 
 She speaks kindly.
+
+She speaks slowly enough for children to think.
 
 She asks questions more often than she gives answers.
 
@@ -182,8 +259,75 @@ She guides instead of instructing.
 
 She never raises her voice.
 
-She celebrates effort as much as achievement.
+She notices effort before achievement.
 
+She notices kindness before success.
+
+She chooses words that build confidence.
+
+She often says things like:
+
+"Take your time."
+
+"Tell me what you noticed."
+
+"What do you think?"
+
+"Would you like to try together?"
+
+"I noticed how carefully you looked."
+
+"I'm proud of how you kept trying."
+
+Why Tita Mayumi Exists
+
+Tita Mayumi represents the kind of teacher every child deserves.
+
+She helps children feel safe enough to be curious.
+
+She reminds children that learning is not a race.
+
+She creates calm when children feel overwhelmed.
+
+She notices the quiet child.
+
+She celebrates the hesitant child.
+
+She protects wonder.
+
+She helps children discover confidence through encouragement rather than praise.
+
+She reminds parents that childhood is not measured by how quickly children learn, but by how joyfully they discover.
+
+Tita Mayumi's Purpose
+
+Tita Mayumi does not exist to teach facts.
+
+She exists to nurture the environment where learning naturally happens.
+
+She helps children believe that they belong.
+
+She helps parents see the beauty in everyday growth.
+
+She quietly connects children, teachers, and families through warmth, encouragement, and trust.
+
+She is the calm presence that reminds everyone that every child is on their own journey.
+
+When children think of Tita Mayumi, they should not remember lessons.
+
+They should remember how she made them feel.
+
+Safe.
+
+Capable.
+
+Curious.
+
+Loved.
+
+I think there is one sentence that captures her entire character, just as Pico has his.
+
+Tita Mayumi is not remembered because she had all the answers. She is remembered because she made children believe they could discover the answers themselves.
 ---
 
 # Pico
