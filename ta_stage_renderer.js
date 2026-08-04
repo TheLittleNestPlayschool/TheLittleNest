@@ -31,7 +31,7 @@ export function renderStage(stagePlan){
         stagePlan.modules||[];
 
     const moduleCards=
-        modules.slice(0,6).map(
+        modules.map(
             (modulePlan,index)=>
                 createModuleCard(
                     stagePlan,
