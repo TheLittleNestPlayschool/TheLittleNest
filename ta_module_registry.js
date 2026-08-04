@@ -5,7 +5,9 @@ import {
 const moduleRegistry={
     attendance:{
         id:'attendance',
+        icon:'📋',
         title:'Attendance',
+        subtitle:'Record who attended today.',
         description:'Record who attended the session.',
         renderer:renderAttendanceModule,
         isAvailable:true
@@ -13,7 +15,9 @@ const moduleRegistry={
 
     observations:{
         id:'observations',
+        icon:'👀',
         title:'Observations',
+        subtitle:'Capture meaningful learning moments.',
         description:'Capture meaningful student observations.',
         renderer:null,
         isAvailable:false
@@ -21,7 +25,9 @@ const moduleRegistry={
 
     media:{
         id:'media',
+        icon:'📷',
         title:'Upload Media',
+        subtitle:'Photos, videos, and artwork.',
         description:'Upload photos, videos, and artwork.',
         renderer:null,
         isAvailable:false
@@ -29,7 +35,9 @@ const moduleRegistry={
 
     moments:{
         id:'moments',
+        icon:'✨',
         title:'Moments',
+        subtitle:'Save something special from today.',
         description:'Record something meaningful from the session.',
         renderer:null,
         isAvailable:false
@@ -37,7 +45,9 @@ const moduleRegistry={
 
     reflection:{
         id:'reflection',
+        icon:'💭',
         title:'Reflection',
+        subtitle:'Reflect on the session or the day.',
         description:'Add a teacher reflection about the session.',
         renderer:null,
         isAvailable:false
@@ -45,7 +55,9 @@ const moduleRegistry={
 
     messages:{
         id:'messages',
+        icon:'💬',
         title:'Messages',
+        subtitle:'Communicate with families.',
         description:'Send a message to parents.',
         renderer:null,
         isAvailable:false
@@ -61,7 +73,9 @@ export function getAllModules(){
 }
 
 export function moduleExists(moduleId){
-    return Boolean(moduleRegistry[moduleId]);
+    return Boolean(
+        moduleRegistry[moduleId]
+    );
 }
 
 export function moduleCanRender(moduleId){
