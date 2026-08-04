@@ -1,4 +1,4 @@
-import { APP_CONFIG } from './config.js';
+import { APP_CONFIG } from './ta_config.js';
 
 const authToken = localStorage.getItem('authToken');
 
