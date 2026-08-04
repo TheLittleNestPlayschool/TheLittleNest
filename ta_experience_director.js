@@ -3,7 +3,6 @@ import {
 } from './ta_stage_renderer.js';
 
 export function startTeacherExperience(){
-
     const stagePlan={
         context:null,
 
@@ -30,6 +29,10 @@ export function startTeacherExperience(){
             },
             {
                 id:'messages',
+                state:'collapsed'
+            },
+            {
+                id:'see_tomorrow',
                 state:'collapsed'
             }
         ]
