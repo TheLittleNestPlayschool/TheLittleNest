@@ -1,4 +1,5 @@
 import { API_URLS } from './ta_config.js';
+
 import {
     apiRequest,
     requireTeacherLogin
@@ -11,6 +12,10 @@ import {
     setAttendance,
     getState
 } from './ta_state.js';
+
+import {
+    renderAttendanceModule
+} from './ta_attendance.js';
 
 const teacherStatus =
     document.getElementById('teacherStatus');
@@ -55,7 +60,7 @@ export async function startTeacherApp() {
 
         stateUrl.searchParams.set(
             'sessions',
-            JSON.stringify(context.sessions || {})
+            JSON.stringify(context.sessions || [])
         );
 
         stateUrl.searchParams.set(
@@ -133,6 +138,8 @@ export async function startTeacherApp() {
             'Teacher App State:',
             getState()
         );
+
+        renderAttendanceModule();
 
     }
     catch (error) {
