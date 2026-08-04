@@ -1,4 +1,4 @@
-import {API_URLS,APP_CONFIG} from './ta_config.js';
+import {API_URLS} from './ta_config.js';
 import {apiRequest} from './ta_api.js';
 import {getState} from './ta_state.js';
 
@@ -24,20 +24,32 @@ export async function postAttendance(attendance){
 
 function buildAttendancePayload(attendance){
 
-    const state=getState();
+    const state=
+        getState();
 
     return{
 
-        teacher_id:
-            state.teacher.id,
+        attendance:
+            attendance.map(
+                record=>({
 
-        attendance_date:
-            getTodayDate(),
+                    student_id:
+                        record.student_id,
 
-        scheduled_session_id:
-            state.relevantSession.id,
+                    attendance_date:
+                        getTodayDate(),
 
-        attendance
+                    scheduled_session_id:
+                        state.relevantSession.id,
+
+                    status:
+                        record.status,
+
+                    attendance_source:
+                        record.attendance_source
+
+                })
+            )
 
     };
 
@@ -49,8 +61,7 @@ function getTodayDate(){
         new Intl.DateTimeFormat(
             'en-CA',
             {
-                timeZone:
-                    APP_CONFIG.timeZone,
+                timeZone:'Asia/Manila',
                 year:'numeric',
                 month:'2-digit',
                 day:'2-digit'
