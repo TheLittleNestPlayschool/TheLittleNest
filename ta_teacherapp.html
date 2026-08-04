@@ -2,51 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>The Little Nest Playschool — Teacher App</title>
+    <title>
+        The Little Nest Playschool — Teacher App
+    </title>
 
-    <link rel="stylesheet" href="background.css">
-    <link rel="stylesheet" href="ta_teacherapp.css">
+    <link
+        rel="stylesheet"
+        href="background.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="ta_teacherapp.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="ta_attendance.css"
+    >
 </head>
 
 <body>
-    <div class="app-background" aria-hidden="true">
+    <div
+        class="app-background"
+        aria-hidden="true"
+    >
         <div class="cloud-blob top-left"></div>
         <div class="cloud-blob top-right"></div>
         <div class="gradient-overlay"></div>
     </div>
 
     <main class="teacher-app">
-        <header class="teacher-header">
-            <h1 class="teacher-title">
-                Teacher Experience Builder
-            </h1>
-
-            <p
-                id="teacherStatus"
-                class="teacher-status"
-                aria-live="polite"
-            >
-                Loading teacher session...
-            </p>
-        </header>
+        <p
+            id="teacherStatus"
+            class="teacher-status"
+            aria-live="polite"
+        >
+            Loading teacher session...
+        </p>
 
         <section
             id="teacherStage"
             class="teacher-stage"
             aria-live="polite"
-        >
-            <section
-                id="teacherPrimary"
-                class="teacher-primary"
-            ></section>
-
-            <aside
-                id="teacherActions"
-                class="teacher-actions"
-            ></aside>
-        </section>
+        ></section>
     </main>
 
     <script type="module">
