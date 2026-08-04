@@ -5,36 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>The Little Nest Playschool — Teacher App</title>
-
-    <link rel="stylesheet" href="background.css">
-    <link rel="stylesheet" href="ta_app.css">
 </head>
 
 <body>
-    <div class="app-background" aria-hidden="true">
-        <div class="cloud-blob top-left"></div>
-        <div class="cloud-blob top-right"></div>
-        <div class="gradient-overlay"></div>
-    </div>
+    <main>
+        <h1>Teacher Experience Builder</h1>
 
-    <main class="teacher-app">
-        <header class="teacher-app-header">
-            <h1 class="teacher-app-title">
-                Teacher Experience Builder
-            </h1>
-
-            <p
-                id="teacherStatus"
-                class="teacher-status"
-                aria-live="polite"
-            >
-                Loading teacher session...
-            </p>
-        </header>
+        <p id="teacherStatus">
+            Loading teacher session...
+        </p>
 
         <section
             id="teacherWorkspace"
-            class="teacher-workspace"
             aria-live="polite"
         ></section>
     </main>
