@@ -1,4 +1,3 @@
-
 import { API_URLS } from './ta_config.js';
 
 import {
@@ -11,6 +10,7 @@ import {
     setTeacherState,
     setRelevantSession,
     setAttendance,
+    setLocationStudents,
     getState
 } from './ta_state.js';
 
@@ -37,7 +37,9 @@ export async function startTeacherApp() {
         //------------------------------------
 
         const context =
-            await apiRequest(API_URLS.getContext);
+            await apiRequest(
+                API_URLS.getContext
+            );
 
         setContext(context);
 
@@ -50,18 +52,23 @@ export async function startTeacherApp() {
         // Teacher State
         //------------------------------------
 
-        const stateUrl = new URL(
-            API_URLS.determineTeacherState
-        );
+        const stateUrl =
+            new URL(
+                API_URLS.determineTeacherState
+            );
 
         stateUrl.searchParams.set(
             'teacher',
-            JSON.stringify(context.teacher || {})
+            JSON.stringify(
+                context.teacher || {}
+            )
         );
 
         stateUrl.searchParams.set(
             'sessions',
-            JSON.stringify(context.sessions || [])
+            JSON.stringify(
+                context.sessions || []
+            )
         );
 
         stateUrl.searchParams.set(
@@ -75,9 +82,13 @@ export async function startTeacherApp() {
         );
 
         const teacherState =
-            await apiRequest(stateUrl.toString());
+            await apiRequest(
+                stateUrl.toString()
+            );
 
-        setTeacherState(teacherState);
+        setTeacherState(
+            teacherState
+        );
 
         console.log(
             'ta_determine_teacher_state:',
@@ -89,12 +100,16 @@ export async function startTeacherApp() {
         //------------------------------------
 
         const relevantSession =
-            getRelevantSession(teacherState);
+            getRelevantSession(
+                teacherState
+            );
 
-        setRelevantSession(relevantSession);
+        setRelevantSession(
+            relevantSession
+        );
 
         //------------------------------------
-        // Attendance
+        // Session Attendance
         //------------------------------------
 
         if (relevantSession?.id) {
@@ -103,11 +118,15 @@ export async function startTeacherApp() {
                 'Loading session attendance...';
 
             const attendanceUrl =
-                new URL(API_URLS.getSessionAttendance);
+                new URL(
+                    API_URLS.getSessionAttendance
+                );
 
             attendanceUrl.searchParams.set(
                 'session_id',
-                String(relevantSession.id)
+                String(
+                    relevantSession.id
+                )
             );
 
             attendanceUrl.searchParams.set(
@@ -120,13 +139,36 @@ export async function startTeacherApp() {
                     attendanceUrl.toString()
                 );
 
-            setAttendance(attendance);
+            setAttendance(
+                attendance
+            );
 
             console.log(
                 'ta_get_session_attendance:',
                 attendance
             );
         }
+
+        //------------------------------------
+        // All Location Students
+        //------------------------------------
+
+        teacherStatus.textContent =
+            'Loading location students...';
+
+        const locationStudents =
+            await apiRequest(
+                API_URLS.getLocationStudents
+            );
+
+        setLocationStudents(
+            locationStudents
+        );
+
+        console.log(
+            'ta_get_location_students:',
+            locationStudents
+        );
 
         //------------------------------------
         // Startup Complete
@@ -142,10 +184,12 @@ export async function startTeacherApp() {
 
         renderAttendanceModule();
 
-    }
-    catch (error) {
+    } catch (error) {
 
-        console.error(error);
+        console.error(
+            'Teacher app startup failed:',
+            error
+        );
 
         teacherStatus.textContent =
             error instanceof Error
@@ -154,21 +198,33 @@ export async function startTeacherApp() {
     }
 }
 
-function getRelevantSession(teacherState) {
+function getRelevantSession(
+    teacherState
+) {
 
-    switch (teacherState.teacher_state) {
+    switch (
+        teacherState.teacher_state
+    ) {
 
         case 'IN_SESSION':
-            return teacherState.current_session;
+            return (
+                teacherState.current_session
+            );
 
         case 'BEFORE_FIRST_SESSION':
-            return teacherState.next_session;
+            return (
+                teacherState.next_session
+            );
 
         case 'BETWEEN_SESSIONS':
-            return teacherState.next_session;
+            return (
+                teacherState.next_session
+            );
 
         case 'AFTER_LAST_SESSION':
-            return teacherState.previous_session;
+            return (
+                teacherState.previous_session
+            );
 
         default:
             return (
@@ -186,19 +242,32 @@ function getTodayDate() {
         new Intl.DateTimeFormat(
             'en-CA',
             {
-                timeZone: 'Asia/Shanghai',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
+                timeZone:
+                    'Asia/Manila',
+                year:
+                    'numeric',
+                month:
+                    '2-digit',
+                day:
+                    '2-digit'
             }
-        ).formatToParts(new Date());
+        ).formatToParts(
+            new Date()
+        );
 
     const values =
         Object.fromEntries(
             parts.map(
-                part => [part.type, part.value]
+                (part) => [
+                    part.type,
+                    part.value
+                ]
             )
         );
 
-    return `${values.year}-${values.month}-${values.day}`;
+    return (
+        `${values.year}-` +
+        `${values.month}-` +
+        `${values.day}`
+    );
 }
