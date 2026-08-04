@@ -6,7 +6,7 @@ const moduleRegistry={
     attendance:{
         id:'attendance',
         icon:'📋',
-        title:'Attendance',
+        title:"Today's Attendance",
         subtitle:'Record who attended today.',
         description:'Record who attended the session.',
         renderer:renderAttendanceModule,
@@ -26,9 +26,9 @@ const moduleRegistry={
     media:{
         id:'media',
         icon:'📷',
-        title:'Upload Media',
+        title:'Capture Moments in Media',
         subtitle:'Photos, videos, and artwork.',
-        description:'Upload photos, videos, and artwork.',
+        description:'Capture photos, videos, and artwork from today.',
         renderer:null,
         isAvailable:false
     },
@@ -46,9 +46,9 @@ const moduleRegistry={
     reflection:{
         id:'reflection',
         icon:'💭',
-        title:'Reflection',
-        subtitle:'Reflect on the session or the day.',
-        description:'Add a teacher reflection about the session.',
+        title:'Student Reflection',
+        subtitle:'Reflect on a student, session, or day.',
+        description:'Add a teacher reflection.',
         renderer:null,
         isAvailable:false
     },
@@ -56,9 +56,20 @@ const moduleRegistry={
     messages:{
         id:'messages',
         icon:'💬',
-        title:'Messages',
+        title:'Family Messages',
         subtitle:'Communicate with families.',
-        description:'Send a message to parents.',
+        description:'Send a message to one or more families.',
+        renderer:null,
+        isAvailable:false
+    },
+
+    see_tomorrow:{
+        id:'see_tomorrow',
+        icon:'🌞',
+        title:'See You Tomorrow!',
+        subtitle:"Prepare tomorrow's class lists.",
+        description:
+            'Review tomorrow’s sessions and prepare class lists for families.',
         renderer:null,
         isAvailable:false
     }
@@ -69,7 +80,9 @@ export function getModule(moduleId){
 }
 
 export function getAllModules(){
-    return Object.values(moduleRegistry);
+    return Object.values(
+        moduleRegistry
+    );
 }
 
 export function moduleExists(moduleId){
@@ -79,7 +92,8 @@ export function moduleExists(moduleId){
 }
 
 export function moduleCanRender(moduleId){
-    const module=getModule(moduleId);
+    const module=
+        getModule(moduleId);
 
     return Boolean(
         module?.isAvailable&&
