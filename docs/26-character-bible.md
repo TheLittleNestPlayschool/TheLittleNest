@@ -90,11 +90,6 @@ Every appearance should have purpose.
 
 Teacher.
 
-Tita Mayumi
-Role
-
-Teacher.
-
 Guide.
 
 Mentor.
