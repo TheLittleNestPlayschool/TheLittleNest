@@ -35,10 +35,9 @@ export function renderAttendanceModule() {
 
         row.className = 'attendance-row';
 
-        const studentName =
-            student.preferred_name ||
-            student.name ||
-            `Student ${student.id}`;
+       const studentName =
+         student.name ||
+         `Student ${student.id}`;
 
         row.innerHTML = `
             <h3>${studentName}</h3>
