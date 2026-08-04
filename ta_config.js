@@ -10,7 +10,7 @@ const API_URLS = {
 };
 
 const APP_CONFIG = {
-    loginPage: 'ta_teacherlogin.html',
+    loginPage: 'ta_loginteacher.html',
     timeZone: 'Asia/Manila'
 };
 
