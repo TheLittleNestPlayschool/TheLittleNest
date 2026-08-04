@@ -1,18 +1,39 @@
 import {
-    setActiveWorkspace,
-    clearTeacherStage
-} from './ta_ui.js';
-
-import {
-    renderAttendanceModule
-} from './ta_attendance.js';
+    renderStage
+} from './ta_stage_renderer.js';
 
 export function startTeacherExperience(){
-    clearTeacherStage();
 
-    setActiveWorkspace(
-        'teacherPrimary'
-    );
+    const stagePlan={
+        context:null,
 
-    renderAttendanceModule();
+        modules:[
+            {
+                id:'attendance',
+                state:'active'
+            },
+            {
+                id:'observations',
+                state:'collapsed'
+            },
+            {
+                id:'media',
+                state:'collapsed'
+            },
+            {
+                id:'moments',
+                state:'collapsed'
+            },
+            {
+                id:'reflection',
+                state:'collapsed'
+            },
+            {
+                id:'messages',
+                state:'collapsed'
+            }
+        ]
+    };
+
+    renderStage(stagePlan);
 }
