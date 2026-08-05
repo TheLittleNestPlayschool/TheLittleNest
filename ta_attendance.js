@@ -28,7 +28,8 @@ function createEmptySession(sessionId=null){
         selections:{},
         isSubmitting:false,
         submissionResult:null,
-        addingStudent:false
+        addingStudent:false,
+        isSaved:false
     };
 }
 
@@ -54,6 +55,7 @@ function loadExistingAttendance(){
 
     if(records.length>0){
         attendanceSession.view='review';
+        attendanceSession.isSaved=true;
     }
 }
 
@@ -94,6 +96,8 @@ function renderCurrentView(){
         default:
             renderAttendanceIntro(workspace,context);
     }
+
+    updateAttendanceLiveStatus();
 }
 
 function showView(view){
@@ -114,6 +118,7 @@ function beginAttendance(){
 
 function selectAttendanceStatus(studentId,status){
     attendanceSession.selections[studentId]=status;
+    attendanceSession.isSaved=false;
     renderCurrentView();
 }
 
@@ -155,6 +160,8 @@ function addStudentToAttendance(student){
 
     attendanceSession.selections[student.id]='present';
     attendanceSession.addingStudent=false;
+    attendanceSession.isSaved=false;
+
     renderCurrentView();
 }
 
@@ -165,6 +172,8 @@ function removeAddedStudent(studentId){
         });
 
     delete attendanceSession.selections[studentId];
+
+    attendanceSession.isSaved=false;
     renderCurrentView();
 }
 
@@ -187,7 +196,9 @@ async function submitAttendance(){
             attendanceSession.submissionResult
         );
 
+        attendanceSession.isSaved=true;
         attendanceSession.view='complete';
+
     }catch(error){
         console.error(
             'Attendance submission failed:',
@@ -199,6 +210,7 @@ async function submitAttendance(){
                 ?error.message
                 :'Unable to save attendance.'
         );
+
     }finally{
         attendanceSession.isSubmitting=false;
         renderCurrentView();
@@ -223,8 +235,67 @@ function attendanceIsComplete(){
     const students=getAllAttendanceStudents();
 
     return students.length>0&&students.every(student=>{
-        return Boolean(attendanceSession.selections[student.id]);
+        return Boolean(
+            attendanceSession.selections[student.id]
+        );
     });
+}
+
+function getAttendanceLiveStatus(){
+    const students=getAllAttendanceStudents();
+    const studentCount=students.length;
+
+    const checkedCount=students.filter(student=>{
+        return Boolean(
+            attendanceSession.selections[student.id]
+        );
+    }).length;
+
+    if(attendanceSession.isSubmitting){
+        return'Saving attendance...';
+    }
+
+    if(
+        attendanceSession.isSaved&&
+        attendanceIsComplete()
+    ){
+        return'Attendance complete.';
+    }
+
+    if(studentCount===0){
+        return'No learners listed.';
+    }
+
+    if(checkedCount===studentCount){
+        return'Ready to complete attendance.';
+    }
+
+    if(checkedCount>0){
+        return`${checkedCount} of ${studentCount} learners checked.`;
+    }
+
+    if(studentCount===1){
+        return'1 learner expected.';
+    }
+
+    return`${studentCount} learners expected.`;
+}
+
+function updateAttendanceLiveStatus(){
+    const card=document.querySelector(
+        '.teacher-module-card[data-module-id="attendance"]'
+    );
+
+    const subtitle=card?.querySelector(
+        '.teacher-module-subtitle'
+    );
+
+    if(!subtitle){
+        return;
+    }
+
+    subtitle.textContent=
+        getAttendanceLiveStatus();
 }
 
 export function getAttendanceDraft(){
