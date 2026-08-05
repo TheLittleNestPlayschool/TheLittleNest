@@ -15,6 +15,9 @@ const API_URLS = {
     getLocationStudents:
         `${API_BASE_URL}/ta_get_location_students`,
 
+    getAllTeachers:
+        `${API_BASE_URL}/ta_get_all_teachers`,
+
     postAttendance:
         `${API_BASE_URL}/ta_post_attendance`
 
