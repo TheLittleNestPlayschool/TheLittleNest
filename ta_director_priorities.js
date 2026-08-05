@@ -31,14 +31,14 @@ function beforeFirstSession(){
 
     return[
         'see_tomorrow',
-        'teacher_information',
         'head_office_messages',
         'attendance',
         'media',
         'observations',
         'moments',
         'reflection',
-        'messages'
+        'messages',
+        'teacher_information'
     ];
 
 }
@@ -143,15 +143,15 @@ function betweenSessions(){
 function afterLastSession(){
 
     return[
+        'attendance',
+        'media',
+        'observations',
+        'moments',
         'reflection',
         'messages',
         'see_tomorrow',
         'head_office_messages',
-        'teacher_information',
-        'attendance',
-        'media',
-        'observations',
-        'moments'
+        'teacher_information'
     ];
 
 }
