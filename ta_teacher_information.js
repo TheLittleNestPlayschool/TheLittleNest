@@ -4,7 +4,7 @@ import{
 }from'./ta_ui.js';
 
 const TEACHER_INFORMATION_ENDPOINT=
-    '/api:YOUR_API_GROUP/teacher_information';
+    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_get_teacher_display';
 
 let teacherInformationSession=
     createTeacherInformationSession();
@@ -306,139 +306,86 @@ function retryTeacherInformation(){
 function normalizeTeacherInformation(
     responseData
 ){
-    const source=
-        responseData?.teacher_information||
-        responseData?.teacher||
-        responseData||
+    const teacher=
+        responseData?.teacher_display||
         {};
 
-    const explicitFields=
-        Array.isArray(
-            responseData?.fields
-        )
-            ?responseData.fields
-            :Array.isArray(
-                source?.fields
-            )
-                ?source.fields
-                :null;
+    const franchise=
+        responseData?.franchise_display||
+        {};
 
-    const fields=explicitFields
-        ?normalizeExplicitFields(
-            explicitFields
-        )
-        :normalizeObjectFields(
-            source
-        );
-
-    const subtitle=
+    const teacherName=[
         cleanDisplayValue(
-            responseData?.subtitle||
-            source?.subtitle
-        )||
-        getPreferredSubtitle(
-            fields
-        );
+            teacher.first_name
+        ),
+        cleanDisplayValue(
+            teacher.last_name
+        )
+    ]
+        .filter(Boolean)
+        .join(' ');
+
+    const fields=[
+        createDisplayField(
+            'Teacher',
+            teacherName
+        ),
+
+        createDisplayField(
+            'Location',
+            franchise.name
+        ),
+
+        createDisplayField(
+            'City',
+            teacher.city
+        ),
+
+        createDisplayField(
+            'Barangay',
+            teacher.brgy
+        ),
+
+        createDisplayField(
+            'Phone',
+            teacher.phone
+        ),
+
+        createDisplayField(
+            'Email',
+            teacher.email
+        )
+    ].filter(Boolean);
 
     return{
-        subtitle,
+        subtitle:
+            teacherName||
+            cleanDisplayValue(
+                franchise.name
+            )||
+            'Teacher information',
+
         fields
     };
 }
 
-function normalizeExplicitFields(fields){
-    return fields
-        .map(field=>{
-            if(
-                !field||
-                typeof field!=='object'
-            ){
-                return null;
-            }
+function createDisplayField(
+    label,
+    value
+){
+    const cleanValue=
+        cleanDisplayValue(
+            value
+        );
 
-            const label=
-                cleanDisplayValue(
-                    field.label||
-                    field.name
-                );
-
-            const value=
-                cleanDisplayValue(
-                    field.value
-                );
-
-            if(!label||!value){
-                return null;
-            }
-
-            return{
-                label,
-                value
-            };
-        })
-        .filter(Boolean);
-}
-
-function normalizeObjectFields(source){
-    if(
-        !source||
-        typeof source!=='object'||
-        Array.isArray(source)
-    ){
-        return[];
+    if(!cleanValue){
+        return null;
     }
 
-    const ignoredFields=
-        new Set([
-            'id',
-            'subtitle',
-            'fields'
-        ]);
-
-    return Object.entries(source)
-        .filter(([key,value])=>{
-            return(
-                !ignoredFields.has(key)&&
-                isDisplayValue(value)
-            );
-        })
-        .map(([key,value])=>({
-            label:formatFieldLabel(key),
-            value:cleanDisplayValue(value)
-        }))
-        .filter(field=>{
-            return Boolean(
-                field.label&&
-                field.value
-            );
-        });
-}
-
-function getPreferredSubtitle(fields){
-    if(fields.length===0){
-        return'Teacher information';
-    }
-
-    const preferredLabels=[
-        'teacher name',
-        'name',
-        'first name'
-    ];
-
-    const preferredField=
-        fields.find(field=>{
-            return preferredLabels.includes(
-                field.label
-                    .trim()
-                    .toLowerCase()
-            );
-        });
-
-    return(
-        preferredField?.value||
-        fields[0].value||
-        'Teacher information'
-    );
+    return{
+        label,
+        value:cleanValue
+    };
 }
 
 function updateTeacherInformationLiveStatus(){
@@ -517,36 +464,5 @@ function cleanDisplayValue(value){
         return'';
     }
 
-    if(typeof value==='boolean'){
-        return value
-            ?'Yes'
-            :'No';
-    }
-
-    if(
-        typeof value==='string'||
-        typeof value==='number'
-    ){
-        return String(value).trim();
-    }
-
-    return'';
-}
-
-function isDisplayValue(value){
-    return(
-        typeof value==='string'||
-        typeof value==='number'||
-        typeof value==='boolean'
-    );
-}
-
-function formatFieldLabel(key){
-    return String(key)
-        .replace(/_/g,' ')
-        .replace(
-            /\b\w/g,
-            character=>
-                character.toUpperCase()
-        );
+    return String(value).trim();
 }
