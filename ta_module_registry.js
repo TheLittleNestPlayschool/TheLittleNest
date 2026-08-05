@@ -1,4 +1,3 @@
-
 import {
     renderAttendanceModule
 } from './ta_attendance.js';
@@ -6,6 +5,30 @@ import {
 import {
     renderTeacherInformationModule
 } from './ta_teacher_information.js';
+
+import {
+    renderObservationsModule
+} from './ta_observations.js';
+
+import {
+    renderMomentsModule
+} from './ta_moments.js';
+
+import {
+    renderStudentReflectionModule
+} from './ta_student_reflection.js';
+
+import {
+    renderFamilyMessagesModule
+} from './ta_family_messages.js';
+
+import {
+    renderSeeYouTomorrowModule
+} from './ta_see_you_tomorrow.js';
+
+import {
+    renderHeadOfficeMessagesModule
+} from './ta_head_office_messages.js';
 
 const moduleRegistry={
     attendance:{
@@ -24,8 +47,8 @@ const moduleRegistry={
         title:'Observations',
         subtitle:'Capture meaningful learning moments.',
         description:'Capture meaningful student observations.',
-        renderer:null,
-        isAvailable:false
+        renderer:renderObservationsModule,
+        isAvailable:true
     },
 
     media:{
@@ -44,8 +67,8 @@ const moduleRegistry={
         title:'Moments',
         subtitle:'Save something special from today.',
         description:'Record something meaningful from the session.',
-        renderer:null,
-        isAvailable:false
+        renderer:renderMomentsModule,
+        isAvailable:true
     },
 
     reflection:{
@@ -54,8 +77,8 @@ const moduleRegistry={
         title:'Student Reflection',
         subtitle:'Reflect on a student, session, or day.',
         description:'Add a teacher reflection.',
-        renderer:null,
-        isAvailable:false
+        renderer:renderStudentReflectionModule,
+        isAvailable:true
     },
 
     messages:{
@@ -64,8 +87,8 @@ const moduleRegistry={
         title:'Family Messages',
         subtitle:'Communicate with families.',
         description:'Send a message to one or more families.',
-        renderer:null,
-        isAvailable:false
+        renderer:renderFamilyMessagesModule,
+        isAvailable:true
     },
 
     see_tomorrow:{
@@ -75,8 +98,8 @@ const moduleRegistry={
         subtitle:"Prepare tomorrow's class lists.",
         description:
             'Review tomorrow’s sessions and prepare class lists for families.',
-        renderer:null,
-        isAvailable:false
+        renderer:renderSeeYouTomorrowModule,
+        isAvailable:true
     },
 
     head_office_messages:{
@@ -85,8 +108,8 @@ const moduleRegistry={
         title:'Head Office Messages',
         subtitle:'Send and receive messages from head office.',
         description:'Communicate directly with head office.',
-        renderer:null,
-        isAvailable:false
+        renderer:renderHeadOfficeMessagesModule,
+        isAvailable:true
     },
 
     teacher_information:{
