@@ -10,7 +10,9 @@ export function getPriorityList(
             return beforeFirstSession();
 
         case 'IN_SESSION':
-            return inSession();
+            return inSession(
+                snapshot
+            );
 
         case 'BETWEEN_SESSIONS':
             return betweenSessions();
@@ -41,19 +43,84 @@ function beforeFirstSession(){
 
 }
 
-function inSession(){
+function inSession(
+    snapshot
+){
 
-    return[
-        'media',
-        'moments',
-        'observations',
-        'attendance',
-        'reflection',
-        'messages',
-        'see_tomorrow',
-        'head_office_messages',
-        'teacher_information'
-    ];
+    const capacityState=
+        snapshot.teacherCapacity
+            ?.teacherCapacityState||
+        'unknown';
+
+    switch(capacityState){
+
+        case 'very_busy':
+        case 'busy':
+            return[
+                'moments',
+                'observations',
+                'reflection',
+                'messages',
+                'head_office_messages',
+                'attendance',
+                'media',
+                'see_tomorrow',
+                'teacher_information'
+            ];
+
+        case 'moderately_busy':
+            return[
+                'moments',
+                'observations',
+                'reflection',
+                'messages',
+                'head_office_messages',
+                'attendance',
+                'media',
+                'see_tomorrow',
+                'teacher_information'
+            ];
+
+        case 'slow':
+            return[
+                'observations',
+                'moments',
+                'reflection',
+                'messages',
+                'head_office_messages',
+                'attendance',
+                'media',
+                'see_tomorrow',
+                'teacher_information'
+            ];
+
+        case 'very_slow':
+            return[
+                'observations',
+                'moments',
+                'reflection',
+                'messages',
+                'head_office_messages',
+                'attendance',
+                'media',
+                'see_tomorrow',
+                'teacher_information'
+            ];
+
+        default:
+            return[
+                'moments',
+                'observations',
+                'reflection',
+                'messages',
+                'head_office_messages',
+                'attendance',
+                'media',
+                'see_tomorrow',
+                'teacher_information'
+            ];
+
+    }
 
 }
 
