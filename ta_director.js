@@ -1,6 +1,6 @@
 import {
-    getState
-} from './ta_state.js';
+    buildDirectorSnapshot
+} from './ta_director_snapshot.js';
 
 import {
     getPriorityList
@@ -12,12 +12,12 @@ import {
 
 export function buildDirectorStage(){
 
-    const state=
-        getState();
+    const snapshot=
+        buildDirectorSnapshot();
 
     const priorityList=
         getPriorityList(
-            state
+            snapshot
         );
 
     return buildStagePlan(
