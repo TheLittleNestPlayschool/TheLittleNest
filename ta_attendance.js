@@ -1,339 +1,264 @@
-/*==================================================
-  Attendance Module
-==================================================*/
-.attendance-experience{
-    width:100%;
-    max-width:680px;
-    margin:0 auto;
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-}
-.attendance-eyebrow{
-    margin:0;
-    color:#92400e;
-    font-size:.72rem;
-    font-weight:800;
-    letter-spacing:.07em;
-    text-transform:uppercase;
-}
-.attendance-experience-title{
-    margin:0;
-    color:#0f172a;
-    font-size:1.35rem;
-    font-weight:900;
-    line-height:1.2;
-}
-.attendance-experience-description{
-    margin:0;
-    color:#475569;
-    font-size:.9rem;
-    font-weight:600;
-    line-height:1.45;
-}
-.attendance-empty-message{
-    margin:0;
-    padding:12px 14px;
-    background:rgba(255,255,255,.24);
-    border:1px solid rgba(255,255,255,.38);
-    border-radius:13px;
-    color:#475569;
-    font-size:.86rem;
-    font-weight:600;
-    line-height:1.4;
-}
-.attendance-primary-button,
-.attendance-secondary-button,
-.attendance-text-button,
-.attendance-review-choice,
-.attendance-remove-button{
-    font:inherit;
-}
-.attendance-primary-button{
-    width:100%;
-    min-height:48px;
-    padding:11px 16px;
-    background:linear-gradient(135deg,#d4a017,#f0c04a);
-    border:1px solid rgba(120,74,0,.26);
-    border-radius:13px;
-    box-shadow:0 8px 18px rgba(146,64,14,.18);
-    color:#422006;
-    font-size:.92rem;
-    font-weight:900;
-    cursor:pointer;
-    transition:
-        transform .18s ease,
-        box-shadow .18s ease,
-        filter .18s ease;
-}
-.attendance-primary-button:hover{
-    transform:translateY(-1px);
-    box-shadow:0 10px 22px rgba(146,64,14,.22);
-    filter:brightness(1.03);
-}
-.attendance-primary-button:active{
-    transform:translateY(0);
-}
-.attendance-primary-button:disabled{
-    cursor:not-allowed;
-    opacity:.45;
-    transform:none;
-    box-shadow:none;
-}
-.attendance-secondary-button{
-    width:100%;
-    min-height:42px;
-    padding:9px 14px;
-    background:rgba(255,255,255,.27);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    border:1px solid rgba(255,255,255,.44);
-    border-radius:12px;
-    color:#0f172a;
-    font-size:.86rem;
-    font-weight:800;
-    cursor:pointer;
-    transition:
-        transform .18s ease,
-        background .18s ease,
-        box-shadow .18s ease;
-}
-.attendance-secondary-button:hover{
-    transform:translateY(-1px);
-    background:rgba(255,255,255,.38);
-    box-shadow:0 7px 18px rgba(15,23,42,.09);
-}
-.attendance-text-button{
-    padding:8px 4px;
-    background:transparent;
-    border:none;
-    color:#334155;
-    font-size:.82rem;
-    font-weight:800;
-    cursor:pointer;
-}
-.attendance-text-button:hover{
-    color:#0f172a;
-    text-decoration:underline;
+
+import{getState}from'./ta_state.js';
+import{getWorkspace,clearWorkspace}from'./ta_ui.js';
+import{showStudentPicker}from'./ta_student_picker.js';
+import{postAttendance}from'./ta_attendance_post.js';
+import{renderAttendanceIntro}from'./ta_attendance_intro.js';
+import{renderAttendanceStudent}from'./ta_attendance_student.js';
+import{renderAttendanceReview}from'./ta_attendance_review.js';
+import{renderAttendanceComplete}from'./ta_attendance_complete.js';
+
+let attendanceSession=createEmptySession();
+
+export function renderAttendanceModule(){
+    const state=getState();
+    const sessionId=state.relevantSession?.id||null;
+
+    if(attendanceSession.sessionId!==sessionId){
+        resetAttendanceSession(sessionId);
+    }
+
+    clearWorkspace();
+    renderCurrentView();
 }
 
-/*==================================================
-  Introduction
-==================================================*/
-.attendance-introduction{
-    align-items:flex-start;
-}
-.attendance-introduction .attendance-primary-button{
-    margin-top:3px;
-}
-
-/*==================================================
-  Attendance List
-==================================================*/
-.attendance-review-header{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:12px;
-}
-.attendance-review-list{
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-}
-.attendance-review-row{
-    display:grid;
-    grid-template-columns:minmax(0,1fr) auto;
-    align-items:center;
-    gap:8px;
-    min-height:50px;
-    padding:6px 8px;
-    background:rgba(255,255,255,.18);
-    border:1px solid rgba(255,255,255,.34);
-    border-radius:13px;
-    box-shadow:0 4px 12px rgba(15,23,42,.05);
-}
-.attendance-review-row:has(.attendance-remove-button){
-    grid-template-columns:minmax(0,1fr) auto auto;
-}
-.attendance-review-student{
-    min-width:0;
-    display:flex;
-    align-items:center;
-    gap:8px;
-}
-.attendance-review-avatar{
-    flex:0 0 auto;
-    width:32px;
-    height:32px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(255,255,255,.43);
-    border:1px solid rgba(255,255,255,.54);
-    border-radius:50%;
-    color:#7c2d12;
-    font-size:.68rem;
-    font-weight:900;
-}
-.attendance-review-name{
-    min-width:0;
-    overflow:hidden;
-    color:#0f172a;
-    font-size:.85rem;
-    font-weight:850;
-    line-height:1.2;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-}
-.attendance-review-choices{
-    display:grid;
-    grid-template-columns:56px 72px;
-    gap:5px;
-}
-.attendance-review-choice{
-    min-height:34px;
-    padding:6px 7px;
-    background:rgba(255,255,255,.26);
-    border:1px solid rgba(255,255,255,.42);
-    border-radius:9px;
-    color:#475569;
-    font-size:.68rem;
-    font-weight:900;
-    line-height:1.05;
-    white-space:nowrap;
-    cursor:pointer;
-    transition:
-        background .16s ease,
-        border-color .16s ease,
-        color .16s ease,
-        transform .16s ease;
-}
-.attendance-review-choice:hover{
-    transform:translateY(-1px);
-    background:rgba(255,255,255,.38);
-}
-.attendance-review-choice[data-status="present"]{
-    border-color:rgba(16,185,129,.36);
-}
-.attendance-review-choice[data-status="absent"]{
-    border-color:rgba(245,158,11,.38);
-}
-.attendance-review-choice[data-status="present"].is-selected{
-    background:rgba(16,185,129,.20);
-    border-color:rgba(5,150,105,.68);
-    color:#065f46;
-}
-.attendance-review-choice[data-status="absent"].is-selected{
-    background:rgba(245,158,11,.21);
-    border-color:rgba(217,119,6,.68);
-    color:#92400e;
-}
-.attendance-remove-button{
-    padding:5px 4px;
-    background:transparent;
-    border:none;
-    color:#b91c1c;
-    font-size:.64rem;
-    font-weight:800;
-    cursor:pointer;
-}
-.attendance-remove-button:hover{
-    text-decoration:underline;
-}
-.attendance-review-actions{
-    display:grid;
-    grid-template-columns:auto minmax(170px,1fr);
-    align-items:center;
-    gap:12px;
+function createEmptySession(sessionId=null){
+    return{
+        sessionId,
+        view:'intro',
+        currentStudentIndex:0,
+        addedStudents:[],
+        selections:{},
+        isSubmitting:false,
+        submissionResult:null
+    };
 }
 
-/*==================================================
-  Complete Screen
-==================================================*/
-.attendance-complete{
-    align-items:center;
-    padding:10px 0 4px;
-    text-align:center;
+function resetAttendanceSession(sessionId){
+    attendanceSession=createEmptySession(sessionId);
+    loadExistingAttendance();
 }
-.attendance-complete-mark{
-    width:72px;
-    height:72px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(
-        145deg,
-        rgba(16,185,129,.82),
-        rgba(5,150,105,.92)
+
+function loadExistingAttendance(){
+    const state=getState();
+    const records=state.attendance?.attendance_records||[];
+
+    records.forEach(record=>{
+        const studentId=record.student_id||record.student?.id||null;
+
+        if(!studentId){
+            return;
+        }
+
+        attendanceSession.selections[studentId]=record.status||null;
+    });
+
+    if(records.length>0){
+        attendanceSession.view='review';
+    }
+}
+
+function renderCurrentView(){
+    const workspace=getWorkspace();
+
+    if(!workspace){
+        return;
+    }
+
+    workspace.innerHTML='';
+
+    const context={
+        state:getState(),
+        session:attendanceSession,
+        students:getAllAttendanceStudents(),
+        actions:{
+            begin:beginAttendance,
+            showIntro:()=>showView('intro'),
+            showStudent,
+            showReview:()=>showView('review'),
+            selectStatus:selectAttendanceStatus,
+            addStudent:openStudentPicker,
+            removeStudent:removeAddedStudent,
+            submit:submitAttendance
+        }
+    };
+
+    switch(attendanceSession.view){
+        case'student':
+            renderAttendanceStudent(workspace,context);
+            break;
+
+        case'review':
+            renderAttendanceReview(workspace,context);
+            break;
+
+        case'complete':
+            renderAttendanceComplete(workspace,context);
+            break;
+
+        default:
+            renderAttendanceIntro(workspace,context);
+    }
+}
+
+function showView(view){
+    attendanceSession.view=view;
+    renderCurrentView();
+}
+
+function beginAttendance(){
+    const students=getAllAttendanceStudents();
+
+    if(students.length===0){
+        openStudentPicker();
+        return;
+    }
+
+    const incompleteIndex=students.findIndex(student=>{
+        return!attendanceSession.selections[student.id];
+    });
+
+    attendanceSession.currentStudentIndex=
+        incompleteIndex>=0
+            ?incompleteIndex
+            :0;
+
+    showView('student');
+}
+
+function showStudent(studentIndex){
+    const students=getAllAttendanceStudents();
+
+    if(students.length===0){
+        showView('intro');
+        return;
+    }
+
+    attendanceSession.currentStudentIndex=Math.max(
+        0,
+        Math.min(studentIndex,students.length-1)
     );
-    border:2px solid rgba(255,255,255,.64);
-    border-radius:50%;
-    box-shadow:0 12px 28px rgba(5,150,105,.24);
-    color:#fff;
-    font-size:1.9rem;
-    font-weight:900;
-}
-.attendance-complete-summary{
-    margin:0;
-    color:#475569;
-    font-size:.94rem;
-    font-weight:700;
+
+    showView('student');
 }
 
-/*==================================================
-  Mobile
-==================================================*/
-@media(max-width:600px){
-    .attendance-experience{
-        gap:12px;
+function selectAttendanceStatus(studentId,status){
+    attendanceSession.selections[studentId]=status;
+
+    const students=getAllAttendanceStudents();
+    const currentIndex=attendanceSession.currentStudentIndex;
+
+    if(currentIndex<students.length-1){
+        attendanceSession.currentStudentIndex=currentIndex+1;
+        showView('student');
+        return;
     }
-    .attendance-experience-title{
-        font-size:1.18rem;
+
+    showView('review');
+}
+
+function openStudentPicker(){
+    const state=getState();
+    const expectedStudents=state.attendance?.expected_students||[];
+
+    const excludedStudentIds=[
+        ...expectedStudents.map(student=>student.id),
+        ...attendanceSession.addedStudents.map(student=>student.id)
+    ];
+
+    showStudentPicker({
+        locationStudents:state.locationStudents||[],
+        excludedStudentIds,
+        onStudentSelected:addStudentToAttendance,
+        onCancel:()=>showView('review')
+    });
+}
+
+function addStudentToAttendance(student){
+    attendanceSession.addedStudents.push({
+        ...student,
+        isAddedStudent:true
+    });
+
+    attendanceSession.selections[student.id]='present';
+    showView('review');
+}
+
+function removeAddedStudent(studentId){
+    attendanceSession.addedStudents=
+        attendanceSession.addedStudents.filter(student=>{
+            return student.id!==studentId;
+        });
+
+    delete attendanceSession.selections[studentId];
+    showView('review');
+}
+
+async function submitAttendance(){
+    if(attendanceSession.isSubmitting||!attendanceIsComplete()){
+        return;
     }
-    .attendance-experience-description{
-        font-size:.82rem;
+
+    attendanceSession.isSubmitting=true;
+    renderCurrentView();
+
+    try{
+        const attendanceDraft=getAttendanceDraft();
+
+        attendanceSession.submissionResult=
+            await postAttendance(attendanceDraft);
+
+        console.log(
+            'ta_post_attendance:',
+            attendanceSession.submissionResult
+        );
+
+        attendanceSession.view='complete';
+    }catch(error){
+        console.error(
+            'Attendance submission failed:',
+            error
+        );
+
+        window.alert(
+            error instanceof Error
+                ?error.message
+                :'Unable to save attendance.'
+        );
+    }finally{
+        attendanceSession.isSubmitting=false;
+        renderCurrentView();
     }
-    .attendance-review-list{
-        gap:6px;
-    }
-    .attendance-review-row{
-        min-height:46px;
-        padding:5px 6px;
-        gap:6px;
-        border-radius:11px;
-    }
-    .attendance-review-avatar{
-        width:28px;
-        height:28px;
-        font-size:.6rem;
-    }
-    .attendance-review-student{
-        gap:6px;
-    }
-    .attendance-review-name{
-        font-size:.76rem;
-    }
-    .attendance-review-choices{
-        grid-template-columns:50px 64px;
-        gap:4px;
-    }
-    .attendance-review-choice{
-        min-height:31px;
-        padding:5px 4px;
-        border-radius:8px;
-        font-size:.61rem;
-    }
-    .attendance-review-row:has(.attendance-remove-button){
-        grid-template-columns:minmax(0,1fr) auto;
-    }
-    .attendance-remove-button{
-        grid-column:1 / -1;
-        justify-self:end;
-        padding:2px 4px;
-    }
-    .attendance-review-actions{
-        grid-template-columns:1fr;
-        gap:7px;
-    }
+}
+
+function getAllAttendanceStudents(){
+    const state=getState();
+    const expectedStudents=state.attendance?.expected_students||[];
+
+    return[
+        ...expectedStudents.map(student=>({
+            ...student,
+            attendance_source:'scheduled',
+            isAddedStudent:false
+        })),
+        ...attendanceSession.addedStudents
+    ];
+}
+
+function attendanceIsComplete(){
+    const students=getAllAttendanceStudents();
+
+    return students.length>0&&students.every(student=>{
+        return Boolean(
+            attendanceSession.selections[student.id]
+        );
+    });
+}
+
+export function getAttendanceDraft(){
+    return getAllAttendanceStudents().map(student=>({
+        student_id:student.id,
+        status:attendanceSession.selections[student.id]||null,
+        attendance_source:student.attendance_source||'scheduled'
+    }));
 }
