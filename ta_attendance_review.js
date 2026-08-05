@@ -1,4 +1,3 @@
-
 export function renderAttendanceReview(workspace,context){
     const{students,session,actions}=context;
 
@@ -12,11 +11,11 @@ export function renderAttendanceReview(workspace,context){
 
     const title=document.createElement('h3');
     title.className='attendance-experience-title';
-    title.textContent='Review Today’s Attendance';
+    title.textContent='Today’s Attendance';
 
     const description=document.createElement('p');
     description.className='attendance-experience-description';
-    description.textContent=getReviewSummary(students,session);
+    description.textContent=getAttendanceSummary(students,session);
 
     heading.appendChild(title);
     heading.appendChild(description);
@@ -25,11 +24,10 @@ export function renderAttendanceReview(workspace,context){
     const list=document.createElement('div');
     list.className='attendance-review-list';
 
-    students.forEach((student,index)=>{
+    students.forEach(student=>{
         list.appendChild(
             createStudentRow(
                 student,
-                index,
                 session,
                 actions
             )
@@ -45,11 +43,11 @@ export function renderAttendanceReview(workspace,context){
     const actionsRow=document.createElement('div');
     actionsRow.className='attendance-review-actions';
 
-    const continueButton=document.createElement('button');
-    continueButton.type='button';
-    continueButton.className='attendance-text-button';
-    continueButton.textContent='Continue Checking';
-    continueButton.addEventListener('click',actions.begin);
+    const backButton=document.createElement('button');
+    backButton.type='button';
+    backButton.className='attendance-text-button';
+    backButton.textContent='Back';
+    backButton.addEventListener('click',actions.showIntro);
 
     const submitButton=document.createElement('button');
     submitButton.type='button';
@@ -60,14 +58,11 @@ export function renderAttendanceReview(workspace,context){
 
     submitButton.disabled=
         session.isSubmitting||
-        !attendanceIsComplete(
-            students,
-            session
-        );
+        !attendanceIsComplete(students,session);
 
     submitButton.addEventListener('click',actions.submit);
 
-    actionsRow.appendChild(continueButton);
+    actionsRow.appendChild(backButton);
     actionsRow.appendChild(submitButton);
 
     container.appendChild(header);
@@ -87,17 +82,12 @@ export function renderAttendanceReview(workspace,context){
     workspace.appendChild(container);
 }
 
-function createStudentRow(student,index,session,actions){
+function createStudentRow(student,session,actions){
     const row=document.createElement('div');
     row.className='attendance-review-row';
 
-    const studentButton=document.createElement('button');
-    studentButton.type='button';
-    studentButton.className='attendance-review-student';
-
-    studentButton.addEventListener('click',()=>{
-        actions.showStudent(index);
-    });
+    const studentInfo=document.createElement('div');
+    studentInfo.className='attendance-review-student';
 
     const avatar=document.createElement('span');
     avatar.className='attendance-review-avatar';
@@ -107,32 +97,33 @@ function createStudentRow(student,index,session,actions){
     name.className='attendance-review-name';
     name.textContent=getStudentName(student);
 
-    studentButton.appendChild(avatar);
-    studentButton.appendChild(name);
+    studentInfo.appendChild(avatar);
+    studentInfo.appendChild(name);
 
-    const selectedStatus=
-        session.selections?.[student.id]||
-        null;
+    const choices=document.createElement('div');
+    choices.className='attendance-review-choices';
 
-    const statusButton=document.createElement('button');
-    statusButton.type='button';
-    statusButton.className='attendance-review-status';
-    statusButton.textContent=formatAttendanceStatus(selectedStatus);
-
-    if(selectedStatus){
-        statusButton.classList.add(
-            `is-${selectedStatus}`
-        );
-    }else{
-        statusButton.classList.add('is-unanswered');
-    }
-
-    statusButton.addEventListener('click',()=>{
-        actions.showStudent(index);
+    const presentButton=createStatusButton({
+        student,
+        status:'present',
+        label:'Here',
+        session,
+        actions
     });
 
-    row.appendChild(studentButton);
-    row.appendChild(statusButton);
+    const absentButton=createStatusButton({
+        student,
+        status:'absent',
+        label:'Not Here',
+        session,
+        actions
+    });
+
+    choices.appendChild(presentButton);
+    choices.appendChild(absentButton);
+
+    row.appendChild(studentInfo);
+    row.appendChild(choices);
 
     if(student.isAddedStudent){
         const removeButton=document.createElement('button');
@@ -150,29 +141,53 @@ function createStudentRow(student,index,session,actions){
     return row;
 }
 
+function createStatusButton({
+    student,
+    status,
+    label,
+    session,
+    actions
+}){
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='attendance-review-choice';
+    button.dataset.status=status;
+    button.textContent=label;
+
+    if(session.selections?.[student.id]===status){
+        button.classList.add('is-selected');
+    }
+
+    button.addEventListener('click',()=>{
+        actions.selectStatus(
+            student.id,
+            status
+        );
+    });
+
+    return button;
+}
+
 function attendanceIsComplete(students,session){
     return students.length>0&&students.every(student=>{
-        return Boolean(
-            session.selections?.[student.id]
-        );
+        return Boolean(session.selections?.[student.id]);
     });
 }
 
-function getReviewSummary(students,session){
+function getAttendanceSummary(students,session){
     const completedCount=students.filter(student=>{
-        return Boolean(
-            session.selections?.[student.id]
-        );
+        return Boolean(session.selections?.[student.id]);
     }).length;
 
-    if(
-        students.length>0&&
-        completedCount===students.length
-    ){
-        return'Everyone has been checked. Tap a student to make a correction.';
+    if(students.length===0){
+        return'Add the learners who attended this session.';
     }
 
-    return`${completedCount} of ${students.length} students checked`;
+    if(completedCount===students.length){
+        return'Everyone has been checked. Make any changes before completing attendance.';
+    }
+
+    return`${completedCount} of ${students.length} learners checked`;
 }
 
 function getStudentName(student){
@@ -194,17 +209,4 @@ function getStudentInitials(student){
         .join('');
 
     return initials||'•';
-}
-
-function formatAttendanceStatus(status){
-    switch(status){
-        case'present':
-            return'Here Today';
-
-        case'absent':
-            return'Not Here';
-
-        default:
-            return'Not Checked';
-    }
 }
