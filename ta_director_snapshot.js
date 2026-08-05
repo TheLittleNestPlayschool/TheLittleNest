@@ -1,4 +1,3 @@
-
 import {
     getState
 } from './ta_state.js';
@@ -17,7 +16,7 @@ export async function buildDirectorSnapshot(){
             state.expectedStudents
         );
 
-    return{
+    const snapshot={
 
         //------------------------------------
         // Teacher
@@ -67,17 +66,11 @@ export async function buildDirectorSnapshot(){
 
     };
 
+    console.log(
+        'Director Snapshot:',
+        snapshot
+    );
+
+    return snapshot;
+
 }
-
-const snapshot={
-
-    ...
-
-};
-
-console.log(
-    'Director Snapshot:',
-    snapshot
-);
-
-return snapshot;
