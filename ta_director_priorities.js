@@ -1,14 +1,9 @@
-import {
-    getState
-} from './ta_state.js';
-
-export function getPriorityList(){
-
-    const state=
-        getState();
+export function getPriorityList(
+    snapshot
+){
 
     switch(
-        state.teacherState?.teacher_state
+        snapshot.teacherState?.teacher_state
     ){
 
         case 'BEFORE_FIRST_SESSION':
