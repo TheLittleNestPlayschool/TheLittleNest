@@ -1,3 +1,4 @@
+
 export function renderAttendanceIntro(workspace,context){
     const{state,students,session,actions}=context;
 
