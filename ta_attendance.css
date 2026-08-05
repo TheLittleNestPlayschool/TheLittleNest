@@ -337,3 +337,120 @@
         gap:7px;
     }
 }
+
+/*==================================================
+  Inline Student Picker
+==================================================*/
+
+.attendance-add-student{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.attendance-inline-picker{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    padding:12px;
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:12px;
+}
+
+.attendance-picker-search-row{
+    display:flex;
+    gap:8px;
+}
+
+.attendance-picker-search{
+    flex:1;
+    min-height:40px;
+    padding:10px 12px;
+    border:1px solid rgba(255,255,255,.45);
+    border-radius:10px;
+    background:rgba(255,255,255,.65);
+    font:inherit;
+}
+
+.attendance-picker-cancel{
+    padding:0 14px;
+    border:none;
+    border-radius:10px;
+    background:#e5e7eb;
+    font:inherit;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.attendance-picker-list{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    max-height:220px;
+    overflow-y:auto;
+}
+
+.attendance-picker-student{
+    width:100%;
+    padding:10px 12px;
+    text-align:left;
+    border:1px solid rgba(255,255,255,.4);
+    border-radius:10px;
+    background:white;
+    font:inherit;
+    cursor:pointer;
+}
+
+.attendance-picker-student:hover{
+    background:#f8fafc;
+}
+
+.attendance-picker-empty{
+    margin:0;
+    padding:10px;
+    text-align:center;
+    color:#64748b;
+}
+
+.attendance-picker-selected{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.attendance-picker-selected strong{
+    font-size:.95rem;
+}
+
+.attendance-picker-selected span{
+    color:#64748b;
+    font-size:.8rem;
+}
+
+.attendance-source-list{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+}
+
+.attendance-source-button{
+    min-height:42px;
+    border:none;
+    border-radius:10px;
+    background:#f3f4f6;
+    font:inherit;
+    font-weight:700;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.attendance-source-button:hover{
+    background:#e5e7eb;
+}
+
+.attendance-picker-controls{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
