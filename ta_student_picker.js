@@ -1,82 +1,111 @@
-import {
-    getWorkspace
-} from './ta_ui.js';
-
-export function showStudentPicker({
-    locationStudents = [],
-    excludedStudentIds = [],
-    onStudentSelected,
-    onCancel
-}) {
-    const workspace = getWorkspace();
-
-    workspace.innerHTML = '';
-
-    const excludedIds =
-        new Set(excludedStudentIds);
-
-    const availableStudents =
-        locationStudents.filter(
-            (student) =>
-                !excludedIds.has(student.id)
+export function renderInlineStudentPicker(
+    container,
+    {
+        locationStudents=[],
+        excludedStudentIds=[],
+        onStudentSelected,
+        onCancel
+    }
+){
+    const excludedIds=
+        new Set(
+            excludedStudentIds
         );
 
-    const container =
-        document.createElement('section');
+    const availableStudents=
+        locationStudents.filter(student=>{
+            return!excludedIds.has(
+                student.id
+            );
+        });
 
-    const title =
-        document.createElement('h2');
+    renderStudentSearch();
 
-    title.textContent =
-        'Find a Student';
+    function renderStudentSearch(){
+        container.innerHTML='';
+        container.className=
+            'attendance-inline-picker';
 
-    const searchInput =
-        document.createElement('input');
+        const searchRow=
+            document.createElement('div');
 
-    searchInput.type = 'search';
-    searchInput.placeholder =
-        'Search student name';
-    searchInput.autocomplete = 'off';
+        searchRow.className=
+            'attendance-picker-search-row';
 
-    const studentList =
-        document.createElement('div');
+        const searchInput=
+            document.createElement('input');
 
-    const cancelButton =
-        document.createElement('button');
+        searchInput.type='search';
+        searchInput.className=
+            'attendance-picker-search';
 
-    cancelButton.type = 'button';
-    cancelButton.textContent =
-        'Back to Attendance';
+        searchInput.placeholder=
+            'Search or select a student';
 
-    cancelButton.addEventListener(
-        'click',
-        onCancel
-    );
+        searchInput.autocomplete='off';
 
-    container.appendChild(title);
-    container.appendChild(searchInput);
-    container.appendChild(studentList);
-    container.appendChild(cancelButton);
+        const cancelButton=
+            createCancelButton(
+                onCancel
+            );
 
-    workspace.appendChild(container);
+        searchRow.appendChild(
+            searchInput
+        );
+
+        searchRow.appendChild(
+            cancelButton
+        );
+
+        const studentList=
+            document.createElement('div');
+
+        studentList.className=
+            'attendance-picker-list';
+
+        container.appendChild(
+            searchRow
+        );
+
+        container.appendChild(
+            studentList
+        );
+
+        searchInput.addEventListener(
+            'input',
+            ()=>{
+                renderStudentList(
+                    searchInput.value,
+                    studentList
+                );
+            }
+        );
+
+        renderStudentList(
+            '',
+            studentList
+        );
+
+        searchInput.focus();
+    }
 
     function renderStudentList(
-        searchValue = ''
-    ) {
-        studentList.innerHTML = '';
+        searchValue,
+        studentList
+    ){
+        studentList.innerHTML='';
 
-        const normalizedSearch =
+        const normalizedSearch=
             searchValue
                 .trim()
                 .toLowerCase();
 
-        const filteredStudents =
+        const filteredStudents=
             availableStudents.filter(
-                (student) => {
-                    const studentName =
-                        student.name || '';
-
-                    return studentName
+                student=>{
+                    return getStudentName(
+                        student
+                    )
                         .toLowerCase()
                         .includes(
                             normalizedSearch
@@ -84,13 +113,14 @@ export function showStudentPicker({
                 }
             );
 
-        if (
-            filteredStudents.length === 0
-        ) {
-            const noResults =
+        if(filteredStudents.length===0){
+            const noResults=
                 document.createElement('p');
 
-            noResults.textContent =
+            noResults.className=
+                'attendance-picker-empty';
+
+            noResults.textContent=
                 'No matching students found.';
 
             studentList.appendChild(
@@ -101,139 +131,211 @@ export function showStudentPicker({
         }
 
         filteredStudents.forEach(
-            (student) => {
-                const studentButton =
+            student=>{
+                const button=
                     document.createElement(
                         'button'
                     );
 
-                studentButton.type =
-                    'button';
+                button.type='button';
 
-                studentButton.textContent =
-                    student.name ||
-                    `Student ${student.id}`;
+                button.className=
+                    'attendance-picker-student';
 
-                studentButton.addEventListener(
+                button.textContent=
+                    getStudentName(
+                        student
+                    );
+
+                button.addEventListener(
                     'click',
-                    () => {
-                        showAttendanceSourcePicker({
-                            student,
-                            onStudentSelected,
-                            onCancel: () => {
-                                showStudentPicker({
-                                    locationStudents,
-                                    excludedStudentIds,
-                                    onStudentSelected,
-                                    onCancel
-                                });
-                            }
-                        });
+                    ()=>{
+                        renderSourcePicker(
+                            student
+                        );
                     }
                 );
 
                 studentList.appendChild(
-                    studentButton
+                    button
                 );
             }
         );
     }
 
-    searchInput.addEventListener(
-        'input',
-        () => {
-            renderStudentList(
-                searchInput.value
+    function renderSourcePicker(
+        student
+    ){
+        container.innerHTML='';
+
+        const selectedStudent=
+            document.createElement('div');
+
+        selectedStudent.className=
+            'attendance-picker-selected';
+
+        const studentName=
+            document.createElement('strong');
+
+        studentName.textContent=
+            getStudentName(
+                student
             );
-        }
-    );
 
-    renderStudentList();
-}
+        const question=
+            document.createElement('span');
 
-function showAttendanceSourcePicker({
-    student,
-    onStudentSelected,
-    onCancel
-}) {
-    const workspace = getWorkspace();
+        question.textContent=
+            'Why are they joining today?';
 
-    workspace.innerHTML = '';
+        selectedStudent.appendChild(
+            studentName
+        );
 
-    const container =
-        document.createElement('section');
+        selectedStudent.appendChild(
+            question
+        );
 
-    const title =
-        document.createElement('h2');
+        const sourceList=
+            document.createElement('div');
 
-    title.textContent =
-        student.name ||
-        `Student ${student.id}`;
+        sourceList.className=
+            'attendance-source-list';
 
-    const question =
-        document.createElement('p');
+        getAttendanceSources().forEach(
+            source=>{
+                const button=
+                    document.createElement(
+                        'button'
+                    );
 
-    question.textContent =
-        'Why is this student attending today?';
+                button.type='button';
 
-    container.appendChild(title);
-    container.appendChild(question);
+                button.className=
+                    'attendance-source-button';
 
-    const sources = [
-        {
-            value: 'makeup',
-            label: 'Makeup Class'
-        },
-        {
-            value: 'new_enrollment',
-            label: 'New Enrollment'
-        },
-        {
-            value: 'trial',
-            label: 'Trial Class'
-        },
-        {
-            value: 'manual',
-            label: 'Manual'
-        }
-    ];
+                button.textContent=
+                    source.label;
 
-    sources.forEach((source) => {
-        const button =
-            document.createElement('button');
+                button.addEventListener(
+                    'click',
+                    ()=>{
+                        onStudentSelected({
+                            ...student,
+                            attendance_source:
+                                source.value
+                        });
+                    }
+                );
 
-        button.type = 'button';
-        button.textContent = source.label;
-
-        button.addEventListener(
-            'click',
-            () => {
-                onStudentSelected({
-                    ...student,
-                    attendance_source:
-                        source.value
-                });
+                sourceList.appendChild(
+                    button
+                );
             }
         );
 
-        container.appendChild(button);
-    });
+        const controls=
+            document.createElement('div');
 
-    const cancelButton =
+        controls.className=
+            'attendance-picker-controls';
+
+        const backButton=
+            document.createElement('button');
+
+        backButton.type='button';
+
+        backButton.className=
+            'attendance-text-button';
+
+        backButton.textContent=
+            'Choose Another Student';
+
+        backButton.addEventListener(
+            'click',
+            renderStudentSearch
+        );
+
+        const cancelButton=
+            createCancelButton(
+                onCancel
+            );
+
+        controls.appendChild(
+            backButton
+        );
+
+        controls.appendChild(
+            cancelButton
+        );
+
+        container.appendChild(
+            selectedStudent
+        );
+
+        container.appendChild(
+            sourceList
+        );
+
+        container.appendChild(
+            controls
+        );
+    }
+}
+
+function createCancelButton(
+    onCancel
+){
+    const button=
         document.createElement('button');
 
-    cancelButton.type = 'button';
-    cancelButton.textContent =
-        'Back to Student Search';
+    button.type='button';
 
-    cancelButton.addEventListener(
+    button.className=
+        'attendance-picker-cancel';
+
+    button.textContent='Cancel';
+
+    button.addEventListener(
         'click',
         onCancel
     );
 
-    container.appendChild(
-        cancelButton
-    );
+    return button;
+}
 
-    workspace.appendChild(container);
+function getAttendanceSources(){
+    return[
+        {
+            value:'makeup',
+            label:'Makeup Class'
+        },
+        {
+            value:'new_enrollment',
+            label:'New Enrollment'
+        },
+        {
+            value:'trial',
+            label:'Trial Class'
+        },
+        {
+            value:'manual',
+            label:'Other'
+        }
+    ];
+}
+
+function getStudentName(
+    student
+){
+    return(
+        student.name||
+        [
+            student.first_name,
+            student.last_name
+        ]
+            .filter(Boolean)
+            .join(' ')||
+        `Student ${student.id}`
+    );
 }
