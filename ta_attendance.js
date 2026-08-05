@@ -1,327 +1,263 @@
-import {getState} from './ta_state.js';
-import {getWorkspace,clearWorkspace} from './ta_ui.js';
-import {showStudentPicker} from './ta_student_picker.js';
-import {postAttendance} from './ta_attendance_post.js';
+import{getState}from'./ta_state.js';
+import{getWorkspace,clearWorkspace}from'./ta_ui.js';
+import{showStudentPicker}from'./ta_student_picker.js';
+import{postAttendance}from'./ta_attendance_post.js';
+import{renderAttendanceIntro}from'./ta_attendance_intro.js';
+import{renderAttendanceStudent}from'./ta_attendance_student.js';
+import{renderAttendanceReview}from'./ta_attendance_review.js';
+import{renderAttendanceComplete}from'./ta_attendance_complete.js';
 
-let addedStudents=[];
-let attendanceSelections={};
+let attendanceSession=createEmptySession();
 
 export function renderAttendanceModule(){
-    addedStudents=[];
-    attendanceSelections={};
+    const state=getState();
+    const sessionId=state.relevantSession?.id||null;
+
+    if(attendanceSession.sessionId!==sessionId){
+        resetAttendanceSession(sessionId);
+    }
+
     clearWorkspace();
-    renderAttendanceForm();
+    renderCurrentView();
 }
 
-function renderAttendanceForm(){
+function createEmptySession(sessionId=null){
+    return{
+        sessionId,
+        view:'intro',
+        currentStudentIndex:0,
+        addedStudents:[],
+        selections:{},
+        isSubmitting:false,
+        submissionResult:null
+    };
+}
+
+function resetAttendanceSession(sessionId){
+    attendanceSession=createEmptySession(sessionId);
+    loadExistingAttendance();
+}
+
+function loadExistingAttendance(){
     const state=getState();
-    const expectedStudents=
-        state.attendance?.expected_students||[];
+    const records=state.attendance?.attendance_records||[];
+
+    records.forEach(record=>{
+        const studentId=record.student_id||record.student?.id||null;
+
+        if(!studentId){
+            return;
+        }
+
+        attendanceSession.selections[studentId]=record.status||null;
+    });
+
+    if(records.length>0){
+        attendanceSession.view='review';
+    }
+}
+
+function renderCurrentView(){
     const workspace=getWorkspace();
+
+    if(!workspace){
+        return;
+    }
 
     workspace.innerHTML='';
 
-    const form=document.createElement('form');
-    form.id='attendanceForm';
+    const context={
+        state:getState(),
+        session:attendanceSession,
+        students:getAllAttendanceStudents(),
+        actions:{
+            begin:beginAttendance,
+            showIntro:()=>showView('intro'),
+            showStudent,
+            showReview:()=>showView('review'),
+            selectStatus:selectAttendanceStatus,
+            addStudent:openStudentPicker,
+            removeStudent:removeAddedStudent,
+            submit:submitAttendance
+        }
+    };
 
-    expectedStudents.forEach(student=>{
-        form.appendChild(
-            createAttendanceRow(
-                student,
-                'scheduled'
-            )
-        );
-    });
+    switch(attendanceSession.view){
+        case'student':
+            renderAttendanceStudent(workspace,context);
+            break;
 
-    addedStudents.forEach(student=>{
-        form.appendChild(
-            createAttendanceRow(
-                student,
-                student.attendance_source,
-                true
-            )
-        );
-    });
+        case'review':
+            renderAttendanceReview(workspace,context);
+            break;
 
-    const findStudentText=
-        document.createElement('p');
+        case'complete':
+            renderAttendanceComplete(workspace,context);
+            break;
 
-    findStudentText.textContent=
-        "Don't see the student here?";
-
-    const findStudentButton=
-        document.createElement('button');
-
-    findStudentButton.type='button';
-    findStudentButton.textContent=
-        'View All Location Students';
-
-    findStudentButton.addEventListener(
-        'click',
-        openStudentPicker
-    );
-
-    const submitButton=
-        document.createElement('button');
-
-    submitButton.type='button';
-    submitButton.textContent=
-        'Collect Attendance';
-
-    submitButton.addEventListener(
-        'click',
-        handleAttendanceSubmit
-    );
-
-    form.appendChild(findStudentText);
-    form.appendChild(findStudentButton);
-    form.appendChild(
-        document.createElement('br')
-    );
-    form.appendChild(submitButton);
-
-    workspace.appendChild(form);
+        default:
+            renderAttendanceIntro(workspace,context);
+    }
 }
 
-function createAttendanceRow(
-    student,
-    attendanceSource,
-    canRemove=false
-){
-    const row=document.createElement('div');
-    row.className='attendance-row';
+function showView(view){
+    attendanceSession.view=view;
+    renderCurrentView();
+}
 
-    const studentName=
-        student.name||
-        `Student ${student.id}`;
+function beginAttendance(){
+    const students=getAllAttendanceStudents();
 
-    row.innerHTML=`
-        <h3>${studentName}</h3>
-
-        <label>
-            <input
-                type="radio"
-                name="student_${student.id}"
-                value="present"
-            >
-            Present
-        </label>
-
-        <label>
-            <input
-                type="radio"
-                name="student_${student.id}"
-                value="absent"
-            >
-            Absent
-        </label>
-    `;
-
-    row.dataset.attendanceSource=
-        attendanceSource;
-
-    const presentInput=
-        row.querySelector(
-            'input[value="present"]'
-        );
-
-    const absentInput=
-        row.querySelector(
-            'input[value="absent"]'
-        );
-
-    if(
-        canRemove&&
-        !attendanceSelections[student.id]
-    ){
-        attendanceSelections[student.id]=
-            'present';
+    if(students.length===0){
+        openStudentPicker();
+        return;
     }
 
-    if(
-        attendanceSelections[student.id]===
-        'present'
-    ){
-        presentInput.checked=true;
+    const incompleteIndex=students.findIndex(student=>{
+        return!attendanceSession.selections[student.id];
+    });
+
+    attendanceSession.currentStudentIndex=
+        incompleteIndex>=0
+            ?incompleteIndex
+            :0;
+
+    showView('student');
+}
+
+function showStudent(studentIndex){
+    const students=getAllAttendanceStudents();
+
+    if(students.length===0){
+        showView('intro');
+        return;
     }
 
-    if(
-        attendanceSelections[student.id]===
-        'absent'
-    ){
-        absentInput.checked=true;
-    }
-
-    presentInput.addEventListener(
-        'change',
-        ()=>{
-            if(presentInput.checked){
-                attendanceSelections[student.id]=
-                    'present';
-            }
-        }
+    attendanceSession.currentStudentIndex=Math.max(
+        0,
+        Math.min(studentIndex,students.length-1)
     );
 
-    absentInput.addEventListener(
-        'change',
-        ()=>{
-            if(absentInput.checked){
-                attendanceSelections[student.id]=
-                    'absent';
-            }
-        }
-    );
+    showView('student');
+}
 
-    if(canRemove){
-        const sourceText=
-            document.createElement('p');
+function selectAttendanceStatus(studentId,status){
+    attendanceSession.selections[studentId]=status;
 
-        sourceText.textContent=
-            `Attendance source: ${
-                formatAttendanceSource(
-                    attendanceSource
-                )
-            }`;
+    const students=getAllAttendanceStudents();
+    const currentIndex=attendanceSession.currentStudentIndex;
 
-        const removeButton=
-            document.createElement('button');
-
-        removeButton.type='button';
-        removeButton.textContent='Remove';
-
-        removeButton.addEventListener(
-            'click',
-            ()=>{
-                removeAddedStudent(
-                    student.id
-                );
-            }
-        );
-
-        row.appendChild(sourceText);
-        row.appendChild(removeButton);
+    if(currentIndex<students.length-1){
+        attendanceSession.currentStudentIndex=currentIndex+1;
+        showView('student');
+        return;
     }
 
-    row.appendChild(
-        document.createElement('hr')
-    );
-
-    return row;
+    showView('review');
 }
 
 function openStudentPicker(){
     const state=getState();
-
-    const expectedStudents=
-        state.attendance?.expected_students||[];
+    const expectedStudents=state.attendance?.expected_students||[];
 
     const excludedStudentIds=[
-        ...expectedStudents.map(
-            student=>student.id
-        ),
-        ...addedStudents.map(
-            student=>student.id
-        )
+        ...expectedStudents.map(student=>student.id),
+        ...attendanceSession.addedStudents.map(student=>student.id)
     ];
 
     showStudentPicker({
-        locationStudents:
-            state.locationStudents||[],
-
+        locationStudents:state.locationStudents||[],
         excludedStudentIds,
-
-        onStudentSelected:
-            addStudentToAttendance,
-
-        onCancel:
-            renderAttendanceForm
+        onStudentSelected:addStudentToAttendance,
+        onCancel:()=>showView('review')
     });
 }
 
 function addStudentToAttendance(student){
-    addedStudents.push(student);
+    attendanceSession.addedStudents.push({
+        ...student,
+        isAddedStudent:true
+    });
 
-    attendanceSelections[student.id]=
-        'present';
-
-    renderAttendanceForm();
+    attendanceSession.selections[student.id]='present';
+    showView('review');
 }
 
 function removeAddedStudent(studentId){
-    addedStudents=
-        addedStudents.filter(
-            student=>
-                student.id!==studentId
-        );
+    attendanceSession.addedStudents=
+        attendanceSession.addedStudents.filter(student=>{
+            return student.id!==studentId;
+        });
 
-    delete attendanceSelections[
-        studentId
-    ];
-
-    renderAttendanceForm();
+    delete attendanceSession.selections[studentId];
+    showView('review');
 }
 
-async function handleAttendanceSubmit(){
-    const attendanceDraft=
-        getAttendanceDraft();
+async function submitAttendance(){
+    if(attendanceSession.isSubmitting||!attendanceIsComplete()){
+        return;
+    }
 
-    const result=
-        await postAttendance(
-            attendanceDraft
+    attendanceSession.isSubmitting=true;
+    renderCurrentView();
+
+    try{
+        const attendanceDraft=getAttendanceDraft();
+
+        attendanceSession.submissionResult=
+            await postAttendance(attendanceDraft);
+
+        console.log(
+            'ta_post_attendance:',
+            attendanceSession.submissionResult
         );
 
-    console.log(
-        'ta_post_attendance:',
-        result
-    );
+        attendanceSession.view='complete';
+    }catch(error){
+        console.error(
+            'Attendance submission failed:',
+            error
+        );
+
+        window.alert(
+            error instanceof Error
+                ?error.message
+                :'Unable to save attendance.'
+        );
+    }finally{
+        attendanceSession.isSubmitting=false;
+        renderCurrentView();
+    }
+}
+
+function getAllAttendanceStudents(){
+    const state=getState();
+    const expectedStudents=state.attendance?.expected_students||[];
+
+    return[
+        ...expectedStudents.map(student=>({
+            ...student,
+            attendance_source:'scheduled',
+            isAddedStudent:false
+        })),
+        ...attendanceSession.addedStudents
+    ];
+}
+
+function attendanceIsComplete(){
+    const students=getAllAttendanceStudents();
+
+    return students.length>0&&students.every(student=>{
+        return Boolean(
+            attendanceSession.selections[student.id]
+        );
+    });
 }
 
 export function getAttendanceDraft(){
-    const state=getState();
-
-    const expectedStudents=
-        state.attendance?.expected_students||[];
-
-    const allStudents=[
-        ...expectedStudents.map(
-            student=>({
-                ...student,
-                attendance_source:
-                    'scheduled'
-            })
-        ),
-        ...addedStudents
-    ];
-
-    return allStudents.map(student=>({
-        student_id:
-            student.id,
-
-        status:
-            attendanceSelections[
-                student.id
-            ]||null,
-
-        attendance_source:
-            student.attendance_source
+    return getAllAttendanceStudents().map(student=>({
+        student_id:student.id,
+        status:attendanceSession.selections[student.id]||null,
+        attendance_source:student.attendance_source||'scheduled'
     }));
-}
-
-function formatAttendanceSource(source){
-    switch(source){
-        case 'makeup':
-            return 'Makeup Class';
-
-        case 'new_enrollment':
-            return 'New Enrollment';
-
-        case 'trial':
-            return 'Trial Class';
-
-        case 'manual':
-            return 'Manual';
-
-        default:
-            return source;
-    }
 }
