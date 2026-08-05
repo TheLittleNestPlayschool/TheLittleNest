@@ -10,10 +10,10 @@ import {
     buildStagePlan
 } from './ta_director_stage_builder.js';
 
-export function buildDirectorStage(){
+export async function buildDirectorStage(){
 
     const snapshot=
-        buildDirectorSnapshot();
+        await buildDirectorSnapshot();
 
     const priorityList=
         getPriorityList(
