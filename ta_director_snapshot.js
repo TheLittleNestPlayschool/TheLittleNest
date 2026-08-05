@@ -68,3 +68,16 @@ export async function buildDirectorSnapshot(){
     };
 
 }
+
+const snapshot={
+
+    ...
+
+};
+
+console.log(
+    'Director Snapshot:',
+    snapshot
+);
+
+return snapshot;
