@@ -1,7 +1,10 @@
-
 import {
     renderAttendanceModule
 } from './ta_attendance.js';
+
+import {
+    renderTeacherInformationModule
+} from './ta_teacher_information.js';
 
 const moduleRegistry={
     attendance:{
@@ -89,11 +92,10 @@ const moduleRegistry={
         id:'teacher_information',
         icon:'👩‍🏫',
         title:'Teacher Information',
-        subtitle:'View the signed-in teacher and session details.',
-        description:
-            'View teacher, location, and current session information.',
-        renderer:null,
-        isAvailable:false
+        subtitle:'View teacher information.',
+        description:'View the signed-in teacher information.',
+        renderer:renderTeacherInformationModule,
+        isAvailable:true
     }
 };
 
