@@ -1,3 +1,4 @@
+
 export function renderAttendanceComplete(workspace,context){
     const{students,session,actions}=context;
 
