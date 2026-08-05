@@ -1,4 +1,448 @@
-
 /*==================================================
   Attendance Module
 ==================================================*/
+
+.attendance-experience{
+    width:100%;
+    max-width:680px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+.attendance-eyebrow{
+    margin:0;
+    color:#92400e;
+    font-size:.78rem;
+    font-weight:800;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+.attendance-experience-title{
+    margin:0;
+    color:#0f172a;
+    font-size:1.45rem;
+    font-weight:900;
+    line-height:1.2;
+}
+.attendance-experience-description{
+    margin:0;
+    color:#475569;
+    font-size:.95rem;
+    font-weight:600;
+    line-height:1.55;
+}
+.attendance-empty-message{
+    margin:0;
+    padding:14px 16px;
+    background:rgba(255,255,255,.28);
+    border:1px solid rgba(255,255,255,.38);
+    border-radius:14px;
+    color:#475569;
+    font-size:.9rem;
+    font-weight:600;
+    line-height:1.45;
+}
+.attendance-primary-button,
+.attendance-secondary-button,
+.attendance-text-button,
+.attendance-choice-button,
+.attendance-review-student,
+.attendance-review-status,
+.attendance-remove-button{
+    font:inherit;
+}
+.attendance-primary-button{
+    width:100%;
+    min-height:50px;
+    padding:12px 18px;
+    background:linear-gradient(
+        135deg,
+        #d4a017,
+        #f0c04a
+    );
+    border:1px solid rgba(120,74,0,.26);
+    border-radius:14px;
+    box-shadow:0 8px 18px rgba(146,64,14,.18);
+    color:#422006;
+    font-size:.95rem;
+    font-weight:900;
+    cursor:pointer;
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        filter .18s ease;
+}
+.attendance-primary-button:hover{
+    transform:translateY(-1px);
+    box-shadow:0 10px 22px rgba(146,64,14,.22);
+    filter:brightness(1.03);
+}
+.attendance-primary-button:active{
+    transform:translateY(0);
+}
+.attendance-primary-button:disabled{
+    cursor:not-allowed;
+    opacity:.48;
+    transform:none;
+    box-shadow:none;
+}
+.attendance-secondary-button{
+    width:100%;
+    min-height:46px;
+    padding:11px 16px;
+    background:rgba(255,255,255,.30);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.46);
+    border-radius:13px;
+    color:#0f172a;
+    font-size:.9rem;
+    font-weight:800;
+    cursor:pointer;
+    transition:
+        transform .18s ease,
+        background .18s ease,
+        box-shadow .18s ease;
+}
+.attendance-secondary-button:hover{
+    transform:translateY(-1px);
+    background:rgba(255,255,255,.40);
+    box-shadow:0 7px 18px rgba(15,23,42,.10);
+}
+.attendance-text-button{
+    padding:8px 4px;
+    background:transparent;
+    border:none;
+    color:#334155;
+    font-size:.85rem;
+    font-weight:800;
+    cursor:pointer;
+}
+.attendance-text-button:hover{
+    color:#0f172a;
+    text-decoration:underline;
+}
+
+/*==================================================
+  Introduction
+==================================================*/
+
+.attendance-introduction{
+    align-items:flex-start;
+}
+.attendance-introduction
+.attendance-primary-button{
+    margin-top:4px;
+}
+
+/*==================================================
+  Student Screen
+==================================================*/
+
+.attendance-student{
+    align-items:center;
+    text-align:center;
+}
+.attendance-progress{
+    align-self:flex-end;
+    margin:0;
+    padding:5px 10px;
+    background:rgba(255,255,255,.28);
+    border:1px solid rgba(255,255,255,.40);
+    border-radius:999px;
+    color:#475569;
+    font-size:.72rem;
+    font-weight:800;
+}
+.attendance-student-avatar{
+    width:92px;
+    height:92px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:2px;
+    background:linear-gradient(
+        145deg,
+        rgba(255,255,255,.78),
+        rgba(255,255,255,.34)
+    );
+    border:2px solid rgba(212,160,23,.56);
+    border-radius:50%;
+    box-shadow:
+        0 10px 24px rgba(15,23,42,.12),
+        inset 0 1px 0 rgba(255,255,255,.75);
+    color:#7c2d12;
+    font-size:1.75rem;
+    font-weight:900;
+    letter-spacing:.03em;
+}
+.attendance-student-name{
+    margin:0;
+    color:#0f172a;
+    font-size:1.55rem;
+    font-weight:900;
+    line-height:1.15;
+}
+.attendance-student-question{
+    margin:0;
+    color:#475569;
+    font-size:1rem;
+    font-weight:700;
+    line-height:1.5;
+}
+.attendance-choice-grid{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+.attendance-choice-button{
+    min-height:88px;
+    padding:16px;
+    background:rgba(255,255,255,.24);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.42);
+    border-radius:18px;
+    box-shadow:0 8px 20px rgba(15,23,42,.08);
+    color:#0f172a;
+    font-size:1rem;
+    font-weight:900;
+    cursor:pointer;
+    transition:
+        transform .18s ease,
+        background .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+.attendance-choice-button:hover{
+    transform:translateY(-2px);
+    background:rgba(255,255,255,.36);
+    box-shadow:0 12px 24px rgba(15,23,42,.11);
+}
+.attendance-choice-button[data-value="present"]{
+    border-color:rgba(16,185,129,.42);
+}
+.attendance-choice-button[data-value="absent"]{
+    border-color:rgba(245,158,11,.42);
+}
+.attendance-choice-button[data-value="present"].is-selected{
+    background:rgba(16,185,129,.18);
+    border-color:rgba(5,150,105,.68);
+    color:#065f46;
+}
+.attendance-choice-button[data-value="absent"].is-selected{
+    background:rgba(245,158,11,.18);
+    border-color:rgba(217,119,6,.68);
+    color:#92400e;
+}
+.attendance-navigation{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+}
+
+/*==================================================
+  Review Screen
+==================================================*/
+
+.attendance-review-header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+}
+.attendance-review-list{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+.attendance-review-row{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:center;
+    gap:10px;
+    padding:9px;
+    background:rgba(255,255,255,.20);
+    border:1px solid rgba(255,255,255,.34);
+    border-radius:15px;
+    box-shadow:0 5px 14px rgba(15,23,42,.06);
+}
+.attendance-review-row:has(.attendance-remove-button){
+    grid-template-columns:minmax(0,1fr) auto auto;
+}
+.attendance-review-student{
+    min-width:0;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:0;
+    background:transparent;
+    border:none;
+    text-align:left;
+    cursor:pointer;
+}
+.attendance-review-avatar{
+    flex:0 0 auto;
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.48);
+    border:1px solid rgba(255,255,255,.54);
+    border-radius:50%;
+    color:#7c2d12;
+    font-size:.78rem;
+    font-weight:900;
+}
+.attendance-review-name{
+    min-width:0;
+    overflow:hidden;
+    color:#0f172a;
+    font-size:.92rem;
+    font-weight:850;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.attendance-review-status{
+    min-width:96px;
+    padding:7px 10px;
+    border-radius:999px;
+    font-size:.72rem;
+    font-weight:900;
+    white-space:nowrap;
+    cursor:pointer;
+}
+.attendance-review-status.is-present{
+    background:rgba(16,185,129,.18);
+    border:1px solid rgba(5,150,105,.44);
+    color:#065f46;
+}
+.attendance-review-status.is-absent{
+    background:rgba(245,158,11,.20);
+    border:1px solid rgba(217,119,6,.46);
+    color:#92400e;
+}
+.attendance-review-status.is-unanswered{
+    background:rgba(255,255,255,.36);
+    border:1px solid rgba(148,163,184,.42);
+    color:#64748b;
+}
+.attendance-remove-button{
+    padding:6px 8px;
+    background:transparent;
+    border:none;
+    color:#b91c1c;
+    font-size:.7rem;
+    font-weight:800;
+    cursor:pointer;
+}
+.attendance-remove-button:hover{
+    text-decoration:underline;
+}
+.attendance-review-actions{
+    display:grid;
+    grid-template-columns:auto minmax(180px,1fr);
+    align-items:center;
+    gap:14px;
+}
+
+/*==================================================
+  Complete Screen
+==================================================*/
+
+.attendance-complete{
+    align-items:center;
+    padding:12px 0 4px;
+    text-align:center;
+}
+.attendance-complete-mark{
+    width:76px;
+    height:76px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(
+        145deg,
+        rgba(16,185,129,.82),
+        rgba(5,150,105,.92)
+    );
+    border:2px solid rgba(255,255,255,.64);
+    border-radius:50%;
+    box-shadow:0 12px 28px rgba(5,150,105,.24);
+    color:#fff;
+    font-size:2rem;
+    font-weight:900;
+}
+.attendance-complete-summary{
+    margin:0;
+    color:#475569;
+    font-size:.98rem;
+    font-weight:700;
+}
+
+/*==================================================
+  Responsive
+==================================================*/
+
+@media(max-width:600px){
+    .attendance-experience{
+        gap:14px;
+    }
+    .attendance-experience-title{
+        font-size:1.28rem;
+    }
+    .attendance-experience-description{
+        font-size:.88rem;
+    }
+    .attendance-student-avatar{
+        width:78px;
+        height:78px;
+        font-size:1.5rem;
+    }
+    .attendance-student-name{
+        font-size:1.35rem;
+    }
+    .attendance-student-question{
+        font-size:.92rem;
+    }
+    .attendance-choice-grid{
+        gap:9px;
+    }
+    .attendance-choice-button{
+        min-height:74px;
+        padding:13px 10px;
+        border-radius:15px;
+        font-size:.9rem;
+    }
+    .attendance-navigation{
+        align-items:stretch;
+        flex-direction:column;
+        gap:4px;
+    }
+    .attendance-review-row{
+        grid-template-columns:minmax(0,1fr) auto;
+        gap:8px;
+        padding:8px;
+    }
+    .attendance-review-row:has(.attendance-remove-button){
+        grid-template-columns:minmax(0,1fr) auto;
+    }
+    .attendance-remove-button{
+        grid-column:1 / -1;
+        justify-self:end;
+    }
+    .attendance-review-status{
+        min-width:84px;
+        padding:6px 8px;
+        font-size:.65rem;
+    }
+    .attendance-review-actions{
+        grid-template-columns:1fr;
+        gap:8px;
+    }
+}
