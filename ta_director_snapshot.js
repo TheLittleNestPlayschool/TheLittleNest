@@ -2,10 +2,19 @@ import {
     getState
 } from './ta_state.js';
 
-export function buildDirectorSnapshot(){
+import {
+    buildTeacherCapacity
+} from './ta_teacher_capacity.js';
+
+export async function buildDirectorSnapshot(){
 
     const state=
         getState();
+
+    const teacherCapacity=
+        await buildTeacherCapacity(
+            state.expectedStudents
+        );
 
     return{
 
@@ -28,6 +37,12 @@ export function buildDirectorSnapshot(){
 
         relevantSession:
             state.relevantSession,
+
+        //------------------------------------
+        // Teacher Capacity
+        //------------------------------------
+
+        teacherCapacity,
 
         //------------------------------------
         // Attendance
