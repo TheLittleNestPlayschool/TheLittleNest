@@ -1,5 +1,10 @@
 export function renderAttendanceReview(workspace,context){
-    const{students,session,actions}=context;
+    const{
+        students,
+        session,
+        actions,
+        renderStudentPicker
+    }=context;
 
     const container=document.createElement('section');
     container.className='attendance-experience attendance-review';
@@ -34,20 +39,27 @@ export function renderAttendanceReview(workspace,context){
         );
     });
 
-    const addStudentButton=document.createElement('button');
-    addStudentButton.type='button';
-    addStudentButton.className='attendance-secondary-button';
-    addStudentButton.textContent='Add Another Student';
-    addStudentButton.addEventListener('click',actions.addStudent);
+    const addStudentContainer=document.createElement('div');
+    addStudentContainer.className='attendance-add-student';
+
+    if(session.addingStudent){
+        renderStudentPicker(
+            addStudentContainer
+        );
+    }else{
+        const addStudentButton=document.createElement('button');
+        addStudentButton.type='button';
+        addStudentButton.className='attendance-secondary-button';
+        addStudentButton.textContent='Add Another Student';
+        addStudentButton.addEventListener('click',actions.addStudent);
+
+        addStudentContainer.appendChild(
+            addStudentButton
+        );
+    }
 
     const actionsRow=document.createElement('div');
     actionsRow.className='attendance-review-actions';
-
-    const backButton=document.createElement('button');
-    backButton.type='button';
-    backButton.className='attendance-text-button';
-    backButton.textContent='Back';
-    backButton.addEventListener('click',actions.showIntro);
 
     const submitButton=document.createElement('button');
     submitButton.type='button';
@@ -62,7 +74,6 @@ export function renderAttendanceReview(workspace,context){
 
     submitButton.addEventListener('click',actions.submit);
 
-    actionsRow.appendChild(backButton);
     actionsRow.appendChild(submitButton);
 
     container.appendChild(header);
@@ -76,8 +87,13 @@ export function renderAttendanceReview(workspace,context){
         container.appendChild(list);
     }
 
-    container.appendChild(addStudentButton);
-    container.appendChild(actionsRow);
+    container.appendChild(
+        addStudentContainer
+    );
+
+    container.appendChild(
+        actionsRow
+    );
 
     workspace.appendChild(container);
 }
@@ -170,13 +186,17 @@ function createStatusButton({
 
 function attendanceIsComplete(students,session){
     return students.length>0&&students.every(student=>{
-        return Boolean(session.selections?.[student.id]);
+        return Boolean(
+            session.selections?.[student.id]
+        );
     });
 }
 
 function getAttendanceSummary(students,session){
     const completedCount=students.filter(student=>{
-        return Boolean(session.selections?.[student.id]);
+        return Boolean(
+            session.selections?.[student.id]
+        );
     }).length;
 
     if(students.length===0){
