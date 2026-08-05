@@ -1,4 +1,3 @@
-
 import {
     renderStage
 } from './ta_stage_renderer.js';
@@ -7,10 +6,10 @@ import {
     buildDirectorStage
 } from './ta_director.js';
 
-export function startTeacherExperience(){
+export async function startTeacherExperience(){
 
     const stagePlan=
-        buildDirectorStage();
+        await buildDirectorStage();
 
     renderStage(
         stagePlan
