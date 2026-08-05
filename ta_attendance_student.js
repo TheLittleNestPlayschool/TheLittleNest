@@ -1,3 +1,4 @@
+
 export function renderAttendanceStudent(workspace,context){
     const{students,session,actions}=context;
     const index=session.currentStudentIndex||0;
