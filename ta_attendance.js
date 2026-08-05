@@ -1,10 +1,8 @@
-
 import{getState}from'./ta_state.js';
 import{getWorkspace,clearWorkspace}from'./ta_ui.js';
 import{showStudentPicker}from'./ta_student_picker.js';
 import{postAttendance}from'./ta_attendance_post.js';
 import{renderAttendanceIntro}from'./ta_attendance_intro.js';
-import{renderAttendanceStudent}from'./ta_attendance_student.js';
 import{renderAttendanceReview}from'./ta_attendance_review.js';
 import{renderAttendanceComplete}from'./ta_attendance_complete.js';
 
@@ -26,7 +24,6 @@ function createEmptySession(sessionId=null){
     return{
         sessionId,
         view:'intro',
-        currentStudentIndex:0,
         addedStudents:[],
         selections:{},
         isSubmitting:false,
@@ -45,12 +42,13 @@ function loadExistingAttendance(){
 
     records.forEach(record=>{
         const studentId=record.student_id||record.student?.id||null;
+        const status=record.attendance_status||record.status||null;
 
         if(!studentId){
             return;
         }
 
-        attendanceSession.selections[studentId]=record.status||null;
+        attendanceSession.selections[studentId]=status;
     });
 
     if(records.length>0){
@@ -74,7 +72,6 @@ function renderCurrentView(){
         actions:{
             begin:beginAttendance,
             showIntro:()=>showView('intro'),
-            showStudent,
             showReview:()=>showView('review'),
             selectStatus:selectAttendanceStatus,
             addStudent:openStudentPicker,
@@ -84,10 +81,6 @@ function renderCurrentView(){
     };
 
     switch(attendanceSession.view){
-        case'student':
-            renderAttendanceStudent(workspace,context);
-            break;
-
         case'review':
             renderAttendanceReview(workspace,context);
             break;
@@ -114,47 +107,12 @@ function beginAttendance(){
         return;
     }
 
-    const incompleteIndex=students.findIndex(student=>{
-        return!attendanceSession.selections[student.id];
-    });
-
-    attendanceSession.currentStudentIndex=
-        incompleteIndex>=0
-            ?incompleteIndex
-            :0;
-
-    showView('student');
-}
-
-function showStudent(studentIndex){
-    const students=getAllAttendanceStudents();
-
-    if(students.length===0){
-        showView('intro');
-        return;
-    }
-
-    attendanceSession.currentStudentIndex=Math.max(
-        0,
-        Math.min(studentIndex,students.length-1)
-    );
-
-    showView('student');
+    showView('review');
 }
 
 function selectAttendanceStatus(studentId,status){
     attendanceSession.selections[studentId]=status;
-
-    const students=getAllAttendanceStudents();
-    const currentIndex=attendanceSession.currentStudentIndex;
-
-    if(currentIndex<students.length-1){
-        attendanceSession.currentStudentIndex=currentIndex+1;
-        showView('student');
-        return;
-    }
-
-    showView('review');
+    renderCurrentView();
 }
 
 function openStudentPicker(){
@@ -249,9 +207,7 @@ function attendanceIsComplete(){
     const students=getAllAttendanceStudents();
 
     return students.length>0&&students.every(student=>{
-        return Boolean(
-            attendanceSession.selections[student.id]
-        );
+        return Boolean(attendanceSession.selections[student.id]);
     });
 }
 
