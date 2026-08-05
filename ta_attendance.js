@@ -43,14 +43,23 @@ function loadExistingAttendance(){
     const records=state.attendance?.attendance_records||[];
 
     records.forEach(record=>{
-        const studentId=record.student_id||record.student?.id||null;
-        const status=record.attendance_status||record.status||null;
+        const studentId=
+            record.student_id||
+            record.student?.id||
+            null;
+
+        const status=
+            record.attendance_status||
+            record.status||
+            null;
 
         if(!studentId){
             return;
         }
 
-        attendanceSession.selections[studentId]=status;
+        attendanceSession.selections[
+            studentId
+        ]=status;
     });
 
     if(records.length>0){
@@ -86,15 +95,24 @@ function renderCurrentView(){
 
     switch(attendanceSession.view){
         case'review':
-            renderAttendanceReview(workspace,context);
+            renderAttendanceReview(
+                workspace,
+                context
+            );
             break;
 
         case'complete':
-            renderAttendanceComplete(workspace,context);
+            renderAttendanceComplete(
+                workspace,
+                context
+            );
             break;
 
         default:
-            renderAttendanceIntro(workspace,context);
+            renderAttendanceIntro(
+                workspace,
+                context
+            );
     }
 
     updateAttendanceLiveStatus();
@@ -106,7 +124,8 @@ function showView(view){
 }
 
 function beginAttendance(){
-    const students=getAllAttendanceStudents();
+    const students=
+        getAllAttendanceStudents();
 
     if(students.length===0){
         openStudentPicker();
@@ -116,9 +135,16 @@ function beginAttendance(){
     showView('review');
 }
 
-function selectAttendanceStatus(studentId,status){
-    attendanceSession.selections[studentId]=status;
+function selectAttendanceStatus(
+    studentId,
+    status
+){
+    attendanceSession.selections[
+        studentId
+    ]=status;
+
     attendanceSession.isSaved=false;
+
     renderCurrentView();
 }
 
@@ -134,51 +160,81 @@ function cancelStudentPicker(){
 
 function renderStudentPicker(container){
     const state=getState();
-    const expectedStudents=state.attendance?.expected_students||[];
+
+    const expectedStudents=
+        state.attendance
+            ?.expected_students||
+        [];
 
     const excludedStudentIds=[
-        ...expectedStudents.map(student=>student.id),
-        ...attendanceSession.addedStudents.map(student=>student.id)
+        ...expectedStudents.map(
+            student=>student.id
+        ),
+        ...attendanceSession.addedStudents.map(
+            student=>student.id
+        )
     ];
 
     renderInlineStudentPicker(
         container,
         {
-            locationStudents:state.locationStudents||[],
+            locationStudents:
+                state.locationStudents||
+                [],
+
             excludedStudentIds,
-            onStudentSelected:addStudentToAttendance,
-            onCancel:cancelStudentPicker
+
+            onStudentSelected:
+                addStudentToAttendance,
+
+            onCancel:
+                cancelStudentPicker
         }
     );
 }
 
-function addStudentToAttendance(student){
+function addStudentToAttendance(
+    student
+){
     attendanceSession.addedStudents.push({
         ...student,
         isAddedStudent:true
     });
 
-    attendanceSession.selections[student.id]='present';
+    attendanceSession.selections[
+        student.id
+    ]='present';
+
     attendanceSession.addingStudent=false;
     attendanceSession.isSaved=false;
 
     renderCurrentView();
 }
 
-function removeAddedStudent(studentId){
+function removeAddedStudent(
+    studentId
+){
     attendanceSession.addedStudents=
-        attendanceSession.addedStudents.filter(student=>{
-            return student.id!==studentId;
-        });
+        attendanceSession.addedStudents.filter(
+            student=>{
+                return student.id!==studentId;
+            }
+        );
 
-    delete attendanceSession.selections[studentId];
+    delete attendanceSession.selections[
+        studentId
+    ];
 
     attendanceSession.isSaved=false;
+
     renderCurrentView();
 }
 
 async function submitAttendance(){
-    if(attendanceSession.isSubmitting||!attendanceIsComplete()){
+    if(
+        attendanceSession.isSubmitting||
+        !attendanceIsComplete()
+    ){
         return;
     }
 
@@ -186,10 +242,13 @@ async function submitAttendance(){
     renderCurrentView();
 
     try{
-        const attendanceDraft=getAttendanceDraft();
+        const attendanceDraft=
+            getAttendanceDraft();
 
         attendanceSession.submissionResult=
-            await postAttendance(attendanceDraft);
+            await postAttendance(
+                attendanceDraft
+            );
 
         console.log(
             'ta_post_attendance:',
@@ -219,66 +278,102 @@ async function submitAttendance(){
 
 function getAllAttendanceStudents(){
     const state=getState();
-    const expectedStudents=state.attendance?.expected_students||[];
+
+    const expectedStudents=
+        state.attendance
+            ?.expected_students||
+        [];
 
     return[
-        ...expectedStudents.map(student=>({
-            ...student,
-            attendance_source:'scheduled',
-            isAddedStudent:false
-        })),
+        ...expectedStudents.map(
+            student=>({
+                ...student,
+                attendance_source:
+                    'scheduled',
+                isAddedStudent:false
+            })
+        ),
         ...attendanceSession.addedStudents
     ];
 }
 
 function attendanceIsComplete(){
-    const students=getAllAttendanceStudents();
+    const students=
+        getAllAttendanceStudents();
 
-    return students.length>0&&students.every(student=>{
-        return Boolean(
-            attendanceSession.selections[student.id]
-        );
-    });
+    return(
+        students.length>0&&
+        students.every(student=>{
+            return Boolean(
+                attendanceSession
+                    .selections[
+                        student.id
+                    ]
+            );
+        })
+    );
 }
 
 function getAttendanceLiveStatus(){
-    const students=getAllAttendanceStudents();
-    const studentCount=students.length;
+    const students=
+        getAllAttendanceStudents();
 
-    const checkedCount=students.filter(student=>{
-        return Boolean(
-            attendanceSession.selections[student.id]
-        );
-    }).length;
+    const studentCount=
+        students.length;
+
+    const checkedCount=
+        students.filter(student=>{
+            return Boolean(
+                attendanceSession
+                    .selections[
+                        student.id
+                    ]
+            );
+        }).length;
+
+    const presentCount=
+        students.filter(student=>{
+            return(
+                attendanceSession
+                    .selections[
+                        student.id
+                    ]==='present'
+            );
+        }).length;
+
+    const absentCount=
+        students.filter(student=>{
+            return(
+                attendanceSession
+                    .selections[
+                        student.id
+                    ]==='absent'
+            );
+        }).length;
 
     if(attendanceSession.isSubmitting){
         return'Saving attendance...';
-    }
-
-    if(
-        attendanceSession.isSaved&&
-        attendanceIsComplete()
-    ){
-        return'Attendance complete.';
     }
 
     if(studentCount===0){
         return'No learners listed.';
     }
 
-    if(checkedCount===studentCount){
-        return'Ready to complete attendance.';
+    if(checkedCount===0){
+        return studentCount===1
+            ?'1 learner expected.'
+            :`${studentCount} learners expected.`;
     }
 
-    if(checkedCount>0){
-        return`${checkedCount} of ${studentCount} learners checked.`;
+    if(checkedCount<studentCount){
+        return`${checkedCount} of ${studentCount} checked.`;
     }
 
-    if(studentCount===1){
-        return'1 learner expected.';
+    if(attendanceSession.isSaved){
+        return`Complete · ${presentCount} here · ${absentCount} not here.`;
     }
 
-    return`${studentCount} learners expected.`;
+    return`${presentCount} here · ${absentCount} not here.`;
 }
 
 function updateAttendanceLiveStatus(){
@@ -299,9 +394,20 @@ function updateAttendanceLiveStatus(){
 }
 
 export function getAttendanceDraft(){
-    return getAllAttendanceStudents().map(student=>({
-        student_id:student.id,
-        status:attendanceSession.selections[student.id]||null,
-        attendance_source:student.attendance_source||'scheduled'
-    }));
+    return getAllAttendanceStudents()
+        .map(student=>({
+            student_id:
+                student.id,
+
+            status:
+                attendanceSession
+                    .selections[
+                        student.id
+                    ]||
+                null,
+
+            attendance_source:
+                student.attendance_source||
+                'scheduled'
+        }));
 }
