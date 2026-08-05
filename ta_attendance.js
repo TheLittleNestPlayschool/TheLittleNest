@@ -1,7 +1,6 @@
-
 import{getState}from'./ta_state.js';
 import{getWorkspace,clearWorkspace}from'./ta_ui.js';
-import{showStudentPicker}from'./ta_student_picker.js';
+import{renderInlineStudentPicker}from'./ta_student_picker.js';
 import{postAttendance}from'./ta_attendance_post.js';
 import{renderAttendanceIntro}from'./ta_attendance_intro.js';
 import{renderAttendanceReview}from'./ta_attendance_review.js';
@@ -28,7 +27,8 @@ function createEmptySession(sessionId=null){
         addedStudents:[],
         selections:{},
         isSubmitting:false,
-        submissionResult:null
+        submissionResult:null,
+        addingStudent:false
     };
 }
 
@@ -70,6 +70,7 @@ function renderCurrentView(){
         state:getState(),
         session:attendanceSession,
         students:getAllAttendanceStudents(),
+        renderStudentPicker,
         actions:{
             begin:beginAttendance,
             showIntro:()=>showView('intro'),
@@ -117,6 +118,16 @@ function selectAttendanceStatus(studentId,status){
 }
 
 function openStudentPicker(){
+    attendanceSession.addingStudent=true;
+    renderCurrentView();
+}
+
+function cancelStudentPicker(){
+    attendanceSession.addingStudent=false;
+    renderCurrentView();
+}
+
+function renderStudentPicker(container){
     const state=getState();
     const expectedStudents=state.attendance?.expected_students||[];
 
@@ -125,12 +136,15 @@ function openStudentPicker(){
         ...attendanceSession.addedStudents.map(student=>student.id)
     ];
 
-    showStudentPicker({
-        locationStudents:state.locationStudents||[],
-        excludedStudentIds,
-        onStudentSelected:addStudentToAttendance,
-        onCancel:()=>showView('review')
-    });
+    renderInlineStudentPicker(
+        container,
+        {
+            locationStudents:state.locationStudents||[],
+            excludedStudentIds,
+            onStudentSelected:addStudentToAttendance,
+            onCancel:cancelStudentPicker
+        }
+    );
 }
 
 function addStudentToAttendance(student){
@@ -140,7 +154,8 @@ function addStudentToAttendance(student){
     });
 
     attendanceSession.selections[student.id]='present';
-    showView('review');
+    attendanceSession.addingStudent=false;
+    renderCurrentView();
 }
 
 function removeAddedStudent(studentId){
@@ -150,7 +165,7 @@ function removeAddedStudent(studentId){
         });
 
     delete attendanceSession.selections[studentId];
-    showView('review');
+    renderCurrentView();
 }
 
 async function submitAttendance(){
