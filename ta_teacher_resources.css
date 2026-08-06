@@ -1,0 +1,69 @@
+.teacher-module-card[data-module-id="teacher_resources"]
+.teacher-module-header{
+    padding-top:12px;
+    padding-bottom:12px;
+}
+
+.teacher-module-card[data-module-id="teacher_resources"]
+.teacher-module-title{
+    font-size:1rem;
+    line-height:1.15;
+}
+
+.teacher-module-card[data-module-id="teacher_resources"]
+.teacher-module-subtitle{
+    margin-top:2px;
+    font-size:.72rem;
+    line-height:1.25;
+}
+
+.teacher-module-card[data-module-id="teacher_resources"]
+.teacher-module-icon{
+    font-size:1rem;
+}
+
+.teacher-module-card[data-module-id="teacher_resources"]
+.teacher-module-content{
+    padding-top:10px;
+}
+
+/*==================================================
+  Teacher Resources
+==================================================*/
+
+.teacher-resources{
+    width:100%;
+    max-width:680px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+
+.teacher-resources-message{
+    margin:0;
+    padding:9px 11px;
+    background:rgba(255,255,255,.24);
+    border:1px solid rgba(255,255,255,.38);
+    border-radius:10px;
+    color:#475569;
+    font-size:.74rem;
+    font-weight:600;
+    line-height:1.35;
+}
+
+/*==================================================
+  Mobile
+==================================================*/
+
+@media(max-width:600px){
+
+    .teacher-resources{
+        gap:8px;
+    }
+
+    .teacher-resources-message{
+        padding:8px 10px;
+        font-size:.7rem;
+    }
+}
