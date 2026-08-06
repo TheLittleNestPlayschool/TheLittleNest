@@ -1,11 +1,13 @@
 /*==================================================
   Living Stage — Perspective
 
-  The Living Task remains full width.
-
-  Waiting tasks retain a constant vertical size.
-  Their width decreases as they move farther from
-  the Living Task.
+  Responsibility:
+  - Set each task container width relative to
+    the Living Task.
+  - Control visual depth through opacity,
+    brightness, and saturation.
+  - Keep physical task height and typography
+    in separate files.
 
   Distance 1 = 10% narrower
   Distance 2 = 15% narrower
@@ -39,7 +41,6 @@
         );
 
     transition:
-        width .72s cubic-bezier(.22,.8,.3,1),
         opacity .72s cubic-bezier(.22,.8,.3,1),
         filter .72s cubic-bezier(.22,.8,.3,1),
         background .72s cubic-bezier(.22,.8,.3,1),
@@ -170,161 +171,23 @@
 }
 
 /*==================================================
-  Constant Waiting-Task Height
+  Completed Task Depth
 ==================================================*/
 
-.teacher-module-card[
-    data-stage-position^="previous-"
-]
-.teacher-module-header,
-.teacher-module-card[
-    data-stage-position^="next-"
-]
-.teacher-module-header{
-    height:54px;
-    min-height:54px;
-    padding:10px 14px;
-
-    justify-content:center;
-    overflow:hidden;
+.teacher-module-card.is-completed{
+    --stage-opacity:.30;
+    --stage-brightness:.82;
+    --stage-saturation:.52;
 }
 
 /*==================================================
-  Centered Task Identity
+  Needs Attention
 ==================================================*/
 
-.teacher-module-card
-.teacher-module-identity{
-    width:100%;
-}
-
-.teacher-module-card[
-    data-stage-position^="previous-"
-]
-.teacher-module-identity,
-.teacher-module-card[
-    data-stage-position^="next-"
-]
-.teacher-module-identity{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-
-    text-align:center;
-}
-
-.teacher-module-card[
-    data-stage-position^="previous-"
-]
-.teacher-module-text,
-.teacher-module-card[
-    data-stage-position^="next-"
-]
-.teacher-module-text{
-    min-width:0;
-    text-align:center;
-}
-
-.teacher-module-card[
-    data-stage-position^="previous-"
-]
-.teacher-module-title,
-.teacher-module-card[
-    data-stage-position^="next-"
-]
-.teacher-module-title{
-    overflow:hidden;
-
-    font-size:1rem;
-    line-height:1.1;
-    text-align:center;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-}
-
-.teacher-module-card[
-    data-stage-position^="previous-"
-]
-.teacher-module-subtitle,
-.teacher-module-card[
-    data-stage-position^="next-"
-]
-.teacher-module-subtitle{
-    margin-top:2px;
-    overflow:hidden;
-
-    font-size:.72rem;
-    line-height:1.1;
-    text-align:center;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-}
-
-.teacher-module-card[
-    data-stage-position^="previous-"
-]
-.teacher-module-icon,
-.teacher-module-card[
-    data-stage-position^="next-"
-]
-.teacher-module-icon{
-    width:30px;
-    height:30px;
-
-    font-size:1.25rem;
-}
-
-/*==================================================
-  Center Living Task Identity
-==================================================*/
-
-.teacher-module-card[
-    data-stage-position="living"
-]
-.teacher-module-header{
-    justify-content:center;
-}
-
-.teacher-module-card[
-    data-stage-position="living"
-]
-.teacher-module-identity{
-    justify-content:center;
-    text-align:center;
-}
-
-.teacher-module-card[
-    data-stage-position="living"
-]
-.teacher-module-text{
-    text-align:center;
-}
-
-.teacher-module-card[
-    data-stage-position="living"
-]
-.teacher-module-title,
-.teacher-module-card[
-    data-stage-position="living"
-]
-.teacher-module-subtitle{
-    text-align:center;
-}
-
-/*==================================================
-  Status Position
-==================================================*/
-
-.teacher-module-card[
-    data-stage-position^="previous-"
-]
-.teacher-module-status,
-.teacher-module-card[
-    data-stage-position^="next-"
-]
-.teacher-module-status{
-    display:none;
+.teacher-module-card.needs-attention{
+    --stage-opacity:.78;
+    --stage-brightness:1;
+    --stage-saturation:.92;
 }
 
 /*==================================================
@@ -348,61 +211,6 @@
     filter:
         brightness(.98)
         saturate(.9);
-}
-
-/*==================================================
-  Mobile
-==================================================*/
-
-@media(max-width:600px){
-
-    .teacher-module-card[
-        data-stage-position^="previous-"
-    ]
-    .teacher-module-header,
-    .teacher-module-card[
-        data-stage-position^="next-"
-    ]
-    .teacher-module-header{
-        height:51px;
-        min-height:51px;
-        padding:9px 11px;
-    }
-
-    .teacher-module-card[
-        data-stage-position^="previous-"
-    ]
-    .teacher-module-title,
-    .teacher-module-card[
-        data-stage-position^="next-"
-    ]
-    .teacher-module-title{
-        font-size:.94rem;
-    }
-
-    .teacher-module-card[
-        data-stage-position^="previous-"
-    ]
-    .teacher-module-subtitle,
-    .teacher-module-card[
-        data-stage-position^="next-"
-    ]
-    .teacher-module-subtitle{
-        font-size:.68rem;
-    }
-
-    .teacher-module-card[
-        data-stage-position^="previous-"
-    ]
-    .teacher-module-icon,
-    .teacher-module-card[
-        data-stage-position^="next-"
-    ]
-    .teacher-module-icon{
-        width:28px;
-        height:28px;
-        font-size:1.18rem;
-    }
 }
 
 /*==================================================
