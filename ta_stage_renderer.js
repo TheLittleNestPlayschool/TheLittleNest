@@ -1,8 +1,22 @@
-import{getTeacherStage}from'./ta_ui.js';
-import{getModule}from'./ta_module_registry.js';
-import{renderModule}from'./ta_module_manager.js';
-import{centerLivingModule}from'./ta_stage_motion.js';
-import{composeStagePlan}from'./ta_stage_composition.js';
+import{
+    getTeacherStage
+}from'./ta_ui.js';
+
+import{
+    renderModule
+}from'./ta_module_manager.js';
+
+import{
+    composeStagePlan
+}from'./ta_stage_composition.js';
+
+import{
+    createModuleCard
+}from'./ta_stage_card.js';
+
+import{
+    selectStageModule
+}from'./ta_stage_actions.js';
 
 export function renderStage(stagePlan){
     const stage=getTeacherStage();
@@ -18,10 +32,6 @@ export function renderStage(stagePlan){
 
     stage.innerHTML='';
 
-    stage.appendChild(
-        createStageSpacer('top')
-    );
-
     if(composedStagePlan.context){
         stage.appendChild(
             createStageContext(
@@ -30,56 +40,38 @@ export function renderStage(stagePlan){
         );
     }
 
-    const modules=
-        composedStagePlan.modules||[];
-
-    const moduleCards=
-        modules.map(modulePlan=>{
-            return createModuleCard(
-                composedStagePlan,
-                modulePlan
-            );
-        });
-
-    moduleCards.forEach(moduleCard=>{
-        stage.appendChild(
-            moduleCard.card
-        );
-    });
+    const stageLayout=
+        createStageLayout();
 
     stage.appendChild(
-        createStageSpacer('bottom')
+        stageLayout.container
     );
+
+    const moduleCards=
+        createStageModuleCards(
+            stagePlan,
+            composedStagePlan
+        );
+
+    moduleCards.forEach(moduleCard=>{
+        appendModuleCardToZone(
+            stageLayout,
+            moduleCard
+        );
+    });
 
     moduleCards.forEach(moduleCard=>{
         activateModuleCard(
             moduleCard
         );
     });
-
-    centerLivingModule();
-}
-
-function createStageSpacer(position){
-    const spacer=document.createElement(
-        'div'
-    );
-
-    spacer.className=
-        `teacher-stage-spacer teacher-stage-spacer-${position}`;
-
-    spacer.setAttribute(
-        'aria-hidden',
-        'true'
-    );
-
-    return spacer;
 }
 
 function createStageContext(context){
-    const container=document.createElement(
-        'section'
-    );
+    const container=
+        document.createElement(
+            'section'
+        );
 
     container.className=
         'teacher-stage-context';
@@ -89,243 +81,128 @@ function createStageContext(context){
     return container;
 }
 
-function createModuleCard(
-    stagePlan,
-    modulePlan
-){
-    const module=getModule(
-        modulePlan.id
-    );
-
-    const card=document.createElement(
-        'section'
-    );
-
-    card.className=
-        'teacher-module-card';
-
-    card.dataset.moduleId=
-        modulePlan.id;
-
-    card.dataset.stagePosition=
-        modulePlan.stagePosition||
-        '';
-
-    card.dataset.stageSide=
-        modulePlan.stageSide||
-        '';
-
-    card.dataset.stageDistance=
-        String(
-            modulePlan.stageDistance??''
-        );
-
-    const isExpanded=
-        modulePlan.state==='active'||
-        modulePlan.state==='expanded';
-
-    card.classList.toggle(
-        'is-expanded',
-        isExpanded
-    );
-
-    card.classList.toggle(
-        'is-collapsed',
-        !isExpanded
-    );
-
-    if(
-        modulePlan.stagePosition===
-        'living'
-    ){
-        card.classList.add(
-            'is-living'
-        );
-    }
-
-    if(modulePlan.state==='completed'){
-        card.classList.add(
-            'is-completed'
-        );
-    }
-
-    if(
-        modulePlan.state===
-        'needs_attention'
-    ){
-        card.classList.add(
-            'needs-attention'
-        );
-    }
-
-    const header=document.createElement(
-        'header'
-    );
-
-    header.className=
-        'teacher-module-header';
-
-    header.setAttribute(
-        'role',
-        'button'
-    );
-
-    header.setAttribute(
-        'tabindex',
-        '0'
-    );
-
-    header.setAttribute(
-        'aria-expanded',
-        String(isExpanded)
-    );
-
-    const identity=document.createElement(
-        'div'
-    );
-
-    identity.className=
-        'teacher-module-identity';
-
-    const icon=document.createElement(
-        'span'
-    );
-
-    icon.className=
-        'teacher-module-icon';
-
-    icon.textContent=
-        module?.icon||'';
-
-    const text=document.createElement(
-        'div'
-    );
-
-    text.className=
-        'teacher-module-text';
-
-    const title=document.createElement(
-        'h2'
-    );
-
-    title.className=
-        'teacher-module-title';
-
-    title.textContent=
-        module?.title||
-        modulePlan.id;
-
-    const liveStatus=
-        modulePlan.liveStatus||
-        module?.subtitle||
-        module?.description||
-        '';
-
-    text.appendChild(
-        title
-    );
-
-    if(liveStatus){
-        const subtitle=
-            document.createElement(
-                'p'
-            );
-
-        subtitle.className=
-            'teacher-module-subtitle';
-
-        subtitle.textContent=
-            liveStatus;
-
-        text.appendChild(
-            subtitle
-        );
-    }
-
-    identity.appendChild(
-        icon
-    );
-
-    identity.appendChild(
-        text
-    );
-
-    header.appendChild(
-        identity
-    );
-
-    if(modulePlan.status){
-        const status=
-            document.createElement(
-                'span'
-            );
-
-        status.className=
-            'teacher-module-status';
-
-        status.textContent=
-            modulePlan.status;
-
-        header.appendChild(
-            status
-        );
-    }
-
-    header.addEventListener(
-        'click',
-        ()=>{
-            selectModule(
-                stagePlan,
-                modulePlan.id
-            );
-        }
-    );
-
-    header.addEventListener(
-        'keydown',
-        event=>{
-            if(
-                event.key==='Enter'||
-                event.key===' '
-            ){
-                event.preventDefault();
-
-                selectModule(
-                    stagePlan,
-                    modulePlan.id
-                );
-            }
-        }
-    );
-
-    card.appendChild(
-        header
-    );
-
-    let content=null;
-
-    if(isExpanded){
-        content=document.createElement(
+function createStageLayout(){
+    const container=
+        document.createElement(
             'div'
         );
 
-        content.className=
-            'teacher-module-content';
+    container.className=
+        'teacher-stage-layout';
 
-        content.id=
-            `teacherModule_${modulePlan.id}`;
-
-        card.appendChild(
-            content
+    const previousZone=
+        createStageZone(
+            'previous',
+            'Tasks before the living task'
         );
-    }
+
+    const livingZone=
+        createStageZone(
+            'living',
+            'Living task'
+        );
+
+    const nextZone=
+        createStageZone(
+            'next',
+            'Tasks after the living task'
+        );
+
+    container.appendChild(
+        previousZone
+    );
+
+    container.appendChild(
+        livingZone
+    );
+
+    container.appendChild(
+        nextZone
+    );
 
     return{
-        card,
-        content,
-        modulePlan,
-        isExpanded
+        container,
+        previousZone,
+        livingZone,
+        nextZone
     };
+}
+
+function createStageZone(
+    zoneName,
+    ariaLabel
+){
+    const zone=
+        document.createElement(
+            'section'
+        );
+
+    zone.className=
+        `teacher-stage-zone teacher-stage-${zoneName}`;
+
+    zone.dataset.stageZone=
+        zoneName;
+
+    zone.setAttribute(
+        'aria-label',
+        ariaLabel
+    );
+
+    return zone;
+}
+
+function createStageModuleCards(
+    sourceStagePlan,
+    composedStagePlan
+){
+    const modules=
+        composedStagePlan.modules||
+        [];
+
+    return modules.map(modulePlan=>{
+        return createModuleCard(
+            composedStagePlan,
+            modulePlan,
+            moduleId=>{
+                handleModuleSelection(
+                    sourceStagePlan,
+                    moduleId
+                );
+            }
+        );
+    });
+}
+
+function appendModuleCardToZone(
+    stageLayout,
+    moduleCard
+){
+    const stageSide=
+        moduleCard.modulePlan
+            ?.stageSide||
+        'next';
+
+    switch(stageSide){
+        case'previous':
+            stageLayout.previousZone
+                .appendChild(
+                    moduleCard.card
+                );
+            break;
+
+        case'living':
+            stageLayout.livingZone
+                .appendChild(
+                    moduleCard.card
+                );
+            break;
+
+        default:
+            stageLayout.nextZone
+                .appendChild(
+                    moduleCard.card
+                );
+    }
 }
 
 function activateModuleCard(moduleCard){
@@ -335,7 +212,10 @@ function activateModuleCard(moduleCard){
         isExpanded
     }=moduleCard;
 
-    if(!isExpanded||!content){
+    if(
+        !isExpanded||
+        !content
+    ){
         return;
     }
 
@@ -345,26 +225,15 @@ function activateModuleCard(moduleCard){
     );
 }
 
-function selectModule(
+function handleModuleSelection(
     stagePlan,
     moduleId
 ){
-    const updatedPlan={
-        ...stagePlan,
-
-        modules:(stagePlan.modules||[])
-            .map(modulePlan=>({
-                ...modulePlan,
-
-                state:
-                    modulePlan.id===moduleId
-                        ?'active'
-                        :modulePlan.state===
-                            'completed'
-                            ?'completed'
-                            :'collapsed'
-            }))
-    };
+    const updatedPlan=
+        selectStageModule(
+            stagePlan,
+            moduleId
+        );
 
     renderStage(
         updatedPlan
