@@ -45,17 +45,24 @@
 ==================================================*/
 
 .teacher-stage-layout{
+    --stage-lift:-42px;
+
     flex:1;
     min-height:0;
 
     display:grid;
     grid-template-rows:
-        minmax(0,32.5fr)
         minmax(0,35fr)
-        minmax(0,32.5fr);
+        minmax(0,30fr)
+        minmax(0,35fr);
 
     gap:10px;
     overflow:hidden;
+
+    transform:
+        translateY(
+            var(--stage-lift)
+        );
 }
 
 .teacher-stage-zone{
@@ -135,8 +142,10 @@
 
 .teacher-stage-living
 .teacher-module-card{
-    height:100%;
+    flex:1 1 auto;
+    width:100%;
     min-height:0;
+    align-self:stretch;
 
     display:flex;
     flex-direction:column;
@@ -156,6 +165,8 @@
     overflow-x:hidden;
 
     overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+
     scrollbar-width:thin;
     scrollbar-color:
         rgba(71,85,105,.32)
@@ -174,7 +185,9 @@
 
 .teacher-stage-living
 .teacher-module-content::-webkit-scrollbar-thumb{
-    background:rgba(71,85,105,.28);
+    background:
+        rgba(71,85,105,.28);
+
     border-radius:999px;
 }
 
@@ -343,10 +356,12 @@
     }
 
     .teacher-stage-layout{
+        --stage-lift:-38px;
+
         grid-template-rows:
-            minmax(0,32.5fr)
             minmax(0,35fr)
-            minmax(0,32.5fr);
+            minmax(0,30fr)
+            minmax(0,35fr);
 
         gap:7px;
     }
