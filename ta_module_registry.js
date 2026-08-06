@@ -3,6 +3,10 @@ import {
 } from './ta_attendance.js';
 
 import {
+    renderMediaModule
+} from './ta_media.js';
+
+import {
     renderTeacherInformationModule
 } from './ta_teacher_information.js';
 
@@ -23,6 +27,18 @@ import {
 } from './ta_family_messages.js';
 
 import {
+    renderEnrollmentModule
+} from './ta_enrollment.js';
+
+import {
+    renderReceiptUploadModule
+} from './ta_receipt_upload.js';
+
+import {
+    renderTeacherResourcesModule
+} from './ta_teacher_resources.js';
+
+import {
     renderSeeYouTomorrowModule
 } from './ta_see_you_tomorrow.js';
 
@@ -41,6 +57,16 @@ const moduleRegistry={
         isAvailable:true
     },
 
+    media:{
+        id:'media',
+        icon:'📷',
+        title:'Capture Moments in Media',
+        subtitle:'Photos, videos, and artwork.',
+        description:'Capture photos, videos, and artwork from today.',
+        renderer:renderMediaModule,
+        isAvailable:true
+    },
+
     observations:{
         id:'observations',
         icon:'👀',
@@ -49,16 +75,6 @@ const moduleRegistry={
         description:'Capture meaningful student observations.',
         renderer:renderObservationsModule,
         isAvailable:true
-    },
-
-    media:{
-        id:'media',
-        icon:'📷',
-        title:'Capture Moments in Media',
-        subtitle:'Photos, videos, and artwork.',
-        description:'Capture photos, videos, and artwork from today.',
-        renderer:null,
-        isAvailable:false
     },
 
     moments:{
@@ -88,6 +104,36 @@ const moduleRegistry={
         subtitle:'Communicate with families.',
         description:'Send a message to one or more families.',
         renderer:renderFamilyMessagesModule,
+        isAvailable:true
+    },
+
+    receipt_upload:{
+        id:'receipt_upload',
+        icon:'🧾',
+        title:'Receipt Upload',
+        subtitle:'Capture and save a receipt.',
+        description:'Capture and upload a receipt for a family.',
+        renderer:renderReceiptUploadModule,
+        isAvailable:true
+    },
+
+    enrollment:{
+        id:'enrollment',
+        icon:'📝',
+        title:'Enrollment',
+        subtitle:'Enroll a new student.',
+        description:'Complete and upload a new student enrollment.',
+        renderer:renderEnrollmentModule,
+        isAvailable:true
+    },
+
+    teacher_resources:{
+        id:'teacher_resources',
+        icon:'📂',
+        title:'Teacher Resources',
+        subtitle:'Sessions, worksheets, and printable forms.',
+        description:'Access sessions, worksheets, and printable forms.',
+        renderer:renderTeacherResourcesModule,
         isAvailable:true
     },
 
