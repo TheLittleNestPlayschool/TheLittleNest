@@ -2,28 +2,23 @@
   Living Stage — Motion and State
 
   Responsibilities:
-  - Stage centering space
   - Calm shared transitions
   - Living-task depth
-  - Waiting-task interaction
+  - Waiting-task frosting and interaction
   - Completed and attention accents
 
-  Physical card size and perspective belong in:
+  Stage layout belongs in:
+  ta_stage.css
+
+  Physical width and visual depth belong in:
   ta_stage_perspective.css
-==================================================*/
 
-/*==================================================
-  Stage Centering Space
-==================================================*/
+  Waiting-card sizing belongs in:
+  ta_stage_waiting_cards.css
 
-.teacher-stage-spacer{
-    flex:0 0 42vh;
-    width:100%;
-    min-height:180px;
-    max-height:420px;
-    pointer-events:none;
-    visibility:hidden;
-}
+  Living-card presentation belongs in:
+  ta_stage_living.css
+==================================================*/
 
 /*==================================================
   Shared Motion
@@ -32,15 +27,14 @@
 .teacher-module-card{
     position:relative;
     transform-origin:center;
+
     transition:
-        width .42s cubic-bezier(.22,.8,.3,1),
-        height .42s cubic-bezier(.22,.8,.3,1),
-        opacity .42s cubic-bezier(.22,.8,.3,1),
-        filter .42s cubic-bezier(.22,.8,.3,1),
-        background .42s cubic-bezier(.22,.8,.3,1),
-        border-color .42s cubic-bezier(.22,.8,.3,1),
-        box-shadow .42s cubic-bezier(.22,.8,.3,1),
-        transform .42s cubic-bezier(.22,.8,.3,1);
+        opacity .72s cubic-bezier(.22,.8,.3,1),
+        filter .72s cubic-bezier(.22,.8,.3,1),
+        background .72s cubic-bezier(.22,.8,.3,1),
+        border-color .72s cubic-bezier(.22,.8,.3,1),
+        box-shadow .72s cubic-bezier(.22,.8,.3,1),
+        transform .72s cubic-bezier(.22,.8,.3,1);
 }
 
 .teacher-module-header,
@@ -50,15 +44,10 @@
 .teacher-module-title,
 .teacher-module-subtitle{
     transition:
-        width .42s cubic-bezier(.22,.8,.3,1),
-        height .42s cubic-bezier(.22,.8,.3,1),
-        min-height .42s cubic-bezier(.22,.8,.3,1),
-        padding .42s cubic-bezier(.22,.8,.3,1),
-        gap .42s cubic-bezier(.22,.8,.3,1),
-        opacity .42s cubic-bezier(.22,.8,.3,1),
-        color .42s cubic-bezier(.22,.8,.3,1),
-        font-size .42s cubic-bezier(.22,.8,.3,1),
-        transform .42s cubic-bezier(.22,.8,.3,1);
+        opacity .72s cubic-bezier(.22,.8,.3,1),
+        color .72s cubic-bezier(.22,.8,.3,1),
+        font-size .72s cubic-bezier(.22,.8,.3,1),
+        transform .72s cubic-bezier(.22,.8,.3,1);
 }
 
 /*==================================================
@@ -70,10 +59,16 @@
     data-stage-position="living"
 ]{
     background:rgba(255,255,255,.24);
-    border-color:rgba(255,255,255,.26);
+
+    border-color:
+        rgba(255,255,255,.26);
+
     box-shadow:
-        0 16px 42px rgba(15,23,42,.18),
-        0 4px 14px rgba(255,255,255,.10);
+        0 16px 42px
+        rgba(15,23,42,.18),
+        0 4px 14px
+        rgba(255,255,255,.10);
+
     z-index:5;
 }
 
@@ -97,14 +92,24 @@
 
 /*==================================================
   Waiting Tasks
+
+  Stronger frosting keeps waiting cards visible
+  without competing with the Living Task.
 ==================================================*/
 
 .teacher-module-card.is-collapsed{
     cursor:pointer;
-    background:rgba(255,255,255,.20);
-    border-color:rgba(255,255,255,.035);
+
+    background:
+        rgba(255,255,255,.20);
+
+    border-color:
+        rgba(255,255,255,.10);
+
     box-shadow:
-        0 5px 18px rgba(15,23,42,.07);
+        0 5px 18px
+        rgba(15,23,42,.07);
+
     z-index:1;
 }
 
@@ -120,10 +125,16 @@
 
 .teacher-module-card.is-collapsed:hover,
 .teacher-module-card.is-collapsed:focus-within{
-    background:rgba(255,255,255,.17);
-    border-color:rgba(255,255,255,.10);
+    background:
+        rgba(255,255,255,.26);
+
+    border-color:
+        rgba(255,255,255,.16);
+
     box-shadow:
-        0 7px 22px rgba(15,23,42,.09);
+        0 7px 22px
+        rgba(15,23,42,.09);
+
     transform:translateY(-1px);
 }
 
@@ -132,15 +143,21 @@
 ==================================================*/
 
 .teacher-module-card.is-completed{
-    background:rgba(255,255,255,.08);
-    border-color:rgba(45,212,191,.22);
+    background:
+        rgba(255,255,255,.12);
+
+    border-color:
+        rgba(45,212,191,.22);
+
     box-shadow:
-        0 3px 12px rgba(15,23,42,.045);
+        0 3px 12px
+        rgba(15,23,42,.045);
 }
 
 .teacher-module-card.is-completed
 .teacher-module-header{
-    background:rgba(45,212,191,.035);
+    background:
+        rgba(45,212,191,.045);
 }
 
 .teacher-module-card.is-completed
@@ -155,10 +172,15 @@
 
 .teacher-module-card.is-completed:hover,
 .teacher-module-card.is-completed:focus-within{
-    background:rgba(255,255,255,.13);
-    border-color:rgba(45,212,191,.34);
+    background:
+        rgba(255,255,255,.18);
+
+    border-color:
+        rgba(45,212,191,.34);
+
     box-shadow:
-        0 5px 16px rgba(15,23,42,.07);
+        0 5px 16px
+        rgba(15,23,42,.07);
 }
 
 /*==================================================
@@ -166,25 +188,14 @@
 ==================================================*/
 
 .teacher-module-card.needs-attention{
-    border-color:rgba(234,179,8,.48);
+    border-color:
+        rgba(234,179,8,.48);
 }
 
 .teacher-module-card.needs-attention
 .teacher-module-header{
-    background:rgba(254,240,138,.09);
-}
-
-/*==================================================
-  Mobile
-==================================================*/
-
-@media(max-width:600px){
-
-    .teacher-stage-spacer{
-        flex-basis:40vh;
-        min-height:150px;
-        max-height:340px;
-    }
+    background:
+        rgba(254,240,138,.09);
 }
 
 /*==================================================
