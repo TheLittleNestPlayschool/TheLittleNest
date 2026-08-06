@@ -38,6 +38,9 @@ function beforeFirstSession(){
         'moments',
         'reflection',
         'messages',
+        'receipt_upload',
+        'enrollment',
+        'teacher_resources',
         'teacher_information'
     ];
 
@@ -64,7 +67,10 @@ function inSession(
                 'head_office_messages',
                 'attendance',
                 'media',
+                'receipt_upload',
+                'enrollment',
                 'see_tomorrow',
+                'teacher_resources',
                 'teacher_information'
             ];
 
@@ -77,7 +83,10 @@ function inSession(
                 'head_office_messages',
                 'attendance',
                 'media',
+                'receipt_upload',
+                'enrollment',
                 'see_tomorrow',
+                'teacher_resources',
                 'teacher_information'
             ];
 
@@ -90,7 +99,10 @@ function inSession(
                 'head_office_messages',
                 'attendance',
                 'media',
+                'receipt_upload',
+                'enrollment',
                 'see_tomorrow',
+                'teacher_resources',
                 'teacher_information'
             ];
 
@@ -103,7 +115,10 @@ function inSession(
                 'head_office_messages',
                 'attendance',
                 'media',
+                'receipt_upload',
+                'enrollment',
                 'see_tomorrow',
+                'teacher_resources',
                 'teacher_information'
             ];
 
@@ -116,7 +131,10 @@ function inSession(
                 'head_office_messages',
                 'attendance',
                 'media',
+                'receipt_upload',
+                'enrollment',
                 'see_tomorrow',
+                'teacher_resources',
                 'teacher_information'
             ];
 
@@ -133,8 +151,11 @@ function betweenSessions(){
         'moments',
         'reflection',
         'messages',
+        'receipt_upload',
+        'enrollment',
         'see_tomorrow',
         'head_office_messages',
+        'teacher_resources',
         'teacher_information'
     ];
 
@@ -149,8 +170,11 @@ function afterLastSession(){
         'moments',
         'reflection',
         'messages',
+        'receipt_upload',
+        'enrollment',
         'see_tomorrow',
         'head_office_messages',
+        'teacher_resources',
         'teacher_information'
     ];
 
@@ -165,8 +189,11 @@ function afterSession(){
         'moments',
         'reflection',
         'messages',
+        'receipt_upload',
+        'enrollment',
         'see_tomorrow',
         'head_office_messages',
+        'teacher_resources',
         'teacher_information'
     ];
 
