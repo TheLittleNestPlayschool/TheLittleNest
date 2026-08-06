@@ -2,6 +2,7 @@ import{getTeacherStage}from'./ta_ui.js';
 import{getModule}from'./ta_module_registry.js';
 import{renderModule}from'./ta_module_manager.js';
 import{centerLivingModule}from'./ta_stage_motion.js';
+import{composeStagePlan}from'./ta_stage_composition.js';
 
 export function renderStage(stagePlan){
     const stage=getTeacherStage();
@@ -10,30 +11,35 @@ export function renderStage(stagePlan){
         return;
     }
 
+    const composedStagePlan=
+        composeStagePlan(
+            stagePlan
+        );
+
     stage.innerHTML='';
 
     stage.appendChild(
         createStageSpacer('top')
     );
 
-    if(stagePlan.context){
+    if(composedStagePlan.context){
         stage.appendChild(
             createStageContext(
-                stagePlan.context
+                composedStagePlan.context
             )
         );
     }
 
-    const modules=stagePlan.modules||[];
+    const modules=
+        composedStagePlan.modules||[];
 
-    const moduleCards=modules.map(
-        modulePlan=>{
+    const moduleCards=
+        modules.map(modulePlan=>{
             return createModuleCard(
-                stagePlan,
+                composedStagePlan,
                 modulePlan
             );
-        }
-    );
+        });
 
     moduleCards.forEach(moduleCard=>{
         stage.appendChild(
@@ -101,6 +107,19 @@ function createModuleCard(
     card.dataset.moduleId=
         modulePlan.id;
 
+    card.dataset.stagePosition=
+        modulePlan.stagePosition||
+        '';
+
+    card.dataset.stageSide=
+        modulePlan.stageSide||
+        '';
+
+    card.dataset.stageDistance=
+        String(
+            modulePlan.stageDistance??''
+        );
+
     const isExpanded=
         modulePlan.state==='active'||
         modulePlan.state==='expanded';
@@ -115,13 +134,25 @@ function createModuleCard(
         !isExpanded
     );
 
+    if(
+        modulePlan.stagePosition===
+        'living'
+    ){
+        card.classList.add(
+            'is-living'
+        );
+    }
+
     if(modulePlan.state==='completed'){
         card.classList.add(
             'is-completed'
         );
     }
 
-    if(modulePlan.state==='needs_attention'){
+    if(
+        modulePlan.state===
+        'needs_attention'
+    ){
         card.classList.add(
             'needs-attention'
         );
@@ -195,9 +226,10 @@ function createModuleCard(
     );
 
     if(liveStatus){
-        const subtitle=document.createElement(
-            'p'
-        );
+        const subtitle=
+            document.createElement(
+                'p'
+            );
 
         subtitle.className=
             'teacher-module-subtitle';
@@ -223,9 +255,10 @@ function createModuleCard(
     );
 
     if(modulePlan.status){
-        const status=document.createElement(
-            'span'
-        );
+        const status=
+            document.createElement(
+                'span'
+            );
 
         status.className=
             'teacher-module-status';
@@ -241,7 +274,7 @@ function createModuleCard(
     header.addEventListener(
         'click',
         ()=>{
-            toggleModule(
+            selectModule(
                 stagePlan,
                 modulePlan.id
             );
@@ -257,7 +290,7 @@ function createModuleCard(
             ){
                 event.preventDefault();
 
-                toggleModule(
+                selectModule(
                     stagePlan,
                     modulePlan.id
                 );
@@ -312,24 +345,10 @@ function activateModuleCard(moduleCard){
     );
 }
 
-function toggleModule(
+function selectModule(
     stagePlan,
     moduleId
 ){
-    const selectedModule=
-        (stagePlan.modules||[]).find(
-            modulePlan=>{
-                return(
-                    modulePlan.id===
-                    moduleId
-                );
-            }
-        );
-
-    const isCurrentlyOpen=
-        selectedModule?.state==='active'||
-        selectedModule?.state==='expanded';
-
     const updatedPlan={
         ...stagePlan,
 
@@ -339,10 +358,9 @@ function toggleModule(
 
                 state:
                     modulePlan.id===moduleId
-                        ?isCurrentlyOpen
-                            ?'collapsed'
-                            :'active'
-                        :modulePlan.state==='completed'
+                        ?'active'
+                        :modulePlan.state===
+                            'completed'
                             ?'completed'
                             :'collapsed'
             }))
