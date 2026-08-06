@@ -1,133 +1,42 @@
-import{
-    getTeacherStage
-}from'./ta_ui.js';
-
-const CENTER_DELAY_MS=60;
-
-let centerTimer=null;
-
-export function centerLivingModule(){
-    cancelPendingCenter();
-
-    centerTimer=window.setTimeout(
-        ()=>{
-            centerTimer=null;
-            centerActiveCard();
-        },
-        CENTER_DELAY_MS
-    );
-}
+const activeAnimations=
+    new Set();
 
 export function cancelLivingStageMotion(){
-    cancelPendingCenter();
-}
-
-function centerActiveCard(){
-    const stage=getTeacherStage();
-
-    if(!stage){
-        return;
-    }
-
-    const activeCard=stage.querySelector(
-        '.teacher-module-card.is-expanded'
+    activeAnimations.forEach(
+        animation=>{
+            animation.cancel();
+        }
     );
 
-    if(!activeCard){
-        return;
-    }
-
-    const targetScrollTop=
-        getCenteredScrollPosition(
-            stage,
-            activeCard
-        );
-
-    stage.scrollTo({
-        top:targetScrollTop,
-        behavior:getScrollBehavior()
-    });
+    activeAnimations.clear();
 }
 
-function getCenteredScrollPosition(
-    stage,
-    activeCard
+export function registerStageAnimation(
+    animation
 ){
-    const stageRect=
-        stage.getBoundingClientRect();
+    if(!animation){
+        return null;
+    }
 
-    const cardRect=
-        activeCard.getBoundingClientRect();
-
-    const currentScrollTop=
-        stage.scrollTop;
-
-    const cardTopInsideStage=
-        cardRect.top-
-        stageRect.top+
-        currentScrollTop;
-
-    const availableStageHeight=
-        stage.clientHeight;
-
-    const centeredOffset=
-        (
-            availableStageHeight-
-            activeCard.offsetHeight
-        )/2;
-
-    const desiredScrollTop=
-        cardTopInsideStage-
-        centeredOffset;
-
-    const maximumScrollTop=
-        Math.max(
-            0,
-            stage.scrollHeight-
-            stage.clientHeight
-        );
-
-    return clamp(
-        desiredScrollTop,
-        0,
-        maximumScrollTop
+    activeAnimations.add(
+        animation
     );
+
+    animation.finished
+        .catch(()=>{
+            // Cancellation is expected.
+        })
+        .finally(()=>{
+            activeAnimations.delete(
+                animation
+            );
+        });
+
+    return animation;
 }
 
-function getScrollBehavior(){
-    return prefersReducedMotion()
-        ?'auto'
-        :'smooth';
-}
-
-function prefersReducedMotion(){
+export function stageMotionIsReduced(){
     return window.matchMedia(
         '(prefers-reduced-motion: reduce)'
     ).matches;
-}
-
-function cancelPendingCenter(){
-    if(centerTimer===null){
-        return;
-    }
-
-    window.clearTimeout(
-        centerTimer
-    );
-
-    centerTimer=null;
-}
-
-function clamp(
-    value,
-    minimum,
-    maximum
-){
-    return Math.min(
-        Math.max(
-            value,
-            minimum
-        ),
-        maximum
-    );
 }
