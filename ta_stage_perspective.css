@@ -1,19 +1,17 @@
 /*==================================================
   Living Stage — Perspective
 
-  The Living Task remains full size.
+  The Living Task remains full width.
 
-  The five tasks above and below it become physically
-  smaller as they move away from the Living Task.
+  Waiting tasks retain a constant vertical size.
+  Their width decreases as they move farther from
+  the Living Task.
 
-  Vertical reductions:
-  Distance 1 = 20% smaller
-  Distance 2 = 25% smaller
-  Distance 3 = 30% smaller
-  Distance 4 = 35% smaller
-  Distance 5+ = 40% smaller
-
-  Waiting tasks are 20% narrower than the Living Task.
+  Distance 1 = 10% narrower
+  Distance 2 = 15% narrower
+  Distance 3 = 20% narrower
+  Distance 4 = 25% narrower
+  Distance 5+ = 30% narrower
 ==================================================*/
 
 /*==================================================
@@ -22,8 +20,6 @@
 
 .teacher-module-card{
     --stage-width:100%;
-    --stage-height-scale:1;
-    --stage-font-scale:1;
     --stage-opacity:1;
     --stage-brightness:1;
     --stage-saturation:1;
@@ -31,7 +27,9 @@
     width:var(--stage-width);
     margin-left:auto;
     margin-right:auto;
+
     opacity:var(--stage-opacity);
+
     filter:
         brightness(
             var(--stage-brightness)
@@ -41,13 +39,13 @@
         );
 
     transition:
-        width .42s cubic-bezier(.22,.8,.3,1),
-        opacity .42s cubic-bezier(.22,.8,.3,1),
-        filter .42s cubic-bezier(.22,.8,.3,1),
-        background .42s cubic-bezier(.22,.8,.3,1),
-        border-color .42s cubic-bezier(.22,.8,.3,1),
-        box-shadow .42s cubic-bezier(.22,.8,.3,1),
-        transform .42s cubic-bezier(.22,.8,.3,1);
+        width .72s cubic-bezier(.22,.8,.3,1),
+        opacity .72s cubic-bezier(.22,.8,.3,1),
+        filter .72s cubic-bezier(.22,.8,.3,1),
+        background .72s cubic-bezier(.22,.8,.3,1),
+        border-color .72s cubic-bezier(.22,.8,.3,1),
+        box-shadow .72s cubic-bezier(.22,.8,.3,1),
+        transform .72s cubic-bezier(.22,.8,.3,1);
 }
 
 /*==================================================
@@ -58,8 +56,6 @@
     data-stage-position="living"
 ]{
     --stage-width:100%;
-    --stage-height-scale:1;
-    --stage-font-scale:1;
     --stage-opacity:1;
     --stage-brightness:1.05;
     --stage-saturation:1.04;
@@ -69,7 +65,7 @@
 
 /*==================================================
   Distance 1
-  20% smaller vertically and horizontally
+  10% narrower
 ==================================================*/
 
 .teacher-module-card[
@@ -78,9 +74,7 @@
 .teacher-module-card[
     data-stage-position="next-1"
 ]{
-    --stage-width:80%;
-    --stage-height-scale:.80;
-    --stage-font-scale:.88;
+    --stage-width:90%;
     --stage-opacity:.62;
     --stage-brightness:.94;
     --stage-saturation:.82;
@@ -88,7 +82,7 @@
 
 /*==================================================
   Distance 2
-  25% smaller vertically
+  15% narrower
 ==================================================*/
 
 .teacher-module-card[
@@ -97,9 +91,7 @@
 .teacher-module-card[
     data-stage-position="next-2"
 ]{
-    --stage-width:80%;
-    --stage-height-scale:.75;
-    --stage-font-scale:.82;
+    --stage-width:85%;
     --stage-opacity:.55;
     --stage-brightness:.91;
     --stage-saturation:.75;
@@ -107,7 +99,7 @@
 
 /*==================================================
   Distance 3
-  30% smaller vertically
+  20% narrower
 ==================================================*/
 
 .teacher-module-card[
@@ -117,8 +109,6 @@
     data-stage-position="next-3"
 ]{
     --stage-width:80%;
-    --stage-height-scale:.70;
-    --stage-font-scale:.76;
     --stage-opacity:.48;
     --stage-brightness:.88;
     --stage-saturation:.68;
@@ -126,7 +116,7 @@
 
 /*==================================================
   Distance 4
-  35% smaller vertically
+  25% narrower
 ==================================================*/
 
 .teacher-module-card[
@@ -135,9 +125,7 @@
 .teacher-module-card[
     data-stage-position="next-4"
 ]{
-    --stage-width:80%;
-    --stage-height-scale:.65;
-    --stage-font-scale:.70;
+    --stage-width:75%;
     --stage-opacity:.41;
     --stage-brightness:.85;
     --stage-saturation:.61;
@@ -145,7 +133,7 @@
 
 /*==================================================
   Distance 5 and Beyond
-  40% smaller vertically
+  30% narrower
 ==================================================*/
 
 .teacher-module-card[
@@ -175,16 +163,14 @@
 .teacher-module-card[
     data-stage-position="next-12"
 ]{
-    --stage-width:80%;
-    --stage-height-scale:.60;
-    --stage-font-scale:.64;
+    --stage-width:70%;
     --stage-opacity:.34;
     --stage-brightness:.82;
     --stage-saturation:.54;
 }
 
 /*==================================================
-  Physical Waiting-Task Size
+  Constant Waiting-Task Height
 ==================================================*/
 
 .teacher-module-card[
@@ -195,18 +181,9 @@
     data-stage-position^="next-"
 ]
 .teacher-module-header{
-    height:calc(
-        62px *
-        var(--stage-height-scale)
-    );
-
-    min-height:0;
-    padding:
-        calc(
-            8px *
-            var(--stage-height-scale)
-        )
-        12px;
+    height:54px;
+    min-height:54px;
+    padding:10px 14px;
 
     justify-content:center;
     overflow:hidden;
@@ -232,10 +209,8 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:calc(
-        8px *
-        var(--stage-font-scale)
-    );
+    gap:8px;
+
     text-align:center;
 }
 
@@ -260,11 +235,9 @@
 ]
 .teacher-module-title{
     overflow:hidden;
-    font-size:calc(
-        1.05rem *
-        var(--stage-font-scale)
-    );
-    line-height:1.05;
+
+    font-size:1rem;
+    line-height:1.1;
     text-align:center;
     text-overflow:ellipsis;
     white-space:nowrap;
@@ -280,11 +253,9 @@
 .teacher-module-subtitle{
     margin-top:2px;
     overflow:hidden;
-    font-size:calc(
-        .83rem *
-        var(--stage-font-scale)
-    );
-    line-height:1.05;
+
+    font-size:.72rem;
+    line-height:1.1;
     text-align:center;
     text-overflow:ellipsis;
     white-space:nowrap;
@@ -298,20 +269,10 @@
     data-stage-position^="next-"
 ]
 .teacher-module-icon{
-    width:calc(
-        32px *
-        var(--stage-font-scale)
-    );
+    width:30px;
+    height:30px;
 
-    height:calc(
-        32px *
-        var(--stage-font-scale)
-    );
-
-    font-size:calc(
-        1.4rem *
-        var(--stage-font-scale)
-    );
+    font-size:1.25rem;
 }
 
 /*==================================================
@@ -383,6 +344,7 @@
     data-stage-position^="next-"
 ]:focus-within{
     opacity:.78;
+
     filter:
         brightness(.98)
         saturate(.9);
@@ -402,17 +364,9 @@
         data-stage-position^="next-"
     ]
     .teacher-module-header{
-        height:calc(
-            58px *
-            var(--stage-height-scale)
-        );
-
-        padding:
-            calc(
-                7px *
-                var(--stage-height-scale)
-            )
-            9px;
+        height:51px;
+        min-height:51px;
+        padding:9px 11px;
     }
 
     .teacher-module-card[
@@ -423,10 +377,7 @@
         data-stage-position^="next-"
     ]
     .teacher-module-title{
-        font-size:calc(
-            1rem *
-            var(--stage-font-scale)
-        );
+        font-size:.94rem;
     }
 
     .teacher-module-card[
@@ -437,10 +388,7 @@
         data-stage-position^="next-"
     ]
     .teacher-module-subtitle{
-        font-size:calc(
-            .78rem *
-            var(--stage-font-scale)
-        );
+        font-size:.68rem;
     }
 
     .teacher-module-card[
@@ -451,20 +399,9 @@
         data-stage-position^="next-"
     ]
     .teacher-module-icon{
-        width:calc(
-            30px *
-            var(--stage-font-scale)
-        );
-
-        height:calc(
-            30px *
-            var(--stage-font-scale)
-        );
-
-        font-size:calc(
-            1.25rem *
-            var(--stage-font-scale)
-        );
+        width:28px;
+        height:28px;
+        font-size:1.18rem;
     }
 }
 
