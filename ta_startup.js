@@ -1,34 +1,56 @@
-import {API_URLS} from './ta_config.js';
+import{
+    API_URLS
+}from'./ta_config.js';
 
-import {
+import{
     apiRequest,
     requireTeacherLogin
-} from './ta_api.js';
+}from'./ta_api.js';
 
-import {
+import{
     setContext,
     setTeacherState,
     setRelevantSession,
     setAttendance,
     setLocationStudents,
     getState
-} from './ta_state.js';
+}from'./ta_state.js';
 
-import {
+import{
     startTeacherExperience
-} from './ta_experience_director.js';
+}from'./ta_experience_director.js';
+
+import{
+    startupDebug
+}from'./ta_startup_debug.js';
 
 const teacherStatus=
-    document.getElementById('teacherStatus');
+    document.getElementById(
+        'teacherStatus'
+    );
 
 export async function startTeacherApp(){
+    startupDebug.begin();
+
+    startupDebug.start(
+        'login',
+        'Validate teacher login'
+    );
 
     if(!requireTeacherLogin()){
+        startupDebug.fail(
+            'login',
+            'Teacher login was not found.'
+        );
+
         return;
     }
 
-    try{
+    startupDebug.finish(
+        'login'
+    );
 
+    try{
         teacherStatus.textContent=
             "Loading today's context...";
 
@@ -36,12 +58,26 @@ export async function startTeacherApp(){
         // Teacher Context
         //------------------------------------
 
+        startupDebug.start(
+            'context',
+            'Load teacher context'
+        );
+
         const context=
             await apiRequest(
                 API_URLS.getContext
             );
 
-        setContext(context);
+        setContext(
+            context
+        );
+
+        startupDebug.finish(
+            'context',
+            getResultDetail(
+                context
+            )
+        );
 
         console.log(
             'ta_get_context:',
@@ -52,9 +88,15 @@ export async function startTeacherApp(){
         // Teacher State
         //------------------------------------
 
+        startupDebug.start(
+            'teacherState',
+            'Determine teacher state'
+        );
+
         const stateUrl=
             new URL(
-                API_URLS.determineTeacherState
+                API_URLS
+                    .determineTeacherState
             );
 
         stateUrl.searchParams.set(
@@ -90,6 +132,13 @@ export async function startTeacherApp(){
             teacherState
         );
 
+        startupDebug.finish(
+            'teacherState',
+            teacherState
+                ?.teacher_state||
+            ''
+        );
+
         console.log(
             'ta_determine_teacher_state:',
             teacherState
@@ -98,6 +147,11 @@ export async function startTeacherApp(){
         //------------------------------------
         // Relevant Session
         //------------------------------------
+
+        startupDebug.start(
+            'relevantSession',
+            'Choose relevant session'
+        );
 
         const relevantSession=
             getRelevantSession(
@@ -108,18 +162,30 @@ export async function startTeacherApp(){
             relevantSession
         );
 
+        startupDebug.finish(
+            'relevantSession',
+            relevantSession?.id
+                ?`Session ${relevantSession.id}`
+                :'No relevant session'
+        );
+
         //------------------------------------
         // Session Attendance
         //------------------------------------
 
         if(relevantSession?.id){
-
             teacherStatus.textContent=
                 'Loading session attendance...';
 
+            startupDebug.start(
+                'attendance',
+                'Load session attendance'
+            );
+
             const attendanceUrl=
                 new URL(
-                    API_URLS.getSessionAttendance
+                    API_URLS
+                        .getSessionAttendance
                 );
 
             attendanceUrl.searchParams.set(
@@ -143,9 +209,20 @@ export async function startTeacherApp(){
                 attendance
             );
 
+            startupDebug.finish(
+                'attendance',
+                getResultDetail(
+                    attendance
+                )
+            );
+
             console.log(
                 'ta_get_session_attendance:',
                 attendance
+            );
+        }else{
+            startupDebug.note(
+                'Attendance request skipped: no relevant session.'
             );
         }
 
@@ -156,18 +233,69 @@ export async function startTeacherApp(){
         teacherStatus.textContent=
             'Loading location students...';
 
+        startupDebug.start(
+            'locationStudents',
+            'Load location students'
+        );
+
         const locationStudents=
             await apiRequest(
-                API_URLS.getLocationStudents
+                API_URLS
+                    .getLocationStudents
             );
 
         setLocationStudents(
             locationStudents
         );
 
+        startupDebug.finish(
+            'locationStudents',
+            getResultDetail(
+                locationStudents
+            )
+        );
+
         console.log(
             'ta_get_location_students:',
             locationStudents
+        );
+
+        //------------------------------------
+        // State Ready
+        //------------------------------------
+
+        startupDebug.start(
+            'stateReady',
+            'Prepare Teacher App state'
+        );
+
+        console.log(
+            'Teacher App State:',
+            getState()
+        );
+
+        startupDebug.finish(
+            'stateReady'
+        );
+
+        //------------------------------------
+        // Experience Director and Stage
+        //------------------------------------
+
+        teacherStatus.textContent=
+            'Building Teacher Experience...';
+
+        startupDebug.start(
+            'experience',
+            'Build and render Living Stage'
+        );
+
+        await Promise.resolve(
+            startTeacherExperience()
+        );
+
+        startupDebug.finish(
+            'experience'
         );
 
         //------------------------------------
@@ -177,51 +305,71 @@ export async function startTeacherApp(){
         teacherStatus.textContent=
             'Teacher session loaded.';
 
-        console.log(
-            'Teacher App State:',
-            getState()
-        );
-
-        startTeacherExperience();
+        startupDebug.complete();
 
     }catch(error){
-
         console.error(
             'Teacher app startup failed:',
             error
         );
 
+        startupDebug.note(
+            error instanceof Error
+                ?error.message
+                :'Unable to load Teacher App.',
+            'error'
+        );
+
         teacherStatus.textContent=
             error instanceof Error
-                ? error.message
-                : 'Unable to load Teacher App.';
+                ?error.message
+                :'Unable to load Teacher App.';
     }
+}
+
+function getResultDetail(result){
+    if(Array.isArray(result)){
+        return(
+            `${result.length} records`
+        );
+    }
+
+    if(
+        result&&
+        typeof result==='object'
+    ){
+        return(
+            `${Object.keys(result).length} fields`
+        );
+    }
+
+    return result===undefined
+        ?''
+        :String(result);
 }
 
 function getRelevantSession(
     teacherState
 ){
-
     switch(
         teacherState.teacher_state
     ){
-
-        case 'IN_SESSION':
+        case'IN_SESSION':
             return(
                 teacherState.current_session
             );
 
-        case 'BEFORE_FIRST_SESSION':
+        case'BEFORE_FIRST_SESSION':
             return(
                 teacherState.next_session
             );
 
-        case 'BETWEEN_SESSIONS':
+        case'BETWEEN_SESSIONS':
             return(
                 teacherState.next_session
             );
 
-        case 'AFTER_LAST_SESSION':
+        case'AFTER_LAST_SESSION':
             return(
                 teacherState.previous_session
             );
@@ -237,7 +385,6 @@ function getRelevantSession(
 }
 
 function getTodayDate(){
-
     const parts=
         new Intl.DateTimeFormat(
             'en-CA',
