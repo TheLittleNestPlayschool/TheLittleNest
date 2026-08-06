@@ -1,4 +1,3 @@
-
 /*==================================================
   Living Stage — Visual Hierarchy
 
@@ -6,7 +5,26 @@
   - Living task is full size and fully visible.
   - Waiting tasks are smaller and quieter.
   - Completed tasks settle farther into the background.
-  - No breathing, centering, or arrival animation yet.
+==================================================*/
+
+/*==================================================
+  Stage Centering Space
+
+  Gives the first and last modules enough scrollable
+  room to move into the center of the viewport.
+==================================================*/
+
+.teacher-stage-spacer{
+    flex:0 0 42vh;
+    width:100%;
+    min-height:180px;
+    max-height:420px;
+    pointer-events:none;
+    visibility:hidden;
+}
+
+/*==================================================
+  Shared Module Motion
 ==================================================*/
 
 .teacher-module-card{
@@ -198,6 +216,12 @@
 ==================================================*/
 
 @media(max-width:600px){
+
+    .teacher-stage-spacer{
+        flex-basis:40vh;
+        min-height:150px;
+        max-height:340px;
+    }
 
     .teacher-module-card.is-collapsed{
         width:95%;
