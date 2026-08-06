@@ -1,1 +1,480 @@
+/*==================================================
+  Living Stage — Perspective
 
+  The Living Task remains full size.
+
+  The five tasks above and below it become physically
+  smaller as they move away from the Living Task.
+
+  Vertical reductions:
+  Distance 1 = 20% smaller
+  Distance 2 = 25% smaller
+  Distance 3 = 30% smaller
+  Distance 4 = 35% smaller
+  Distance 5+ = 40% smaller
+
+  Waiting tasks are 20% narrower than the Living Task.
+==================================================*/
+
+/*==================================================
+  Shared Perspective Variables
+==================================================*/
+
+.teacher-module-card{
+    --stage-width:100%;
+    --stage-height-scale:1;
+    --stage-font-scale:1;
+    --stage-opacity:1;
+    --stage-brightness:1;
+    --stage-saturation:1;
+
+    width:var(--stage-width);
+    margin-left:auto;
+    margin-right:auto;
+    opacity:var(--stage-opacity);
+    filter:
+        brightness(
+            var(--stage-brightness)
+        )
+        saturate(
+            var(--stage-saturation)
+        );
+
+    transition:
+        width .42s cubic-bezier(.22,.8,.3,1),
+        opacity .42s cubic-bezier(.22,.8,.3,1),
+        filter .42s cubic-bezier(.22,.8,.3,1),
+        background .42s cubic-bezier(.22,.8,.3,1),
+        border-color .42s cubic-bezier(.22,.8,.3,1),
+        box-shadow .42s cubic-bezier(.22,.8,.3,1),
+        transform .42s cubic-bezier(.22,.8,.3,1);
+}
+
+/*==================================================
+  Living Task
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position="living"
+]{
+    --stage-width:100%;
+    --stage-height-scale:1;
+    --stage-font-scale:1;
+    --stage-opacity:1;
+    --stage-brightness:1.05;
+    --stage-saturation:1.04;
+
+    z-index:5;
+}
+
+/*==================================================
+  Distance 1
+  20% smaller vertically and horizontally
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position="previous-1"
+],
+.teacher-module-card[
+    data-stage-position="next-1"
+]{
+    --stage-width:80%;
+    --stage-height-scale:.80;
+    --stage-font-scale:.88;
+    --stage-opacity:.62;
+    --stage-brightness:.94;
+    --stage-saturation:.82;
+}
+
+/*==================================================
+  Distance 2
+  25% smaller vertically
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position="previous-2"
+],
+.teacher-module-card[
+    data-stage-position="next-2"
+]{
+    --stage-width:80%;
+    --stage-height-scale:.75;
+    --stage-font-scale:.82;
+    --stage-opacity:.55;
+    --stage-brightness:.91;
+    --stage-saturation:.75;
+}
+
+/*==================================================
+  Distance 3
+  30% smaller vertically
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position="previous-3"
+],
+.teacher-module-card[
+    data-stage-position="next-3"
+]{
+    --stage-width:80%;
+    --stage-height-scale:.70;
+    --stage-font-scale:.76;
+    --stage-opacity:.48;
+    --stage-brightness:.88;
+    --stage-saturation:.68;
+}
+
+/*==================================================
+  Distance 4
+  35% smaller vertically
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position="previous-4"
+],
+.teacher-module-card[
+    data-stage-position="next-4"
+]{
+    --stage-width:80%;
+    --stage-height-scale:.65;
+    --stage-font-scale:.70;
+    --stage-opacity:.41;
+    --stage-brightness:.85;
+    --stage-saturation:.61;
+}
+
+/*==================================================
+  Distance 5 and Beyond
+  40% smaller vertically
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position="previous-5"
+],
+.teacher-module-card[
+    data-stage-position="next-5"
+],
+.teacher-module-card[
+    data-stage-position="next-6"
+],
+.teacher-module-card[
+    data-stage-position="next-7"
+],
+.teacher-module-card[
+    data-stage-position="next-8"
+],
+.teacher-module-card[
+    data-stage-position="next-9"
+],
+.teacher-module-card[
+    data-stage-position="next-10"
+],
+.teacher-module-card[
+    data-stage-position="next-11"
+],
+.teacher-module-card[
+    data-stage-position="next-12"
+]{
+    --stage-width:80%;
+    --stage-height-scale:.60;
+    --stage-font-scale:.64;
+    --stage-opacity:.34;
+    --stage-brightness:.82;
+    --stage-saturation:.54;
+}
+
+/*==================================================
+  Physical Waiting-Task Size
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-header,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-header{
+    height:calc(
+        62px *
+        var(--stage-height-scale)
+    );
+
+    min-height:0;
+    padding:
+        calc(
+            8px *
+            var(--stage-height-scale)
+        )
+        12px;
+
+    justify-content:center;
+    overflow:hidden;
+}
+
+/*==================================================
+  Centered Task Identity
+==================================================*/
+
+.teacher-module-card
+.teacher-module-identity{
+    width:100%;
+}
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-identity,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-identity{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:calc(
+        8px *
+        var(--stage-font-scale)
+    );
+    text-align:center;
+}
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-text,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-text{
+    min-width:0;
+    text-align:center;
+}
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-title,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-title{
+    overflow:hidden;
+    font-size:calc(
+        1.05rem *
+        var(--stage-font-scale)
+    );
+    line-height:1.05;
+    text-align:center;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-subtitle,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-subtitle{
+    margin-top:2px;
+    overflow:hidden;
+    font-size:calc(
+        .83rem *
+        var(--stage-font-scale)
+    );
+    line-height:1.05;
+    text-align:center;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-icon,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-icon{
+    width:calc(
+        32px *
+        var(--stage-font-scale)
+    );
+
+    height:calc(
+        32px *
+        var(--stage-font-scale)
+    );
+
+    font-size:calc(
+        1.4rem *
+        var(--stage-font-scale)
+    );
+}
+
+/*==================================================
+  Center Living Task Identity
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position="living"
+]
+.teacher-module-header{
+    justify-content:center;
+}
+
+.teacher-module-card[
+    data-stage-position="living"
+]
+.teacher-module-identity{
+    justify-content:center;
+    text-align:center;
+}
+
+.teacher-module-card[
+    data-stage-position="living"
+]
+.teacher-module-text{
+    text-align:center;
+}
+
+.teacher-module-card[
+    data-stage-position="living"
+]
+.teacher-module-title,
+.teacher-module-card[
+    data-stage-position="living"
+]
+.teacher-module-subtitle{
+    text-align:center;
+}
+
+/*==================================================
+  Status Position
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-status,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-status{
+    display:none;
+}
+
+/*==================================================
+  Hover and Focus
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]:hover,
+.teacher-module-card[
+    data-stage-position^="previous-"
+]:focus-within,
+.teacher-module-card[
+    data-stage-position^="next-"
+]:hover,
+.teacher-module-card[
+    data-stage-position^="next-"
+]:focus-within{
+    opacity:.78;
+    filter:
+        brightness(.98)
+        saturate(.9);
+}
+
+/*==================================================
+  Mobile
+==================================================*/
+
+@media(max-width:600px){
+
+    .teacher-module-card[
+        data-stage-position^="previous-"
+    ]
+    .teacher-module-header,
+    .teacher-module-card[
+        data-stage-position^="next-"
+    ]
+    .teacher-module-header{
+        height:calc(
+            58px *
+            var(--stage-height-scale)
+        );
+
+        padding:
+            calc(
+                7px *
+                var(--stage-height-scale)
+            )
+            9px;
+    }
+
+    .teacher-module-card[
+        data-stage-position^="previous-"
+    ]
+    .teacher-module-title,
+    .teacher-module-card[
+        data-stage-position^="next-"
+    ]
+    .teacher-module-title{
+        font-size:calc(
+            1rem *
+            var(--stage-font-scale)
+        );
+    }
+
+    .teacher-module-card[
+        data-stage-position^="previous-"
+    ]
+    .teacher-module-subtitle,
+    .teacher-module-card[
+        data-stage-position^="next-"
+    ]
+    .teacher-module-subtitle{
+        font-size:calc(
+            .78rem *
+            var(--stage-font-scale)
+        );
+    }
+
+    .teacher-module-card[
+        data-stage-position^="previous-"
+    ]
+    .teacher-module-icon,
+    .teacher-module-card[
+        data-stage-position^="next-"
+    ]
+    .teacher-module-icon{
+        width:calc(
+            30px *
+            var(--stage-font-scale)
+        );
+
+        height:calc(
+            30px *
+            var(--stage-font-scale)
+        );
+
+        font-size:calc(
+            1.25rem *
+            var(--stage-font-scale)
+        );
+    }
+}
+
+/*==================================================
+  Reduced Motion
+==================================================*/
+
+@media(prefers-reduced-motion:reduce){
+
+    .teacher-module-card{
+        transition:none;
+    }
+}
