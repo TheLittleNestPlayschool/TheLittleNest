@@ -101,7 +101,7 @@
 
 .teacher-module-card.is-collapsed{
     cursor:pointer;
-    background:rgba(255,255,255,.12);
+    background:rgba(255,255,255,.20);
     border-color:rgba(255,255,255,.035);
     box-shadow:
         0 5px 18px rgba(15,23,42,.07);
