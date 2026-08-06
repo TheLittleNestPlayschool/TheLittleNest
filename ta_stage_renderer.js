@@ -1,6 +1,7 @@
 import{getTeacherStage}from'./ta_ui.js';
 import{getModule}from'./ta_module_registry.js';
 import{renderModule}from'./ta_module_manager.js';
+import{centerLivingModule}from'./ta_stage_motion.js';
 
 export function renderStage(stagePlan){
     const stage=getTeacherStage();
@@ -39,19 +40,30 @@ export function renderStage(stagePlan){
             moduleCard
         );
     });
+
+    centerLivingModule();
 }
 
 function createStageContext(context){
     const container=document.createElement('section');
+
     container.className='teacher-stage-context';
     container.textContent=context;
 
     return container;
 }
 
-function createModuleCard(stagePlan,modulePlan){
-    const module=getModule(modulePlan.id);
-    const card=document.createElement('section');
+function createModuleCard(
+    stagePlan,
+    modulePlan
+){
+    const module=getModule(
+        modulePlan.id
+    );
+
+    const card=document.createElement(
+        'section'
+    );
 
     card.className='teacher-module-card';
     card.dataset.moduleId=modulePlan.id;
@@ -82,27 +94,53 @@ function createModuleCard(stagePlan,modulePlan){
         );
     }
 
-    const header=document.createElement('header');
+    const header=document.createElement(
+        'header'
+    );
+
     header.className='teacher-module-header';
-    header.setAttribute('role','button');
-    header.setAttribute('tabindex','0');
+
+    header.setAttribute(
+        'role',
+        'button'
+    );
+
+    header.setAttribute(
+        'tabindex',
+        '0'
+    );
+
     header.setAttribute(
         'aria-expanded',
         String(isExpanded)
     );
 
-    const identity=document.createElement('div');
-    identity.className='teacher-module-identity';
+    const identity=document.createElement(
+        'div'
+    );
 
-    const icon=document.createElement('span');
+    identity.className=
+        'teacher-module-identity';
+
+    const icon=document.createElement(
+        'span'
+    );
+
     icon.className='teacher-module-icon';
     icon.textContent=module?.icon||'';
 
-    const text=document.createElement('div');
+    const text=document.createElement(
+        'div'
+    );
+
     text.className='teacher-module-text';
 
-    const title=document.createElement('h2');
+    const title=document.createElement(
+        'h2'
+    );
+
     title.className='teacher-module-title';
+
     title.textContent=
         module?.title||
         modulePlan.id;
@@ -113,61 +151,101 @@ function createModuleCard(stagePlan,modulePlan){
         module?.description||
         '';
 
-    text.appendChild(title);
+    text.appendChild(
+        title
+    );
 
     if(liveStatus){
-        const subtitle=document.createElement('p');
-        subtitle.className='teacher-module-subtitle';
-        subtitle.textContent=liveStatus;
+        const subtitle=document.createElement(
+            'p'
+        );
 
-        text.appendChild(subtitle);
+        subtitle.className=
+            'teacher-module-subtitle';
+
+        subtitle.textContent=
+            liveStatus;
+
+        text.appendChild(
+            subtitle
+        );
     }
 
-    identity.appendChild(icon);
-    identity.appendChild(text);
-    header.appendChild(identity);
+    identity.appendChild(
+        icon
+    );
+
+    identity.appendChild(
+        text
+    );
+
+    header.appendChild(
+        identity
+    );
 
     if(modulePlan.status){
-        const status=document.createElement('span');
+        const status=document.createElement(
+            'span'
+        );
 
-        status.className='teacher-module-status';
-        status.textContent=modulePlan.status;
+        status.className=
+            'teacher-module-status';
 
-        header.appendChild(status);
+        status.textContent=
+            modulePlan.status;
+
+        header.appendChild(
+            status
+        );
     }
 
-    header.addEventListener('click',()=>{
-        toggleModule(
-            stagePlan,
-            modulePlan.id
-        );
-    });
-
-    header.addEventListener('keydown',event=>{
-        if(
-            event.key==='Enter'||
-            event.key===' '
-        ){
-            event.preventDefault();
-
+    header.addEventListener(
+        'click',
+        ()=>{
             toggleModule(
                 stagePlan,
                 modulePlan.id
             );
         }
-    });
+    );
 
-    card.appendChild(header);
+    header.addEventListener(
+        'keydown',
+        event=>{
+            if(
+                event.key==='Enter'||
+                event.key===' '
+            ){
+                event.preventDefault();
+
+                toggleModule(
+                    stagePlan,
+                    modulePlan.id
+                );
+            }
+        }
+    );
+
+    card.appendChild(
+        header
+    );
 
     let content=null;
 
     if(isExpanded){
-        content=document.createElement('div');
-        content.className='teacher-module-content';
+        content=document.createElement(
+            'div'
+        );
+
+        content.className=
+            'teacher-module-content';
+
         content.id=
             `teacherModule_${modulePlan.id}`;
 
-        card.appendChild(content);
+        card.appendChild(
+            content
+        );
     }
 
     return{
@@ -195,11 +273,19 @@ function activateModuleCard(moduleCard){
     );
 }
 
-function toggleModule(stagePlan,moduleId){
+function toggleModule(
+    stagePlan,
+    moduleId
+){
     const selectedModule=
-        (stagePlan.modules||[]).find(modulePlan=>{
-            return modulePlan.id===moduleId;
-        });
+        (stagePlan.modules||[]).find(
+            modulePlan=>{
+                return(
+                    modulePlan.id===
+                    moduleId
+                );
+            }
+        );
 
     const isCurrentlyOpen=
         selectedModule?.state==='active'||
@@ -208,19 +294,22 @@ function toggleModule(stagePlan,moduleId){
     const updatedPlan={
         ...stagePlan,
 
-        modules:(stagePlan.modules||[]).map(modulePlan=>({
-            ...modulePlan,
+        modules:(stagePlan.modules||[])
+            .map(modulePlan=>({
+                ...modulePlan,
 
-            state:
-                modulePlan.id===moduleId
-                    ?isCurrentlyOpen
-                        ?'collapsed'
-                        :'active'
-                    :modulePlan.state==='completed'
-                        ?'completed'
-                        :'collapsed'
-        }))
+                state:
+                    modulePlan.id===moduleId
+                        ?isCurrentlyOpen
+                            ?'collapsed'
+                            :'active'
+                        :modulePlan.state==='completed'
+                            ?'completed'
+                            :'collapsed'
+            }))
     };
 
-    renderStage(updatedPlan);
+    renderStage(
+        updatedPlan
+    );
 }
