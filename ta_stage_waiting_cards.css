@@ -1,0 +1,237 @@
+/*==================================================
+  Living Stage — Waiting Cards
+
+  Responsibility
+
+  - Compact presentation for waiting tasks.
+  - Physical size of waiting cards.
+  - Typography.
+  - Icon sizing.
+  - Centered layout.
+  - Hover behaviour.
+
+  Perspective (width/opacity) is handled by
+  ta_stage_perspective.css.
+==================================================*/
+
+/*==================================================
+  Waiting Card Height
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-header,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-header{
+    height:42px;
+    min-height:42px;
+
+    padding:6px 12px;
+
+    justify-content:center;
+
+    overflow:hidden;
+}
+
+/*==================================================
+  Waiting Card Identity
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-identity,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-identity{
+    width:100%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:6px;
+
+    text-align:center;
+}
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-text,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-text{
+    min-width:0;
+
+    text-align:center;
+}
+
+/*==================================================
+  Waiting Typography
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-title,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-title{
+    overflow:hidden;
+
+    font-size:.86rem;
+    font-weight:700;
+    line-height:1.05;
+
+    text-align:center;
+
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-subtitle,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-subtitle{
+    margin-top:1px;
+
+    overflow:hidden;
+
+    font-size:.60rem;
+    font-weight:600;
+    line-height:1.05;
+
+    text-align:center;
+
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+/*==================================================
+  Waiting Icons
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-icon,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-icon{
+    width:24px;
+    height:24px;
+
+    font-size:1rem;
+
+    flex:0 0 auto;
+}
+
+/*==================================================
+  Waiting Status
+
+  The Living Task owns status information.
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]
+.teacher-module-status,
+.teacher-module-card[
+    data-stage-position^="next-"
+]
+.teacher-module-status{
+    display:none;
+}
+
+/*==================================================
+  Waiting Hover
+
+  Gives a subtle acknowledgement without
+  stealing attention from the Living Task.
+==================================================*/
+
+.teacher-module-card[
+    data-stage-position^="previous-"
+]:hover,
+.teacher-module-card[
+    data-stage-position^="previous-"
+]:focus-within,
+.teacher-module-card[
+    data-stage-position^="next-"
+]:hover,
+.teacher-module-card[
+    data-stage-position^="next-"
+]:focus-within{
+    filter:
+        brightness(.98)
+        saturate(.90);
+}
+
+/*==================================================
+  Mobile
+==================================================*/
+
+@media(max-width:600px){
+
+    .teacher-module-card[
+        data-stage-position^="previous-"
+    ]
+    .teacher-module-header,
+    .teacher-module-card[
+        data-stage-position^="next-"
+    ]
+    .teacher-module-header{
+        height:38px;
+        min-height:38px;
+
+        padding:5px 10px;
+    }
+
+    .teacher-module-card[
+        data-stage-position^="previous-"
+    ]
+    .teacher-module-title,
+    .teacher-module-card[
+        data-stage-position^="next-"
+    ]
+    .teacher-module-title{
+        font-size:.80rem;
+    }
+
+    .teacher-module-card[
+        data-stage-position^="previous-"
+    ]
+    .teacher-module-subtitle,
+    .teacher-module-card[
+        data-stage-position^="next-"
+    ]
+    .teacher-module-subtitle{
+        font-size:.56rem;
+    }
+
+    .teacher-module-card[
+        data-stage-position^="previous-"
+    ]
+    .teacher-module-icon,
+    .teacher-module-card[
+        data-stage-position^="next-"
+    ]
+    .teacher-module-icon{
+        width:22px;
+        height:22px;
+
+        font-size:.92rem;
+    }
+}
