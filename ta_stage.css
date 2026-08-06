@@ -344,9 +344,9 @@
 
     .teacher-stage-layout{
         grid-template-rows:
-            minmax(0,23fr)
-            minmax(0,54fr)
-            minmax(0,23fr);
+            minmax(0,32.5fr)
+            minmax(0,35fr)
+            minmax(0,32.5fr);
 
         gap:7px;
     }
