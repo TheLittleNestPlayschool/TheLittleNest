@@ -1,1 +1,242 @@
-/* ta_stage_motion.css
+/*==================================================
+  Living Stage — Visual Hierarchy
+
+  Pass 1:
+  - Living task is full size and fully visible.
+  - Waiting tasks are smaller and quieter.
+  - Completed tasks settle farther into the background.
+  - No breathing, centering, or arrival animation yet.
+==================================================*/
+
+.teacher-module-card{
+    position:relative;
+    transform-origin:center top;
+    transition:
+        width .28s ease,
+        opacity .28s ease,
+        filter .28s ease,
+        background .28s ease,
+        border-color .28s ease,
+        box-shadow .28s ease,
+        transform .28s ease;
+}
+
+/*==================================================
+  Living Task
+==================================================*/
+
+.teacher-module-card.is-expanded{
+    width:100%;
+    opacity:1;
+    filter:
+        brightness(1.05)
+        saturate(1.04);
+    background:rgba(255,255,255,.24);
+    border-color:rgba(255,255,255,.26);
+    box-shadow:
+        0 16px 42px rgba(15,23,42,.18),
+        0 4px 14px rgba(255,255,255,.10);
+    transform:scale(1);
+    z-index:3;
+}
+
+.teacher-module-card.is-expanded
+.teacher-module-header{
+    opacity:1;
+}
+
+.teacher-module-card.is-expanded
+.teacher-module-title{
+    color:#0f172a;
+}
+
+.teacher-module-card.is-expanded
+.teacher-module-subtitle{
+    color:#475569;
+}
+
+/*==================================================
+  Waiting Tasks
+==================================================*/
+
+.teacher-module-card.is-collapsed{
+    width:94%;
+    margin-left:auto;
+    margin-right:auto;
+    opacity:.50;
+    filter:
+        brightness(.90)
+        saturate(.74);
+    background:rgba(255,255,255,.12);
+    border-color:rgba(255,255,255,.035);
+    box-shadow:
+        0 5px 18px rgba(15,23,42,.07);
+    transform:scale(.985);
+    z-index:1;
+}
+
+.teacher-module-card.is-collapsed
+.teacher-module-header{
+    min-height:54px;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.teacher-module-card.is-collapsed
+.teacher-module-icon{
+    transform:scale(.90);
+}
+
+.teacher-module-card.is-collapsed
+.teacher-module-title{
+    color:#334155;
+}
+
+.teacher-module-card.is-collapsed
+.teacher-module-subtitle{
+    color:#64748b;
+}
+
+/*
+  A waiting task becomes slightly clearer when the
+  teacher deliberately points to or focuses on it.
+*/
+
+.teacher-module-card.is-collapsed:hover,
+.teacher-module-card.is-collapsed:focus-within{
+    width:95%;
+    opacity:.74;
+    filter:
+        brightness(.98)
+        saturate(.90);
+    background:rgba(255,255,255,.17);
+    box-shadow:
+        0 7px 22px rgba(15,23,42,.09);
+    transform:
+        translateY(-1px)
+        scale(.99);
+}
+
+/*==================================================
+  Completed Tasks
+==================================================*/
+
+.teacher-module-card.is-completed{
+    width:90%;
+    margin-left:auto;
+    margin-right:auto;
+    opacity:.30;
+    filter:
+        brightness(.82)
+        saturate(.52);
+    background:rgba(255,255,255,.08);
+    border-color:rgba(45,212,191,.22);
+    box-shadow:
+        0 3px 12px rgba(15,23,42,.045);
+    transform:scale(.97);
+    z-index:0;
+}
+
+.teacher-module-card.is-completed
+.teacher-module-header{
+    min-height:50px;
+    padding-top:8px;
+    padding-bottom:8px;
+    background:rgba(45,212,191,.035);
+}
+
+.teacher-module-card.is-completed
+.teacher-module-icon{
+    transform:scale(.84);
+}
+
+.teacher-module-card.is-completed
+.teacher-module-title{
+    color:#475569;
+}
+
+.teacher-module-card.is-completed
+.teacher-module-subtitle{
+    color:#64748b;
+}
+
+.teacher-module-card.is-completed:hover,
+.teacher-module-card.is-completed:focus-within{
+    width:92%;
+    opacity:.56;
+    filter:
+        brightness(.94)
+        saturate(.76);
+    background:rgba(255,255,255,.13);
+    box-shadow:
+        0 5px 16px rgba(15,23,42,.07);
+    transform:
+        translateY(-1px)
+        scale(.98);
+}
+
+/*==================================================
+  Needs Attention
+==================================================*/
+
+.teacher-module-card.needs-attention{
+    opacity:.78;
+    filter:
+        brightness(1)
+        saturate(.92);
+    border-color:rgba(234,179,8,.48);
+}
+
+.teacher-module-card.needs-attention
+.teacher-module-header{
+    background:rgba(254,240,138,.09);
+}
+
+/*==================================================
+  Mobile
+==================================================*/
+
+@media(max-width:600px){
+
+    .teacher-module-card.is-collapsed{
+        width:95%;
+        transform:scale(.99);
+    }
+
+    .teacher-module-card.is-collapsed
+    .teacher-module-header{
+        min-height:51px;
+        padding-top:9px;
+        padding-bottom:9px;
+    }
+
+    .teacher-module-card.is-completed{
+        width:92%;
+        transform:scale(.98);
+    }
+
+    .teacher-module-card.is-completed
+    .teacher-module-header{
+        min-height:48px;
+        padding-top:7px;
+        padding-bottom:7px;
+    }
+}
+
+/*==================================================
+  Reduced Motion
+==================================================*/
+
+@media(prefers-reduced-motion:reduce){
+
+    .teacher-module-card{
+        transition:none;
+    }
+
+    .teacher-module-card.is-collapsed:hover,
+    .teacher-module-card.is-collapsed:focus-within,
+    .teacher-module-card.is-completed:hover,
+    .teacher-module-card.is-completed:focus-within{
+        transform:none;
+    }
+}
