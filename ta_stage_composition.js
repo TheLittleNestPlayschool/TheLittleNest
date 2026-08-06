@@ -1,5 +1,8 @@
 const TASKS_ABOVE_LIVING=5;
 
+const ANCHORED_LAST_MODULE_ID=
+    'teacher_information';
+
 export function composeStagePlan(
     stagePlan
 ){
@@ -15,16 +18,29 @@ export function composeStagePlan(
         };
     }
 
-    const livingIndex=
-        findLivingIndex(
+    const livingModule=
+        findLivingModule(
             modules
         );
 
+    if(!livingModule){
+        return{
+            ...stagePlan,
+            modules:[]
+        };
+    }
+
     const arrangedModules=
-        arrangeAroundLiving(
-            modules,
-            livingIndex
-        );
+        livingModule.id===
+        ANCHORED_LAST_MODULE_ID
+            ?arrangeWithAnchoredModuleLiving(
+                modules,
+                livingModule
+            )
+            :arrangeWithAnchoredModuleLast(
+                modules,
+                livingModule
+            );
 
     return{
         ...stagePlan,
@@ -32,18 +48,180 @@ export function composeStagePlan(
     };
 }
 
-function findLivingIndex(modules){
-    const activeIndex=
-        modules.findIndex(modulePlan=>{
+function findLivingModule(modules){
+    const activeModule=
+        modules.find(modulePlan=>{
             return(
                 modulePlan.state==='active'||
                 modulePlan.state==='expanded'
             );
         });
 
-    return activeIndex>=0
-        ?activeIndex
-        :0;
+    return(
+        activeModule||
+        modules[0]||
+        null
+    );
+}
+
+function arrangeWithAnchoredModuleLast(
+    modules,
+    livingModule
+){
+    const anchoredModule=
+        modules.find(modulePlan=>{
+            return(
+                modulePlan.id===
+                ANCHORED_LAST_MODULE_ID
+            );
+        });
+
+    const rotatingModules=
+        modules.filter(modulePlan=>{
+            return(
+                modulePlan.id!==
+                ANCHORED_LAST_MODULE_ID
+            );
+        });
+
+    const livingIndex=
+        rotatingModules.findIndex(
+            modulePlan=>{
+                return(
+                    modulePlan.id===
+                    livingModule.id
+                );
+            }
+        );
+
+    const arrangedModules=
+        arrangeAroundLiving(
+            rotatingModules,
+            livingIndex>=0
+                ?livingIndex
+                :0
+        );
+
+    if(!anchoredModule){
+        return arrangedModules;
+    }
+
+    const nextDistance=
+        getNextDistance(
+            arrangedModules
+        );
+
+    arrangedModules.push(
+        createPositionedModule(
+            anchoredModule,
+            {
+                side:'next',
+                distance:nextDistance,
+                position:
+                    `next-${nextDistance}`
+            }
+        )
+    );
+
+    return arrangedModules;
+}
+
+function arrangeWithAnchoredModuleLiving(
+    modules,
+    livingModule
+){
+    const otherModules=
+        modules.filter(modulePlan=>{
+            return(
+                modulePlan.id!==
+                ANCHORED_LAST_MODULE_ID
+            );
+        });
+
+    const aboveCount=
+        Math.min(
+            TASKS_ABOVE_LIVING,
+            otherModules.length
+        );
+
+    const aboveModules=
+        otherModules.slice(
+            Math.max(
+                0,
+                otherModules.length-
+                aboveCount
+            )
+        );
+
+    const belowModules=
+        otherModules.slice(
+            0,
+            Math.max(
+                0,
+                otherModules.length-
+                aboveCount
+            )
+        );
+
+    const arrangedModules=[];
+
+    aboveModules.forEach(
+        (
+            modulePlan,
+            positionIndex
+        )=>{
+            const distance=
+                aboveCount-
+                positionIndex;
+
+            arrangedModules.push(
+                createPositionedModule(
+                    modulePlan,
+                    {
+                        side:'previous',
+                        distance,
+                        position:
+                            `previous-${distance}`
+                    }
+                )
+            );
+        }
+    );
+
+    arrangedModules.push(
+        createPositionedModule(
+            livingModule,
+            {
+                side:'living',
+                distance:0,
+                position:'living'
+            }
+        )
+    );
+
+    belowModules.forEach(
+        (
+            modulePlan,
+            positionIndex
+        )=>{
+            const distance=
+                positionIndex+1;
+
+            arrangedModules.push(
+                createPositionedModule(
+                    modulePlan,
+                    {
+                        side:'next',
+                        distance,
+                        position:
+                            `next-${distance}`
+                    }
+                )
+            );
+        }
+    );
+
+    return arrangedModules;
 }
 
 function arrangeAroundLiving(
@@ -52,6 +230,10 @@ function arrangeAroundLiving(
 ){
     const moduleCount=
         modules.length;
+
+    if(moduleCount===0){
+        return[];
+    }
 
     const aboveCount=
         Math.min(
@@ -195,6 +377,22 @@ function getBelowIndices(
     }
 
     return indices;
+}
+
+function getNextDistance(
+    arrangedModules
+){
+    const nextModules=
+        arrangedModules.filter(
+            modulePlan=>{
+                return(
+                    modulePlan.stageSide===
+                    'next'
+                );
+            }
+        );
+
+    return nextModules.length+1;
 }
 
 function createPositionedModule(
