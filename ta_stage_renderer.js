@@ -12,6 +12,10 @@ export function renderStage(stagePlan){
 
     stage.innerHTML='';
 
+    stage.appendChild(
+        createStageSpacer('top')
+    );
+
     if(stagePlan.context){
         stage.appendChild(
             createStageContext(
@@ -22,18 +26,24 @@ export function renderStage(stagePlan){
 
     const modules=stagePlan.modules||[];
 
-    const moduleCards=modules.map(modulePlan=>{
-        return createModuleCard(
-            stagePlan,
-            modulePlan
-        );
-    });
+    const moduleCards=modules.map(
+        modulePlan=>{
+            return createModuleCard(
+                stagePlan,
+                modulePlan
+            );
+        }
+    );
 
     moduleCards.forEach(moduleCard=>{
         stage.appendChild(
             moduleCard.card
         );
     });
+
+    stage.appendChild(
+        createStageSpacer('bottom')
+    );
 
     moduleCards.forEach(moduleCard=>{
         activateModuleCard(
@@ -44,10 +54,30 @@ export function renderStage(stagePlan){
     centerLivingModule();
 }
 
-function createStageContext(context){
-    const container=document.createElement('section');
+function createStageSpacer(position){
+    const spacer=document.createElement(
+        'div'
+    );
 
-    container.className='teacher-stage-context';
+    spacer.className=
+        `teacher-stage-spacer teacher-stage-spacer-${position}`;
+
+    spacer.setAttribute(
+        'aria-hidden',
+        'true'
+    );
+
+    return spacer;
+}
+
+function createStageContext(context){
+    const container=document.createElement(
+        'section'
+    );
+
+    container.className=
+        'teacher-stage-context';
+
     container.textContent=context;
 
     return container;
@@ -65,8 +95,11 @@ function createModuleCard(
         'section'
     );
 
-    card.className='teacher-module-card';
-    card.dataset.moduleId=modulePlan.id;
+    card.className=
+        'teacher-module-card';
+
+    card.dataset.moduleId=
+        modulePlan.id;
 
     const isExpanded=
         modulePlan.state==='active'||
@@ -98,7 +131,8 @@ function createModuleCard(
         'header'
     );
 
-    header.className='teacher-module-header';
+    header.className=
+        'teacher-module-header';
 
     header.setAttribute(
         'role',
@@ -126,20 +160,25 @@ function createModuleCard(
         'span'
     );
 
-    icon.className='teacher-module-icon';
-    icon.textContent=module?.icon||'';
+    icon.className=
+        'teacher-module-icon';
+
+    icon.textContent=
+        module?.icon||'';
 
     const text=document.createElement(
         'div'
     );
 
-    text.className='teacher-module-text';
+    text.className=
+        'teacher-module-text';
 
     const title=document.createElement(
         'h2'
     );
 
-    title.className='teacher-module-title';
+    title.className=
+        'teacher-module-title';
 
     title.textContent=
         module?.title||
