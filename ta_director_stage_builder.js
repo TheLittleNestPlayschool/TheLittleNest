@@ -1,25 +1,65 @@
 export function buildStagePlan(
     priorityList
 ){
+    const normalizedPriorityList=
+        Array.isArray(priorityList)
+            ?priorityList
+            :[];
 
     return{
-
         context:null,
 
         modules:
-            priorityList.map(
-                (moduleId,index)=>({
+            normalizedPriorityList.map(
+                (
+                    priorityItem,
+                    index
+                )=>{
+                    const modulePlan=
+                        normalizePriorityItem(
+                            priorityItem
+                        );
 
-                    id:moduleId,
+                    return{
+                        ...modulePlan,
 
-                    state:
-                        index===0
-                            ? 'active'
-                            : 'collapsed'
-
-                })
+                        state:
+                            index===0
+                                ?'active'
+                                :'collapsed'
+                    };
+                }
             )
-
     };
+}
 
+function normalizePriorityItem(
+    priorityItem
+){
+    if(
+        typeof priorityItem===
+        'string'
+    ){
+        return{
+            id:priorityItem
+        };
+    }
+
+    if(
+        priorityItem&&
+        typeof priorityItem===
+        'object'&&
+        priorityItem.id
+    ){
+        return{
+            ...priorityItem
+        };
+    }
+
+    return{
+        id:String(
+            priorityItem||
+            ''
+        )
+    };
 }
