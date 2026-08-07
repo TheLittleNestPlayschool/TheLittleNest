@@ -97,16 +97,10 @@ export function getAttendanceDisplayDate(
             timeZone:
                 MANILA_TIME_ZONE,
 
-            weekday:
-                'long',
-
             month:
                 'long',
 
             day:
-                'numeric',
-
-            year:
                 'numeric'
         }
     ).format(
@@ -141,8 +135,8 @@ export function getAttendanceTimeRange(
     }
 
     return(
-        `${formatTime(startTime)}–`+
-        `${formatTime(endTime)}`
+        `${normalizeTime(startTime)}–`+
+        `${normalizeTime(endTime)}`
     );
 }
 
@@ -184,28 +178,15 @@ export function getTodayDate(){
     );
 }
 
-function formatTime(value){
+function normalizeTime(value){
     const[
-        hourValue='0',
-        minuteValue='00'
+        hour='00',
+        minute='00'
     ]=String(value||'')
         .split(':');
 
-    const hour=
-        Number(hourValue);
-
-    const suffix=
-        hour>=12
-            ?'PM'
-            :'AM';
-
-    const displayHour=
-        hour%12||
-        12;
-
     return(
-        `${displayHour}:`+
-        `${minuteValue}`+
-        ` ${suffix}`
+        `${hour.padStart(2,'0')}:`+
+        `${minute.padStart(2,'0')}`
     );
 }
