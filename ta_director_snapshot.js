@@ -1,10 +1,10 @@
-import {
+import{
     getState
-} from './ta_state.js';
+}from'./ta_state.js';
 
-import {
+import{
     buildTeacherCapacity
-} from './ta_teacher_capacity.js';
+}from'./ta_teacher_capacity.js';
 
 export async function buildDirectorSnapshot(){
 
@@ -57,6 +57,9 @@ export async function buildDirectorSnapshot(){
         attendanceRecords:
             state.attendanceRecords,
 
+        sessionAttendanceCompletions:
+            state.sessionAttendanceCompletions||[],
+
         //------------------------------------
         // Franchise
         //------------------------------------
@@ -72,5 +75,4 @@ export async function buildDirectorSnapshot(){
     );
 
     return snapshot;
-
 }
