@@ -47,10 +47,6 @@ import{
     buildAttendanceDraft
 }from'./ta_attendance_session.js';
 
-import{
-    refreshTeacherExperience
-}from'./ta_experience_director.js';
-
 const COMPLETION_DISPLAY_MS=
     2000;
 
@@ -389,14 +385,24 @@ function scheduleExperienceRefresh(){
 
     completionTimer=
         window.setTimeout(
-            async()=>{
+            ()=>{
                 completionTimer=
                     null;
 
                 attendanceSession=
                     createAttendanceSession();
 
-                await refreshTeacherExperience();
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'teacher-task-completed',
+                        {
+                            detail:{
+                                taskType:
+                                    'attendance'
+                            }
+                        }
+                    )
+                );
             },
             COMPLETION_DISPLAY_MS
         );
