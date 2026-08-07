@@ -1,4 +1,3 @@
-
 const API_BASE_URL =
     'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0';
 
@@ -12,6 +11,9 @@ const API_URLS = {
 
     getSessionAttendance:
         `${API_BASE_URL}/ta_get_session_attendance`,
+
+    getSessionAttendanceCompletions:
+        `${API_BASE_URL}/ta_get_session_attendance_completions`,
 
     getLocationStudents:
         `${API_BASE_URL}/ta_get_location_students`,
