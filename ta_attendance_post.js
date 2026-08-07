@@ -1,11 +1,24 @@
-import {API_URLS} from './ta_config.js';
-import {apiRequest} from './ta_api.js';
-import {getState} from './ta_state.js';
+import{
+    API_URLS
+}from'./ta_config.js';
 
-export async function postAttendance(attendance){
+import{
+    apiRequest
+}from'./ta_api.js';
 
+import{
+    getState
+}from'./ta_state.js';
+
+export async function postAttendance(
+    attendance,
+    taskContext=null
+){
     const payload=
-        buildAttendancePayload(attendance);
+        buildAttendancePayload(
+            attendance,
+            taskContext
+        );
 
     console.log(
         'Attendance Payload:',
@@ -19,52 +32,75 @@ export async function postAttendance(attendance){
             body:payload
         }
     );
-
 }
 
-function buildAttendancePayload(attendance){
-
+function buildAttendancePayload(
+    attendance,
+    taskContext
+){
     const state=
         getState();
 
-    return{
+    const attendanceDate=
+        taskContext?.attendanceDate||
+        getTodayDate();
 
+    const sessionId=
+        taskContext?.sessionId||
+        state.relevantSession?.id||
+        null;
+
+    if(!sessionId){
+        throw new Error(
+            'Attendance session was not found.'
+        );
+    }
+
+    if(!attendanceDate){
+        throw new Error(
+            'Attendance date was not found.'
+        );
+    }
+
+    return{
         attendance:
             attendance.map(
                 record=>({
-
                     student_id:
                         record.student_id,
 
                     attendance_date:
-                        getTodayDate(),
+                        attendanceDate,
 
                     scheduled_session_id:
-                        state.relevantSession.id,
+                        sessionId,
 
                     status:
                         record.status,
 
                     attendance_source:
                         record.attendance_source
-
                 })
             )
-
     };
-
 }
 
 function getTodayDate(){
-
     const parts=
         new Intl.DateTimeFormat(
             'en-CA',
             {
-                timeZone:'Asia/Manila',
-                year:'numeric',
-                month:'2-digit',
-                day:'2-digit'
+                timeZone:
+                    'Asia/Manila',
+
+                year:
+                    'numeric',
+
+                month:
+                    '2-digit',
+
+                day:
+                    '2-digit'
             }
         ).formatToParts(
             new Date()
@@ -80,6 +116,9 @@ function getTodayDate(){
             )
         );
 
-    return`${values.year}-${values.month}-${values.day}`;
-
+    return(
+        `${values.year}-`+
+        `${values.month}-`+
+        `${values.day}`
+    );
 }
