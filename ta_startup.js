@@ -127,6 +127,7 @@ export async function startTeacherApp(){
         'current_time',
         getEffectiveTime(
         context.current_time||''
+            )
         );
 
         const teacherState=
