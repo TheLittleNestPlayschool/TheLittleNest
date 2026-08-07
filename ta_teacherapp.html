@@ -1,71 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
+<title>
+    TLNP Teachers
+</title>
+
+<link rel="stylesheet" href="background.css">
+
+<link rel="stylesheet" href="ta_teacherapp.css">
+<link rel="stylesheet" href="ta_stage.css">
+<link rel="stylesheet" href="ta_stage_motion.css">
+<link rel="stylesheet" href="ta_stage_perspective.css">
+<link rel="stylesheet" href="ta_stage_waiting_cards.css">
+<link rel="stylesheet" href="ta_stage_living.css">
+<link rel="stylesheet" href="ta_attendance.css">
+<link rel="stylesheet" href="ta_media.css">
+<link rel="stylesheet" href="ta_observations.css">
+<link rel="stylesheet" href="ta_moments.css">
+<link rel="stylesheet" href="ta_student_reflection.css">
+<link rel="stylesheet" href="ta_family_messages.css">
+<link rel="stylesheet" href="ta_see_you_tomorrow.css">
+<link rel="stylesheet" href="ta_head_office_messages.css">
+<link rel="stylesheet" href="ta_teacher_information.css">
+<link rel="stylesheet" href="ta_enrollment.css">
+<link rel="stylesheet" href="ta_receipt_upload.css">
+<link rel="stylesheet" href="ta_teacher_resources.css">
+
+<main class="teacher-app">
+    <p
+        id="teacherStatus"
+        class="teacher-status"
+        aria-live="polite"
     >
+        Loading teacher session...
+    </p>
 
-    <title>
-        TLNP Teachers
-    </title>
+    <section
+        id="teacherStage"
+        class="teacher-stage"
+        aria-live="polite"
+    ></section>
+</main>
 
-    <link rel="stylesheet" href="background.css">
+<script type="module">
+    import {
+        initializeDemoClock
+    } from './ta_demo_clock.js';
 
-    <link rel="stylesheet" href="ta_teacherapp.css">
-    <link rel="stylesheet" href="ta_stage.css">
-    <link rel="stylesheet" href="ta_stage_motion.css">
-    <link rel="stylesheet" href="ta_stage_perspective.css">
-    <link rel="stylesheet" href="ta_stage_waiting_cards.css">
-    <link rel="stylesheet" href="ta_stage_living.css">
-    <link rel="stylesheet" href="ta_attendance.css">
-    <link rel="stylesheet" href="ta_media.css">
-    <link rel="stylesheet" href="ta_observations.css">
-    <link rel="stylesheet" href="ta_moments.css">
-    <link rel="stylesheet" href="ta_student_reflection.css">
-    <link rel="stylesheet" href="ta_family_messages.css">
-    <link rel="stylesheet" href="ta_see_you_tomorrow.css">
-    <link rel="stylesheet" href="ta_head_office_messages.css">
-    <link rel="stylesheet" href="ta_teacher_information.css">
-    <link rel="stylesheet" href="ta_enrollment.css">
-    <link rel="stylesheet" href="ta_receipt_upload.css">
-    <link rel="stylesheet" href="ta_teacher_resources.css">
+    import {
+        startTeacherApp
+    } from './ta_startup.js';
 
-</head>
+    initializeDemoClock();
 
-<body>
-    <div
-        class="app-background"
-        aria-hidden="true"
-    >
-        <div class="cloud-blob top-left"></div>
-        <div class="cloud-blob top-right"></div>
-        <div class="gradient-overlay"></div>
-    </div>
-
-    <main class="teacher-app">
-        <p
-            id="teacherStatus"
-            class="teacher-status"
-            aria-live="polite"
-        >
-            Loading teacher session...
-        </p>
-
-        <section
-            id="teacherStage"
-            class="teacher-stage"
-            aria-live="polite"
-        ></section>
-    </main>
-
-    <script type="module">
-        import {
-            startTeacherApp
-        } from './ta_startup.js';
-
-        startTeacherApp();
-    </script>
-</body>
-</html>
+    startTeacherApp();
+</script>
