@@ -28,6 +28,8 @@ const teacherAppState = {
 
     attendanceRecords: [],
 
+    sessionAttendanceCompletions: [],
+
     //------------------------------------
     // Franchise Data
     //------------------------------------
@@ -81,6 +83,15 @@ export function setAttendance(attendance) {
 
 }
 
+export function setSessionAttendanceCompletions(records) {
+
+    teacherAppState.sessionAttendanceCompletions =
+        Array.isArray(records)
+            ? records
+            : [];
+
+}
+
 export function setLocationStudents(students) {
 
     teacherAppState.locationStudents =
@@ -107,6 +118,8 @@ export function clearState() {
     teacherAppState.expectedStudents = [];
 
     teacherAppState.attendanceRecords = [];
+
+    teacherAppState.sessionAttendanceCompletions = [];
 
     teacherAppState.locationStudents = [];
 
