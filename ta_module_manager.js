@@ -1,24 +1,37 @@
-import {
+import{
     getModule,
     moduleCanRender
-} from './ta_module_registry.js';
+}from'./ta_module_registry.js';
 
-import {
+import{
     setActiveWorkspace
-} from './ta_ui.js';
+}from'./ta_ui.js';
 
 export function renderModule(
-    moduleId,
+    modulePlan,
     container
 ){
-    const module=
-        getModule(moduleId);
+    const moduleId=
+        modulePlan?.id||
+        null;
 
-    if(!module||!container){
+    const module=
+        getModule(
+            moduleId
+        );
+
+    if(
+        !module||
+        !container
+    ){
         return false;
     }
 
-    if(!moduleCanRender(moduleId)){
+    if(
+        !moduleCanRender(
+            moduleId
+        )
+    ){
         renderModulePlaceholder(
             module,
             container
@@ -31,7 +44,10 @@ export function renderModule(
         container.id
     );
 
-    module.renderer();
+    module.renderer(
+        modulePlan.taskContext||
+        null
+    );
 
     return true;
 }
@@ -41,7 +57,9 @@ function renderModulePlaceholder(
     container
 ){
     const message=
-        document.createElement('p');
+        document.createElement(
+            'p'
+        );
 
     message.className=
         'teacher-module-placeholder';
@@ -50,5 +68,7 @@ function renderModulePlaceholder(
         module.description||
         'This module is not available yet.';
 
-    container.appendChild(message);
+    container.appendChild(
+        message
+    );
 }
