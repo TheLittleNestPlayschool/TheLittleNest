@@ -19,7 +19,8 @@ import{
 }from'./ta_stage_actions.js';
 
 export function renderStage(stagePlan){
-    const stage=getTeacherStage();
+    const stage=
+        getTeacherStage();
 
     if(!stage){
         return;
@@ -76,7 +77,8 @@ function createStageContext(context){
     container.className=
         'teacher-stage-context';
 
-    container.textContent=context;
+    container.textContent=
+        context;
 
     return container;
 }
@@ -220,7 +222,7 @@ function activateModuleCard(moduleCard){
     }
 
     renderModule(
-        modulePlan.id,
+        modulePlan,
         content
     );
 }
