@@ -1,4 +1,3 @@
-
 import{
     API_URLS
 }from'./ta_config.js';
@@ -13,6 +12,7 @@ import{
     setTeacherState,
     setRelevantSession,
     setAttendance,
+    setSessionAttendanceCompletions,
     setLocationStudents,
     getState
 }from'./ta_state.js';
@@ -171,7 +171,7 @@ export async function startTeacherApp(){
         );
 
         //------------------------------------
-        // Session Attendance
+        // Relevant Session Attendance
         //------------------------------------
 
         if(relevantSession?.id){
@@ -226,6 +226,50 @@ export async function startTeacherApp(){
                 'Attendance request skipped: no relevant session.'
             );
         }
+
+        //------------------------------------
+        // Session Attendance Completions
+        //------------------------------------
+
+        teacherStatus.textContent=
+            'Loading attendance history...';
+
+        startupDebug.start(
+            'attendanceCompletions',
+            'Load attendance completions'
+        );
+
+        const completionsUrl=
+            new URL(
+                API_URLS
+                    .getSessionAttendanceCompletions
+            );
+
+        completionsUrl.searchParams.set(
+            'seven_days_ago',
+            getSevenDaysAgo()
+        );
+
+        const sessionAttendanceCompletions=
+            await apiRequest(
+                completionsUrl.toString()
+            );
+
+        setSessionAttendanceCompletions(
+            sessionAttendanceCompletions
+        );
+
+        startupDebug.finish(
+            'attendanceCompletions',
+            getResultDetail(
+                sessionAttendanceCompletions
+            )
+        );
+
+        console.log(
+            'ta_get_session_attendance_completions:',
+            sessionAttendanceCompletions
+        );
 
         //------------------------------------
         // All Location Students
@@ -386,6 +430,25 @@ function getRelevantSession(
 }
 
 function getTodayDate(){
+    return formatManilaDate(
+        new Date()
+    );
+}
+
+function getSevenDaysAgo(){
+    const date=
+        new Date();
+
+    date.setDate(
+        date.getDate()-7
+    );
+
+    return formatManilaDate(
+        date
+    );
+}
+
+function formatManilaDate(date){
     const parts=
         new Intl.DateTimeFormat(
             'en-CA',
@@ -400,7 +463,7 @@ function getTodayDate(){
                     '2-digit'
             }
         ).formatToParts(
-            new Date()
+            date
         );
 
     const values=
