@@ -47,8 +47,18 @@ import{
     buildAttendanceDraft
 }from'./ta_attendance_session.js';
 
+import{
+    refreshTeacherExperience
+}from'./ta_experience_director.js';
+
+const COMPLETION_DISPLAY_MS=
+    2000;
+
 let attendanceSession=
     createAttendanceSession();
+
+let completionTimer=
+    null;
 
 export async function renderAttendanceModule(
     taskContext=null
@@ -68,6 +78,8 @@ export async function renderAttendanceModule(
             attendanceContext
         )
     ){
+        clearCompletionTimer();
+
         attendanceSession=
             createAttendanceSession(
                 attendanceContext
@@ -77,10 +89,10 @@ export async function renderAttendanceModule(
             true;
 
         clearWorkspace();
+
         renderCurrentView();
 
         try{
-
             const attendanceData=
                 await loadAttendanceData(
                     attendanceContext,
@@ -93,7 +105,6 @@ export async function renderAttendanceModule(
             );
 
         }catch(error){
-
             console.error(
                 'Attendance load failed:',
                 error
@@ -105,12 +116,10 @@ export async function renderAttendanceModule(
                     :'Unable to load attendance.';
 
         }finally{
-
             attendanceSession.isLoading=
                 false;
 
             renderCurrentView();
-
         }
 
         return;
@@ -122,7 +131,6 @@ export async function renderAttendanceModule(
 }
 
 function renderCurrentView(){
-
     const workspace=
         getWorkspace();
 
@@ -133,7 +141,6 @@ function renderCurrentView(){
     workspace.innerHTML='';
 
     if(attendanceSession.isLoading){
-
         workspace.textContent=
             'Loading attendance...';
 
@@ -141,7 +148,6 @@ function renderCurrentView(){
     }
 
     if(attendanceSession.loadError){
-
         workspace.textContent=
             attendanceSession.loadError;
 
@@ -149,7 +155,6 @@ function renderCurrentView(){
     }
 
     const context={
-
         state:
             getState(),
 
@@ -167,7 +172,6 @@ function renderCurrentView(){
         renderStudentPicker,
 
         actions:{
-
             begin:
                 beginAttendance,
 
@@ -195,30 +199,22 @@ function renderCurrentView(){
         }
     };
 
-    switch(
-        attendanceSession.view
-    ){
-
+    switch(attendanceSession.view){
         case'review':
-
             renderAttendanceReview(
                 workspace,
                 context
             );
-
             break;
 
         case'complete':
-
             renderAttendanceComplete(
                 workspace,
                 context
             );
-
             break;
 
         default:
-
             renderAttendanceIntro(
                 workspace,
                 context
@@ -229,7 +225,6 @@ function renderCurrentView(){
 }
 
 function showView(view){
-
     attendanceSession.view=
         view;
 
@@ -237,7 +232,6 @@ function showView(view){
 }
 
 function beginAttendance(){
-
     showView(
         'review'
     );
@@ -247,7 +241,6 @@ function handleStatusSelection(
     studentId,
     status
 ){
-
     selectAttendanceStatus(
         attendanceSession,
         studentId,
@@ -258,7 +251,6 @@ function handleStatusSelection(
 }
 
 function openStudentPicker(){
-
     attendanceSession.addingStudent=
         true;
 
@@ -268,7 +260,6 @@ function openStudentPicker(){
 function handleRemoveStudent(
     studentId
 ){
-
     removeAttendanceStudent(
         attendanceSession,
         studentId
@@ -280,7 +271,6 @@ function handleRemoveStudent(
 function renderStudentPicker(
     container
 ){
-
     const expectedStudents=
         attendanceSession
             .attendanceData
@@ -290,25 +280,24 @@ function renderStudentPicker(
     renderInlineStudentPicker(
         container,
         {
-
             locationStudents:
                 getState()
                     .locationStudents,
 
             excludedStudentIds:[
                 ...expectedStudents.map(
-                    s=>s.id
+                    student=>student.id
                 ),
+
                 ...attendanceSession
                     .addedStudents
                     .map(
-                        s=>s.id
+                        student=>student.id
                     )
             ],
 
             onStudentSelected:
                 student=>{
-
                     addAttendanceStudent(
                         attendanceSession,
                         student
@@ -317,22 +306,21 @@ function renderStudentPicker(
                     renderCurrentView();
                 },
 
-            onCancel:()=>{
+            onCancel:
+                ()=>{
+                    attendanceSession
+                        .addingStudent=
+                        false;
 
-                attendanceSession.addingStudent=
-                    false;
-
-                renderCurrentView();
-            }
+                    renderCurrentView();
+                }
         }
     );
 }
 
 async function submitAttendance(){
-
     if(
-        attendanceSession
-            .isSubmitting||
+        attendanceSession.isSubmitting||
         !attendanceIsComplete(
             attendanceSession
         )
@@ -346,7 +334,6 @@ async function submitAttendance(){
     renderCurrentView();
 
     try{
-
         const draft=
             buildAttendanceDraft(
                 attendanceSession
@@ -359,33 +346,76 @@ async function submitAttendance(){
                     .taskContext
             );
 
+        console.log(
+            'ta_post_attendance:',
+            attendanceSession
+                .submissionResult
+        );
+
         attendanceSession.isSaved=
             true;
 
         attendanceSession.view=
             'complete';
 
-    }catch(error){
+        attendanceSession.isSubmitting=
+            false;
 
+        renderCurrentView();
+
+        scheduleExperienceRefresh();
+
+    }catch(error){
         console.error(
+            'Attendance submission failed:',
             error
         );
-
-        alert(
-            error.message
-        );
-
-    }finally{
 
         attendanceSession.isSubmitting=
             false;
 
         renderCurrentView();
+
+        window.alert(
+            error instanceof Error
+                ?error.message
+                :'Unable to save attendance.'
+        );
     }
 }
 
+function scheduleExperienceRefresh(){
+    clearCompletionTimer();
+
+    completionTimer=
+        window.setTimeout(
+            async()=>{
+                completionTimer=
+                    null;
+
+                attendanceSession=
+                    createAttendanceSession();
+
+                await refreshTeacherExperience();
+            },
+            COMPLETION_DISPLAY_MS
+        );
+}
+
+function clearCompletionTimer(){
+    if(completionTimer===null){
+        return;
+    }
+
+    window.clearTimeout(
+        completionTimer
+    );
+
+    completionTimer=
+        null;
+}
+
 function updateAttendanceLiveStatus(){
-
-    // Existing live status logic stays here.
-
+    // Existing live status logic will be restored
+    // after the completion-refresh flow is connected.
 }
