@@ -25,6 +25,10 @@ import{
     startupDebug
 }from'./ta_startup_debug.js';
 
+import{
+    getEffectiveTime
+}from'./ta_demo_clock.js';
+
 const teacherStatus=
     document.getElementById(
         'teacherStatus'
@@ -119,9 +123,10 @@ export async function startTeacherApp(){
             context.today_day_name||''
         );
 
-        stateUrl.searchParams.set(
-            'current_time',
-            context.current_time||''
+       stateUrl.searchParams.set(
+        'current_time',
+        getEffectiveTime(
+        context.current_time||''
         );
 
         const teacherState=
