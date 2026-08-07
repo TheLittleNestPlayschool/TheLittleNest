@@ -1,4 +1,4 @@
-const DEBUG_ENABLED=true;
+const DEBUG_ENABLED=false;
 
 const startupStartedAt=
     performance.now();
