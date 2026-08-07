@@ -1,42 +1,121 @@
+import{
+    getAttendanceDisplayDate,
+    getAttendanceTimeRange
+}from'./ta_attendance_context.js';
 
-export function renderAttendanceComplete(workspace,context){
-    const{students,session,actions}=context;
+export function renderAttendanceComplete(
+    workspace,
+    context
+){
+    const{
+        taskContext
+    }=context;
 
-    const presentCount=students.filter(student=>{
-        return session.selections?.[student.id]==='present';
-    }).length;
+    const container=
+        document.createElement(
+            'section'
+        );
 
-    const absentCount=students.filter(student=>{
-        return session.selections?.[student.id]==='absent';
-    }).length;
+    container.className=
+        'attendance-experience attendance-complete';
 
-    const container=document.createElement('section');
-    container.className='attendance-experience attendance-complete';
+    const mark=
+        document.createElement(
+            'div'
+        );
 
-    const mark=document.createElement('div');
-    mark.className='attendance-complete-mark';
-    mark.textContent='✓';
+    mark.className=
+        'attendance-complete-mark';
 
-    const title=document.createElement('h3');
-    title.className='attendance-experience-title';
-    title.textContent='Attendance Complete';
+    mark.textContent=
+        '✓';
 
-    const summary=document.createElement('p');
-    summary.className='attendance-complete-summary';
+    const title=
+        document.createElement(
+            'h3'
+        );
+
+    title.className=
+        'attendance-experience-title';
+
+    title.textContent=
+        'Attendance recorded.';
+
+    const summary=
+        document.createElement(
+            'p'
+        );
+
+    summary.className=
+        'attendance-complete-summary';
+
     summary.textContent=
-        `${presentCount} here today · `+
-        `${absentCount} not here`;
+        getCompletionSummary(
+            taskContext
+        );
 
-    const correctionButton=document.createElement('button');
-    correctionButton.type='button';
-    correctionButton.className='attendance-secondary-button';
-    correctionButton.textContent='Review or Correct Attendance';
-    correctionButton.addEventListener('click',actions.showReview);
+    const thankYou=
+        document.createElement(
+            'p'
+        );
 
-    container.appendChild(mark);
-    container.appendChild(title);
-    container.appendChild(summary);
-    container.appendChild(correctionButton);
+    thankYou.className=
+        'attendance-experience-description';
 
-    workspace.appendChild(container);
+    thankYou.textContent=
+        'Thank you!';
+
+    container.appendChild(
+        mark
+    );
+
+    container.appendChild(
+        title
+    );
+
+    container.appendChild(
+        summary
+    );
+
+    container.appendChild(
+        thankYou
+    );
+
+    workspace.appendChild(
+        container
+    );
+}
+
+function getCompletionSummary(
+    taskContext
+){
+    const displayDate=
+        getAttendanceDisplayDate(
+            taskContext
+        );
+
+    const timeRange=
+        getAttendanceTimeRange(
+            taskContext
+        );
+
+    if(
+        displayDate&&
+        timeRange
+    ){
+        return(
+            `${displayDate} · `+
+            `${timeRange}`
+        );
+    }
+
+    if(displayDate){
+        return displayDate;
+    }
+
+    if(timeRange){
+        return timeRange;
+    }
+
+    return'Attendance has been saved.';
 }
