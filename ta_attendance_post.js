@@ -1,4 +1,3 @@
-
 import{
     API_URLS
 }from'./ta_config.js';
@@ -53,20 +52,16 @@ function buildAttendancePayload(
 
     if(!sessionId){
         throw new Error(
-            'Attendance session was not found.'
-        );
-    }
-
-    if(!attendanceDate){
-        throw new Error(
-            'Attendance date was not found.'
+            'Attendance session not found.'
         );
     }
 
     return{
+
         attendance:
             attendance.map(
                 record=>({
+
                     student_id:
                         record.student_id,
 
@@ -81,12 +76,15 @@ function buildAttendancePayload(
 
                     attendance_source:
                         record.attendance_source
+
                 })
             )
+
     };
 }
 
 function getTodayDate(){
+
     const parts=
         new Intl.DateTimeFormat(
             'en-CA',
