@@ -1,5 +1,5 @@
 /*==================================================
-  Living Stage Layout
+Living Stage Layout
 ==================================================*/
 
 .teacher-stage{
@@ -17,7 +17,7 @@
 }
 
 /*==================================================
-  Optional Stage Context
+Optional Stage Context
 ==================================================*/
 
 .teacher-stage-context{
@@ -41,7 +41,7 @@
 }
 
 /*==================================================
-  Stage Zones
+Stage Zones
 ==================================================*/
 
 .teacher-stage-layout{
@@ -51,6 +51,7 @@
     min-height:0;
 
     display:grid;
+
     grid-template-rows:
         minmax(0,35fr)
         minmax(0,30fr)
@@ -63,6 +64,39 @@
         translateY(
             var(--stage-lift)
         );
+
+    transition:
+        grid-template-rows
+        .45s
+        cubic-bezier(.22,.8,.3,1);
+}
+
+/*==================================================
+Standard Stage Layout
+==================================================*/
+
+.teacher-stage-layout.is-standard,
+.teacher-stage-layout[
+    data-layout-mode="standard"
+]{
+    grid-template-rows:
+        minmax(0,35fr)
+        minmax(0,30fr)
+        minmax(0,35fr);
+}
+
+/*==================================================
+Focused Stage Layout
+==================================================*/
+
+.teacher-stage-layout.is-focused,
+.teacher-stage-layout[
+    data-layout-mode="focused"
+]{
+    grid-template-rows:
+        minmax(0,12.5fr)
+        minmax(0,75fr)
+        minmax(0,12.5fr);
 }
 
 .teacher-stage-zone{
@@ -89,7 +123,7 @@
 }
 
 /*==================================================
-  Module Card
+Module Card
 ==================================================*/
 
 .teacher-module-card{
@@ -137,7 +171,7 @@
 }
 
 /*==================================================
-  Living Module Card
+Living Module Card
 ==================================================*/
 
 .teacher-stage-living
@@ -192,10 +226,12 @@
 }
 
 /*==================================================
-  Module Header
+Module Header
 ==================================================*/
 
 .teacher-module-header{
+    position:relative;
+
     min-height:62px;
 
     display:flex;
@@ -216,7 +252,102 @@
 }
 
 /*==================================================
-  Module Identity
+Module Header Actions
+==================================================*/
+
+.teacher-module-header-actions{
+    flex:0 0 auto;
+
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+
+    gap:8px;
+}
+
+.teacher-stage-living
+.teacher-module-header-actions{
+    position:absolute;
+
+    top:50%;
+    right:14px;
+
+    transform:
+        translateY(-50%);
+
+    z-index:2;
+}
+
+/*==================================================
+Stage Layout Toggle
+==================================================*/
+
+.teacher-stage-layout-toggle{
+    flex:0 0 auto;
+
+    min-height:30px;
+    padding:6px 10px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.58);
+
+    border-radius:9px;
+
+    background:
+        rgba(255,255,255,.48);
+
+    box-shadow:
+        0 3px 10px
+        rgba(15,23,42,.10);
+
+    color:#334155;
+
+    font:inherit;
+    font-size:.68rem;
+    font-weight:800;
+    line-height:1;
+
+    white-space:nowrap;
+    cursor:pointer;
+
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease,
+        transform .18s ease;
+}
+
+.teacher-stage-layout-toggle:hover{
+    background:
+        rgba(255,255,255,.68);
+
+    border-color:
+        rgba(255,255,255,.78);
+
+    box-shadow:
+        0 5px 14px
+        rgba(15,23,42,.14);
+
+    transform:
+        translateY(-1px);
+}
+
+.teacher-stage-layout-toggle:active{
+    transform:
+        translateY(0);
+}
+
+.teacher-stage-layout-toggle:focus-visible{
+    outline:
+        2px solid
+        #3b82f6;
+
+    outline-offset:2px;
+}
+
+/*==================================================
+Module Identity
 ==================================================*/
 
 .teacher-module-identity{
@@ -274,7 +405,7 @@
 }
 
 /*==================================================
-  Module Status
+Module Status
 ==================================================*/
 
 .teacher-module-status{
@@ -296,7 +427,7 @@
 }
 
 /*==================================================
-  Module Content
+Module Content
 ==================================================*/
 
 .teacher-module-content{
@@ -319,7 +450,7 @@
 }
 
 /*==================================================
-  Module States
+Module States
 ==================================================*/
 
 .teacher-module-card.is-completed{
@@ -345,7 +476,7 @@
 }
 
 /*==================================================
-  Mobile
+Mobile
 ==================================================*/
 
 @media(max-width:600px){
@@ -366,6 +497,26 @@
         gap:7px;
     }
 
+    .teacher-stage-layout.is-standard,
+    .teacher-stage-layout[
+        data-layout-mode="standard"
+    ]{
+        grid-template-rows:
+            minmax(0,35fr)
+            minmax(0,30fr)
+            minmax(0,35fr);
+    }
+
+    .teacher-stage-layout.is-focused,
+    .teacher-stage-layout[
+        data-layout-mode="focused"
+    ]{
+        grid-template-rows:
+            minmax(0,12.5fr)
+            minmax(0,75fr)
+            minmax(0,12.5fr);
+    }
+
     .teacher-stage-zone{
         gap:4px;
     }
@@ -384,6 +535,25 @@
         min-height:58px;
         gap:10px;
         padding:12px 14px;
+    }
+
+    .teacher-stage-living
+    .teacher-module-header{
+        padding-right:104px;
+    }
+
+    .teacher-stage-living
+    .teacher-module-header-actions{
+        right:10px;
+    }
+
+    .teacher-stage-layout-toggle{
+        min-height:28px;
+        padding:5px 8px;
+
+        border-radius:8px;
+
+        font-size:.62rem;
     }
 
     .teacher-module-icon{
