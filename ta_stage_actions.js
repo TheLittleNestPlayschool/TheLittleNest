@@ -1,7 +1,3 @@
-import{
-    getModule
-}from'./ta_module_registry.js';
-
 const STANDARD_LAYOUT_MODE=
     'standard';
 
@@ -16,9 +12,7 @@ export function selectStageModule(
         ...stagePlan,
 
         layoutMode:
-            getModuleLayoutMode(
-                moduleId
-            ),
+            STANDARD_LAYOUT_MODE,
 
         modules:
             getUpdatedModules(
@@ -70,22 +64,6 @@ function getUpdatedModules(
             };
         }
     );
-}
-
-function getModuleLayoutMode(
-    moduleId
-){
-    const module=
-        getModule(
-            moduleId
-        );
-
-    return(
-        module?.defaultStageLayout===
-        FOCUSED_LAYOUT_MODE
-    )
-        ?FOCUSED_LAYOUT_MODE
-        :STANDARD_LAYOUT_MODE;
 }
 
 function getNextModuleState(
