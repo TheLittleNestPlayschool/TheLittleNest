@@ -2,30 +2,38 @@ import{
     getModule
 }from'./ta_module_registry.js';
 
+const FOCUSED_LAYOUT_MODE=
+    'focused';
+
 export function createModuleCard(
     stagePlan,
     modulePlan,
-    onSelect
+    onSelect,
+    onLayoutToggle
 ){
-    const module=getModule(
-        modulePlan.id
-    );
+    const module=
+        getModule(
+            modulePlan.id
+        );
 
-    const card=document.createElement(
-        'section'
-    );
+    const card=
+        document.createElement(
+            'section'
+        );
 
     configureCard(
         card,
         modulePlan
     );
 
-    const header=createModuleHeader({
-        stagePlan,
-        modulePlan,
-        module,
-        onSelect
-    });
+    const header=
+        createModuleHeader({
+            stagePlan,
+            modulePlan,
+            module,
+            onSelect,
+            onLayoutToggle
+        });
 
     card.appendChild(
         header
@@ -38,9 +46,10 @@ export function createModuleCard(
     let content=null;
 
     if(isExpanded){
-        content=createModuleContent(
-            modulePlan.id
-        );
+        content=
+            createModuleContent(
+                modulePlan.id
+            );
 
         card.appendChild(
             content
@@ -75,7 +84,8 @@ function configureCard(
 
     card.dataset.stageDistance=
         String(
-            modulePlan.stageDistance??''
+            modulePlan.stageDistance??
+            ''
         );
 
     const isExpanded=
@@ -121,13 +131,16 @@ function configureCard(
 }
 
 function createModuleHeader({
+    stagePlan,
     modulePlan,
     module,
-    onSelect
+    onSelect,
+    onLayoutToggle
 }){
-    const header=document.createElement(
-        'header'
-    );
+    const header=
+        document.createElement(
+            'header'
+        );
 
     const isExpanded=
         modulePlan.state==='active'||
@@ -151,39 +164,151 @@ function createModuleHeader({
         String(isExpanded)
     );
 
-    const identity=createModuleIdentity(
-        module,
-        modulePlan
-    );
+    const identity=
+        createModuleIdentity(
+            module,
+            modulePlan
+        );
 
     header.appendChild(
         identity
     );
 
-    if(modulePlan.status){
+    const headerActions=
+        createHeaderActions({
+            stagePlan,
+            modulePlan,
+            module,
+            onLayoutToggle
+        });
+
+    if(headerActions){
         header.appendChild(
-            createModuleStatus(
-                modulePlan.status
-            )
+            headerActions
         );
     }
 
     connectHeaderEvents({
         header,
-        moduleId:modulePlan.id,
+        moduleId:
+            modulePlan.id,
         onSelect
     });
 
     return header;
 }
 
+function createHeaderActions({
+    stagePlan,
+    modulePlan,
+    module,
+    onLayoutToggle
+}){
+    const shouldShowLayoutToggle=
+        modulePlan.stagePosition===
+            'living'&&
+        module?.defaultStageLayout===
+            FOCUSED_LAYOUT_MODE&&
+        typeof onLayoutToggle===
+            'function';
+
+    const shouldShowStatus=
+        Boolean(
+            modulePlan.status
+        );
+
+    if(
+        !shouldShowLayoutToggle&&
+        !shouldShowStatus
+    ){
+        return null;
+    }
+
+    const actions=
+        document.createElement(
+            'div'
+        );
+
+    actions.className=
+        'teacher-module-header-actions';
+
+    if(shouldShowStatus){
+        actions.appendChild(
+            createModuleStatus(
+                modulePlan.status
+            )
+        );
+    }
+
+    if(shouldShowLayoutToggle){
+        actions.appendChild(
+            createLayoutToggle({
+                stagePlan,
+                onLayoutToggle
+            })
+        );
+    }
+
+    return actions;
+}
+
+function createLayoutToggle({
+    stagePlan,
+    onLayoutToggle
+}){
+    const isFocused=
+        stagePlan?.layoutMode===
+        FOCUSED_LAYOUT_MODE;
+
+    const button=
+        document.createElement(
+            'button'
+        );
+
+    button.type=
+        'button';
+
+    button.className=
+        'teacher-stage-layout-toggle';
+
+    button.textContent=
+        isFocused
+            ?'Show Tasks'
+            :'Focus on Task';
+
+    button.setAttribute(
+        'aria-pressed',
+        String(isFocused)
+    );
+
+    button.addEventListener(
+        'click',
+        event=>{
+            event.preventDefault();
+            event.stopPropagation();
+
+            onLayoutToggle();
+        }
+    );
+
+    button.addEventListener(
+        'keydown',
+        event=>{
+            event.stopPropagation();
+        }
+    );
+
+    return button;
+}
+
 function createModuleIdentity(
     module,
     modulePlan
 ){
-    const identity=document.createElement(
-        'div'
-    );
+    const identity=
+        document.createElement(
+            'div'
+        );
 
     identity.className=
         'teacher-module-identity';
@@ -204,10 +329,13 @@ function createModuleIdentity(
     return identity;
 }
 
-function createModuleIcon(module){
-    const icon=document.createElement(
-        'span'
-    );
+function createModuleIcon(
+    module
+){
+    const icon=
+        document.createElement(
+            'span'
+        );
 
     icon.className=
         'teacher-module-icon';
@@ -223,16 +351,18 @@ function createModuleText(
     module,
     modulePlan
 ){
-    const text=document.createElement(
-        'div'
-    );
+    const text=
+        document.createElement(
+            'div'
+        );
 
     text.className=
         'teacher-module-text';
 
-    const title=document.createElement(
-        'h2'
-    );
+    const title=
+        document.createElement(
+            'h2'
+        );
 
     title.className=
         'teacher-module-title';
@@ -271,10 +401,13 @@ function createModuleText(
     return text;
 }
 
-function createModuleStatus(statusText){
-    const status=document.createElement(
-        'span'
-    );
+function createModuleStatus(
+    statusText
+){
+    const status=
+        document.createElement(
+            'span'
+        );
 
     status.className=
         'teacher-module-status';
@@ -285,10 +418,13 @@ function createModuleStatus(statusText){
     return status;
 }
 
-function createModuleContent(moduleId){
-    const content=document.createElement(
-        'div'
-    );
+function createModuleContent(
+    moduleId
+){
+    const content=
+        document.createElement(
+            'div'
+        );
 
     content.className=
         'teacher-module-content';
@@ -306,7 +442,15 @@ function connectHeaderEvents({
 }){
     header.addEventListener(
         'click',
-        ()=>{
+        event=>{
+            if(
+                event.target.closest(
+                    '.teacher-stage-layout-toggle'
+                )
+            ){
+                return;
+            }
+
             selectModule(
                 moduleId,
                 onSelect
@@ -317,6 +461,14 @@ function connectHeaderEvents({
     header.addEventListener(
         'keydown',
         event=>{
+            if(
+                event.target.closest(
+                    '.teacher-stage-layout-toggle'
+                )
+            ){
+                return;
+            }
+
             if(
                 event.key!=='Enter'&&
                 event.key!==' '
@@ -339,7 +491,8 @@ function selectModule(
     onSelect
 ){
     if(
-        typeof onSelect!=='function'
+        typeof onSelect!==
+        'function'
     ){
         return;
     }
