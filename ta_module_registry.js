@@ -64,8 +64,7 @@ const moduleRegistry={
         subtitle:'Photos, videos, and artwork.',
         description:'Capture photos, videos, and artwork from today.',
         renderer:renderMediaModule,
-        isAvailable:true,
-        defaultStageLayout:'focused'
+        isAvailable:true
     },
 
     observations:{
@@ -115,8 +114,7 @@ const moduleRegistry={
         subtitle:'Capture and save a receipt.',
         description:'Capture and upload a receipt for a family.',
         renderer:renderReceiptUploadModule,
-        isAvailable:true,
-        defaultStageLayout:'focused'
+        isAvailable:true
     },
 
     enrollment:{
@@ -126,8 +124,7 @@ const moduleRegistry={
         subtitle:'Enroll a new student.',
         description:'Complete and upload a new student enrollment.',
         renderer:renderEnrollmentModule,
-        isAvailable:true,
-        defaultStageLayout:'focused'
+        isAvailable:true
     },
 
     teacher_resources:{
