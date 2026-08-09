@@ -178,7 +178,6 @@ function createModuleHeader({
         createHeaderActions({
             stagePlan,
             modulePlan,
-            module,
             onLayoutToggle
         });
 
@@ -201,14 +200,11 @@ function createModuleHeader({
 function createHeaderActions({
     stagePlan,
     modulePlan,
-    module,
     onLayoutToggle
 }){
     const shouldShowLayoutToggle=
         modulePlan.stagePosition===
             'living'&&
-        module?.defaultStageLayout===
-            FOCUSED_LAYOUT_MODE&&
         typeof onLayoutToggle===
             'function';
 
@@ -273,8 +269,8 @@ function createLayoutToggle({
 
     button.textContent=
         isFocused
-            ?'Show Tasks'
-            :'Focus on Task';
+            ?'Collapse'
+            :'Expand';
 
     button.setAttribute(
         'aria-pressed',
