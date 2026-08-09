@@ -15,10 +15,19 @@ import{
 }from'./ta_stage_card.js';
 
 import{
-    selectStageModule
+    selectStageModule,
+    toggleStageLayout
 }from'./ta_stage_actions.js';
 
-export function renderStage(stagePlan){
+const STANDARD_LAYOUT_MODE=
+    'standard';
+
+const FOCUSED_LAYOUT_MODE=
+    'focused';
+
+export function renderStage(
+    stagePlan
+){
     const stage=
         getTeacherStage();
 
@@ -42,7 +51,9 @@ export function renderStage(stagePlan){
     }
 
     const stageLayout=
-        createStageLayout();
+        createStageLayout(
+            composedStagePlan
+        );
 
     stage.appendChild(
         stageLayout.container
@@ -68,7 +79,9 @@ export function renderStage(stagePlan){
     });
 }
 
-function createStageContext(context){
+function createStageContext(
+    context
+){
     const container=
         document.createElement(
             'section'
@@ -83,14 +96,28 @@ function createStageContext(context){
     return container;
 }
 
-function createStageLayout(){
+function createStageLayout(
+    stagePlan
+){
     const container=
         document.createElement(
             'div'
         );
 
+    const layoutMode=
+        getLayoutMode(
+            stagePlan
+        );
+
     container.className=
         'teacher-stage-layout';
+
+    container.dataset.layoutMode=
+        layoutMode;
+
+    container.classList.add(
+        `is-${layoutMode}`
+    );
 
     const previousZone=
         createStageZone(
@@ -161,18 +188,25 @@ function createStageModuleCards(
         composedStagePlan.modules||
         [];
 
-    return modules.map(modulePlan=>{
-        return createModuleCard(
-            composedStagePlan,
-            modulePlan,
-            moduleId=>{
-                handleModuleSelection(
-                    sourceStagePlan,
-                    moduleId
-                );
-            }
-        );
-    });
+    return modules.map(
+        modulePlan=>{
+            return createModuleCard(
+                composedStagePlan,
+                modulePlan,
+                moduleId=>{
+                    handleModuleSelection(
+                        sourceStagePlan,
+                        moduleId
+                    );
+                },
+                ()=>{
+                    handleLayoutToggle(
+                        sourceStagePlan
+                    );
+                }
+            );
+        }
+    );
 }
 
 function appendModuleCardToZone(
@@ -207,7 +241,9 @@ function appendModuleCardToZone(
     }
 }
 
-function activateModuleCard(moduleCard){
+function activateModuleCard(
+    moduleCard
+){
     const{
         content,
         modulePlan,
@@ -240,4 +276,28 @@ function handleModuleSelection(
     renderStage(
         updatedPlan
     );
+}
+
+function handleLayoutToggle(
+    stagePlan
+){
+    const updatedPlan=
+        toggleStageLayout(
+            stagePlan
+        );
+
+    renderStage(
+        updatedPlan
+    );
+}
+
+function getLayoutMode(
+    stagePlan
+){
+    return(
+        stagePlan?.layoutMode===
+        FOCUSED_LAYOUT_MODE
+    )
+        ?FOCUSED_LAYOUT_MODE
+        :STANDARD_LAYOUT_MODE;
 }
