@@ -203,9 +203,9 @@
 
 .receipt-upload-preview-image{
     display:block;
-    width:100%;
-    max-width:420px;
-    max-height:320px;
+    width:auto;
+    max-width:240px;
+    max-height:180px;
     object-fit:contain;
     border-radius:8px;
     background:rgba(255,255,255,.55);
@@ -590,7 +590,8 @@
     }
 
     .receipt-upload-preview-image{
-        max-height:270px;
+        max-width:220px;
+        max-height:165px;
     }
 
     .receipt-upload-student-picker{
