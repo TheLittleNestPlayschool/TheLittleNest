@@ -299,9 +299,7 @@ function handleFileSelection(file){
         file
     );
 
-    showView(
-        'student'
-    );
+    renderCurrentView();
 }
 
 
@@ -343,7 +341,7 @@ function handleAmountChange(amount){
 function handlePaymentTypeSelection(
     paymentType
 ){
-    setReceiptPaymentType(
+    selectReceiptPaymentType(
         receiptUploadSession,
         paymentType
     );
