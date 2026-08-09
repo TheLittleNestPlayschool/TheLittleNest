@@ -1,12 +1,5 @@
-import{
-    getModule
-}from'./ta_module_registry.js';
-
 const STANDARD_LAYOUT_MODE=
     'standard';
-
-const FOCUSED_LAYOUT_MODE=
-    'focused';
 
 export function buildStagePlan(
     priorityList
@@ -42,9 +35,7 @@ export function buildStagePlan(
         context:null,
 
         layoutMode:
-            getInitialLayoutMode(
-                modules
-            ),
+            STANDARD_LAYOUT_MODE,
 
         modules
     };
@@ -79,33 +70,4 @@ function normalizePriorityItem(
             ''
         )
     };
-}
-
-function getInitialLayoutMode(
-    modules
-){
-    const activeModule=
-        modules.find(modulePlan=>{
-            return(
-                modulePlan.state===
-                'active'
-            );
-        })||
-        null;
-
-    if(!activeModule){
-        return STANDARD_LAYOUT_MODE;
-    }
-
-    const module=
-        getModule(
-            activeModule.id
-        );
-
-    return(
-        module?.defaultStageLayout===
-        FOCUSED_LAYOUT_MODE
-    )
-        ?FOCUSED_LAYOUT_MODE
-        :STANDARD_LAYOUT_MODE;
 }
