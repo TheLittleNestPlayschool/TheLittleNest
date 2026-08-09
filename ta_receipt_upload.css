@@ -27,17 +27,49 @@
     padding-top:10px;
 }
 
+
 /*==================================================
-  Receipt Upload
+  Receipt Upload Experience
 ==================================================*/
 
-.teacher-receipt-upload{
+.receipt-upload-experience{
     width:100%;
     max-width:680px;
     margin:0 auto;
     display:flex;
     flex-direction:column;
     gap:9px;
+}
+
+.receipt-upload-eyebrow{
+    margin:0;
+    color:#92400e;
+    font-size:.66rem;
+    font-weight:800;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+}
+
+.receipt-upload-title{
+    margin:0;
+    color:#0f172a;
+    font-size:1.08rem;
+    font-weight:900;
+    line-height:1.15;
+}
+
+.receipt-upload-description{
+    margin:0;
+    color:#475569;
+    font-size:.75rem;
+    font-weight:600;
+    line-height:1.35;
+}
+
+.teacher-receipt-upload{
+    width:100%;
+    max-width:680px;
+    margin:0 auto;
 }
 
 .teacher-receipt-upload-message{
@@ -52,18 +84,579 @@
     line-height:1.35;
 }
 
+
+/*==================================================
+  Shared Buttons
+==================================================*/
+
+.receipt-upload-primary-button,
+.receipt-upload-secondary-button,
+.receipt-upload-text-button,
+.receipt-upload-student-button{
+    min-height:29px;
+    padding:4px 8px;
+    border-radius:7px;
+    font-family:inherit;
+    font-size:.58rem;
+    font-weight:900;
+    line-height:1;
+    cursor:pointer;
+    transition:
+        background .15s ease,
+        border-color .15s ease,
+        color .15s ease,
+        box-shadow .15s ease,
+        transform .15s ease,
+        filter .15s ease;
+}
+
+.receipt-upload-primary-button:hover,
+.receipt-upload-secondary-button:hover,
+.receipt-upload-student-button:hover{
+    transform:translateY(-1px);
+}
+
+.receipt-upload-primary-button:active,
+.receipt-upload-secondary-button:active,
+.receipt-upload-student-button:active{
+    transform:translateY(0);
+}
+
+.receipt-upload-primary-button:disabled,
+.receipt-upload-secondary-button:disabled,
+.receipt-upload-text-button:disabled,
+.receipt-upload-student-button:disabled{
+    cursor:not-allowed;
+    opacity:.45;
+    transform:none;
+    box-shadow:none;
+}
+
+.receipt-upload-primary-button{
+    width:100%;
+    background:linear-gradient(
+        135deg,
+        #d4a017,
+        #f0c04a
+    );
+    border:1px solid rgba(120,74,0,.26);
+    color:#422006;
+    box-shadow:0 4px 10px rgba(146,64,14,.14);
+}
+
+.receipt-upload-primary-button:hover{
+    box-shadow:0 6px 14px rgba(146,64,14,.18);
+    filter:brightness(1.03);
+}
+
+.receipt-upload-secondary-button{
+    width:100%;
+    background:rgba(255,255,255,.27);
+    border:1px solid rgba(255,255,255,.44);
+    color:#0f172a;
+    box-shadow:0 3px 9px rgba(15,23,42,.06);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+}
+
+.receipt-upload-secondary-button:hover{
+    background:rgba(255,255,255,.38);
+    box-shadow:0 5px 12px rgba(15,23,42,.08);
+}
+
+.receipt-upload-text-button{
+    min-height:29px;
+    padding:4px 8px;
+    background:transparent;
+    border:none;
+    color:#334155;
+    box-shadow:none;
+}
+
+.receipt-upload-text-button:hover{
+    color:#0f172a;
+    text-decoration:underline;
+}
+
+
+/*==================================================
+  Capture Screen
+==================================================*/
+
+.receipt-upload-capture-actions,
+.receipt-upload-preview-actions{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:6px;
+}
+
+.receipt-upload-preview{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    padding:8px;
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.receipt-upload-preview-image{
+    display:block;
+    width:100%;
+    max-width:420px;
+    max-height:320px;
+    object-fit:contain;
+    border-radius:8px;
+    background:rgba(255,255,255,.55);
+    box-shadow:0 4px 12px rgba(15,23,42,.10);
+}
+
+
+/*==================================================
+  Student Picker
+==================================================*/
+
+.receipt-upload-student-picker{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    padding:8px;
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:10px;
+}
+
+.receipt-upload-student-search{
+    width:100%;
+    min-width:0;
+    min-height:32px;
+    padding:6px 8px;
+    border:1px solid rgba(255,255,255,.45);
+    border-radius:8px;
+    background:rgba(255,255,255,.65);
+    color:#334155;
+    font-family:inherit;
+    font-size:.66rem;
+    line-height:1.1;
+}
+
+.receipt-upload-student-search::placeholder{
+    color:#64748b;
+    opacity:.85;
+}
+
+.receipt-upload-student-search:focus{
+    outline:none;
+    border-color:rgba(212,160,23,.62);
+    box-shadow:0 0 0 2px rgba(212,160,23,.12);
+}
+
+.receipt-upload-student-list{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    max-height:185px;
+    overflow-y:auto;
+    scrollbar-width:thin;
+}
+
+.receipt-upload-student-button{
+    width:100%;
+    min-height:42px;
+    display:grid;
+    grid-template-columns:30px minmax(0,1fr);
+    align-items:center;
+    gap:7px;
+    padding:5px 7px;
+    background:rgba(255,255,255,.72);
+    border:1px solid rgba(255,255,255,.48);
+    color:#1e293b;
+    text-align:left;
+}
+
+.receipt-upload-student-button:hover{
+    background:rgba(248,250,252,.96);
+}
+
+.receipt-upload-student-button.is-selected{
+    background:rgba(245,196,74,.23);
+    border-color:rgba(212,160,23,.58);
+    box-shadow:0 0 0 2px rgba(212,160,23,.08);
+}
+
+.receipt-upload-student-avatar{
+    width:28px;
+    height:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.48);
+    border:1px solid rgba(255,255,255,.58);
+    border-radius:50%;
+    color:#7c2d12;
+    font-size:.55rem;
+    font-weight:900;
+}
+
+.receipt-upload-student-details{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+}
+
+.receipt-upload-student-name{
+    overflow:hidden;
+    color:#0f172a;
+    font-size:.72rem;
+    line-height:1.15;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.receipt-upload-parent-name{
+    overflow:hidden;
+    color:#64748b;
+    font-size:.61rem;
+    font-weight:700;
+    line-height:1.2;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.receipt-upload-student-empty{
+    margin:0;
+    padding:9px;
+    color:#64748b;
+    font-size:.66rem;
+    font-weight:600;
+    text-align:center;
+}
+
+
+/*==================================================
+  Payment Details
+==================================================*/
+
+.receipt-upload-selected-student{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    padding:7px 9px;
+    background:rgba(255,255,255,.22);
+    border:1px solid rgba(255,255,255,.38);
+    border-radius:9px;
+}
+
+.receipt-upload-selected-student strong{
+    color:#0f172a;
+    font-size:.72rem;
+}
+
+.receipt-upload-selected-student span{
+    color:#64748b;
+    font-size:.62rem;
+    font-weight:650;
+}
+
+.receipt-upload-form{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.receipt-upload-field{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.receipt-upload-field-label{
+    color:#334155;
+    font-size:.64rem;
+    font-weight:850;
+}
+
+.receipt-upload-input{
+    width:100%;
+    min-height:34px;
+    padding:6px 8px;
+    border:1px solid rgba(255,255,255,.48);
+    border-radius:8px;
+    background:rgba(255,255,255,.68);
+    color:#1e293b;
+    font-family:inherit;
+    font-size:.7rem;
+    font-weight:650;
+    line-height:1.1;
+}
+
+.receipt-upload-input:focus{
+    outline:none;
+    border-color:rgba(212,160,23,.68);
+    box-shadow:0 0 0 2px rgba(212,160,23,.12);
+}
+
+.receipt-upload-input:disabled{
+    cursor:not-allowed;
+    opacity:.55;
+}
+
+.receipt-upload-select{
+    cursor:pointer;
+}
+
+.receipt-upload-amount-wrapper{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr);
+    align-items:center;
+    overflow:hidden;
+    background:rgba(255,255,255,.68);
+    border:1px solid rgba(255,255,255,.48);
+    border-radius:8px;
+}
+
+.receipt-upload-amount-wrapper:focus-within{
+    border-color:rgba(212,160,23,.68);
+    box-shadow:0 0 0 2px rgba(212,160,23,.12);
+}
+
+.receipt-upload-currency{
+    padding-left:9px;
+    color:#475569;
+    font-size:.76rem;
+    font-weight:900;
+}
+
+.receipt-upload-amount-input{
+    border:none;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+}
+
+.receipt-upload-amount-input:focus{
+    border:none;
+    box-shadow:none;
+}
+
+
+/*==================================================
+  Review Screen
+==================================================*/
+
+.receipt-upload-review-preview{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    padding:7px;
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:10px;
+}
+
+.receipt-upload-review-image{
+    display:block;
+    width:100%;
+    max-width:330px;
+    max-height:220px;
+    object-fit:contain;
+    border-radius:7px;
+    background:rgba(255,255,255,.56);
+}
+
+.receipt-upload-review-details{
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    background:rgba(255,255,255,.20);
+    border:1px solid rgba(255,255,255,.36);
+    border-radius:10px;
+}
+
+.receipt-upload-review-row{
+    display:grid;
+    grid-template-columns:100px minmax(0,1fr);
+    align-items:center;
+    gap:8px;
+    min-height:32px;
+    padding:5px 8px;
+    border-bottom:1px solid rgba(255,255,255,.32);
+}
+
+.receipt-upload-review-row:last-child{
+    border-bottom:none;
+}
+
+.receipt-upload-review-label{
+    color:#64748b;
+    font-size:.61rem;
+    font-weight:800;
+}
+
+.receipt-upload-review-value{
+    min-width:0;
+    overflow:hidden;
+    color:#0f172a;
+    font-size:.68rem;
+    font-weight:850;
+    line-height:1.2;
+    text-align:right;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.receipt-upload-review-actions{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:6px;
+}
+
+
+/*==================================================
+  Navigation
+==================================================*/
+
+.receipt-upload-navigation{
+    display:grid;
+    grid-template-columns:1fr;
+    align-items:center;
+    gap:6px;
+}
+
+
+/*==================================================
+  Complete Screen
+==================================================*/
+
+.receipt-upload-complete{
+    align-items:center;
+    padding:7px 0 2px;
+    text-align:center;
+}
+
+.receipt-upload-complete-mark{
+    width:58px;
+    height:58px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(
+        145deg,
+        rgba(16,185,129,.82),
+        rgba(5,150,105,.92)
+    );
+    border:2px solid rgba(255,255,255,.64);
+    border-radius:50%;
+    box-shadow:0 9px 22px rgba(5,150,105,.22);
+    color:#fff;
+    font-size:1.55rem;
+    font-weight:900;
+}
+
+.receipt-upload-complete-summary{
+    margin:0;
+    max-width:460px;
+    color:#475569;
+    font-size:.78rem;
+    font-weight:700;
+    line-height:1.35;
+}
+
+
 /*==================================================
   Mobile
 ==================================================*/
 
 @media(max-width:600px){
 
-    .teacher-receipt-upload{
+    .receipt-upload-experience{
         gap:8px;
     }
 
-    .teacher-receipt-upload-message{
-        padding:8px 10px;
-        font-size:.7rem;
+    .receipt-upload-primary-button,
+    .receipt-upload-secondary-button,
+    .receipt-upload-text-button,
+    .receipt-upload-student-button{
+        min-height:27px;
+        padding:3px 8px;
+        border-radius:7px;
+        font-size:.54rem;
+    }
+
+    .receipt-upload-preview{
+        padding:6px;
+    }
+
+    .receipt-upload-preview-image{
+        max-height:270px;
+    }
+
+    .receipt-upload-student-picker{
+        padding:7px;
+        gap:5px;
+    }
+
+    .receipt-upload-student-search{
+        min-height:30px;
+        padding:5px 8px;
+        font-size:.64rem;
+    }
+
+    .receipt-upload-student-list{
+        max-height:160px;
+    }
+
+    .receipt-upload-student-button{
+        min-height:39px;
+        grid-template-columns:27px minmax(0,1fr);
+        gap:6px;
+        padding:4px 6px;
+    }
+
+    .receipt-upload-student-avatar{
+        width:25px;
+        height:25px;
+        font-size:.51rem;
+    }
+
+    .receipt-upload-student-name{
+        font-size:.68rem;
+    }
+
+    .receipt-upload-parent-name{
+        font-size:.58rem;
+    }
+
+    .receipt-upload-input{
+        min-height:32px;
+        padding:5px 8px;
+        font-size:.66rem;
+    }
+
+    .receipt-upload-review-image{
+        max-height:185px;
+    }
+
+    .receipt-upload-review-row{
+        grid-template-columns:82px minmax(0,1fr);
+        min-height:30px;
+        padding:5px 7px;
+        gap:6px;
+    }
+
+    .receipt-upload-review-label{
+        font-size:.58rem;
+    }
+
+    .receipt-upload-review-value{
+        font-size:.64rem;
+    }
+
+    .receipt-upload-complete-mark{
+        width:52px;
+        height:52px;
+        font-size:1.4rem;
     }
 }
