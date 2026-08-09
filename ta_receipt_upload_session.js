@@ -13,6 +13,18 @@ export function createReceiptUploadSession(
         receiptData:
             null,
 
+        user:
+            null,
+
+        teacher:
+            null,
+
+        students:
+            [],
+
+        paymentTypes:
+            [],
+
         view:
             'capture',
 
@@ -24,9 +36,6 @@ export function createReceiptUploadSession(
 
         selectedStudent:
             null,
-
-        paymentTypes:
-            [],
 
         selectedPaymentType:
             null,
@@ -56,11 +65,11 @@ export function createReceiptUploadSession(
 
 
 export function receiptUploadSessionMatches(
-    receiptSession,
+    receiptState,
     receiptContext
 ){
     return(
-        receiptSession
+        receiptState
             ?.receiptUploadKey===
         receiptContext
             ?.receiptUploadKey
@@ -69,151 +78,172 @@ export function receiptUploadSessionMatches(
 
 
 export function applyReceiptUploadData(
-    receiptSession,
+    receiptState,
     receiptData
 ){
-    receiptSession.receiptData=
+    receiptState.receiptData=
         receiptData;
 
-    receiptSession.paymentTypes=
+    receiptState.user=
+        receiptData?.user||
+        null;
+
+    receiptState.teacher=
+        receiptData?.teacher||
+        null;
+
+    receiptState.students=
+        Array.isArray(
+            receiptData?.students
+        )
+            ?receiptData.students
+            :[];
+
+    receiptState.paymentTypes=
         Array.isArray(
             receiptData?.paymentTypes
         )
             ?receiptData.paymentTypes
             :[];
 
-    return receiptSession;
+    return receiptState;
 }
 
 
 export function getReceiptUploadStudents(
-    receiptSession,
-    state
+    receiptState
 ){
-    const students=
-        state?.locationStudents;
-
-    return Array.isArray(students)
-        ?students
+    return Array.isArray(
+        receiptState?.students
+    )
+        ?receiptState.students
         :[];
 }
 
 
 export function setReceiptFile(
-    receiptSession,
+    receiptState,
     file
 ){
     clearPreviewUrl(
-        receiptSession
+        receiptState
     );
 
-    receiptSession.file=
+    receiptState.file=
         file;
 
-    receiptSession.previewUrl=
+    receiptState.previewUrl=
         URL.createObjectURL(
             file
         );
 
-    receiptSession.isSaved=
+    receiptState.isSaved=
         false;
 }
 
 
 export function clearReceiptFile(
-    receiptSession
+    receiptState
 ){
     clearPreviewUrl(
-        receiptSession
+        receiptState
     );
 
-    receiptSession.file=
+    receiptState.file=
         null;
 
-    receiptSession.previewUrl=
+    receiptState.previewUrl=
         null;
 
-    receiptSession.isSaved=
+    receiptState.isSaved=
         false;
 }
 
 
 export function selectReceiptStudent(
-    receiptSession,
+    receiptState,
     student
 ){
-    receiptSession.selectedStudent=
+    receiptState.selectedStudent=
         student;
 
-    receiptSession.isSaved=
+    receiptState.isSaved=
         false;
 }
 
 
 export function setReceiptAmount(
-    receiptSession,
+    receiptState,
     amount
 ){
-    receiptSession.amount=
+    receiptState.amount=
         amount;
 
-    receiptSession.isSaved=
+    receiptState.isSaved=
         false;
 }
 
 
 export function selectReceiptPaymentType(
-    receiptSession,
+    receiptState,
     paymentType
 ){
-    receiptSession.selectedPaymentType=
+    receiptState.selectedPaymentType=
         paymentType;
 
-    receiptSession.isSaved=
+    receiptState.isSaved=
         false;
 }
 
 
 export function setReceiptDate(
-    receiptSession,
+    receiptState,
     receiptDate
 ){
-    receiptSession.receiptDate=
+    receiptState.receiptDate=
         receiptDate;
 
-    receiptSession.isSaved=
+    receiptState.isSaved=
         false;
 }
 
 
 export function receiptUploadIsComplete(
-    receiptSession
+    receiptState
 ){
+    const amount=
+        Number(
+            receiptState?.amount
+        );
+
     return Boolean(
-        receiptSession.file&&
-        receiptSession.selectedStudent&&
-        receiptSession.selectedPaymentType&&
-        receiptSession.amount&&
-        receiptSession.receiptDate
+        receiptState?.file&&
+        receiptState?.selectedStudent&&
+        receiptState?.selectedPaymentType&&
+        receiptState?.teacher&&
+        Number.isFinite(
+            amount
+        )&&
+        amount>0&&
+        receiptState?.receiptDate
     );
 }
 
 
 export function buildReceiptUploadDraft(
-    receiptSession,
-    state
+    receiptState
 ){
     const student=
-        receiptSession.selectedStudent;
+        receiptState.selectedStudent;
 
     const teacher=
-        state?.teacher||
-        null;
+        receiptState.teacher;
 
     return{
         parent:
-            student?.parent_id||
-            null,
+            getStudentParentId(
+                student
+            ),
 
         student:
             student?.id||
@@ -221,7 +251,7 @@ export function buildReceiptUploadDraft(
 
         paid_by:
             getPaymentTypeName(
-                receiptSession
+                receiptState
                     .selectedPaymentType
             ),
 
@@ -231,7 +261,9 @@ export function buildReceiptUploadDraft(
             ),
 
         amount:
-            receiptSession.amount,
+            Number(
+                receiptState.amount
+            ),
 
         franchise:
             student?.franchise_id||
@@ -239,8 +271,19 @@ export function buildReceiptUploadDraft(
             null,
 
         receipt_date:
-            receiptSession.receiptDate
+            receiptState.receiptDate
     };
+}
+
+
+function getStudentParentId(
+    student
+){
+    return(
+        student?.parent_id||
+        student?.parent||
+        null
+    );
 }
 
 
@@ -266,7 +309,7 @@ function getTeacherName(
     teacher
 ){
     if(!teacher){
-        return '';
+        return'';
     }
 
     return[
@@ -279,16 +322,16 @@ function getTeacherName(
 
 
 function clearPreviewUrl(
-    receiptSession
+    receiptState
 ){
     if(
-        !receiptSession?.previewUrl
+        !receiptState?.previewUrl
     ){
         return;
     }
 
     URL.revokeObjectURL(
-        receiptSession.previewUrl
+        receiptState.previewUrl
     );
 }
 
