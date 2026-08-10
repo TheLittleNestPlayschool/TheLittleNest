@@ -218,9 +218,8 @@ export function receiptUploadIsComplete(
 
     return Boolean(
         receiptState?.file&&
-        receiptState?.selectedStudent&&
-        receiptState?.selectedPaymentType&&
-        receiptState?.teacher&&
+        receiptState?.selectedStudent?.id&&
+        receiptState?.selectedPaymentType?.id&&
         Number.isFinite(
             amount
         )&&
@@ -233,91 +232,27 @@ export function receiptUploadIsComplete(
 export function buildReceiptUploadDraft(
     receiptState
 ){
-    const student=
-        receiptState.selectedStudent;
-
-    const teacher=
-        receiptState.teacher;
-
     return{
-        parent:
-            getStudentParentId(
-                student
-            ),
-
-        student:
-            student?.id||
+        student_id:
+            receiptState
+                .selectedStudent
+                ?.id||
             null,
 
-        paid_by:
-            getPaymentTypeName(
-                receiptState
-                    .selectedPaymentType
-            ),
-
-        received_by:
-            getTeacherName(
-                teacher
-            ),
+        payment_type_id:
+            receiptState
+                .selectedPaymentType
+                ?.id||
+            null,
 
         amount:
             Number(
                 receiptState.amount
             ),
 
-        franchise:
-            student?.franchise_id||
-            teacher?.franchise_id||
-            null,
-
         receipt_date:
             receiptState.receiptDate
     };
-}
-
-
-function getStudentParentId(
-    student
-){
-    return(
-        student?.parent_id||
-        student?.parent||
-        null
-    );
-}
-
-
-function getPaymentTypeName(
-    paymentType
-){
-    if(
-        typeof paymentType===
-        'string'
-    ){
-        return paymentType;
-    }
-
-    return(
-        paymentType?.payment_type||
-        paymentType?.name||
-        ''
-    );
-}
-
-
-function getTeacherName(
-    teacher
-){
-    if(!teacher){
-        return'';
-    }
-
-    return[
-        teacher.first_name,
-        teacher.last_name
-    ]
-        .filter(Boolean)
-        .join(' ');
 }
 
 
