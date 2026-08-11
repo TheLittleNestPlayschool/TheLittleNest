@@ -1,0 +1,336 @@
+/*==================================================
+  Media Capture
+==================================================*/
+
+
+/*==================================================
+  File Input
+==================================================*/
+
+.teacher-media-input{
+    display:none;
+}
+
+
+/*==================================================
+  Upload Button
+==================================================*/
+
+.teacher-media-upload-button{
+    width:100%;
+    min-height:48px;
+
+    padding:9px 12px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .50
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .58
+        );
+
+    border-radius:10px;
+
+    color:#0f172a;
+
+    font:inherit;
+
+    font-size:.72rem;
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+
+/*==================================================
+  Empty State
+==================================================*/
+
+.teacher-media-empty{
+    min-height:103px;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:5px;
+
+    padding:10px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .20
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .36
+        );
+
+    border-radius:11px;
+
+    color:#64748b;
+
+    text-align:center;
+}
+
+
+.teacher-media-empty-icon{
+    font-size:1.4rem;
+}
+
+
+.teacher-media-empty p{
+    margin:0;
+
+    font-size:.65rem;
+    font-weight:650;
+}
+
+
+/*==================================================
+  Media Grid
+==================================================*/
+
+.teacher-media-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0,1fr)
+        );
+
+    gap:6px;
+}
+
+
+/*==================================================
+  Media Card
+==================================================*/
+
+.teacher-media-card{
+    position:relative;
+
+    min-width:0;
+
+    padding:3px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .34
+        );
+
+    border:
+        2px solid
+        transparent;
+
+    border-radius:9px;
+
+    cursor:pointer;
+}
+
+
+.teacher-media-card.is-active{
+    border-color:
+        rgba(
+            13,
+            148,
+            136,
+            .65
+        );
+
+    background:
+        rgba(
+            45,
+            212,
+            191,
+            .12
+        );
+}
+
+
+.teacher-media-card-preview{
+    position:relative;
+
+    width:100%;
+
+    overflow:hidden;
+
+    aspect-ratio:1;
+
+    background:
+        rgba(
+            15,
+            23,
+            42,
+            .08
+        );
+
+    border-radius:6px;
+}
+
+
+.teacher-media-card-preview img,
+.teacher-media-card-preview video{
+    width:100%;
+    height:100%;
+
+    display:block;
+
+    object-fit:cover;
+}
+
+
+/*==================================================
+  Video Marker
+==================================================*/
+
+.teacher-media-video-mark{
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    width:26px;
+    height:26px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        );
+
+    background:
+        rgba(
+            15,
+            23,
+            42,
+            .68
+        );
+
+    border-radius:999px;
+
+    color:#fff;
+
+    font-size:.65rem;
+}
+
+
+/*==================================================
+  Info Badge
+==================================================*/
+
+.teacher-media-info-badge{
+    position:absolute;
+
+    top:5px;
+    right:5px;
+
+    width:20px;
+    height:20px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    background:
+        rgba(
+            15,
+            118,
+            110,
+            .90
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .75
+        );
+
+    border-radius:999px;
+
+    box-shadow:
+        0 2px 6px
+        rgba(
+            15,
+            23,
+            42,
+            .20
+        );
+
+    color:#fff;
+
+    font-family:Georgia,serif;
+
+    font-size:.68rem;
+    font-style:italic;
+    font-weight:900;
+    line-height:1;
+}
+
+
+/*==================================================
+  Mobile
+==================================================*/
+
+@media(max-width:600px){
+
+    .teacher-media-grid{
+        grid-template-columns:
+            repeat(
+                4,
+                minmax(0,1fr)
+            );
+
+        gap:4px;
+    }
+
+
+    .teacher-media-card{
+        padding:2px;
+    }
+}
+
+
+@media(max-width:390px){
+
+    .teacher-media-grid{
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0,1fr)
+            );
+    }
+}
