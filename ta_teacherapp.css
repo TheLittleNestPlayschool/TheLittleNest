@@ -67,18 +67,19 @@ backdrop-filter:blur(5px);
 .teacher-shell-header{
 flex:0 0 auto;
 min-height:64px;
-padding:7px 16px;
+
+padding:
+6px
+12px;
 
 display:grid;
 
 grid-template-columns:
-minmax(0,1fr)
-auto
-minmax(0,1fr);
+1fr
+1fr
+1fr;
 
 align-items:center;
-
-column-gap:14px;
 
 border-bottom:
 1px solid
@@ -89,7 +90,7 @@ rgba(255,255,255,.10);
 }
 
 /*==================================================*
-*Header - Welcome
+*Header - Welcome Left
 *==================================================*/
 
 .teacher-shell-welcome{
@@ -107,13 +108,13 @@ text-align:left;
 .teacher-shell-welcome-title{
 color:#0f172a;
 
-font-size:.82rem;
+font-size:.72rem;
 font-weight:900;
-line-height:1.15;
+line-height:1.12;
 }
 
 /*==================================================*
-*Header - Logo
+*Header - Logo Center
 *==================================================*/
 
 .teacher-shell-brand{
@@ -130,9 +131,9 @@ justify-content:center;
 display:block;
 
 width:auto;
-height:48px;
+height:50px;
 
-max-width:330px;
+max-width:100%;
 
 object-fit:contain;
 object-position:center;
@@ -140,11 +141,13 @@ object-position:center;
 background:transparent;
 
 border:none;
+border-radius:0;
+
 box-shadow:none;
 }
 
 /*==================================================*
-*Header - Saying
+*Header - Saying Right
 *==================================================*/
 
 .teacher-shell-saying{
@@ -154,13 +157,15 @@ min-width:0;
 
 margin:0;
 
-justify-self:end;
+display:flex;
+align-items:center;
+justify-content:flex-end;
 
 color:#0f172a;
 
-font-size:.82rem;
+font-size:.72rem;
 font-weight:900;
-line-height:1.15;
+line-height:1.12;
 
 text-align:right;
 }
@@ -293,7 +298,9 @@ background:linear-gradient(
 #f0c04a
 );
 
-border:1px solid rgba(120,74,0,.26);
+border:
+1px solid
+rgba(120,74,0,.26);
 
 color:#422006;
 
@@ -311,7 +318,8 @@ filter:brightness(1.03);
 }
 
 .teacher-button-secondary{
-background:rgba(255,255,255,.27);
+background:
+rgba(255,255,255,.27);
 
 border:
 1px solid
@@ -328,7 +336,8 @@ backdrop-filter:blur(10px);
 }
 
 .teacher-button-secondary:hover{
-background:rgba(255,255,255,.38);
+background:
+rgba(255,255,255,.38);
 
 box-shadow:
 0 5px 12px
@@ -336,7 +345,8 @@ rgba(15,23,42,.08);
 }
 
 .teacher-button-success{
-background:rgba(16,185,129,.20);
+background:
+rgba(16,185,129,.20);
 
 border:
 1px solid
@@ -346,7 +356,8 @@ color:#065f46;
 }
 
 .teacher-button-warning{
-background:rgba(245,158,11,.21);
+background:
+rgba(245,158,11,.21);
 
 border:
 1px solid
@@ -356,7 +367,8 @@ color:#92400e;
 }
 
 .teacher-button-danger{
-background:rgba(254,226,226,.36);
+background:
+rgba(254,226,226,.36);
 
 border:
 1px solid
@@ -366,7 +378,8 @@ color:#b91c1c;
 }
 
 .teacher-button-danger:hover{
-background:rgba(254,202,202,.52);
+background:
+rgba(254,202,202,.52);
 
 border-color:
 rgba(185,28,28,.68);
@@ -375,7 +388,8 @@ color:#991b1b;
 }
 
 .teacher-button-neutral{
-background:rgba(226,232,240,.72);
+background:
+rgba(226,232,240,.72);
 
 border:
 1px solid
@@ -385,7 +399,8 @@ color:#334155;
 }
 
 .teacher-button-neutral:hover{
-background:rgba(203,213,225,.82);
+background:
+rgba(203,213,225,.82);
 }
 
 .teacher-input{
@@ -472,18 +487,20 @@ white-space:nowrap;
 
 .teacher-shell-header{
 min-height:58px;
-padding:6px 12px;
-column-gap:10px;
+
+padding:
+5px
+10px;
 }
 
 .teacher-shell-logo{
-height:43px;
-max-width:270px;
+height:46px;
+max-width:100%;
 }
 
 .teacher-shell-welcome-title,
 .teacher-shell-saying{
-font-size:.74rem;
+font-size:.68rem;
 }
 
 .teacher-stage{
@@ -504,24 +521,22 @@ padding:
 @media(max-width:600px){
 
 .teacher-shell-header{
-min-height:50px;
+min-height:54px;
 
 padding:
 4px
 8px;
-
-column-gap:7px;
 }
 
 .teacher-shell-logo{
-height:38px;
-max-width:190px;
+height:44px;
+max-width:100%;
 }
 
 .teacher-shell-welcome-title,
 .teacher-shell-saying{
-font-size:.64rem;
-line-height:1.12;
+font-size:.62rem;
+line-height:1.08;
 }
 
 .teacher-stage{
@@ -565,23 +580,20 @@ font-size:.68rem;
 @media(max-width:400px){
 
 .teacher-shell-header{
-min-height:48px;
+min-height:50px;
 
 padding:
 4px
 6px;
-
-column-gap:5px;
 }
 
 .teacher-shell-logo{
-height:36px;
-max-width:160px;
+height:40px;
 }
 
 .teacher-shell-welcome-title,
 .teacher-shell-saying{
-font-size:.58rem;
+font-size:.56rem;
 }
 
 }
