@@ -140,16 +140,17 @@ display:grid;
 
 grid-template-columns:
 auto
-minmax(0,1fr);
+minmax(0,1fr)
+auto;
 
 align-items:center;
 justify-content:center;
 
-column-gap:5px;
+column-gap:2px;
 }
 
 /*==================================================*
-*Large Opening Quote
+*Opening / Closing Quote Marks
 *==================================================*/
 
 .teacher-quote-mark{
@@ -162,11 +163,17 @@ Georgia,
 "Times New Roman",
 serif;
 
-font-size:2.25rem;
+font-size:2.05rem;
 font-weight:900;
-line-height:.7;
+line-height:.72;
+}
 
-transform:translateY(2px);
+.teacher-quote-mark-open{
+justify-self:end;
+}
+
+.teacher-quote-mark-close{
+justify-self:start;
 }
 
 /*==================================================*
@@ -260,7 +267,7 @@ font-size:.78rem;
 }
 
 .teacher-quote-mark{
-font-size:2rem;
+font-size:1.9rem;
 }
 
 .teacher-quote-copy{
@@ -301,12 +308,12 @@ font-size:.68rem;
 }
 
 .teacher-quote-layout{
-column-gap:3px;
+column-gap:1px;
 }
 
 .teacher-quote-mark{
-font-size:1.8rem;
-line-height:.7;
+font-size:1.72rem;
+line-height:.72;
 }
 
 .teacher-quote-copy{
@@ -353,7 +360,7 @@ font-size:.62rem;
 }
 
 .teacher-quote-mark{
-font-size:1.6rem;
+font-size:1.55rem;
 }
 
 .teacher-quote-copy{
