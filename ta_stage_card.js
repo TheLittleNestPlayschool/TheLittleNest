@@ -1,499 +1,702 @@
-import{
-    getModule
-}from'./ta_module_registry.js';
+/*==================================================
+ Living Stage Layout
+==================================================*/
 
-const FOCUSED_LAYOUT_MODE=
-    'focused';
+.teacher-stage{
+    width:100%;
+    height:100%;
+    max-width:900px;
+    margin:0 auto;
+    padding:12px;
 
-export function createModuleCard(
-    stagePlan,
-    modulePlan,
-    onSelect,
-    onLayoutToggle
-){
-    const module=
-        getModule(
-            modulePlan.id
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+    overflow:hidden;
+}
+
+
+/*==================================================
+ Optional Stage Context
+==================================================*/
+
+.teacher-stage-context{
+    flex:0 0 auto;
+    padding:14px 18px;
+
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+
+    border:1px solid rgba(255,255,255,.05);
+    border-radius:16px;
+
+    box-shadow:
+        0 8px 32px
+        rgba(0,0,0,.10);
+
+    color:#334155;
+    font-size:.95rem;
+    font-weight:600;
+}
+
+
+/*==================================================
+ Stage Zones
+==================================================*/
+
+.teacher-stage-layout{
+    --stage-lift:-42px;
+
+    flex:1;
+    min-height:0;
+
+    display:grid;
+
+    grid-template-rows:
+        minmax(0,35fr)
+        minmax(0,30fr)
+        minmax(0,35fr);
+
+    gap:10px;
+    overflow:hidden;
+
+    transform:
+        translateY(
+            var(--stage-lift)
         );
 
-    const card=
-        document.createElement(
-            'section'
-        );
+    transition:
+        grid-template-rows
+        .45s
+        cubic-bezier(.22,.8,.3,1);
+}
 
-    configureCard(
-        card,
-        modulePlan
-    );
 
-    const header=
-        createModuleHeader({
-            stagePlan,
-            modulePlan,
-            module,
-            onSelect,
-            onLayoutToggle
-        });
+/*==================================================
+ Standard Stage Layout
+==================================================*/
 
-    card.appendChild(
-        header
-    );
+.teacher-stage-layout.is-standard,
+.teacher-stage-layout[
+    data-layout-mode="standard"
+]{
+    grid-template-rows:
+        minmax(0,35fr)
+        minmax(0,30fr)
+        minmax(0,35fr);
+}
 
-    const isExpanded=
-        modulePlan.state==='active'||
-        modulePlan.state==='expanded';
 
-    let content=null;
+/*==================================================
+ Focused Stage Layout
+==================================================*/
 
-    if(isExpanded){
-        content=
-            createModuleContent(
-                modulePlan.id
-            );
+.teacher-stage-layout.is-focused,
+.teacher-stage-layout[
+    data-layout-mode="focused"
+]{
+    grid-template-rows:
+        minmax(0,12.5fr)
+        minmax(0,75fr)
+        minmax(0,12.5fr);
+}
 
-        card.appendChild(
-            content
-        );
+
+.teacher-stage-zone{
+    min-height:0;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    gap:6px;
+    overflow:hidden;
+}
+
+
+.teacher-stage-previous{
+    justify-content:flex-end;
+}
+
+
+.teacher-stage-living{
+    justify-content:center;
+}
+
+
+.teacher-stage-next{
+    justify-content:flex-start;
+}
+
+
+/*==================================================
+ Module Card
+==================================================*/
+
+.teacher-module-card{
+    flex:0 0 auto;
+    width:100%;
+
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+
+    border:1px solid rgba(255,255,255,.05);
+    border-radius:16px;
+
+    box-shadow:
+        0 8px 32px
+        rgba(0,0,0,.10);
+
+    overflow:hidden;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.teacher-module-card.is-expanded{
+    background:rgba(255,255,255,.18);
+
+    box-shadow:
+        0 12px 36px
+        rgba(0,0,0,.16);
+}
+
+
+.teacher-module-card.is-collapsed{
+    cursor:pointer;
+}
+
+
+.teacher-module-card.is-collapsed:hover{
+    transform:translateY(-1px);
+    background:rgba(255,255,255,.12);
+}
+
+
+.teacher-module-card.is-collapsed:active{
+    transform:translateY(0);
+}
+
+
+/*==================================================
+ Living Module Card
+==================================================*/
+
+.teacher-stage-living
+.teacher-module-card{
+    flex:1 1 auto;
+    width:100%;
+    min-height:0;
+    align-self:stretch;
+
+    display:flex;
+    flex-direction:column;
+}
+
+
+.teacher-stage-living
+.teacher-module-header{
+    flex:0 0 auto;
+}
+
+
+.teacher-stage-living
+.teacher-module-content{
+    flex:1;
+    min-height:0;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+
+    scrollbar-width:thin;
+    scrollbar-color:
+        rgba(71,85,105,.32)
+        transparent;
+}
+
+
+.teacher-stage-living
+.teacher-module-content::-webkit-scrollbar{
+    width:5px;
+}
+
+
+.teacher-stage-living
+.teacher-module-content::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+
+.teacher-stage-living
+.teacher-module-content::-webkit-scrollbar-thumb{
+    background:
+        rgba(71,85,105,.28);
+
+    border-radius:999px;
+}
+
+
+/*==================================================
+ Module Header
+==================================================*/
+
+.teacher-module-header{
+    position:relative;
+
+    min-height:62px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:12px;
+    padding:14px 18px;
+
+    outline:none;
+}
+
+
+.teacher-module-card.is-collapsed
+.teacher-module-header:focus-visible{
+    box-shadow:
+        inset 0 0 0 2px
+        #3b82f6;
+}
+
+
+/*==================================================
+ Module Header Actions
+==================================================*/
+
+.teacher-module-header-actions{
+    flex:0 0 auto;
+
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+
+    gap:8px;
+}
+
+
+.teacher-stage-living
+.teacher-module-header-actions{
+    position:absolute;
+
+    top:50%;
+    right:14px;
+
+    transform:
+        translateY(-50%);
+
+    z-index:2;
+}
+
+
+/*==================================================
+ Stage Layout Toggle
+==================================================*/
+
+.teacher-stage-layout-toggle{
+    flex:0 0 auto;
+
+    min-height:30px;
+    padding:6px 10px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.58);
+
+    border-radius:9px;
+
+    background:
+        rgba(255,255,255,.48);
+
+    box-shadow:
+        0 3px 10px
+        rgba(15,23,42,.10);
+
+    color:#334155;
+
+    font:inherit;
+    font-size:.68rem;
+    font-weight:800;
+    line-height:1;
+
+    white-space:nowrap;
+    cursor:pointer;
+
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease,
+        transform .18s ease;
+}
+
+
+.teacher-stage-layout-toggle:hover{
+    background:
+        rgba(255,255,255,.68);
+
+    border-color:
+        rgba(255,255,255,.78);
+
+    box-shadow:
+        0 5px 14px
+        rgba(15,23,42,.14);
+
+    transform:
+        translateY(-1px);
+}
+
+
+.teacher-stage-layout-toggle:active{
+    transform:
+        translateY(0);
+}
+
+
+.teacher-stage-layout-toggle:focus-visible{
+    outline:
+        2px solid
+        #3b82f6;
+
+    outline-offset:2px;
+}
+
+
+/*==================================================
+ Module Identity
+==================================================*/
+
+.teacher-module-identity{
+    min-width:0;
+
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+}
+
+
+.teacher-module-icon{
+    flex:0 0 auto;
+
+    width:32px;
+    height:32px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:0;
+
+    background:transparent;
+    border:none;
+    border-radius:0;
+    box-shadow:none;
+
+    font-size:1.4rem;
+    line-height:1;
+}
+
+
+.teacher-module-text{
+    min-width:0;
+}
+
+
+.teacher-module-title{
+    margin:0;
+
+    color:#0f172a;
+
+    font-size:1.05rem;
+    font-weight:800;
+    line-height:1.2;
+}
+
+
+.teacher-module-subtitle{
+    margin:4px 0 0;
+
+    color:#475569;
+
+    font-size:.83rem;
+    font-weight:600;
+    line-height:1.35;
+}
+
+
+/*==================================================
+ Module Status
+==================================================*/
+
+.teacher-module-status{
+    flex:0 0 auto;
+
+    padding:5px 10px;
+
+    background:rgba(255,255,255,.60);
+
+    border:1px solid rgba(255,255,255,.60);
+    border-radius:8px;
+
+    color:#0f172a;
+
+    font-size:.72rem;
+    font-weight:800;
+
+    white-space:nowrap;
+}
+
+
+/*==================================================
+ Module Content
+==================================================*/
+
+.teacher-module-content{
+    margin:0 18px;
+    padding:18px 0 20px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.40);
+}
+
+
+.teacher-module-placeholder{
+    margin:0;
+    padding:8px 0;
+
+    color:#475569;
+
+    font-size:.9rem;
+    line-height:1.5;
+}
+
+
+/*==================================================
+ Module States
+==================================================*/
+
+.teacher-module-card.is-completed{
+    border-color:
+        rgba(45,212,191,.65);
+}
+
+
+.teacher-module-card.is-completed
+.teacher-module-header{
+    background:
+        rgba(45,212,191,.10);
+}
+
+
+.teacher-module-card.needs-attention{
+    border-color:
+        rgba(234,179,8,.65);
+}
+
+
+.teacher-module-card.needs-attention
+.teacher-module-header{
+    background:
+        rgba(254,240,138,.12);
+}
+
+
+/*==================================================
+ Mobile
+==================================================*/
+
+@media(max-width:600px){
+
+    .teacher-stage{
+        padding:8px;
+        gap:8px;
     }
 
-    return{
-        card,
-        content,
-        modulePlan,
-        isExpanded
-    };
-}
 
-function configureCard(
-    card,
-    modulePlan
-){
-    card.className=
-        'teacher-module-card';
+    .teacher-stage-layout{
+        --stage-lift:-38px;
 
-    card.dataset.moduleId=
-        modulePlan.id;
+        grid-template-rows:
+            minmax(0,35fr)
+            minmax(0,30fr)
+            minmax(0,35fr);
 
-    card.dataset.stagePosition=
-        modulePlan.stagePosition||
-        '';
-
-    card.dataset.stageSide=
-        modulePlan.stageSide||
-        '';
-
-    card.dataset.stageDistance=
-        String(
-            modulePlan.stageDistance??
-            ''
-        );
-
-    const isExpanded=
-        modulePlan.state==='active'||
-        modulePlan.state==='expanded';
-
-    card.classList.toggle(
-        'is-expanded',
-        isExpanded
-    );
-
-    card.classList.toggle(
-        'is-collapsed',
-        !isExpanded
-    );
-
-    if(
-        modulePlan.stagePosition===
-        'living'
-    ){
-        card.classList.add(
-            'is-living'
-        );
+        gap:7px;
     }
 
-    if(
-        modulePlan.state===
-        'completed'
-    ){
-        card.classList.add(
-            'is-completed'
-        );
+
+    .teacher-stage-layout.is-standard,
+    .teacher-stage-layout[
+        data-layout-mode="standard"
+    ]{
+        grid-template-rows:
+            minmax(0,35fr)
+            minmax(0,30fr)
+            minmax(0,35fr);
     }
 
-    if(
-        modulePlan.state===
-        'needs_attention'
-    ){
-        card.classList.add(
-            'needs-attention'
-        );
-    }
-}
 
-function createModuleHeader({
-    stagePlan,
-    modulePlan,
-    module,
-    onSelect,
-    onLayoutToggle
-}){
-    const header=
-        document.createElement(
-            'header'
-        );
-
-    const isExpanded=
-        modulePlan.state==='active'||
-        modulePlan.state==='expanded';
-
-    header.className=
-        'teacher-module-header';
-
-    header.setAttribute(
-        'role',
-        'button'
-    );
-
-    header.setAttribute(
-        'tabindex',
-        '0'
-    );
-
-    header.setAttribute(
-        'aria-expanded',
-        String(isExpanded)
-    );
-
-    const identity=
-        createModuleIdentity(
-            module,
-            modulePlan
-        );
-
-    header.appendChild(
-        identity
-    );
-
-    const headerActions=
-        createHeaderActions({
-            stagePlan,
-            modulePlan,
-            onLayoutToggle
-        });
-
-    if(headerActions){
-        header.appendChild(
-            headerActions
-        );
+    .teacher-stage-layout.is-focused,
+    .teacher-stage-layout[
+        data-layout-mode="focused"
+    ]{
+        grid-template-rows:
+            minmax(0,12.5fr)
+            minmax(0,75fr)
+            minmax(0,12.5fr);
     }
 
-    connectHeaderEvents({
-        header,
-        moduleId:
-            modulePlan.id,
-        onSelect
-    });
 
-    return header;
-}
-
-function createHeaderActions({
-    stagePlan,
-    modulePlan,
-    onLayoutToggle
-}){
-    const shouldShowLayoutToggle=
-        modulePlan.stagePosition===
-            'living'&&
-        typeof onLayoutToggle===
-            'function';
-
-    const shouldShowStatus=
-        Boolean(
-            modulePlan.status
-        );
-
-    if(
-        !shouldShowLayoutToggle&&
-        !shouldShowStatus
-    ){
-        return null;
+    .teacher-stage-zone{
+        gap:4px;
     }
 
-    const actions=
-        document.createElement(
-            'div'
-        );
 
-    actions.className=
-        'teacher-module-header-actions';
-
-    if(shouldShowStatus){
-        actions.appendChild(
-            createModuleStatus(
-                modulePlan.status
-            )
-        );
+    .teacher-stage-context{
+        padding:12px 14px;
+        border-radius:16px;
+        font-size:.88rem;
     }
 
-    if(shouldShowLayoutToggle){
-        actions.appendChild(
-            createLayoutToggle({
-                stagePlan,
-                onLayoutToggle
-            })
-        );
+
+    .teacher-module-card{
+        border-radius:16px;
     }
 
-    return actions;
-}
 
-function createLayoutToggle({
-    stagePlan,
-    onLayoutToggle
-}){
-    const isFocused=
-        stagePlan?.layoutMode===
-        FOCUSED_LAYOUT_MODE;
+    .teacher-module-header{
+        min-height:58px;
 
-    const button=
-        document.createElement(
-            'button'
-        );
+        gap:10px;
 
-    button.type=
-        'button';
-
-    button.className=
-        'teacher-stage-layout-toggle';
-
-    button.textContent=
-        isFocused
-            ?'Collapse'
-            :'Expand';
-
-    button.setAttribute(
-        'aria-pressed',
-        String(isFocused)
-    );
-
-    button.addEventListener(
-        'click',
-        event=>{
-            event.preventDefault();
-            event.stopPropagation();
-
-            onLayoutToggle();
-        }
-    );
-
-    button.addEventListener(
-        'keydown',
-        event=>{
-            event.stopPropagation();
-        }
-    );
-
-    return button;
-}
-
-function createModuleIdentity(
-    module,
-    modulePlan
-){
-    const identity=
-        document.createElement(
-            'div'
-        );
-
-    identity.className=
-        'teacher-module-identity';
-
-    identity.appendChild(
-        createModuleIcon(
-            module
-        )
-    );
-
-    identity.appendChild(
-        createModuleText(
-            module,
-            modulePlan
-        )
-    );
-
-    return identity;
-}
-
-function createModuleIcon(
-    module
-){
-    const icon=
-        document.createElement(
-            'span'
-        );
-
-    icon.className=
-        'teacher-module-icon';
-
-    icon.textContent=
-        module?.icon||
-        '';
-
-    return icon;
-}
-
-function createModuleText(
-    module,
-    modulePlan
-){
-    const text=
-        document.createElement(
-            'div'
-        );
-
-    text.className=
-        'teacher-module-text';
-
-    const title=
-        document.createElement(
-            'h2'
-        );
-
-    title.className=
-        'teacher-module-title';
-
-    title.textContent=
-        module?.title||
-        modulePlan.id;
-
-    text.appendChild(
-        title
-    );
-
-    const liveStatus=
-        modulePlan.liveStatus||
-        module?.subtitle||
-        module?.description||
-        '';
-
-    if(liveStatus){
-        const subtitle=
-            document.createElement(
-                'p'
-            );
-
-        subtitle.className=
-            'teacher-module-subtitle';
-
-        subtitle.textContent=
-            liveStatus;
-
-        text.appendChild(
-            subtitle
-        );
+        padding:
+            12px
+            14px;
     }
 
-    return text;
-}
 
-function createModuleStatus(
-    statusText
-){
-    const status=
-        document.createElement(
-            'span'
-        );
+    /*==================================================
+      Living Header on Phone
+    ==================================================*/
 
-    status.className=
-        'teacher-module-status';
+    .teacher-stage-living
+    .teacher-module-header{
+        min-height:76px;
 
-    status.textContent=
-        statusText;
-
-    return status;
-}
-
-function createModuleContent(
-    moduleId
-){
-    const content=
-        document.createElement(
-            'div'
-        );
-
-    content.className=
-        'teacher-module-content';
-
-    content.id=
-        `teacherModule_${moduleId}`;
-
-    return content;
-}
-
-function connectHeaderEvents({
-    header,
-    moduleId,
-    onSelect
-}){
-    header.addEventListener(
-        'click',
-        event=>{
-            if(
-                event.target.closest(
-                    '.teacher-stage-layout-toggle'
-                )
-            ){
-                return;
-            }
-
-            selectModule(
-                moduleId,
-                onSelect
-            );
-        }
-    );
-
-    header.addEventListener(
-        'keydown',
-        event=>{
-            if(
-                event.target.closest(
-                    '.teacher-stage-layout-toggle'
-                )
-            ){
-                return;
-            }
-
-            if(
-                event.key!=='Enter'&&
-                event.key!==' '
-            ){
-                return;
-            }
-
-            event.preventDefault();
-
-            selectModule(
-                moduleId,
-                onSelect
-            );
-        }
-    );
-}
-
-function selectModule(
-    moduleId,
-    onSelect
-){
-    if(
-        typeof onSelect!==
-        'function'
-    ){
-        return;
+        padding:
+            30px
+            104px
+            10px
+            14px;
     }
 
-    onSelect(
-        moduleId
-    );
+
+    /*
+      The status belongs at the top-left of the
+      living task header.
+
+      Expand / Collapse stays on the right.
+    */
+
+    .teacher-stage-living
+    .teacher-module-header-actions{
+        display:contents;
+
+        position:static;
+
+        transform:none;
+    }
+
+
+    .teacher-stage-living
+    .teacher-module-status{
+        position:absolute;
+
+        top:8px;
+        left:14px;
+
+        z-index:2;
+    }
+
+
+    .teacher-stage-living
+    .teacher-stage-layout-toggle{
+        position:absolute;
+
+        top:50%;
+        right:10px;
+
+        transform:
+            translateY(-50%);
+
+        z-index:2;
+    }
+
+
+    .teacher-stage-living
+    .teacher-stage-layout-toggle:hover{
+        transform:
+            translateY(-50%)
+            translateY(-1px);
+    }
+
+
+    .teacher-stage-living
+    .teacher-stage-layout-toggle:active{
+        transform:
+            translateY(-50%);
+    }
+
+
+    .teacher-stage-layout-toggle{
+        min-height:28px;
+        padding:5px 8px;
+
+        border-radius:8px;
+
+        font-size:.62rem;
+    }
+
+
+    .teacher-module-icon{
+        width:30px;
+        height:30px;
+        font-size:1.25rem;
+    }
+
+
+    .teacher-module-title{
+        font-size:1rem;
+    }
+
+
+    .teacher-module-subtitle{
+        font-size:.78rem;
+    }
+
+
+    .teacher-module-status{
+        padding:4px 8px;
+        font-size:.66rem;
+    }
+
+
+    .teacher-module-content{
+        margin:0 14px;
+        padding:15px 0 17px;
+    }
 }
