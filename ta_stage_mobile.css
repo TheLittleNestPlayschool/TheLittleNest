@@ -1,0 +1,243 @@
+/*==================================================
+  Living Stage Mobile
+==================================================*/
+
+@media(max-width:600px){
+
+    /*==================================================
+      Stage
+    ==================================================*/
+
+    .teacher-stage{
+        padding:8px;
+
+        gap:8px;
+    }
+
+
+    /*==================================================
+      Stage Layout
+    ==================================================*/
+
+    .teacher-stage-layout{
+        --stage-lift:0px;
+
+        grid-template-rows:
+            minmax(0,35fr)
+            minmax(0,30fr)
+            minmax(0,35fr);
+
+        gap:7px;
+    }
+
+
+    .teacher-stage-layout.is-standard,
+    .teacher-stage-layout[
+        data-layout-mode="standard"
+    ]{
+        grid-template-rows:
+            minmax(0,35fr)
+            minmax(0,30fr)
+            minmax(0,35fr);
+    }
+
+
+    .teacher-stage-layout.is-focused,
+    .teacher-stage-layout[
+        data-layout-mode="focused"
+    ]{
+        grid-template-rows:
+            minmax(0,12.5fr)
+            minmax(0,75fr)
+            minmax(0,12.5fr);
+    }
+
+
+    /*==================================================
+      Previous / Next Zones
+    ==================================================*/
+
+    .teacher-stage-zone{
+        gap:4px;
+    }
+
+
+    .teacher-stage-previous,
+    .teacher-stage-next{
+        overflow-y:auto;
+        overflow-x:hidden;
+
+        overscroll-behavior:contain;
+
+        -webkit-overflow-scrolling:touch;
+
+        scrollbar-width:thin;
+
+        scrollbar-color:
+            rgba(
+                71,
+                85,
+                105,
+                .22
+            )
+            transparent;
+    }
+
+
+    .teacher-stage-previous::-webkit-scrollbar,
+    .teacher-stage-next::-webkit-scrollbar{
+        width:3px;
+    }
+
+
+    .teacher-stage-previous::-webkit-scrollbar-track,
+    .teacher-stage-next::-webkit-scrollbar-track{
+        background:transparent;
+    }
+
+
+    .teacher-stage-previous::-webkit-scrollbar-thumb,
+    .teacher-stage-next::-webkit-scrollbar-thumb{
+        background:
+            rgba(
+                71,
+                85,
+                105,
+                .22
+            );
+
+        border-radius:999px;
+    }
+
+
+    /*==================================================
+      Stage Context
+    ==================================================*/
+
+    .teacher-stage-context{
+        padding:
+            12px
+            14px;
+
+        border-radius:16px;
+
+        font-size:.88rem;
+    }
+
+
+    /*==================================================
+      Module Card
+    ==================================================*/
+
+    .teacher-module-card{
+        border-radius:16px;
+    }
+
+
+    /*==================================================
+      Module Header
+    ==================================================*/
+
+    .teacher-module-header{
+        min-height:58px;
+
+        gap:10px;
+
+        padding:
+            12px
+            14px;
+    }
+
+
+    /*==================================================
+      Living Header
+    ==================================================*/
+
+    .teacher-stage-living
+    .teacher-module-header{
+        min-height:76px;
+
+        padding:
+            30px
+            104px
+            10px
+            14px;
+    }
+
+
+    .teacher-stage-living
+    .teacher-module-status{
+        top:8px;
+        left:14px;
+    }
+
+
+    .teacher-stage-living
+    .teacher-stage-layout-toggle{
+        right:10px;
+    }
+
+
+    /*==================================================
+      Toggle
+    ==================================================*/
+
+    .teacher-stage-layout-toggle{
+        min-height:28px;
+
+        padding:
+            5px
+            8px;
+
+        border-radius:8px;
+
+        font-size:.62rem;
+    }
+
+
+    /*==================================================
+      Identity
+    ==================================================*/
+
+    .teacher-module-icon{
+        width:30px;
+        height:30px;
+
+        font-size:1.25rem;
+    }
+
+
+    .teacher-module-title{
+        font-size:1rem;
+    }
+
+
+    .teacher-module-subtitle{
+        font-size:.78rem;
+    }
+
+
+    .teacher-module-status{
+        padding:
+            4px
+            8px;
+
+        font-size:.66rem;
+    }
+
+
+    /*==================================================
+      Content
+    ==================================================*/
+
+    .teacher-module-content{
+        margin:
+            0
+            14px;
+
+        padding:
+            15px
+            0
+            17px;
+    }
+}
