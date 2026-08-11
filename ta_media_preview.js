@@ -1,8 +1,5 @@
 import{
-    getState
-}from'./ta_state.js';
-
-import{
+    getMediaSession,
     getActiveMedia,
     clearActiveMedia,
     setActiveMediaType,
@@ -237,22 +234,15 @@ export function renderMediaPreview(
     // Students
     //------------------------------------
 
-    const state=
-        getState();
-
-
-    const students=
-        Array.isArray(
-            state?.locationStudents
-        )
-            ?state.locationStudents
-            :[];
+    const mediaSession=
+        getMediaSession();
 
 
     renderMediaStudents(
         panel,
         {
-            students,
+            students:
+                mediaSession.studentsBySession,
 
             selectedStudentIds:
                 item.studentIds,
@@ -346,6 +336,10 @@ export function renderMediaPreview(
 }
 
 
+/*==================================================
+  Media Type
+==================================================*/
+
 function createMediaTypeSelector(
     item,
     actions
@@ -368,32 +362,106 @@ function createMediaTypeSelector(
         'Type';
 
 
-    const options=
+    const select=
         document.createElement(
-            'div'
+            'select'
         );
 
-    options.className=
-        'teacher-media-type-options';
+    select.className=
+        'teacher-media-type-select';
 
 
-    options.appendChild(
-        createTypeButton(
-            'Media',
-            'media',
-            item,
-            actions
-        )
+    //------------------------------------
+    // Placeholder
+    //------------------------------------
+
+    const placeholder=
+        document.createElement(
+            'option'
+        );
+
+    placeholder.value='';
+
+    placeholder.textContent=
+        'Select type...';
+
+    placeholder.disabled=
+        true;
+
+
+    select.appendChild(
+        placeholder
     );
 
 
-    options.appendChild(
-        createTypeButton(
-            'Art',
-            'art',
-            item,
-            actions
-        )
+    //------------------------------------
+    // Media
+    //------------------------------------
+
+    const mediaOption=
+        document.createElement(
+            'option'
+        );
+
+    mediaOption.value=
+        'media';
+
+    mediaOption.textContent=
+        'Media';
+
+
+    select.appendChild(
+        mediaOption
+    );
+
+
+    //------------------------------------
+    // Art
+    //------------------------------------
+
+    const artOption=
+        document.createElement(
+            'option'
+        );
+
+    artOption.value=
+        'art';
+
+    artOption.textContent=
+        'Art';
+
+
+    select.appendChild(
+        artOption
+    );
+
+
+    //------------------------------------
+    // Current Value
+    //------------------------------------
+
+    select.value=
+        item.mediaType||
+        '';
+
+
+    //------------------------------------
+    // Change
+    //------------------------------------
+
+    select.addEventListener(
+        'change',
+        ()=>{
+            if(!select.value){
+                return;
+            }
+
+            setActiveMediaType(
+                select.value
+            );
+
+            actions.refresh();
+        }
     );
 
 
@@ -402,58 +470,11 @@ function createMediaTypeSelector(
     );
 
     section.appendChild(
-        options
+        select
     );
 
 
     return section;
-}
-
-
-function createTypeButton(
-    label,
-    value,
-    item,
-    actions
-){
-    const button=
-        document.createElement(
-            'button'
-        );
-
-    button.type=
-        'button';
-
-    button.className=
-        'teacher-media-type-button';
-
-    button.textContent=
-        label;
-
-
-    if(
-        item.mediaType===
-        value
-    ){
-        button.classList.add(
-            'is-selected'
-        );
-    }
-
-
-    button.addEventListener(
-        'click',
-        ()=>{
-            setActiveMediaType(
-                value
-            );
-
-            actions.refresh();
-        }
-    );
-
-
-    return button;
 }
 
 
