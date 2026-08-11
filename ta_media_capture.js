@@ -4,6 +4,7 @@ import{
     selectMediaItem
 }from'./ta_media_session.js';
 
+
 export function renderMediaCapture(
     container,
     actions
@@ -13,9 +14,11 @@ export function renderMediaCapture(
             actions
         );
 
+
     container.appendChild(
         input
     );
+
 
     container.appendChild(
         createUploadButton(
@@ -23,18 +26,25 @@ export function renderMediaCapture(
         )
     );
 
+
     const session=
         getMediaSession();
+
+
+    //------------------------------------
+    // Nothing Selected Yet
+    //------------------------------------
 
     if(
         !session.items.length
     ){
-        container.appendChild(
-            createEmptyState()
-        );
-
         return;
     }
+
+
+    //------------------------------------
+    // Selected Media
+    //------------------------------------
 
     container.appendChild(
         createMediaGrid(
@@ -52,6 +62,7 @@ function createMediaInput(
             'input'
         );
 
+
     input.type=
         'file';
 
@@ -64,6 +75,7 @@ function createMediaInput(
     input.className=
         'teacher-media-input';
 
+
     input.addEventListener(
         'change',
         ()=>{
@@ -72,15 +84,24 @@ function createMediaInput(
                     input.files||[]
                 );
 
+
+            if(!files.length){
+                return;
+            }
+
+
             addMediaFiles(
                 files
             );
 
+
             input.value='';
+
 
             actions.refresh();
         }
     );
+
 
     return input;
 }
@@ -94,6 +115,7 @@ function createUploadButton(
             'button'
         );
 
+
     button.type=
         'button';
 
@@ -103,6 +125,7 @@ function createUploadButton(
     button.textContent=
         'Upload Media';
 
+
     button.addEventListener(
         'click',
         ()=>{
@@ -110,47 +133,8 @@ function createUploadButton(
         }
     );
 
+
     return button;
-}
-
-
-function createEmptyState(){
-    const empty=
-        document.createElement(
-            'div'
-        );
-
-    empty.className=
-        'teacher-media-empty';
-
-    const icon=
-        document.createElement(
-            'span'
-        );
-
-    icon.className=
-        'teacher-media-empty-icon';
-
-    icon.textContent=
-        '📸';
-
-    const text=
-        document.createElement(
-            'p'
-        );
-
-    text.textContent=
-        'Selected media will appear here.';
-
-    empty.appendChild(
-        icon
-    );
-
-    empty.appendChild(
-        text
-    );
-
-    return empty;
 }
 
 
@@ -160,13 +144,16 @@ function createMediaGrid(
     const session=
         getMediaSession();
 
+
     const grid=
         document.createElement(
             'div'
         );
 
+
     grid.className=
         'teacher-media-grid';
+
 
     session.items.forEach(
         item=>{
@@ -179,6 +166,7 @@ function createMediaGrid(
         }
     );
 
+
     return grid;
 }
 
@@ -190,16 +178,19 @@ function createMediaCard(
     const session=
         getMediaSession();
 
+
     const button=
         document.createElement(
             'button'
         );
+
 
     button.type=
         'button';
 
     button.className=
         'teacher-media-card';
+
 
     if(
         item.id===
@@ -220,6 +211,7 @@ function createMediaCard(
             'div'
         );
 
+
     preview.className=
         'teacher-media-card-preview';
 
@@ -233,6 +225,7 @@ function createMediaCard(
                 'video'
             );
 
+
         video.src=
             item.previewUrl;
 
@@ -245,6 +238,7 @@ function createMediaCard(
         video.preload=
             'metadata';
 
+
         preview.appendChild(
             video
         );
@@ -255,11 +249,13 @@ function createMediaCard(
                 'span'
             );
 
+
         mark.className=
             'teacher-media-video-mark';
 
         mark.textContent=
             '▶';
+
 
         preview.appendChild(
             mark
@@ -271,11 +267,13 @@ function createMediaCard(
                 'img'
             );
 
+
         image.src=
             item.previewUrl;
 
         image.alt=
             'Selected media';
+
 
         preview.appendChild(
             image
@@ -295,11 +293,13 @@ function createMediaCard(
                 'span'
             );
 
+
         info.className=
             'teacher-media-info-badge';
 
         info.textContent=
             'i';
+
 
         preview.appendChild(
             info
@@ -322,6 +322,7 @@ function createMediaCard(
             selectMediaItem(
                 item.id
             );
+
 
             actions.refresh();
         }
