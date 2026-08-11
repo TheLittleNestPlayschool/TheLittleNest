@@ -3,6 +3,18 @@ import{
     clearWorkspace
 }from'./ta_ui.js';
 
+import{
+    getMediaSession
+}from'./ta_media_session.js';
+
+import{
+    renderMediaCapture
+}from'./ta_media_capture.js';
+
+import{
+    renderMediaPreview
+}from'./ta_media_preview.js';
+
 
 export function renderMediaModule(
     taskContext=null
@@ -16,17 +28,26 @@ export function renderMediaModule(
         return;
     }
 
-    workspace.appendChild(
-        createMediaExperience(
-            taskContext
-        )
-    );
+    const session=
+        getMediaSession();
+
+    session.taskContext=
+        taskContext;
+
+    renderCurrentView();
 }
 
 
-function createMediaExperience(
-    taskContext
-){
+export function renderCurrentView(){
+    const workspace=
+        getWorkspace();
+
+    if(!workspace){
+        return;
+    }
+
+    workspace.innerHTML='';
+
     const container=
         document.createElement(
             'section'
@@ -76,208 +97,34 @@ function createMediaExperience(
     );
 
 
-    //------------------------------------
-    // Hidden Media Input
-    //------------------------------------
-
-    const mediaInput=
-        document.createElement(
-            'input'
-        );
-
-    mediaInput.type=
-        'file';
-
-    mediaInput.accept=
-        'image/*,video/*';
-
-    mediaInput.multiple=
-        true;
-
-    mediaInput.className=
-        'teacher-media-input';
-
-
-    //------------------------------------
-    // Upload Media Button
-    //------------------------------------
-
-    const uploadButton=
-        document.createElement(
-            'button'
-        );
-
-    uploadButton.type=
-        'button';
-
-    uploadButton.className=
-        'teacher-media-upload-button';
-
-
-    const uploadIcon=
-        document.createElement(
-            'span'
-        );
-
-    uploadIcon.className=
-        'teacher-media-upload-icon';
-
-    uploadIcon.textContent=
-        '📷';
-
-
-    const uploadText=
-        document.createElement(
-            'span'
-        );
-
-    uploadText.className=
-        'teacher-media-upload-text';
-
-
-    const uploadTitle=
-        document.createElement(
-            'strong'
-        );
-
-    uploadTitle.textContent=
-        'Upload Media';
-
-
-    const uploadDescription=
-        document.createElement(
-            'small'
-        );
-
-    uploadDescription.textContent=
-        'Choose photos and videos from this device.';
-
-
-    uploadText.appendChild(
-        uploadTitle
-    );
-
-    uploadText.appendChild(
-        uploadDescription
-    );
-
-
-    uploadButton.appendChild(
-        uploadIcon
-    );
-
-    uploadButton.appendChild(
-        uploadText
-    );
-
-
-    uploadButton.addEventListener(
-        'click',
-        ()=>{
-            mediaInput.click();
-        }
-    );
-
-
-    mediaInput.addEventListener(
-        'change',
-        ()=>{
-            const files=
-                Array.from(
-                    mediaInput.files||[]
-                );
-
-            console.log(
-                'ta_media selected:',
-                files
-            );
-
-            mediaInput.value='';
-        }
-    );
-
-
-    //------------------------------------
-    // Media Workspace
-    //------------------------------------
-
-    const mediaWorkspace=
-        document.createElement(
-            'div'
-        );
-
-    mediaWorkspace.className=
-        'teacher-media-workspace';
-
-    mediaWorkspace.dataset
-        .mediaWorkspace=
-        'true';
-
-
-    const emptyState=
-        document.createElement(
-            'div'
-        );
-
-    emptyState.className=
-        'teacher-media-empty';
-
-
-    const emptyIcon=
-        document.createElement(
-            'span'
-        );
-
-    emptyIcon.className=
-        'teacher-media-empty-icon';
-
-    emptyIcon.textContent=
-        '📸';
-
-
-    const emptyText=
-        document.createElement(
-            'p'
-        );
-
-    emptyText.textContent=
-        'Selected media will appear here.';
-
-
-    emptyState.appendChild(
-        emptyIcon
-    );
-
-    emptyState.appendChild(
-        emptyText
-    );
-
-
-    mediaWorkspace.appendChild(
-        emptyState
-    );
-
-
-    //------------------------------------
-    // Assemble
-    //------------------------------------
-
     container.appendChild(
         intro
     );
 
-    container.appendChild(
-        mediaInput
+
+    //------------------------------------
+    // Capture Area
+    //------------------------------------
+
+    renderMediaCapture(
+        container,
+        {
+            refresh:
+                renderCurrentView
+        }
     );
 
-    container.appendChild(
-        uploadButton
+
+    //------------------------------------
+    // Selected Preview
+    //------------------------------------
+
+    renderMediaPreview(
+        container
     );
 
-    container.appendChild(
-        mediaWorkspace
+
+    workspace.appendChild(
+        container
     );
-
-
-    return container;
 }
