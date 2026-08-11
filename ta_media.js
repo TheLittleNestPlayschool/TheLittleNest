@@ -64,7 +64,7 @@ function createMediaExperience(
         );
 
     description.textContent=
-        'Add photos, videos, and artwork from today.';
+        'Add photos and videos from today.';
 
 
     intro.appendChild(
@@ -77,45 +77,123 @@ function createMediaExperience(
 
 
     //------------------------------------
-    // Capture Actions
+    // Hidden Media Input
     //------------------------------------
 
-    const actions=
+    const mediaInput=
         document.createElement(
-            'div'
+            'input'
         );
 
-    actions.className=
-        'teacher-media-actions';
+    mediaInput.type=
+        'file';
+
+    mediaInput.accept=
+        'image/*,video/*';
+
+    mediaInput.multiple=
+        true;
+
+    mediaInput.className=
+        'teacher-media-input';
 
 
-    actions.appendChild(
-        createMediaAction(
-            '📷',
-            'Photos',
-            'Take or choose photos',
-            'photo'
-        )
+    //------------------------------------
+    // Upload Media Button
+    //------------------------------------
+
+    const uploadButton=
+        document.createElement(
+            'button'
+        );
+
+    uploadButton.type=
+        'button';
+
+    uploadButton.className=
+        'teacher-media-upload-button';
+
+
+    const uploadIcon=
+        document.createElement(
+            'span'
+        );
+
+    uploadIcon.className=
+        'teacher-media-upload-icon';
+
+    uploadIcon.textContent=
+        '📷';
+
+
+    const uploadText=
+        document.createElement(
+            'span'
+        );
+
+    uploadText.className=
+        'teacher-media-upload-text';
+
+
+    const uploadTitle=
+        document.createElement(
+            'strong'
+        );
+
+    uploadTitle.textContent=
+        'Upload Media';
+
+
+    const uploadDescription=
+        document.createElement(
+            'small'
+        );
+
+    uploadDescription.textContent=
+        'Choose photos and videos from this device.';
+
+
+    uploadText.appendChild(
+        uploadTitle
+    );
+
+    uploadText.appendChild(
+        uploadDescription
     );
 
 
-    actions.appendChild(
-        createMediaAction(
-            '🎥',
-            'Video',
-            'Add a video',
-            'video'
-        )
+    uploadButton.appendChild(
+        uploadIcon
+    );
+
+    uploadButton.appendChild(
+        uploadText
     );
 
 
-    actions.appendChild(
-        createMediaAction(
-            '🎨',
-            'Artwork',
-            'Capture student artwork',
-            'artwork'
-        )
+    uploadButton.addEventListener(
+        'click',
+        ()=>{
+            mediaInput.click();
+        }
+    );
+
+
+    mediaInput.addEventListener(
+        'change',
+        ()=>{
+            const files=
+                Array.from(
+                    mediaInput.files||[]
+                );
+
+            console.log(
+                'ta_media selected:',
+                files
+            );
+
+            mediaInput.value='';
+        }
     );
 
 
@@ -163,7 +241,7 @@ function createMediaExperience(
         );
 
     emptyText.textContent=
-        'Your selected media will appear here.';
+        'Selected media will appear here.';
 
 
     emptyState.appendChild(
@@ -173,6 +251,7 @@ function createMediaExperience(
     emptyState.appendChild(
         emptyText
     );
+
 
     mediaWorkspace.appendChild(
         emptyState
@@ -188,7 +267,11 @@ function createMediaExperience(
     );
 
     container.appendChild(
-        actions
+        mediaInput
+    );
+
+    container.appendChild(
+        uploadButton
     );
 
     container.appendChild(
@@ -197,98 +280,4 @@ function createMediaExperience(
 
 
     return container;
-}
-
-
-function createMediaAction(
-    icon,
-    title,
-    description,
-    action
-){
-    const button=
-        document.createElement(
-            'button'
-        );
-
-    button.type=
-        'button';
-
-    button.className=
-        'teacher-media-action';
-
-    button.dataset
-        .mediaAction=
-        action;
-
-
-    const iconElement=
-        document.createElement(
-            'span'
-        );
-
-    iconElement.className=
-        'teacher-media-action-icon';
-
-    iconElement.textContent=
-        icon;
-
-
-    const text=
-        document.createElement(
-            'span'
-        );
-
-    text.className=
-        'teacher-media-action-text';
-
-
-    const titleElement=
-        document.createElement(
-            'strong'
-        );
-
-    titleElement.textContent=
-        title;
-
-
-    const descriptionElement=
-        document.createElement(
-            'small'
-        );
-
-    descriptionElement.textContent=
-        description;
-
-
-    text.appendChild(
-        titleElement
-    );
-
-    text.appendChild(
-        descriptionElement
-    );
-
-
-    button.appendChild(
-        iconElement
-    );
-
-    button.appendChild(
-        text
-    );
-
-
-    button.addEventListener(
-        'click',
-        ()=>{
-            console.log(
-                'ta_media:',
-                action
-            );
-        }
-    );
-
-
-    return button;
 }
