@@ -1,10 +1,13 @@
 import{
-    getActiveMedia
+    getActiveMedia,
+    clearActiveMedia,
+    markActiveMediaComplete
 }from'./ta_media_session.js';
 
 
 export function renderMediaPreview(
-    container
+    container,
+    actions
 ){
     const item=
         getActiveMedia();
@@ -14,18 +17,61 @@ export function renderMediaPreview(
     }
 
 
-    const section=
+    //------------------------------------
+    // Overlay
+    //------------------------------------
+
+    const overlay=
+        document.createElement(
+            'div'
+        );
+
+    overlay.className=
+        'teacher-media-overlay';
+
+
+    overlay.addEventListener(
+        'click',
+        event=>{
+            if(
+                event.target!==
+                overlay
+            ){
+                return;
+            }
+
+            closeEditor(
+                actions
+            );
+        }
+    );
+
+
+    //------------------------------------
+    // Editor Panel
+    //------------------------------------
+
+    const panel=
         document.createElement(
             'section'
         );
 
-    section.className=
-        'teacher-media-selected';
+    panel.className=
+        'teacher-media-editor-panel';
 
 
     //------------------------------------
-    // Heading
+    // Header
     //------------------------------------
+
+    const header=
+        document.createElement(
+            'div'
+        );
+
+    header.className=
+        'teacher-media-editor-header';
+
 
     const heading=
         document.createElement(
@@ -33,7 +79,7 @@ export function renderMediaPreview(
         );
 
     heading.className=
-        'teacher-media-selected-heading';
+        'teacher-media-editor-heading';
 
 
     const title=
@@ -42,7 +88,7 @@ export function renderMediaPreview(
         );
 
     title.textContent=
-        'Selected Media';
+        'Media Details';
 
 
     const fileName=
@@ -62,8 +108,43 @@ export function renderMediaPreview(
         fileName
     );
 
-    section.appendChild(
+
+    const closeButton=
+        document.createElement(
+            'button'
+        );
+
+    closeButton.type=
+        'button';
+
+    closeButton.className=
+        'teacher-media-editor-close';
+
+    closeButton.textContent=
+        '×';
+
+
+    closeButton.addEventListener(
+        'click',
+        ()=>{
+            closeEditor(
+                actions
+            );
+        }
+    );
+
+
+    header.appendChild(
         heading
+    );
+
+    header.appendChild(
+        closeButton
+    );
+
+
+    panel.appendChild(
+        header
     );
 
 
@@ -123,33 +204,99 @@ export function renderMediaPreview(
     }
 
 
-    section.appendChild(
+    panel.appendChild(
         preview
     );
 
 
     //------------------------------------
-    // Future Editor Area
+    // Temporary Editor Area
     //------------------------------------
 
-    const editor=
+    const controls=
         document.createElement(
             'div'
         );
 
-    editor.className=
+    controls.className=
         'teacher-media-controls-placeholder';
 
-    editor.textContent=
+    controls.textContent=
         'Media type and student tagging will go here.';
 
 
-    section.appendChild(
-        editor
+    panel.appendChild(
+        controls
     );
 
+
+    //------------------------------------
+    // Done
+    //------------------------------------
+
+    const actionsRow=
+        document.createElement(
+            'div'
+        );
+
+    actionsRow.className=
+        'teacher-media-editor-actions';
+
+
+    const doneButton=
+        document.createElement(
+            'button'
+        );
+
+    doneButton.type=
+        'button';
+
+    doneButton.className=
+        'teacher-media-editor-done';
+
+    doneButton.textContent=
+        'Done';
+
+
+    doneButton.addEventListener(
+        'click',
+        ()=>{
+            markActiveMediaComplete();
+
+            closeEditor(
+                actions
+            );
+        }
+    );
+
+
+    actionsRow.appendChild(
+        doneButton
+    );
+
+    panel.appendChild(
+        actionsRow
+    );
+
+
+    //------------------------------------
+    // Render Overlay
+    //------------------------------------
+
+    overlay.appendChild(
+        panel
+    );
 
     container.appendChild(
-        section
+        overlay
     );
+}
+
+
+function closeEditor(
+    actions
+){
+    clearActiveMedia();
+
+    actions.refresh();
 }
