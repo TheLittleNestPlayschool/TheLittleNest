@@ -4,7 +4,6 @@ import{
     selectMediaItem
 }from'./ta_media_session.js';
 
-
 export function renderMediaCapture(
     container,
     actions
