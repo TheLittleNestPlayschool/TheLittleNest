@@ -1,4 +1,3 @@
-
 export function renderMediaStudents(
     container,
     context
@@ -129,6 +128,7 @@ function createStudentButton(
         document.createElement(
             'button'
         );
+
 
     button.type=
         'button';
@@ -267,6 +267,7 @@ function createFindStudentButton(
             'button'
         );
 
+
     button.type=
         'button';
 
@@ -357,15 +358,20 @@ function getActiveStudents(
 function getStudentName(
     student
 ){
-    return(
-        student?.preferred_name||
-        student?.name||
+    const fullName=
         [
             student?.first_name,
             student?.last_name
         ]
             .filter(Boolean)
-            .join(' ')||
+            .join(' ')
+            .trim();
+
+
+    return(
+        fullName||
+        student?.name||
+        student?.preferred_name||
         `Student ${student?.id||''}`
     );
 }
