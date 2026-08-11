@@ -1,8 +1,18 @@
 import{
+    getState
+}from'./ta_state.js';
+
+import{
     getActiveMedia,
     clearActiveMedia,
+    setActiveMediaType,
+    toggleActiveMediaStudent,
     markActiveMediaComplete
 }from'./ta_media_session.js';
+
+import{
+    renderMediaStudents
+}from'./ta_media_students.js';
 
 
 export function renderMediaPreview(
@@ -182,6 +192,7 @@ export function renderMediaPreview(
         video.preload=
             'metadata';
 
+
         preview.appendChild(
             video
         );
@@ -198,6 +209,7 @@ export function renderMediaPreview(
         image.alt=
             'Selected media preview';
 
+
         preview.appendChild(
             image
         );
@@ -210,23 +222,59 @@ export function renderMediaPreview(
 
 
     //------------------------------------
-    // Temporary Editor Area
+    // Media Type
     //------------------------------------
 
-    const controls=
-        document.createElement(
-            'div'
-        );
-
-    controls.className=
-        'teacher-media-controls-placeholder';
-
-    controls.textContent=
-        'Media type and student tagging will go here.';
-
-
     panel.appendChild(
-        controls
+        createMediaTypeSelector(
+            item,
+            actions
+        )
+    );
+
+
+    //------------------------------------
+    // Students
+    //------------------------------------
+
+    const state=
+        getState();
+
+
+    const students=
+        Array.isArray(
+            state?.locationStudents
+        )
+            ?state.locationStudents
+            :[];
+
+
+    renderMediaStudents(
+        panel,
+        {
+            students,
+
+            selectedStudentIds:
+                item.studentIds,
+
+            actions:{
+                toggleStudent:
+                    student=>{
+                        toggleActiveMediaStudent(
+                            student.id
+                        );
+
+                        actions.refresh();
+                    },
+
+                findStudent:
+                    ()=>{
+                        console.log(
+                            'ta_media: find student'
+                        );
+                    }
+            }
+        }
     );
 
 
@@ -258,6 +306,11 @@ export function renderMediaPreview(
         'Done';
 
 
+    doneButton.disabled=
+        !item.mediaType||
+        !item.studentIds.length;
+
+
     doneButton.addEventListener(
         'click',
         ()=>{
@@ -280,7 +333,7 @@ export function renderMediaPreview(
 
 
     //------------------------------------
-    // Render Overlay
+    // Render
     //------------------------------------
 
     overlay.appendChild(
@@ -290,6 +343,117 @@ export function renderMediaPreview(
     container.appendChild(
         overlay
     );
+}
+
+
+function createMediaTypeSelector(
+    item,
+    actions
+){
+    const section=
+        document.createElement(
+            'section'
+        );
+
+    section.className=
+        'teacher-media-type-selector';
+
+
+    const heading=
+        document.createElement(
+            'strong'
+        );
+
+    heading.textContent=
+        'Type';
+
+
+    const options=
+        document.createElement(
+            'div'
+        );
+
+    options.className=
+        'teacher-media-type-options';
+
+
+    options.appendChild(
+        createTypeButton(
+            'Media',
+            'media',
+            item,
+            actions
+        )
+    );
+
+
+    options.appendChild(
+        createTypeButton(
+            'Art',
+            'art',
+            item,
+            actions
+        )
+    );
+
+
+    section.appendChild(
+        heading
+    );
+
+    section.appendChild(
+        options
+    );
+
+
+    return section;
+}
+
+
+function createTypeButton(
+    label,
+    value,
+    item,
+    actions
+){
+    const button=
+        document.createElement(
+            'button'
+        );
+
+    button.type=
+        'button';
+
+    button.className=
+        'teacher-media-type-button';
+
+    button.textContent=
+        label;
+
+
+    if(
+        item.mediaType===
+        value
+    ){
+        button.classList.add(
+            'is-selected'
+        );
+    }
+
+
+    button.addEventListener(
+        'click',
+        ()=>{
+            setActiveMediaType(
+                value
+            );
+
+            actions.refresh();
+        }
+    );
+
+
+    return button;
 }
 
 
