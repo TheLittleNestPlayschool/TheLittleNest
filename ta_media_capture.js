@@ -1,6 +1,7 @@
 import{
 getMediaSession,
 addMediaFiles,
+removeMediaItem,
 selectMediaItem
 }from'./ta_media_session.js';
 
@@ -28,7 +29,7 @@ container.appendChild(
 
 
 const session=
-    getMediaSession();
+getMediaSession();
 
 
 //------------------------------------
@@ -75,42 +76,42 @@ document.createElement(
 
 
 input.type=
-    'file';
+'file';
 
 input.accept=
-    'image/*,video/*';
+'image/*,video/*';
 
 input.multiple=
-    true;
+true;
 
 input.className=
-    'teacher-media-input';
+'teacher-media-input';
 
 
 input.addEventListener(
-    'change',
-    ()=>{
-        const files=
-            Array.from(
-                input.files||[]
-            );
-
-
-        if(!files.length){
-            return;
-        }
-
-
-        addMediaFiles(
-            files
+'change',
+()=>{
+    const files=
+        Array.from(
+            input.files||[]
         );
 
 
-        input.value='';
-
-
-        actions.refresh();
+    if(!files.length){
+        return;
     }
+
+
+    addMediaFiles(
+        files
+    );
+
+
+    input.value='';
+
+
+    actions.refresh();
+}
 );
 
 
@@ -128,20 +129,20 @@ document.createElement(
 
 
 button.type=
-    'button';
+'button';
 
 button.className=
-    'teacher-media-upload-button';
+'teacher-media-upload-button';
 
 button.textContent=
-    'Upload Media';
+'Upload Media';
 
 
 button.addEventListener(
-    'click',
-    ()=>{
-        input.click();
-    }
+'click',
+()=>{
+    input.click();
+}
 );
 
 
@@ -153,33 +154,33 @@ function createMediaInstruction(
 session
 ){
 const container=
-    document.createElement(
-        'div'
-    );
+document.createElement(
+'div'
+);
 
 
 container.className=
-    'teacher-media-instruction';
+'teacher-media-instruction';
 
 
 const total=
-    session.items.length;
+session.items.length;
 
 
 const completed=
-    session.items.filter(
-        item=>{
-            return(
-                item.infoComplete===
-                true
-            );
-        }
-    ).length;
+session.items.filter(
+item=>{
+    return(
+        item.infoComplete===
+        true
+    );
+}
+).length;
 
 
 const remaining=
-    total-
-    completed;
+total-
+completed;
 
 
 //------------------------------------
@@ -187,9 +188,9 @@ const remaining=
 //------------------------------------
 
 const title=
-    document.createElement(
-        'strong'
-    );
+document.createElement(
+'strong'
+);
 
 
 if(remaining===0){
@@ -208,13 +209,35 @@ container.appendChild(
 
 
 //------------------------------------
+// Separator
+//------------------------------------
+
+const separator=
+document.createElement(
+'span'
+);
+
+
+separator.className=
+'teacher-media-instruction-separator';
+
+separator.textContent=
+' · ';
+
+
+container.appendChild(
+    separator
+);
+
+
+//------------------------------------
 // Message
 //------------------------------------
 
 const message=
-    document.createElement(
-        'span'
-    );
+document.createElement(
+'span'
+);
 
 
 if(remaining===0){
@@ -248,24 +271,24 @@ getMediaSession();
 
 
 const grid=
-    document.createElement(
-        'div'
-    );
+document.createElement(
+'div'
+);
 
 
 grid.className=
-    'teacher-media-grid';
+'teacher-media-grid';
 
 
 session.items.forEach(
-    item=>{
-        grid.appendChild(
-            createMediaCard(
-                item,
-                actions
-            )
-        );
-    }
+item=>{
+    grid.appendChild(
+        createMediaCard(
+            item,
+            actions
+        )
+    );
+}
 );
 
 
@@ -282,16 +305,16 @@ getMediaSession();
 
 
 const button=
-    document.createElement(
-        'button'
-    );
+document.createElement(
+'button'
+);
 
 
 button.type=
-    'button';
+'button';
 
 button.className=
-    'teacher-media-card';
+'teacher-media-card';
 
 
 if(
@@ -309,13 +332,13 @@ if(
 //------------------------------------
 
 const preview=
-    document.createElement(
-        'div'
-    );
+document.createElement(
+'div'
+);
 
 
 preview.className=
-    'teacher-media-card-preview';
+'teacher-media-card-preview';
 
 
 if(
@@ -384,6 +407,18 @@ if(
 
 
 //------------------------------------
+// Delete Control
+//------------------------------------
+
+preview.appendChild(
+    createDeleteControl(
+        item,
+        actions
+    )
+);
+
+
+//------------------------------------
 // Info Badge
 //------------------------------------
 
@@ -419,17 +454,96 @@ button.appendChild(
 //------------------------------------
 
 button.addEventListener(
-    'click',
-    ()=>{
-        selectMediaItem(
-            item.id
-        );
+'click',
+()=>{
+    selectMediaItem(
+        item.id
+    );
 
 
-        actions.refresh();
-    }
+    actions.refresh();
+}
 );
 
 
 return button;
+}
+
+
+function createDeleteControl(
+item,
+actions
+){
+const control=
+document.createElement(
+'span'
+);
+
+
+control.className=
+'teacher-media-delete';
+
+control.textContent=
+'×';
+
+control.setAttribute(
+    'role',
+    'button'
+);
+
+control.setAttribute(
+    'tabindex',
+    '0'
+);
+
+control.setAttribute(
+    'aria-label',
+    'Remove selected media'
+);
+
+
+//------------------------------------
+// Delete
+//------------------------------------
+
+const removeItem=
+event=>{
+    event.preventDefault();
+    event.stopPropagation();
+
+
+    removeMediaItem(
+        item.id
+    );
+
+
+    actions.refresh();
+};
+
+
+control.addEventListener(
+    'click',
+    removeItem
+);
+
+
+control.addEventListener(
+    'keydown',
+    event=>{
+        if(
+            event.key!=='Enter'&&
+            event.key!==' '
+        ){
+            return;
+        }
+
+
+        removeItem(
+            event
+        );
+    }
+);
+
+
+return control;
 }
