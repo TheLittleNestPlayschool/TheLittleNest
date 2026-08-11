@@ -211,6 +211,11 @@ function createMediaCard(
         );
     }
 
+
+    //------------------------------------
+    // Thumbnail
+    //------------------------------------
+
     const preview=
         document.createElement(
             'div'
@@ -218,6 +223,7 @@ function createMediaCard(
 
     preview.className=
         'teacher-media-card-preview';
+
 
     if(
         item.mediaKind===
@@ -243,6 +249,7 @@ function createMediaCard(
         preview.appendChild(
             video
         );
+
 
         const mark=
             document.createElement(
@@ -276,9 +283,39 @@ function createMediaCard(
         );
     }
 
+
+    //------------------------------------
+    // Info Badge
+    //------------------------------------
+
+    if(
+        item.infoComplete
+    ){
+        const info=
+            document.createElement(
+                'span'
+            );
+
+        info.className=
+            'teacher-media-info-badge';
+
+        info.textContent=
+            'i';
+
+        preview.appendChild(
+            info
+        );
+    }
+
+
     button.appendChild(
         preview
     );
+
+
+    //------------------------------------
+    // Open Editor
+    //------------------------------------
 
     button.addEventListener(
         'click',
@@ -290,6 +327,7 @@ function createMediaCard(
             actions.refresh();
         }
     );
+
 
     return button;
 }
