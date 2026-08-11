@@ -32,24 +32,15 @@ export function addMediaFiles(
                 mediaKind:
                     getMediaKind(
                         file
-                    )
-            };
+                    ),
 
+                infoComplete:
+                    false
+            };
 
             mediaSession.items.push(
                 item
             );
-
-
-            if(
-                mediaSession
-                    .activeMediaId===
-                null
-            ){
-                mediaSession
-                    .activeMediaId=
-                    item.id;
-            }
         }
     );
 }
@@ -63,27 +54,40 @@ export function selectMediaItem(
 }
 
 
+export function clearActiveMedia(){
+    mediaSession.activeMediaId=
+        null;
+}
+
+
 export function getActiveMedia(){
     if(
-        !mediaSession.items.length
+        !mediaSession.activeMediaId
     ){
         return null;
     }
 
-
-    const active=
+    return(
         mediaSession.items.find(
             item=>
                 item.id===
-                mediaSession
-                    .activeMediaId
-        );
-
-
-    return(
-        active||
-        mediaSession.items[0]
+                mediaSession.activeMediaId
+        )||
+        null
     );
+}
+
+
+export function markActiveMediaComplete(){
+    const item=
+        getActiveMedia();
+
+    if(!item){
+        return;
+    }
+
+    item.infoComplete=
+        true;
 }
 
 
