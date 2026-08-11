@@ -1,5 +1,5 @@
 export function renderTeacherHeader(
-context
+    context
 ){
     const welcome=
         document.getElementById(
@@ -28,7 +28,7 @@ context
 
 
 function buildTeacherWelcome(
-teacher
+    teacher
 ){
     const teacherName=
         getTeacherDisplayName(
@@ -51,14 +51,16 @@ teacher
         'Welcome.'+
         '</span>'+
         '<span class="teacher-name-line">'+
-        `Teacher ${teacherName}`+
+        `Teacher ${escapeHtml(
+            teacherName
+        )}`+
         '</span>'
     );
 }
 
 
 function buildTeacherQuote(
-context
+    context
 ){
     const quote=
         context?.teacher_quotes||
@@ -90,7 +92,7 @@ context
     return(
         '<div class="teacher-quote-layout">'+
 
-            '<div class="teacher-quote-mark">'+
+            '<div class="teacher-quote-mark teacher-quote-mark-open">'+
                 '“'+
             '</div>'+
 
@@ -130,13 +132,17 @@ context
 
             '</div>'+
 
+            '<div class="teacher-quote-mark teacher-quote-mark-close">'+
+                '”'+
+            '</div>'+
+
         '</div>'
     );
 }
 
 
 function getTeacherDisplayName(
-teacher
+    teacher
 ){
     return(
         teacher?.preferred_name||
@@ -148,7 +154,7 @@ teacher
 
 
 function escapeHtml(
-value
+    value
 ){
     return String(
         value??''
