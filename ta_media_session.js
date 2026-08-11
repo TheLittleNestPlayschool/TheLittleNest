@@ -1,4 +1,4 @@
-const mediaSession={
+ const mediaSession={
     taskContext:null,
 
     items:[],
@@ -33,6 +33,12 @@ export function addMediaFiles(
                     getMediaKind(
                         file
                     ),
+
+                mediaType:
+                    null,
+
+                studentIds:
+                    [],
 
                 infoComplete:
                     false
@@ -78,6 +84,80 @@ export function getActiveMedia(){
 }
 
 
+export function setActiveMediaType(
+    mediaType
+){
+    const item=
+        getActiveMedia();
+
+    if(!item){
+        return;
+    }
+
+    item.mediaType=
+        mediaType;
+
+    updateInfoComplete(
+        item
+    );
+}
+
+
+export function toggleActiveMediaStudent(
+    studentId
+){
+    const item=
+        getActiveMedia();
+
+    if(!item){
+        return;
+    }
+
+    const normalizedStudentId=
+        Number(
+            studentId
+        );
+
+
+    const alreadySelected=
+        item.studentIds.some(
+            selectedId=>{
+                return(
+                    Number(
+                        selectedId
+                    )===
+                    normalizedStudentId
+                );
+            }
+        );
+
+
+    if(alreadySelected){
+        item.studentIds=
+            item.studentIds.filter(
+                selectedId=>{
+                    return(
+                        Number(
+                            selectedId
+                        )!==
+                        normalizedStudentId
+                    );
+                }
+            );
+
+    }else{
+        item.studentIds.push(
+            normalizedStudentId
+        );
+    }
+
+
+    updateInfoComplete(
+        item
+    );
+}
+
+
 export function markActiveMediaComplete(){
     const item=
         getActiveMedia();
@@ -86,8 +166,20 @@ export function markActiveMediaComplete(){
         return;
     }
 
+    updateInfoComplete(
+        item
+    );
+}
+
+
+function updateInfoComplete(
+    item
+){
     item.infoComplete=
-        true;
+        Boolean(
+            item.mediaType&&
+            item.studentIds.length
+        );
 }
 
 
