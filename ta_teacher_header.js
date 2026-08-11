@@ -1,5 +1,5 @@
 export function renderTeacherHeader(
-    context
+context
 ){
     const welcome=
         document.getElementById(
@@ -19,8 +19,8 @@ export function renderTeacherHeader(
     }
 
     if(saying){
-        saying.textContent=
-            getTeacherSaying(
+        saying.innerHTML=
+            buildTeacherQuote(
                 context
             );
     }
@@ -28,7 +28,7 @@ export function renderTeacherHeader(
 
 
 function buildTeacherWelcome(
-    teacher
+teacher
 ){
     const teacherName=
         getTeacherDisplayName(
@@ -57,8 +57,86 @@ function buildTeacherWelcome(
 }
 
 
+function buildTeacherQuote(
+context
+){
+    const quote=
+        context?.teacher_quotes||
+        null;
+
+    const emojis=
+        Array.isArray(
+            context?.emojis
+        )
+            ?context.emojis
+            :[];
+
+    const line1=
+        quote?.quote_line_1||
+        "You're making";
+
+    const line2=
+        quote?.quote_line_2||
+        'a difference';
+
+    const emoji1=
+        emojis?.[0]?.emoji||
+        '✨';
+
+    const emoji2=
+        emojis?.[1]?.emoji||
+        '🌟';
+
+    return(
+        '<div class="teacher-quote-layout">'+
+
+            '<div class="teacher-quote-mark">'+
+                '“'+
+            '</div>'+
+
+            '<div class="teacher-quote-content">'+
+
+                '<div class="teacher-quote-copy">'+
+
+                    '<div class="teacher-quote-line">'+
+                        escapeHtml(
+                            line1
+                        )+
+                    '</div>'+
+
+                    '<div class="teacher-quote-line">'+
+                        escapeHtml(
+                            line2
+                        )+
+                    '</div>'+
+
+                '</div>'+
+
+                '<div class="teacher-quote-emojis">'+
+
+                    '<span class="teacher-quote-emoji">'+
+                        escapeHtml(
+                            emoji1
+                        )+
+                    '</span>'+
+
+                    '<span class="teacher-quote-emoji">'+
+                        escapeHtml(
+                            emoji2
+                        )+
+                    '</span>'+
+
+                '</div>'+
+
+            '</div>'+
+
+        '</div>'
+    );
+}
+
+
 function getTeacherDisplayName(
-    teacher
+teacher
 ){
     return(
         teacher?.preferred_name||
@@ -69,12 +147,30 @@ function getTeacherDisplayName(
 }
 
 
-function getTeacherSaying(
-    context
+function escapeHtml(
+value
 ){
-    return(
-        context?.teacher_saying||
-        context?.saying||
-        "You're making a difference."
-    );
+    return String(
+        value??''
+    )
+        .replaceAll(
+            '&',
+            '&amp;'
+        )
+        .replaceAll(
+            '<',
+            '&lt;'
+        )
+        .replaceAll(
+            '>',
+            '&gt;'
+        )
+        .replaceAll(
+            '"',
+            '&quot;'
+        )
+        .replaceAll(
+            "'",
+            '&#039;'
+        );
 }
