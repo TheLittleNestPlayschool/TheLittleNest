@@ -1,269 +1,447 @@
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 html,
 body{
-    width:100%;
-    min-height:100%;
+width:100%;
+min-height:100%;
 }
 
 body{
-    overflow:hidden;
-    font-family:
-        "Segoe UI",
-        Tahoma,
-        Geneva,
-        Verdana,
-        sans-serif;
-    color:#1e293b;
+overflow:hidden;
+font-family:
+"Segoe UI",
+Tahoma,
+Geneva,
+Verdana,
+sans-serif;
+color:#1e293b;
 }
 
 .teacher-app{
-    position:relative;
-    width:100vw;
-    height:100vh;
-    padding:6px;
-    z-index:1;
+position:relative;
+width:100vw;
+height:100vh;
+padding:6px;
+z-index:1;
+}
+
+/*==================================================*
+*Teacher Application Shell
+*==================================================*/
+
+.teacher-shell{
+width:100%;
+height:100%;
+max-width:920px;
+margin:0 auto;
+display:flex;
+flex-direction:column;
+overflow:hidden;
+
+background:rgba(255,255,255,.08);
+
+border:1px solid rgba(255,255,255,.52);
+border-radius:18px;
+
+box-shadow:
+0 8px 30px rgba(15,23,42,.08),
+inset 0 1px 0 rgba(255,255,255,.35);
+
+backdrop-filter:blur(5px);
+-webkit-backdrop-filter:blur(5px);
+}
+
+/*==================================================*
+*Teacher Header
+*==================================================*/
+
+.teacher-shell-header{
+flex:0 0 auto;
+min-height:64px;
+padding:7px 15px;
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:16px;
+
+border-bottom:1px solid rgba(255,255,255,.36);
+
+background:rgba(255,255,255,.10);
+}
+
+.teacher-shell-brand{
+min-width:0;
+display:flex;
+align-items:center;
+}
+
+.teacher-shell-logo{
+display:block;
+width:auto;
+height:48px;
+max-width:290px;
+object-fit:contain;
+object-position:left center;
+}
+
+.teacher-shell-welcome{
+min-width:0;
+text-align:right;
+display:flex;
+flex-direction:column;
+align-items:flex-end;
+justify-content:center;
+}
+
+.teacher-shell-welcome-title{
+color:#0f172a;
+font-size:.82rem;
+font-weight:900;
+line-height:1.15;
+}
+
+.teacher-shell-saying{
+margin-top:3px;
+color:#475569;
+font-size:.66rem;
+font-weight:600;
+line-height:1.2;
+}
+
+/*==================================================*
+*Teacher Shell Body
+*==================================================*/
+
+.teacher-shell-body{
+position:relative;
+flex:1 1 auto;
+min-height:0;
+overflow:hidden;
 }
 
 .teacher-status{
-    position:absolute;
-    width:1px;
-    height:1px;
-    padding:0;
-    margin:-1px;
-    overflow:hidden;
-    clip:rect(0,0,0,0);
-    white-space:nowrap;
-    border:0;
+position:absolute;
+width:1px;
+height:1px;
+padding:0;
+margin:-1px;
+overflow:hidden;
+clip:rect(0,0,0,0);
+white-space:nowrap;
+border:0;
 }
 
 .teacher-stage{
-    width:100%;
-    height:100%;
-    max-width:900px;
-    margin:0 auto;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    overflow-y:auto;
-    overflow-x:hidden;
-    padding:12px 12px 28px;
-    background:transparent;
-    border:none;
-    border-radius:0;
-    backdrop-filter:none;
-    -webkit-backdrop-filter:none;
-    box-shadow:none;
-    scrollbar-width:thin;
-    scrollbar-color:
-        rgba(255,255,255,.42)
-        transparent;
+width:100%;
+height:100%;
+max-width:900px;
+margin:0 auto;
+display:flex;
+flex-direction:column;
+gap:12px;
+overflow-y:auto;
+overflow-x:hidden;
+padding:12px 12px 28px;
+background:transparent;
+border:none;
+border-radius:0;
+backdrop-filter:none;
+-webkit-backdrop-filter:none;
+box-shadow:none;
+scrollbar-width:thin;
+scrollbar-color:
+rgba(255,255,255,.42)
+transparent;
 }
 
 .teacher-stage::-webkit-scrollbar{
-    width:7px;
+width:7px;
 }
 
 .teacher-stage::-webkit-scrollbar-track{
-    background:transparent;
+background:transparent;
 }
 
 .teacher-stage::-webkit-scrollbar-thumb{
-    background:rgba(255,255,255,.38);
-    border-radius:999px;
+background:rgba(255,255,255,.38);
+border-radius:999px;
 }
 
 .teacher-stage::-webkit-scrollbar-thumb:hover{
-    background:rgba(255,255,255,.55);
+background:rgba(255,255,255,.55);
 }
 
-/*==================================================
-  Teacher Design System
-==================================================*/
+/*==================================================*
+*Teacher Design System
+*==================================================*/
 
 .teacher-button{
-    min-height:29px;
-    padding:4px 8px;
-    border-radius:7px;
-    font-family:inherit;
-    font-size:.58rem;
-    font-weight:900;
-    line-height:1;
-    white-space:nowrap;
-    cursor:pointer;
-    transition:
-        background .15s ease,
-        border-color .15s ease,
-        color .15s ease,
-        box-shadow .15s ease,
-        transform .15s ease,
-        filter .15s ease;
+min-height:29px;
+padding:4px 8px;
+border-radius:7px;
+font-family:inherit;
+font-size:.58rem;
+font-weight:900;
+line-height:1;
+white-space:nowrap;
+cursor:pointer;
+transition:
+background .15s ease,
+border-color .15s ease,
+color .15s ease,
+box-shadow .15s ease,
+transform .15s ease,
+filter .15s ease;
 }
 
 .teacher-button:hover{
-    transform:translateY(-1px);
+transform:translateY(-1px);
 }
 
 .teacher-button:active{
-    transform:translateY(0);
+transform:translateY(0);
 }
 
 .teacher-button:disabled{
-    cursor:not-allowed;
-    opacity:.45;
-    transform:none;
-    box-shadow:none;
+cursor:not-allowed;
+opacity:.45;
+transform:none;
+box-shadow:none;
 }
 
 .teacher-button-primary{
-    background:linear-gradient(
-        135deg,
-        #d4a017,
-        #f0c04a
-    );
-    border:1px solid rgba(120,74,0,.26);
-    color:#422006;
-    box-shadow:0 4px 10px rgba(146,64,14,.14);
+background:linear-gradient(
+135deg,
+#d4a017,
+#f0c04a
+);
+border:1px solid rgba(120,74,0,.26);
+color:#422006;
+box-shadow:0 4px 10px rgba(146,64,14,.14);
 }
 
 .teacher-button-primary:hover{
-    box-shadow:0 6px 14px rgba(146,64,14,.18);
-    filter:brightness(1.03);
+box-shadow:0 6px 14px rgba(146,64,14,.18);
+filter:brightness(1.03);
 }
 
 .teacher-button-secondary{
-    background:rgba(255,255,255,.27);
-    border:1px solid rgba(255,255,255,.44);
-    color:#0f172a;
-    box-shadow:0 3px 9px rgba(15,23,42,.06);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
+background:rgba(255,255,255,.27);
+border:1px solid rgba(255,255,255,.44);
+color:#0f172a;
+box-shadow:0 3px 9px rgba(15,23,42,.06);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
 }
 
 .teacher-button-secondary:hover{
-    background:rgba(255,255,255,.38);
-    box-shadow:0 5px 12px rgba(15,23,42,.08);
+background:rgba(255,255,255,.38);
+box-shadow:0 5px 12px rgba(15,23,42,.08);
 }
 
 .teacher-button-success{
-    background:rgba(16,185,129,.20);
-    border:1px solid rgba(5,150,105,.68);
-    color:#065f46;
+background:rgba(16,185,129,.20);
+border:1px solid rgba(5,150,105,.68);
+color:#065f46;
 }
 
 .teacher-button-warning{
-    background:rgba(245,158,11,.21);
-    border:1px solid rgba(217,119,6,.68);
-    color:#92400e;
+background:rgba(245,158,11,.21);
+border:1px solid rgba(217,119,6,.68);
+color:#92400e;
 }
 
 .teacher-button-danger{
-    background:rgba(254,226,226,.36);
-    border:1px solid rgba(220,38,38,.48);
-    color:#b91c1c;
+background:rgba(254,226,226,.36);
+border:1px solid rgba(220,38,38,.48);
+color:#b91c1c;
 }
 
 .teacher-button-danger:hover{
-    background:rgba(254,202,202,.52);
-    border-color:rgba(185,28,28,.68);
-    color:#991b1b;
+background:rgba(254,202,202,.52);
+border-color:rgba(185,28,28,.68);
+color:#991b1b;
 }
 
 .teacher-button-neutral{
-    background:rgba(226,232,240,.72);
-    border:1px solid rgba(148,163,184,.24);
-    color:#334155;
+background:rgba(226,232,240,.72);
+border:1px solid rgba(148,163,184,.24);
+color:#334155;
 }
 
 .teacher-button-neutral:hover{
-    background:rgba(203,213,225,.82);
+background:rgba(203,213,225,.82);
 }
 
 .teacher-input{
-    min-height:32px;
-    padding:6px 8px;
-    border:1px solid rgba(255,255,255,.45);
-    border-radius:8px;
-    background:rgba(255,255,255,.65);
-    color:#334155;
-    font-family:inherit;
-    font-size:.66rem;
-    line-height:1.1;
+min-height:32px;
+padding:6px 8px;
+border:1px solid rgba(255,255,255,.45);
+border-radius:8px;
+background:rgba(255,255,255,.65);
+color:#334155;
+font-family:inherit;
+font-size:.66rem;
+line-height:1.1;
 }
 
 .teacher-input::placeholder{
-    color:#64748b;
-    opacity:.85;
+color:#64748b;
+opacity:.85;
 }
 
 .teacher-input:focus{
-    outline:none;
-    border-color:rgba(212,160,23,.62);
-    box-shadow:0 0 0 2px rgba(212,160,23,.12);
+outline:none;
+border-color:rgba(212,160,23,.62);
+box-shadow:0 0 0 2px rgba(212,160,23,.12);
 }
 
 .teacher-live-status{
-    margin-top:2px;
-    color:#475569;
-    font-size:.72rem;
-    font-weight:600;
-    line-height:1.25;
+margin-top:2px;
+color:#475569;
+font-size:.72rem;
+font-weight:600;
+line-height:1.25;
 }
 
 .teacher-compact-row{
-    min-height:39px;
-    padding:4px 5px;
-    border:1px solid rgba(255,255,255,.34);
-    border-radius:9px;
-    background:rgba(255,255,255,.18);
-    box-shadow:0 3px 9px rgba(15,23,42,.045);
+min-height:39px;
+padding:4px 5px;
+border:1px solid rgba(255,255,255,.34);
+border-radius:9px;
+background:rgba(255,255,255,.18);
+box-shadow:0 3px 9px rgba(15,23,42,.045);
 }
 
 .teacher-truncate{
-    min-width:0;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+min-width:0;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
 }
+
+/*==================================================*
+*Tablet
+*==================================================*/
 
 @media(max-width:900px){
-    .teacher-app{
-        padding:6px;
-    }
 
-    .teacher-stage{
-        max-width:720px;
-        padding:10px 10px 24px;
-    }
+.teacher-app{
+padding:5px;
 }
 
+.teacher-shell{
+border-radius:16px;
+}
+
+.teacher-shell-header{
+min-height:58px;
+padding:6px 12px;
+}
+
+.teacher-shell-logo{
+height:43px;
+max-width:250px;
+}
+
+.teacher-stage{
+max-width:720px;
+padding:10px 10px 24px;
+}
+
+}
+
+/*==================================================*
+*Phone
+*==================================================*/
+
 @media(max-width:600px){
-    .teacher-app{
-        padding:4px;
-    }
 
-    .teacher-stage{
-        gap:10px;
-        padding:8px 8px 20px;
-    }
+.teacher-app{
+padding:
+4px
+4px
+max(8px,env(safe-area-inset-bottom))
+4px;
+}
 
-    .teacher-button{
-        min-height:27px;
-        padding:3px 8px;
-        font-size:.54rem;
-    }
+.teacher-shell{
+border-radius:14px;
+}
 
-    .teacher-input{
-        min-height:30px;
-        padding:5px 8px;
-        font-size:.64rem;
-    }
+.teacher-shell-header{
+min-height:50px;
+padding:5px 9px;
+gap:8px;
+}
 
-    .teacher-live-status{
-        font-size:.68rem;
-    }
+.teacher-shell-logo{
+height:36px;
+max-width:185px;
+}
+
+.teacher-shell-welcome-title{
+font-size:.68rem;
+}
+
+.teacher-shell-saying{
+margin-top:2px;
+font-size:.55rem;
+}
+
+.teacher-stage{
+gap:10px;
+padding:
+8px
+8px
+max(20px,env(safe-area-inset-bottom));
+}
+
+.teacher-button{
+min-height:27px;
+padding:3px 8px;
+font-size:.54rem;
+}
+
+.teacher-input{
+min-height:30px;
+padding:5px 8px;
+font-size:.64rem;
+}
+
+.teacher-live-status{
+font-size:.68rem;
+}
+
+}
+
+/*==================================================*
+*Very Narrow Phones
+*==================================================*/
+
+@media(max-width:400px){
+
+.teacher-shell-header{
+min-height:46px;
+padding:4px 7px;
+}
+
+.teacher-shell-logo{
+height:32px;
+max-width:155px;
+}
+
+.teacher-shell-welcome-title{
+font-size:.62rem;
+}
+
+.teacher-shell-saying{
+font-size:.5rem;
+}
+
 }
