@@ -1,0 +1,304 @@
+/*==================================================
+  Media Students
+==================================================*/
+
+
+/*==================================================
+  Student Section
+==================================================*/
+
+.teacher-media-students{
+    width:100%;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:6px;
+}
+
+
+/*==================================================
+  Heading
+==================================================*/
+
+.teacher-media-students-heading{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    gap:8px;
+}
+
+
+.teacher-media-students-heading strong{
+    color:#0f172a;
+
+    font-size:.65rem;
+    font-weight:900;
+}
+
+
+.teacher-media-students-heading span{
+    color:#64748b;
+
+    font-size:.55rem;
+    font-weight:700;
+}
+
+
+/*==================================================
+  Student List
+==================================================*/
+
+.teacher-media-student-list{
+    max-height:165px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0,1fr)
+        );
+
+    gap:5px;
+
+    overflow-y:auto;
+
+    padding:1px;
+}
+
+
+/*==================================================
+  Student Button
+==================================================*/
+
+.teacher-media-student-button{
+    min-width:0;
+    min-height:42px;
+
+    display:grid;
+
+    grid-template-columns:
+        30px
+        minmax(0,1fr)
+        18px;
+
+    align-items:center;
+
+    gap:6px;
+
+    padding:5px 7px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .48
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .64
+        );
+
+    border-radius:8px;
+
+    color:#0f172a;
+
+    font:inherit;
+    text-align:left;
+
+    cursor:pointer;
+
+    transition:
+        background .15s ease,
+        border-color .15s ease;
+}
+
+
+.teacher-media-student-button:hover{
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .68
+        );
+}
+
+
+.teacher-media-student-button.is-selected{
+    background:
+        rgba(
+            45,
+            212,
+            191,
+            .18
+        );
+
+    border-color:
+        rgba(
+            13,
+            148,
+            136,
+            .48
+        );
+}
+
+
+/*==================================================
+  Student Avatar
+==================================================*/
+
+.teacher-media-student-avatar{
+    width:30px;
+    height:30px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .60
+        );
+
+    border-radius:999px;
+
+    color:#475569;
+
+    font-size:.58rem;
+    font-weight:900;
+}
+
+
+.teacher-media-student-button.is-selected
+.teacher-media-student-avatar{
+    background:
+        rgba(
+            13,
+            148,
+            136,
+            .16
+        );
+
+    color:#0f766e;
+}
+
+
+/*==================================================
+  Student Details
+==================================================*/
+
+.teacher-media-student-details{
+    min-width:0;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:1px;
+}
+
+
+.teacher-media-student-details strong{
+    overflow:hidden;
+
+    color:#0f172a;
+
+    font-size:.60rem;
+    font-weight:850;
+
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+
+/*==================================================
+  Selected Mark
+==================================================*/
+
+.teacher-media-student-mark{
+    width:18px;
+
+    color:#0f766e;
+
+    font-size:.72rem;
+    font-weight:900;
+
+    text-align:center;
+}
+
+
+/*==================================================
+  Find Student
+==================================================*/
+
+.teacher-media-find-student{
+    border-style:dashed;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .28
+        );
+}
+
+
+.teacher-media-find-student
+.teacher-media-student-avatar{
+    font-size:.9rem;
+    font-weight:700;
+}
+
+
+.teacher-media-find-student
+.teacher-media-student-details strong{
+    color:#0f766e;
+}
+
+
+/*==================================================
+  Mobile
+==================================================*/
+
+@media(max-width:600px){
+
+    .teacher-media-student-list{
+        max-height:155px;
+
+        gap:4px;
+    }
+
+
+    .teacher-media-student-button{
+        min-height:40px;
+
+        grid-template-columns:
+            27px
+            minmax(0,1fr)
+            16px;
+
+        gap:5px;
+
+        padding:4px 6px;
+    }
+
+
+    .teacher-media-student-avatar{
+        width:27px;
+        height:27px;
+    }
+}
