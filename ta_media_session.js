@@ -1,5 +1,37 @@
- const mediaSession={
+const mediaSession={
     taskContext:null,
+
+    //------------------------------------
+    // Session Selection
+    //------------------------------------
+
+    availableSessions:[],
+
+    selectedSession:null,
+
+    sessionId:null,
+
+    isLoadingSessions:false,
+
+    sessionLoadError:null,
+
+    //------------------------------------
+    // Media Task Data
+    //------------------------------------
+
+    user:null,
+
+    studentsBySession:[],
+
+    studentsByLocation:[],
+
+    isLoadingTask:false,
+
+    taskLoadError:null,
+
+    //------------------------------------
+    // Selected Media
+    //------------------------------------
 
     items:[],
 
@@ -11,6 +43,86 @@ export function getMediaSession(){
     return mediaSession;
 }
 
+
+/*==================================================
+  Session Data
+==================================================*/
+
+export function setAvailableSessions(
+    sessions
+){
+    mediaSession.availableSessions=
+        Array.isArray(
+            sessions
+        )
+            ?sessions
+            :[];
+}
+
+
+export function selectMediaSession(
+    session
+){
+    mediaSession.selectedSession=
+        session||null;
+
+    mediaSession.sessionId=
+        session?.id||
+        null;
+}
+
+
+export function clearSelectedMediaSession(){
+    mediaSession.selectedSession=
+        null;
+
+    mediaSession.sessionId=
+        null;
+
+    mediaSession.user=
+        null;
+
+    mediaSession.studentsBySession=
+        [];
+
+    mediaSession.studentsByLocation=
+        [];
+
+    mediaSession.taskLoadError=
+        null;
+}
+
+
+/*==================================================
+  Media Task Data
+==================================================*/
+
+export function applyMediaTaskData(
+    data
+){
+    mediaSession.user=
+        data?.user||
+        null;
+
+    mediaSession.studentsBySession=
+        Array.isArray(
+            data?.studentsBySession
+        )
+            ?data.studentsBySession
+            :[];
+
+    mediaSession.studentsByLocation=
+        Array.isArray(
+            data?.studentsByLocation
+        )
+            ?data.studentsByLocation
+            :[];
+}
+
+
+/*==================================================
+  Media Files
+==================================================*/
 
 export function addMediaFiles(
     files
@@ -83,6 +195,10 @@ export function getActiveMedia(){
     );
 }
 
+
+/*==================================================
+  Media Details
+==================================================*/
 
 export function setActiveMediaType(
     mediaType
@@ -171,6 +287,10 @@ export function markActiveMediaComplete(){
     );
 }
 
+
+/*==================================================
+  Helpers
+==================================================*/
 
 function updateInfoComplete(
     item
