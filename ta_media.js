@@ -19,20 +19,13 @@ import{
 export function renderMediaModule(
     taskContext=null
 ){
-    clearWorkspace();
-
-    const workspace=
-        getWorkspace();
-
-    if(!workspace){
-        return;
-    }
-
     const session=
         getMediaSession();
 
     session.taskContext=
         taskContext;
+
+    clearWorkspace();
 
     renderCurrentView();
 }
@@ -47,6 +40,11 @@ export function renderCurrentView(){
     }
 
     workspace.innerHTML='';
+
+
+    //------------------------------------
+    // Main Container
+    //------------------------------------
 
     const container=
         document.createElement(
@@ -96,14 +94,13 @@ export function renderCurrentView(){
         description
     );
 
-
     container.appendChild(
         intro
     );
 
 
     //------------------------------------
-    // Capture Area
+    // Media Capture
     //------------------------------------
 
     renderMediaCapture(
@@ -116,13 +113,17 @@ export function renderCurrentView(){
 
 
     //------------------------------------
-    // Selected Preview
+    // Selected Media Preview
     //------------------------------------
 
     renderMediaPreview(
         container
     );
 
+
+    //------------------------------------
+    // Render
+    //------------------------------------
 
     workspace.appendChild(
         container
