@@ -108,7 +108,7 @@ box-shadow:none;
 }
 
 /*==================================================*
-*Header - Saying Right
+*Header - Quote Right
 *==================================================*/
 
 .teacher-shell-saying{
@@ -125,15 +125,111 @@ justify-content:center;
 
 color:#0f172a;
 
+text-align:center;
+}
+
+/*==================================================*
+*Quote Layout
+*==================================================*/
+
+.teacher-quote-layout{
+width:100%;
+min-width:0;
+
+display:grid;
+
+grid-template-columns:
+auto
+minmax(0,1fr);
+
+align-items:center;
+justify-content:center;
+
+column-gap:5px;
+}
+
+/*==================================================*
+*Large Opening Quote
+*==================================================*/
+
+.teacher-quote-mark{
+align-self:center;
+
+color:#765300;
+
+font-family:
+Georgia,
+"Times New Roman",
+serif;
+
+font-size:2.25rem;
+font-weight:900;
+line-height:.7;
+
+transform:translateY(2px);
+}
+
+/*==================================================*
+*Quote Content
+*==================================================*/
+
+.teacher-quote-content{
+min-width:0;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+}
+
+.teacher-quote-copy{
+min-width:0;
+width:100%;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+
+color:#0f172a;
+
 font-size:.68rem;
-font-weight:700;
-line-height:1.2;
+font-weight:800;
+line-height:1.08;
 
 text-align:center;
+}
+
+.teacher-quote-line{
+display:block;
+width:100%;
 
 white-space:normal;
 overflow-wrap:break-word;
 word-break:normal;
+}
+
+/*==================================================*
+*Quote Emojis
+*==================================================*/
+
+.teacher-quote-emojis{
+margin-top:3px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+gap:7px;
+
+line-height:1;
+}
+
+.teacher-quote-emoji{
+display:inline-block;
+
+font-size:.72rem;
+line-height:1;
 }
 
 /*==================================================*
@@ -163,8 +259,16 @@ font-size:.64rem;
 font-size:.78rem;
 }
 
-.teacher-shell-saying{
-font-size:.64rem;
+.teacher-quote-mark{
+font-size:2rem;
+}
+
+.teacher-quote-copy{
+font-size:.62rem;
+}
+
+.teacher-quote-emoji{
+font-size:.68rem;
 }
 
 }
@@ -176,7 +280,7 @@ font-size:.64rem;
 @media(max-width:600px){
 
 .teacher-shell-header{
-min-height:54px;
+min-height:58px;
 
 padding:
 4px
@@ -196,9 +300,28 @@ font-size:.56rem;
 font-size:.68rem;
 }
 
-.teacher-shell-saying{
-font-size:.56rem;
-line-height:1.15;
+.teacher-quote-layout{
+column-gap:3px;
+}
+
+.teacher-quote-mark{
+font-size:1.8rem;
+line-height:.7;
+}
+
+.teacher-quote-copy{
+font-size:.54rem;
+font-weight:800;
+line-height:1.08;
+}
+
+.teacher-quote-emojis{
+margin-top:2px;
+gap:5px;
+}
+
+.teacher-quote-emoji{
+font-size:.62rem;
 }
 
 }
@@ -210,7 +333,7 @@ line-height:1.15;
 @media(max-width:400px){
 
 .teacher-shell-header{
-min-height:50px;
+min-height:56px;
 
 padding:
 4px
@@ -229,9 +352,20 @@ font-size:.51rem;
 font-size:.62rem;
 }
 
-.teacher-shell-saying{
-font-size:.51rem;
-line-height:1.12;
+.teacher-quote-mark{
+font-size:1.6rem;
+}
+
+.teacher-quote-copy{
+font-size:.49rem;
+}
+
+.teacher-quote-emojis{
+gap:4px;
+}
+
+.teacher-quote-emoji{
+font-size:.57rem;
 }
 
 }
