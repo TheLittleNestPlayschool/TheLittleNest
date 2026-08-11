@@ -1,11 +1,9 @@
-
 export function renderMediaSessionSelect(
     container,
     context
 ){
     const{
         sessions=[],
-        selectedSession=null,
         actions
     }=context;
 
@@ -65,17 +63,8 @@ export function renderMediaSessionSelect(
 
 
     //------------------------------------
-    // Session Options
+    // Session Dropdown
     //------------------------------------
-
-    const list=
-        document.createElement(
-            'div'
-        );
-
-    list.className=
-        'teacher-media-session-list';
-
 
     const activeSessions=
         getAvailableSessions(
@@ -95,105 +84,130 @@ export function renderMediaSessionSelect(
         empty.textContent=
             'No sessions are available.';
 
-        list.appendChild(
+
+        section.appendChild(
             empty
         );
 
-    }else{
-        activeSessions.forEach(
-            session=>{
-                list.appendChild(
-                    createSessionButton(
-                        session,
-                        selectedSession,
-                        actions
-                    )
-                );
-            }
+
+        container.appendChild(
+            section
         );
+
+        return;
     }
 
 
+    const select=
+        document.createElement(
+            'select'
+        );
+
+    select.className=
+        'teacher-media-session-select-input';
+
+
+    //------------------------------------
+    // Placeholder
+    //------------------------------------
+
+    const placeholder=
+        document.createElement(
+            'option'
+        );
+
+    placeholder.value='';
+
+    placeholder.textContent=
+        'Choose a session...';
+
+    placeholder.disabled=
+        true;
+
+    placeholder.selected=
+        true;
+
+
+    select.appendChild(
+        placeholder
+    );
+
+
+    //------------------------------------
+    // Options
+    //------------------------------------
+
+    activeSessions.forEach(
+        session=>{
+            const option=
+                document.createElement(
+                    'option'
+                );
+
+            option.value=
+                String(
+                    session.id
+                );
+
+            option.textContent=
+                getSessionLabel(
+                    session
+                );
+
+
+            select.appendChild(
+                option
+            );
+        }
+    );
+
+
+    //------------------------------------
+    // Selection
+    //------------------------------------
+
+    select.addEventListener(
+        'change',
+        ()=>{
+            const sessionId=
+                Number(
+                    select.value
+                );
+
+
+            const selectedSession=
+                activeSessions.find(
+                    session=>{
+                        return(
+                            Number(
+                                session.id
+                            )===
+                            sessionId
+                        );
+                    }
+                );
+
+
+            if(!selectedSession){
+                return;
+            }
+
+
+            actions.selectSession(
+                selectedSession
+            );
+        }
+    );
+
+
     section.appendChild(
-        list
+        select
     );
 
 
     container.appendChild(
         section
     );
-}
-
-
-function createSessionButton(
-    session,
-    selectedSession,
-    actions
-){
-    const button=
-        document.createElement(
-            'button'
-        );
-
-    button.type=
-        'button';
-
-    button.className=
-        'teacher-media-session-button';
-
-
-    if(
-        selectedSession?.id===
-        session?.id
-    ){
-        button.classList.add(
-            'is-selected'
-        );
-    }
-
-
-    const time=
-        document.createElement(
-            'strong'
-        );
-
-    time.textContent=
-        getSessionTime(
-            session
-        );
-
-
-    const date=
-        document.createElement(
-            'span'
-        );
-
-    date.textContent=
-        getSessionDate(
-            session
-        );
-
-
-    button.appendChild(
-        time
-    );
-
-    button.appendChild(
-        date
-    );
-
-
-    button.addEventListener(
-        'click',
-        ()=>{
-            actions.selectSession(
-                session
-            );
-        }
-    );
-
-
-    return button;
 }
 
 
@@ -216,6 +230,37 @@ function getAvailableSessions(
                 session.id
             );
         }
+    );
+}
+
+
+function getSessionLabel(
+    session
+){
+    const date=
+        getSessionDate(
+            session
+        );
+
+    const time=
+        getSessionTime(
+            session
+        );
+
+
+    if(
+        date&&
+        time
+    ){
+        return`${date} · ${time}`;
+    }
+
+
+    return(
+        time||
+        date||
+        session?.name||
+        `Session ${session?.id||''}`
     );
 }
 
@@ -247,8 +292,7 @@ function getSessionTime(
     return(
         start||
         end||
-        session?.name||
-        `Session ${session?.id||''}`
+        ''
     );
 }
 
