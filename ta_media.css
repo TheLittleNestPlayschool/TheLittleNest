@@ -9,6 +9,8 @@
 
 
 .teacher-media{
+    position:relative;
+
     width:100%;
     max-width:680px;
 
@@ -52,143 +54,6 @@
     font-size:.72rem;
     font-weight:600;
     line-height:1.35;
-}
-
-
-/*==================================================
-  Capture Actions
-==================================================*/
-
-.teacher-media-actions{
-    display:grid;
-
-    grid-template-columns:
-        repeat(
-            3,
-            minmax(0,1fr)
-        );
-
-    gap:7px;
-}
-
-
-.teacher-media-action{
-    min-width:0;
-    min-height:62px;
-
-    display:flex;
-    align-items:center;
-
-    gap:8px;
-
-    padding:8px;
-
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .42
-        );
-
-    border:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            .52
-        );
-
-    border-radius:11px;
-
-    color:#0f172a;
-
-    font:inherit;
-    text-align:left;
-
-    cursor:pointer;
-
-    transition:
-        transform .15s ease,
-        background .15s ease;
-}
-
-
-.teacher-media-action:hover{
-    transform:
-        translateY(-1px);
-
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .64
-        );
-}
-
-
-.teacher-media-action:active{
-    transform:
-        translateY(0);
-}
-
-
-/*==================================================
-  Capture Action Icon
-==================================================*/
-
-.teacher-media-action-icon{
-    flex:0 0 auto;
-
-    width:34px;
-    height:34px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .52
-        );
-
-    border-radius:9px;
-
-    font-size:1.15rem;
-}
-
-
-/*==================================================
-  Capture Action Text
-==================================================*/
-
-.teacher-media-action-text{
-    min-width:0;
-
-    display:flex;
-    flex-direction:column;
-
-    gap:2px;
-}
-
-
-.teacher-media-action-text strong{
-    font-size:.68rem;
-    font-weight:900;
-}
-
-
-.teacher-media-action-text small{
-    color:#64748b;
-
-    font-size:.55rem;
-    font-weight:650;
-    line-height:1.2;
 }
 
 
@@ -242,16 +107,19 @@
 
 
 /*==================================================
-  Media Workspace
+  Empty State
 ==================================================*/
 
-.teacher-media-workspace{
-    min-height:125px;
+.teacher-media-empty{
+    min-height:103px;
 
     display:flex;
     flex-direction:column;
 
-    gap:10px;
+    align-items:center;
+    justify-content:center;
+
+    gap:5px;
 
     padding:10px;
 
@@ -273,23 +141,6 @@
         );
 
     border-radius:11px;
-}
-
-
-/*==================================================
-  Empty State
-==================================================*/
-
-.teacher-media-empty{
-    min-height:103px;
-
-    display:flex;
-    flex-direction:column;
-
-    align-items:center;
-    justify-content:center;
-
-    gap:5px;
 
     color:#64748b;
 
@@ -407,6 +258,10 @@
 }
 
 
+/*==================================================
+  Video Marker
+==================================================*/
+
 .teacher-media-video-mark{
     position:absolute;
 
@@ -444,23 +299,29 @@
 
 
 /*==================================================
-  Selected Media
+  Info Badge
 ==================================================*/
 
-.teacher-media-selected{
+.teacher-media-info-badge{
+    position:absolute;
+
+    top:5px;
+    right:5px;
+
+    width:20px;
+    height:20px;
+
     display:flex;
-    flex-direction:column;
 
-    gap:7px;
-
-    padding:9px;
+    align-items:center;
+    justify-content:center;
 
     background:
         rgba(
-            255,
-            255,
-            255,
-            .22
+            15,
+            118,
+            110,
+            .90
         );
 
     border:
@@ -469,43 +330,207 @@
             255,
             255,
             255,
-            .38
+            .75
         );
 
-    border-radius:11px;
+    border-radius:999px;
+
+    box-shadow:
+        0 2px 6px
+        rgba(
+            15,
+            23,
+            42,
+            .20
+        );
+
+    color:#fff;
+
+    font-family:Georgia,serif;
+
+    font-size:.68rem;
+    font-style:italic;
+    font-weight:900;
+    line-height:1;
 }
 
 
-.teacher-media-selected-heading{
+/*==================================================
+  Editor Overlay
+==================================================*/
+
+.teacher-media-overlay{
+    position:absolute;
+
+    inset:0;
+
+    z-index:20;
+
+    display:flex;
+
+    align-items:flex-start;
+    justify-content:center;
+
+    padding:12px;
+
+    background:
+        rgba(
+            15,
+            23,
+            42,
+            .16
+        );
+
+    backdrop-filter:
+        blur(3px);
+
+    -webkit-backdrop-filter:
+        blur(3px);
+
+    border-radius:12px;
+}
+
+
+/*==================================================
+  Editor Panel
+==================================================*/
+
+.teacher-media-editor-panel{
+    width:100%;
+    max-width:560px;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:9px;
+
+    padding:10px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .72
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .82
+        );
+
+    border-radius:14px;
+
+    box-shadow:
+        0 12px 32px
+        rgba(
+            15,
+            23,
+            42,
+            .18
+        );
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+}
+
+
+/*==================================================
+  Editor Header
+==================================================*/
+
+.teacher-media-editor-header{
     min-width:0;
 
     display:flex;
 
-    align-items:center;
+    align-items:flex-start;
     justify-content:space-between;
 
     gap:8px;
 }
 
 
-.teacher-media-selected-heading strong{
-    font-size:.7rem;
+.teacher-media-editor-heading{
+    min-width:0;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:2px;
+}
+
+
+.teacher-media-editor-heading strong{
+    color:#0f172a;
+
+    font-size:.72rem;
     font-weight:900;
 }
 
 
-.teacher-media-selected-heading span{
-    min-width:0;
+.teacher-media-editor-heading span{
+    max-width:100%;
 
     overflow:hidden;
 
     color:#64748b;
 
-    font-size:.56rem;
+    font-size:.55rem;
     font-weight:650;
 
     text-overflow:ellipsis;
     white-space:nowrap;
+}
+
+
+.teacher-media-editor-close{
+    flex:0 0 auto;
+
+    width:28px;
+    height:28px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:0;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .58
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .72
+        );
+
+    border-radius:8px;
+
+    color:#475569;
+
+    font:inherit;
+
+    font-size:1rem;
+    font-weight:700;
+
+    cursor:pointer;
 }
 
 
@@ -515,7 +540,7 @@
 
 .teacher-media-large-preview{
     width:100%;
-    height:280px;
+    height:250px;
 
     display:flex;
 
@@ -529,10 +554,10 @@
             255,
             255,
             255,
-            .30
+            .36
         );
 
-    border-radius:9px;
+    border-radius:10px;
 }
 
 
@@ -548,7 +573,7 @@
 
 
 /*==================================================
-  Future Controls
+  Temporary Controls
 ==================================================*/
 
 .teacher-media-controls-placeholder{
@@ -559,10 +584,19 @@
             255,
             255,
             255,
-            .28
+            .42
         );
 
-    border-radius:8px;
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .52
+        );
+
+    border-radius:9px;
 
     color:#64748b;
 
@@ -574,6 +608,53 @@
 
 
 /*==================================================
+  Editor Actions
+==================================================*/
+
+.teacher-media-editor-actions{
+    display:flex;
+
+    justify-content:flex-end;
+}
+
+
+.teacher-media-editor-done{
+    min-width:90px;
+    min-height:34px;
+
+    padding:6px 12px;
+
+    background:
+        rgba(
+            15,
+            118,
+            110,
+            .88
+        );
+
+    border:
+        1px solid
+        rgba(
+            15,
+            118,
+            110,
+            .95
+        );
+
+    border-radius:8px;
+
+    color:#fff;
+
+    font:inherit;
+
+    font-size:.62rem;
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+
+/*==================================================
   Mobile
 ==================================================*/
 
@@ -581,50 +662,6 @@
 
     .teacher-media{
         gap:8px;
-    }
-
-
-    .teacher-media-actions{
-        grid-template-columns:
-            repeat(
-                3,
-                minmax(0,1fr)
-            );
-
-        gap:5px;
-    }
-
-
-    .teacher-media-action{
-        min-height:58px;
-
-        flex-direction:column;
-
-        justify-content:center;
-
-        gap:3px;
-
-        padding:6px;
-
-        text-align:center;
-    }
-
-
-    .teacher-media-action-icon{
-        width:28px;
-        height:28px;
-
-        font-size:.95rem;
-    }
-
-
-    .teacher-media-action-text strong{
-        font-size:.61rem;
-    }
-
-
-    .teacher-media-action-text small{
-        display:none;
     }
 
 
@@ -644,8 +681,20 @@
     }
 
 
+    .teacher-media-overlay{
+        padding:8px;
+    }
+
+
+    .teacher-media-editor-panel{
+        padding:8px;
+
+        gap:7px;
+    }
+
+
     .teacher-media-large-preview{
-        height:240px;
+        height:230px;
     }
 }
 
@@ -658,5 +707,10 @@
                 3,
                 minmax(0,1fr)
             );
+    }
+
+
+    .teacher-media-large-preview{
+        height:210px;
     }
 }
