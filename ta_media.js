@@ -1,135 +1,213 @@
-import{
-    getWorkspace,
-    clearWorkspace
-}from'./ta_ui.js';
+const MEDIA_SESSION_API=
+    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_get_session';
 
-import{
-    getMediaSession
-}from'./ta_media_session.js';
-
-import{
-    renderMediaCapture
-}from'./ta_media_capture.js';
-
-import{
-    renderMediaPreview
-}from'./ta_media_preview.js';
+const MEDIA_TASK_API=
+    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_get_media_task';
 
 
-export function renderMediaModule(
-    taskContext=null
+export async function loadMediaSessions(
+    state
 ){
-    const session=
-        getMediaSession();
+    const response=
+        await fetch(
+            MEDIA_SESSION_API,
+            {
+                method:
+                    'GET',
 
-    session.taskContext=
-        taskContext;
+                headers:
+                    buildRequestHeaders(
+                        state
+                    )
+            }
+        );
 
-    clearWorkspace();
 
-    renderCurrentView();
+    const responseData=
+        await readResponseData(
+            response
+        );
+
+
+    if(!response.ok){
+        throw new Error(
+            getApiErrorMessage(
+                responseData,
+                'Unable to load sessions.'
+            )
+        );
+    }
+
+
+    return{
+        sessions:
+            Array.isArray(
+                responseData?.sessions
+            )
+                ?responseData.sessions
+                :[]
+    };
 }
 
 
-export function renderCurrentView(){
-    const workspace=
-        getWorkspace();
+export async function loadMediaTaskData(
+    sessionId,
+    state
+){
+    const url=
+        new URL(
+            MEDIA_TASK_API
+        );
 
-    if(!workspace){
-        return;
+
+    url.searchParams.set(
+        'session_id',
+        sessionId
+    );
+
+
+    const response=
+        await fetch(
+            url.toString(),
+            {
+                method:
+                    'GET',
+
+                headers:
+                    buildRequestHeaders(
+                        state
+                    )
+            }
+        );
+
+
+    const responseData=
+        await readResponseData(
+            response
+        );
+
+
+    if(!response.ok){
+        throw new Error(
+            getApiErrorMessage(
+                responseData,
+                'Unable to load media task.'
+            )
+        );
     }
 
-    workspace.innerHTML='';
+
+    return{
+        user:
+            responseData?.user||
+            null,
+
+        studentsBySession:
+            Array.isArray(
+                responseData
+                    ?.students_by_session
+            )
+                ?responseData
+                    .students_by_session
+                :[],
+
+        studentsByLocation:
+            Array.isArray(
+                responseData
+                    ?.students_by_location
+            )
+                ?responseData
+                    .students_by_location
+                :(
+                    Array.isArray(
+                        responseData
+                            ?.student_by_location
+                    )
+                        ?responseData
+                            .student_by_location
+                        :[]
+                )
+    };
+}
 
 
-    //------------------------------------
-    // Main Container
-    //------------------------------------
+function buildRequestHeaders(
+    state
+){
+    const headers={
+        Accept:
+            'application/json'
+    };
 
-    const container=
-        document.createElement(
-            'section'
+
+    const authToken=
+        getAuthToken(
+            state
         );
 
-    container.className=
-        'teacher-media';
+
+    if(authToken){
+        headers.Authorization=
+            `Bearer ${authToken}`;
+    }
 
 
-    //------------------------------------
-    // Introduction
-    //------------------------------------
+    return headers;
+}
 
-    const intro=
-        document.createElement(
-            'div'
+
+function getAuthToken(
+    state
+){
+    return(
+        state?.authToken||
+        state?.auth_token||
+        state?.context?.authToken||
+        state?.context?.auth_token||
+        window.localStorage.getItem(
+            'authToken'
+        )||
+        window.localStorage.getItem(
+            'auth_token'
+        )||
+        ''
+    );
+}
+
+
+async function readResponseData(
+    response
+){
+    const responseText=
+        await response.text();
+
+
+    if(!responseText){
+        return null;
+    }
+
+
+    try{
+        return JSON.parse(
+            responseText
         );
 
-    intro.className=
-        'teacher-media-intro';
+    }catch(error){
+        return{
+            message:
+                responseText
+        };
+    }
+}
 
 
-    const title=
-        document.createElement(
-            'h3'
-        );
-
-    title.textContent=
-        'Capture Moments';
-
-
-    const description=
-        document.createElement(
-            'p'
-        );
-
-    description.textContent=
-        'Add photos and videos from today.';
-
-
-    intro.appendChild(
-        title
-    );
-
-    intro.appendChild(
-        description
-    );
-
-    container.appendChild(
-        intro
-    );
-
-
-    //------------------------------------
-    // Media Capture
-    //------------------------------------
-
-    renderMediaCapture(
-        container,
-        {
-            refresh:
-                renderCurrentView
-        }
-    );
-
-
-    //------------------------------------
-    // Selected Media Preview
-    //------------------------------------
-
-    renderMediaPreview(
-        container,
-        {
-            refresh:
-                renderCurrentView
-        }
-    );
-
-
-    //------------------------------------
-    // Render
-    //------------------------------------
-
-    workspace.appendChild(
-        container
+function getApiErrorMessage(
+    responseData,
+    fallbackMessage
+){
+    return(
+        responseData?.message||
+        responseData?.error||
+        fallbackMessage
     );
 }
