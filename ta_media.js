@@ -1,213 +1,414 @@
-const MEDIA_SESSION_API=
-    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_get_session';
+import{
+    getState
+}from'./ta_state.js';
 
-const MEDIA_TASK_API=
-    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_get_media_task';
+import{
+    getWorkspace,
+    clearWorkspace
+}from'./ta_ui.js';
+
+import{
+    getMediaSession,
+    setAvailableSessions,
+    selectMediaSession,
+    applyMediaTaskData
+}from'./ta_media_session.js';
+
+import{
+    loadMediaSessions,
+    loadMediaTaskData
+}from'./ta_media_data.js';
+
+import{
+    renderMediaSessionSelect
+}from'./ta_media_session_select.js';
+
+import{
+    renderMediaCapture
+}from'./ta_media_capture.js';
+
+import{
+    renderMediaPreview
+}from'./ta_media_preview.js';
 
 
-export async function loadMediaSessions(
-    state
+export async function renderMediaModule(
+    taskContext=null
 ){
-    const response=
-        await fetch(
-            MEDIA_SESSION_API,
-            {
-                method:
-                    'GET',
+    const session=
+        getMediaSession();
 
-                headers:
-                    buildRequestHeaders(
-                        state
-                    )
-            }
-        );
+    session.taskContext=
+        taskContext;
+
+    clearWorkspace();
 
 
-    const responseData=
-        await readResponseData(
-            response
-        );
+    //------------------------------------
+    // Load Session Choices
+    //------------------------------------
 
+    if(
+        !session.availableSessions.length&&
+        !session.isLoadingSessions
+    ){
+        session.isLoadingSessions=
+            true;
 
-    if(!response.ok){
-        throw new Error(
-            getApiErrorMessage(
-                responseData,
-                'Unable to load sessions.'
-            )
-        );
+        session.sessionLoadError=
+            null;
+
+        renderCurrentView();
+
+        try{
+            const data=
+                await loadMediaSessions(
+                    getState()
+                );
+
+            setAvailableSessions(
+                data.sessions
+            );
+
+        }catch(error){
+            console.error(
+                'Media sessions load failed:',
+                error
+            );
+
+            session.sessionLoadError=
+                error instanceof Error
+                    ?error.message
+                    :'Unable to load sessions.';
+
+        }finally{
+            session.isLoadingSessions=
+                false;
+
+            renderCurrentView();
+        }
+
+        return;
     }
 
 
-    return{
-        sessions:
-            Array.isArray(
-                responseData?.sessions
-            )
-                ?responseData.sessions
-                :[]
-    };
+    renderCurrentView();
 }
 
 
-export async function loadMediaTaskData(
-    sessionId,
-    state
-){
-    const url=
-        new URL(
-            MEDIA_TASK_API
+export function renderCurrentView(){
+    const workspace=
+        getWorkspace();
+
+    if(!workspace){
+        return;
+    }
+
+
+    const session=
+        getMediaSession();
+
+
+    workspace.innerHTML='';
+
+
+    //------------------------------------
+    // Main Container
+    //------------------------------------
+
+    const container=
+        document.createElement(
+            'section'
         );
 
+    container.className=
+        'teacher-media';
 
-    url.searchParams.set(
-        'session_id',
-        sessionId
+
+    //------------------------------------
+    // Introduction
+    //------------------------------------
+
+    const intro=
+        document.createElement(
+            'div'
+        );
+
+    intro.className=
+        'teacher-media-intro';
+
+
+    const title=
+        document.createElement(
+            'h3'
+        );
+
+    title.textContent=
+        'Capture Moments';
+
+
+    const description=
+        document.createElement(
+            'p'
+        );
+
+    description.textContent=
+        'Add photos and videos from today.';
+
+
+    intro.appendChild(
+        title
+    );
+
+    intro.appendChild(
+        description
+    );
+
+    container.appendChild(
+        intro
     );
 
 
-    const response=
-        await fetch(
-            url.toString(),
-            {
-                method:
-                    'GET',
+    //------------------------------------
+    // Loading Sessions
+    //------------------------------------
 
-                headers:
-                    buildRequestHeaders(
-                        state
-                    )
+    if(
+        session.isLoadingSessions
+    ){
+        const message=
+            document.createElement(
+                'p'
+            );
+
+        message.className=
+            'teacher-media-message';
+
+        message.textContent=
+            'Loading sessions...';
+
+        container.appendChild(
+            message
+        );
+
+        workspace.appendChild(
+            container
+        );
+
+        return;
+    }
+
+
+    //------------------------------------
+    // Session Load Error
+    //------------------------------------
+
+    if(
+        session.sessionLoadError
+    ){
+        const message=
+            document.createElement(
+                'p'
+            );
+
+        message.className=
+            'teacher-media-message teacher-media-message-error';
+
+        message.textContent=
+            session.sessionLoadError;
+
+        container.appendChild(
+            message
+        );
+
+        workspace.appendChild(
+            container
+        );
+
+        return;
+    }
+
+
+    //------------------------------------
+    // Select Session
+    //------------------------------------
+
+    if(
+        !session.sessionId
+    ){
+        renderMediaSessionSelect(
+            container,
+            {
+                sessions:
+                    session.availableSessions,
+
+                selectedSession:
+                    session.selectedSession,
+
+                actions:{
+                    selectSession:
+                        handleSessionSelection
+                }
             }
         );
 
-
-    const responseData=
-        await readResponseData(
-            response
+        workspace.appendChild(
+            container
         );
 
-
-    if(!response.ok){
-        throw new Error(
-            getApiErrorMessage(
-                responseData,
-                'Unable to load media task.'
-            )
-        );
+        return;
     }
 
 
-    return{
-        user:
-            responseData?.user||
-            null,
+    //------------------------------------
+    // Loading Media Task
+    //------------------------------------
 
-        studentsBySession:
-            Array.isArray(
-                responseData
-                    ?.students_by_session
-            )
-                ?responseData
-                    .students_by_session
-                :[],
+    if(
+        session.isLoadingTask
+    ){
+        const message=
+            document.createElement(
+                'p'
+            );
 
-        studentsByLocation:
-            Array.isArray(
-                responseData
-                    ?.students_by_location
-            )
-                ?responseData
-                    .students_by_location
-                :(
-                    Array.isArray(
-                        responseData
-                            ?.student_by_location
-                    )
-                        ?responseData
-                            .student_by_location
-                        :[]
-                )
-    };
-}
+        message.className=
+            'teacher-media-message';
 
+        message.textContent=
+            'Preparing media task...';
 
-function buildRequestHeaders(
-    state
-){
-    const headers={
-        Accept:
-            'application/json'
-    };
-
-
-    const authToken=
-        getAuthToken(
-            state
+        container.appendChild(
+            message
         );
 
+        workspace.appendChild(
+            container
+        );
 
-    if(authToken){
-        headers.Authorization=
-            `Bearer ${authToken}`;
+        return;
     }
 
 
-    return headers;
-}
+    //------------------------------------
+    // Media Task Load Error
+    //------------------------------------
+
+    if(
+        session.taskLoadError
+    ){
+        const message=
+            document.createElement(
+                'p'
+            );
+
+        message.className=
+            'teacher-media-message teacher-media-message-error';
+
+        message.textContent=
+            session.taskLoadError;
+
+        container.appendChild(
+            message
+        );
+
+        workspace.appendChild(
+            container
+        );
+
+        return;
+    }
 
 
-function getAuthToken(
-    state
-){
-    return(
-        state?.authToken||
-        state?.auth_token||
-        state?.context?.authToken||
-        state?.context?.auth_token||
-        window.localStorage.getItem(
-            'authToken'
-        )||
-        window.localStorage.getItem(
-            'auth_token'
-        )||
-        ''
+    //------------------------------------
+    // Media Capture
+    //------------------------------------
+
+    renderMediaCapture(
+        container,
+        {
+            refresh:
+                renderCurrentView
+        }
+    );
+
+
+    //------------------------------------
+    // Media Editor Overlay
+    //------------------------------------
+
+    renderMediaPreview(
+        container,
+        {
+            refresh:
+                renderCurrentView
+        }
+    );
+
+
+    //------------------------------------
+    // Render
+    //------------------------------------
+
+    workspace.appendChild(
+        container
     );
 }
 
 
-async function readResponseData(
-    response
+async function handleSessionSelection(
+    selectedSession
 ){
-    const responseText=
-        await response.text();
-
-
-    if(!responseText){
-        return null;
+    if(!selectedSession){
+        return;
     }
+
+
+    const session=
+        getMediaSession();
+
+
+    selectMediaSession(
+        selectedSession
+    );
+
+
+    session.isLoadingTask=
+        true;
+
+    session.taskLoadError=
+        null;
+
+
+    renderCurrentView();
 
 
     try{
-        return JSON.parse(
-            responseText
+        const data=
+            await loadMediaTaskData(
+                session.sessionId,
+                getState()
+            );
+
+        applyMediaTaskData(
+            data
         );
 
     }catch(error){
-        return{
-            message:
-                responseText
-        };
+        console.error(
+            'Media task load failed:',
+            error
+        );
+
+        session.taskLoadError=
+            error instanceof Error
+                ?error.message
+                :'Unable to prepare media task.';
+
+    }finally{
+        session.isLoadingTask=
+            false;
+
+        renderCurrentView();
     }
-}
-
-
-function getApiErrorMessage(
-    responseData,
-    fallbackMessage
-){
-    return(
-        responseData?.message||
-        responseData?.error||
-        fallbackMessage
-    );
 }
