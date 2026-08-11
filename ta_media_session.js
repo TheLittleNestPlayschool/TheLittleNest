@@ -1,334 +1,382 @@
 const mediaSession={
-    taskContext:null,
+taskContext:null,
 
-    //------------------------------------
-    // Session Selection
-    //------------------------------------
+//------------------------------------
+// Session Selection
+//------------------------------------
 
-    availableSessions:[],
+availableSessions:[],
 
-    selectedSession:null,
+selectedSession:null,
 
-    sessionId:null,
+sessionId:null,
 
-    isLoadingSessions:false,
+isLoadingSessions:false,
 
-    sessionLoadError:null,
+sessionLoadError:null,
 
-    //------------------------------------
-    // Media Task Data
-    //------------------------------------
+//------------------------------------
+// Media Task Data
+//------------------------------------
 
-    user:null,
+user:null,
 
-    studentsBySession:[],
+studentsBySession:[],
 
-    studentsByLocation:[],
+studentsByLocation:[],
 
-    isLoadingTask:false,
+isLoadingTask:false,
 
-    taskLoadError:null,
+taskLoadError:null,
 
-    //------------------------------------
-    // Selected Media
-    //------------------------------------
+//------------------------------------
+// Selected Media
+//------------------------------------
 
-    items:[],
+items:[],
 
-    activeMediaId:null
+activeMediaId:null
 };
 
 
 export function getMediaSession(){
-    return mediaSession;
+return mediaSession;
 }
 
 
-/*==================================================
-  Session Data
-==================================================*/
+/*==================================================*
+*Session Data*
+*==================================================*/
 
 export function setAvailableSessions(
-    sessions
+sessions
 ){
-    mediaSession.availableSessions=
-        Array.isArray(
-            sessions
-        )
-            ?sessions
-            :[];
+mediaSession.availableSessions=
+Array.isArray(
+sessions
+)
+?sessions
+:[];
 }
 
 
 export function selectMediaSession(
-    session
+session
 ){
-    mediaSession.selectedSession=
-        session||null;
+mediaSession.selectedSession=
+session||null;
 
-    mediaSession.sessionId=
-        session?.id||
-        null;
+mediaSession.sessionId=
+    session?.id||
+    null;
 }
 
 
 export function clearSelectedMediaSession(){
-    mediaSession.selectedSession=
-        null;
+mediaSession.selectedSession=
+null;
 
-    mediaSession.sessionId=
-        null;
+mediaSession.sessionId=
+    null;
 
-    mediaSession.user=
-        null;
+mediaSession.user=
+    null;
 
-    mediaSession.studentsBySession=
-        [];
+mediaSession.studentsBySession=
+    [];
 
-    mediaSession.studentsByLocation=
-        [];
+mediaSession.studentsByLocation=
+    [];
 
-    mediaSession.taskLoadError=
-        null;
+mediaSession.taskLoadError=
+    null;
 }
 
 
-/*==================================================
-  Media Task Data
-==================================================*/
+/*==================================================*
+*Media Task Data*
+*==================================================*/
 
 export function applyMediaTaskData(
-    data
+data
 ){
-    mediaSession.user=
-        data?.user||
-        null;
+mediaSession.user=
+data?.user||
+null;
 
-    mediaSession.studentsBySession=
-        Array.isArray(
-            data?.studentsBySession
-        )
-            ?data.studentsBySession
-            :[];
+mediaSession.studentsBySession=
+    Array.isArray(
+        data?.studentsBySession
+    )
+        ?data.studentsBySession
+        :[];
 
-    mediaSession.studentsByLocation=
-        Array.isArray(
-            data?.studentsByLocation
-        )
-            ?data.studentsByLocation
-            :[];
+mediaSession.studentsByLocation=
+    Array.isArray(
+        data?.studentsByLocation
+    )
+        ?data.studentsByLocation
+        :[];
 }
 
 
-/*==================================================
-  Media Files
-==================================================*/
+/*==================================================*
+*Media Files*
+*==================================================*/
 
 export function addMediaFiles(
-    files
+files
 ){
-    files.forEach(
-        file=>{
-            const item={
-                id:
-                    createMediaId(),
+files.forEach(
+file=>{
+    const item={
+        id:
+            createMediaId(),
 
-                file:
-                    file,
+        file:
+            file,
 
-                previewUrl:
-                    URL.createObjectURL(
-                        file
-                    ),
+        previewUrl:
+            URL.createObjectURL(
+                file
+            ),
 
-                mediaKind:
-                    getMediaKind(
-                        file
-                    ),
+        mediaKind:
+            getMediaKind(
+                file
+            ),
 
-                mediaType:
-                    null,
+        mediaType:
+            null,
 
-                studentIds:
-                    [],
+        studentIds:
+            [],
 
-                infoComplete:
-                    false
-            };
+        infoComplete:
+            false
+    };
 
-            mediaSession.items.push(
-                item
-            );
-        }
+    mediaSession.items.push(
+        item
     );
+}
+);
+}
+
+
+export function removeMediaItem(
+mediaId
+){
+const itemIndex=
+mediaSession.items.findIndex(
+item=>{
+    return(
+        item.id===
+        mediaId
+    );
+}
+);
+
+
+if(itemIndex===-1){
+    return;
+}
+
+
+const item=
+mediaSession.items[
+    itemIndex
+];
+
+
+if(item?.previewUrl){
+    URL.revokeObjectURL(
+        item.previewUrl
+    );
+}
+
+
+mediaSession.items.splice(
+    itemIndex,
+    1
+);
+
+
+if(
+    mediaSession.activeMediaId===
+    mediaId
+){
+    mediaSession.activeMediaId=
+        null;
+}
 }
 
 
 export function selectMediaItem(
-    mediaId
+mediaId
 ){
-    mediaSession.activeMediaId=
-        mediaId;
+mediaSession.activeMediaId=
+mediaId;
 }
 
 
 export function clearActiveMedia(){
-    mediaSession.activeMediaId=
-        null;
+mediaSession.activeMediaId=
+null;
 }
 
 
 export function getActiveMedia(){
-    if(
-        !mediaSession.activeMediaId
-    ){
-        return null;
-    }
+if(
+!mediaSession.activeMediaId
+){
+return null;
+}
 
-    return(
-        mediaSession.items.find(
-            item=>
-                item.id===
-                mediaSession.activeMediaId
-        )||
-        null
-    );
+return(
+    mediaSession.items.find(
+        item=>
+            item.id===
+            mediaSession.activeMediaId
+    )||
+    null
+);
 }
 
 
-/*==================================================
-  Media Details
-==================================================*/
+/*==================================================*
+*Media Details*
+*==================================================*/
 
 export function setActiveMediaType(
-    mediaType
+mediaType
 ){
-    const item=
-        getActiveMedia();
+const item=
+getActiveMedia();
 
-    if(!item){
-        return;
-    }
+if(!item){
+    return;
+}
 
-    item.mediaType=
-        mediaType;
+item.mediaType=
+    mediaType;
 
-    updateInfoComplete(
-        item
-    );
+updateInfoComplete(
+    item
+);
 }
 
 
 export function toggleActiveMediaStudent(
-    studentId
+studentId
 ){
-    const item=
-        getActiveMedia();
+const item=
+getActiveMedia();
 
-    if(!item){
-        return;
-    }
+if(!item){
+    return;
+}
 
-    const normalizedStudentId=
-        Number(
-            studentId
-        );
+const normalizedStudentId=
+    Number(
+        studentId
+    );
 
 
-    const alreadySelected=
-        item.studentIds.some(
+const alreadySelected=
+    item.studentIds.some(
+        selectedId=>{
+            return(
+                Number(
+                    selectedId
+                )===
+                normalizedStudentId
+            );
+        }
+    );
+
+
+if(alreadySelected){
+    item.studentIds=
+        item.studentIds.filter(
             selectedId=>{
                 return(
                     Number(
                         selectedId
-                    )===
+                    )!==
                     normalizedStudentId
                 );
             }
         );
 
-
-    if(alreadySelected){
-        item.studentIds=
-            item.studentIds.filter(
-                selectedId=>{
-                    return(
-                        Number(
-                            selectedId
-                        )!==
-                        normalizedStudentId
-                    );
-                }
-            );
-
-    }else{
-        item.studentIds.push(
-            normalizedStudentId
-        );
-    }
-
-
-    updateInfoComplete(
-        item
+}else{
+    item.studentIds.push(
+        normalizedStudentId
     );
+}
+
+
+updateInfoComplete(
+    item
+);
 }
 
 
 export function markActiveMediaComplete(){
-    const item=
-        getActiveMedia();
+const item=
+getActiveMedia();
 
-    if(!item){
-        return;
-    }
+if(!item){
+    return;
+}
 
-    updateInfoComplete(
-        item
-    );
+updateInfoComplete(
+    item
+);
 }
 
 
-/*==================================================
-  Helpers
-==================================================*/
+/*==================================================*
+*Helpers*
+*==================================================*/
 
 function updateInfoComplete(
-    item
+item
 ){
-    item.infoComplete=
-        Boolean(
-            item.mediaType&&
-            item.studentIds.length
-        );
+item.infoComplete=
+Boolean(
+item.mediaType&&
+item.studentIds.length
+);
 }
 
 
 function createMediaId(){
-    return(
-        Date.now()
-            .toString(36)+
-        '-'+
-        Math.random()
-            .toString(36)
-            .slice(
-                2,
-                8
-            )
-    );
+return(
+Date.now()
+.toString(36)+
+'-'+
+Math.random()
+.toString(36)
+.slice(
+2,
+8
+)
+);
 }
 
 
 function getMediaKind(
-    file
+file
 ){
-    if(
-        file?.type
-            ?.startsWith(
-                'video/'
-            )
-    ){
-        return'video';
-    }
+if(
+file?.type
+?.startsWith(
+'video/'
+)
+){
+return'video';
+}
 
-    return'image';
+return'image';
 }
