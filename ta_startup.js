@@ -1,19 +1,9 @@
 import{
-    API_URLS
-}from'./ta_config.js';
-
-import{
-    apiRequest,
     requireTeacherLogin
 }from'./ta_api.js';
 
 import{
-    setContext,
-    setTeacherState,
     setRelevantSession,
-    setAttendance,
-    setSessionAttendanceCompletions,
-    setLocationStudents,
     getState
 }from'./ta_state.js';
 
@@ -26,13 +16,27 @@ import{
 }from'./ta_startup_debug.js';
 
 import{
-    getEffectiveTime
-}from'./ta_demo_clock.js';
+    getRelevantSession
+}from'./ta_startup_helpers.js';
+
+import{
+    loadTeacherContext,
+    loadTeacherState,
+    loadRelevantSessionAttendance,
+    loadAttendanceCompletions,
+    loadLocationStudents
+}from'./ta_startup_load.js';
+
+import{
+    renderTeacherHeader
+}from'./ta_teacher_header.js';
+
 
 const teacherStatus=
     document.getElementById(
         'teacherStatus'
     );
+
 
 export async function startTeacherApp(){
     startupDebug.begin();
@@ -56,100 +60,33 @@ export async function startTeacherApp(){
     );
 
     try{
-        teacherStatus.textContent=
-            "Loading today's context...";
-
         //------------------------------------
         // Teacher Context
         //------------------------------------
 
-        startupDebug.start(
-            'context',
-            'Load teacher context'
-        );
+        teacherStatus.textContent=
+            "Loading today's context...";
 
         const context=
-            await apiRequest(
-                API_URLS.getContext
-            );
+            await loadTeacherContext();
 
-        setContext(
+        renderTeacherHeader(
             context
         );
 
-        startupDebug.finish(
-            'context',
-            getResultDetail(
-                context
-            )
-        );
-
-        console.log(
-            'ta_get_context:',
-            context
-        );
 
         //------------------------------------
         // Teacher State
         //------------------------------------
 
-        startupDebug.start(
-            'teacherState',
-            'Determine teacher state'
-        );
-
-        const stateUrl=
-            new URL(
-                API_URLS
-                    .determineTeacherState
-            );
-
-        stateUrl.searchParams.set(
-            'teacher',
-            JSON.stringify(
-                context.teacher||{}
-            )
-        );
-
-        stateUrl.searchParams.set(
-            'sessions',
-            JSON.stringify(
-                context.sessions||[]
-            )
-        );
-
-        stateUrl.searchParams.set(
-            'today_day_name',
-            context.today_day_name||''
-        );
-
-       stateUrl.searchParams.set(
-        'current_time',
-        getEffectiveTime(
-        context.current_time||''
-            )
-        );
+        teacherStatus.textContent=
+            'Determining teacher state...';
 
         const teacherState=
-            await apiRequest(
-                stateUrl.toString()
+            await loadTeacherState(
+                context
             );
 
-        setTeacherState(
-            teacherState
-        );
-
-        startupDebug.finish(
-            'teacherState',
-            teacherState
-                ?.teacher_state||
-            ''
-        );
-
-        console.log(
-            'ta_determine_teacher_state:',
-            teacherState
-        );
 
         //------------------------------------
         // Relevant Session
@@ -176,6 +113,7 @@ export async function startTeacherApp(){
                 :'No relevant session'
         );
 
+
         //------------------------------------
         // Relevant Session Attendance
         //------------------------------------
@@ -183,133 +121,32 @@ export async function startTeacherApp(){
         if(relevantSession?.id){
             teacherStatus.textContent=
                 'Loading session attendance...';
-
-            startupDebug.start(
-                'attendance',
-                'Load session attendance'
-            );
-
-            const attendanceUrl=
-                new URL(
-                    API_URLS
-                        .getSessionAttendance
-                );
-
-            attendanceUrl.searchParams.set(
-                'session_id',
-                String(
-                    relevantSession.id
-                )
-            );
-
-            attendanceUrl.searchParams.set(
-                'session_date',
-                getTodayDate()
-            );
-
-            const attendance=
-                await apiRequest(
-                    attendanceUrl.toString()
-                );
-
-            setAttendance(
-                attendance
-            );
-
-            startupDebug.finish(
-                'attendance',
-                getResultDetail(
-                    attendance
-                )
-            );
-
-            console.log(
-                'ta_get_session_attendance:',
-                attendance
-            );
-        }else{
-            startupDebug.note(
-                'Attendance request skipped: no relevant session.'
-            );
         }
 
+        await loadRelevantSessionAttendance(
+            relevantSession
+        );
+
+
         //------------------------------------
-        // Session Attendance Completions
+        // Attendance History
         //------------------------------------
 
         teacherStatus.textContent=
             'Loading attendance history...';
 
-        startupDebug.start(
-            'attendanceCompletions',
-            'Load attendance completions'
-        );
+        await loadAttendanceCompletions();
 
-        const completionsUrl=
-            new URL(
-                API_URLS
-                    .getSessionAttendanceCompletions
-            );
-
-        completionsUrl.searchParams.set(
-            'seven_days_ago',
-            getSevenDaysAgo()
-        );
-
-        const sessionAttendanceCompletions=
-            await apiRequest(
-                completionsUrl.toString()
-            );
-
-        setSessionAttendanceCompletions(
-            sessionAttendanceCompletions
-        );
-
-        startupDebug.finish(
-            'attendanceCompletions',
-            getResultDetail(
-                sessionAttendanceCompletions
-            )
-        );
-
-        console.log(
-            'ta_get_session_attendance_completions:',
-            sessionAttendanceCompletions
-        );
 
         //------------------------------------
-        // All Location Students
+        // Location Students
         //------------------------------------
 
         teacherStatus.textContent=
             'Loading location students...';
 
-        startupDebug.start(
-            'locationStudents',
-            'Load location students'
-        );
+        await loadLocationStudents();
 
-        const locationStudents=
-            await apiRequest(
-                API_URLS
-                    .getLocationStudents
-            );
-
-        setLocationStudents(
-            locationStudents
-        );
-
-        startupDebug.finish(
-            'locationStudents',
-            getResultDetail(
-                locationStudents
-            )
-        );
-
-        console.log(
-            'ta_get_location_students:',
-            locationStudents
-        );
 
         //------------------------------------
         // State Ready
@@ -328,6 +165,7 @@ export async function startTeacherApp(){
         startupDebug.finish(
             'stateReady'
         );
+
 
         //------------------------------------
         // Experience Director and Stage
@@ -348,6 +186,7 @@ export async function startTeacherApp(){
         startupDebug.finish(
             'experience'
         );
+
 
         //------------------------------------
         // Startup Complete
@@ -376,115 +215,4 @@ export async function startTeacherApp(){
                 ?error.message
                 :'Unable to load Teacher App.';
     }
-}
-
-function getResultDetail(result){
-    if(Array.isArray(result)){
-        return(
-            `${result.length} records`
-        );
-    }
-
-    if(
-        result&&
-        typeof result==='object'
-    ){
-        return(
-            `${Object.keys(result).length} fields`
-        );
-    }
-
-    return result===undefined
-        ?''
-        :String(result);
-}
-
-function getRelevantSession(
-    teacherState
-){
-    switch(
-        teacherState.teacher_state
-    ){
-        case'IN_SESSION':
-            return(
-                teacherState.current_session
-            );
-
-        case'BEFORE_FIRST_SESSION':
-            return(
-                teacherState.next_session
-            );
-
-        case'BETWEEN_SESSIONS':
-            return(
-                teacherState.next_session
-            );
-
-        case'AFTER_LAST_SESSION':
-            return(
-                teacherState.previous_session
-            );
-
-        default:
-            return(
-                teacherState.current_session||
-                teacherState.previous_session||
-                teacherState.next_session||
-                null
-            );
-    }
-}
-
-function getTodayDate(){
-    return formatManilaDate(
-        new Date()
-    );
-}
-
-function getSevenDaysAgo(){
-    const date=
-        new Date();
-
-    date.setDate(
-        date.getDate()-7
-    );
-
-    return formatManilaDate(
-        date
-    );
-}
-
-function formatManilaDate(date){
-    const parts=
-        new Intl.DateTimeFormat(
-            'en-CA',
-            {
-                timeZone:
-                    'Asia/Manila',
-                year:
-                    'numeric',
-                month:
-                    '2-digit',
-                day:
-                    '2-digit'
-            }
-        ).formatToParts(
-            date
-        );
-
-    const values=
-        Object.fromEntries(
-            parts.map(
-                part=>[
-                    part.type,
-                    part.value
-                ]
-            )
-        );
-
-    return(
-        `${values.year}-`+
-        `${values.month}-`+
-        `${values.day}`
-    );
 }
