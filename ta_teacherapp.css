@@ -106,11 +106,65 @@ text-align:left;
 }
 
 .teacher-shell-welcome-title{
-color:#0f172a;
+min-width:0;
 
-font-size:.72rem;
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+justify-content:center;
+
+line-height:1.05;
+
+background:
+linear-gradient(
+105deg,
+#8f6100 0%,
+#c58a08 20%,
+#f2c84b 38%,
+#fff0a3 50%,
+#e1aa24 63%,
+#a66f00 82%,
+#8f6100 100%
+);
+
+background-size:
+220% 100%;
+
+-webkit-background-clip:text;
+background-clip:text;
+
+-webkit-text-fill-color:transparent;
+color:transparent;
+
+filter:
+drop-shadow(
+0 1px 1px
+rgba(88,54,0,.18)
+);
+
+animation:
+teacher-gold-shimmer
+6s
+ease-in-out
+infinite;
+}
+
+.teacher-welcome-line{
+display:block;
+
+font-size:.68rem;
+font-weight:800;
+line-height:1.05;
+}
+
+.teacher-name-line{
+display:block;
+
+margin-top:2px;
+
+font-size:.84rem;
 font-weight:900;
-line-height:1.12;
+line-height:1.05;
 }
 
 /*==================================================*
@@ -161,13 +215,74 @@ display:flex;
 align-items:center;
 justify-content:flex-end;
 
-color:#0f172a;
-
 font-size:.72rem;
 font-weight:900;
 line-height:1.12;
 
 text-align:right;
+text-wrap:balance;
+
+background:
+linear-gradient(
+105deg,
+#8f6100 0%,
+#c58a08 20%,
+#f2c84b 38%,
+#fff0a3 50%,
+#e1aa24 63%,
+#a66f00 82%,
+#8f6100 100%
+);
+
+background-size:
+220% 100%;
+
+-webkit-background-clip:text;
+background-clip:text;
+
+-webkit-text-fill-color:transparent;
+color:transparent;
+
+filter:
+drop-shadow(
+0 1px 1px
+rgba(88,54,0,.18)
+);
+
+animation:
+teacher-gold-shimmer
+6s
+ease-in-out
+.7s
+infinite;
+}
+
+/*==================================================*
+*Gold Shimmer
+*==================================================*/
+
+@keyframes teacher-gold-shimmer{
+
+0%{
+background-position:
+100% 50%;
+}
+
+45%{
+background-position:
+100% 50%;
+}
+
+60%{
+background-position:
+0% 50%;
+}
+
+100%{
+background-position:
+0% 50%;
+}
+
 }
 
 /*==================================================*
@@ -498,7 +613,14 @@ height:46px;
 max-width:100%;
 }
 
-.teacher-shell-welcome-title,
+.teacher-welcome-line{
+font-size:.64rem;
+}
+
+.teacher-name-line{
+font-size:.78rem;
+}
+
 .teacher-shell-saying{
 font-size:.68rem;
 }
@@ -533,7 +655,14 @@ height:44px;
 max-width:100%;
 }
 
-.teacher-shell-welcome-title,
+.teacher-welcome-line{
+font-size:.56rem;
+}
+
+.teacher-name-line{
+font-size:.68rem;
+}
+
 .teacher-shell-saying{
 font-size:.62rem;
 line-height:1.08;
@@ -591,9 +720,31 @@ padding:
 height:40px;
 }
 
-.teacher-shell-welcome-title,
+.teacher-welcome-line{
+font-size:.51rem;
+}
+
+.teacher-name-line{
+font-size:.62rem;
+}
+
 .teacher-shell-saying{
 font-size:.56rem;
+}
+
+}
+
+/*==================================================*
+*Reduced Motion
+*==================================================*/
+
+@media(prefers-reduced-motion:reduce){
+
+.teacher-shell-welcome-title,
+.teacher-shell-saying{
+animation:none;
+background-position:
+50% 50%;
 }
 
 }
