@@ -39,7 +39,7 @@ const session=
 getMediaSession();
 
 session.taskContext=
-    taskContext;
+taskContext;
 
 clearWorkspace();
 
@@ -49,46 +49,46 @@ clearWorkspace();
 //------------------------------------
 
 if(
-    !session.availableSessions.length&&
-    !session.isLoadingSessions
+!session.availableSessions.length&&
+!session.isLoadingSessions
 ){
-    session.isLoadingSessions=
-        true;
+session.isLoadingSessions=
+true;
+
+session.sessionLoadError=
+    null;
+
+renderCurrentView();
+
+try{
+    const data=
+        await loadMediaSessions(
+            getState()
+        );
+
+    setAvailableSessions(
+        data.sessions
+    );
+
+}catch(error){
+    console.error(
+        'Media sessions load failed:',
+        error
+    );
 
     session.sessionLoadError=
-        null;
+        error instanceof Error
+            ?error.message
+            :'Unable to load sessions.';
+
+}finally{
+    session.isLoadingSessions=
+        false;
 
     renderCurrentView();
+}
 
-    try{
-        const data=
-            await loadMediaSessions(
-                getState()
-            );
-
-        setAvailableSessions(
-            data.sessions
-        );
-
-    }catch(error){
-        console.error(
-            'Media sessions load failed:',
-            error
-        );
-
-        session.sessionLoadError=
-            error instanceof Error
-                ?error.message
-                :'Unable to load sessions.';
-
-    }finally{
-        session.isLoadingSessions=
-            false;
-
-        renderCurrentView();
-    }
-
-    return;
+return;
 }
 
 
@@ -101,12 +101,12 @@ const workspace=
 getWorkspace();
 
 if(!workspace){
-    return;
+return;
 }
 
 
 const session=
-    getMediaSession();
+getMediaSession();
 
 
 workspace.innerHTML='';
@@ -117,12 +117,12 @@ workspace.innerHTML='';
 //------------------------------------
 
 const container=
-    document.createElement(
-        'section'
-    );
+document.createElement(
+'section'
+);
 
 container.className=
-    'teacher-media';
+'teacher-media';
 
 
 //------------------------------------
@@ -130,28 +130,28 @@ container.className=
 //------------------------------------
 
 if(
-    session.isLoadingSessions
+session.isLoadingSessions
 ){
-    const message=
-        document.createElement(
-            'p'
-        );
+const message=
+document.createElement(
+'p'
+);
 
-    message.className=
-        'teacher-media-message';
+message.className=
+    'teacher-media-message';
 
-    message.textContent=
-        'Loading sessions...';
+message.textContent=
+    'Loading sessions...';
 
-    container.appendChild(
-        message
-    );
+container.appendChild(
+    message
+);
 
-    workspace.appendChild(
-        container
-    );
+workspace.appendChild(
+    container
+);
 
-    return;
+return;
 }
 
 
@@ -160,28 +160,28 @@ if(
 //------------------------------------
 
 if(
-    session.sessionLoadError
+session.sessionLoadError
 ){
-    const message=
-        document.createElement(
-            'p'
-        );
+const message=
+document.createElement(
+'p'
+);
 
-    message.className=
-        'teacher-media-message teacher-media-message-error';
+message.className=
+    'teacher-media-message teacher-media-message-error';
 
-    message.textContent=
-        session.sessionLoadError;
+message.textContent=
+    session.sessionLoadError;
 
-    container.appendChild(
-        message
-    );
+container.appendChild(
+    message
+);
 
-    workspace.appendChild(
-        container
-    );
+workspace.appendChild(
+    container
+);
 
-    return;
+return;
 }
 
 
@@ -190,29 +190,29 @@ if(
 //------------------------------------
 
 if(
-    !session.sessionId
+!session.sessionId
 ){
-    renderMediaSessionSelect(
-        container,
-        {
-            sessions:
-                session.availableSessions,
+renderMediaSessionSelect(
+container,
+{
+    sessions:
+        session.availableSessions,
 
-            selectedSession:
-                session.selectedSession,
+    selectedSession:
+        session.selectedSession,
 
-            actions:{
-                selectSession:
-                    handleSessionSelection
-            }
-        }
-    );
+    actions:{
+        selectSession:
+            handleSessionSelection
+    }
+}
+);
 
-    workspace.appendChild(
-        container
-    );
+workspace.appendChild(
+    container
+);
 
-    return;
+return;
 }
 
 
@@ -221,28 +221,28 @@ if(
 //------------------------------------
 
 if(
-    session.isLoadingTask
+session.isLoadingTask
 ){
-    const message=
-        document.createElement(
-            'p'
-        );
+const message=
+document.createElement(
+'p'
+);
 
-    message.className=
-        'teacher-media-message';
+message.className=
+    'teacher-media-message';
 
-    message.textContent=
-        'Preparing media task...';
+message.textContent=
+    'Preparing media task...';
 
-    container.appendChild(
-        message
-    );
+container.appendChild(
+    message
+);
 
-    workspace.appendChild(
-        container
-    );
+workspace.appendChild(
+    container
+);
 
-    return;
+return;
 }
 
 
@@ -251,28 +251,28 @@ if(
 //------------------------------------
 
 if(
-    session.taskLoadError
+session.taskLoadError
 ){
-    const message=
-        document.createElement(
-            'p'
-        );
+const message=
+document.createElement(
+'p'
+);
 
-    message.className=
-        'teacher-media-message teacher-media-message-error';
+message.className=
+    'teacher-media-message teacher-media-message-error';
 
-    message.textContent=
-        session.taskLoadError;
+message.textContent=
+    session.taskLoadError;
 
-    container.appendChild(
-        message
-    );
+container.appendChild(
+    message
+);
 
-    workspace.appendChild(
-        container
-    );
+workspace.appendChild(
+    container
+);
 
-    return;
+return;
 }
 
 
@@ -281,11 +281,14 @@ if(
 //------------------------------------
 
 renderMediaCapture(
-    container,
-    {
-        refresh:
-            renderCurrentView
-    }
+container,
+{
+    refresh:
+        renderCurrentView,
+
+    saveMedia:
+        handleMediaSave
+}
 );
 
 
@@ -294,11 +297,11 @@ renderMediaCapture(
 //------------------------------------
 
 renderMediaPreview(
-    container,
-    {
-        refresh:
-            renderCurrentView
-    }
+container,
+{
+    refresh:
+        renderCurrentView
+}
 );
 
 
@@ -307,7 +310,7 @@ renderMediaPreview(
 //------------------------------------
 
 workspace.appendChild(
-    container
+container
 );
 }
 
@@ -316,55 +319,154 @@ async function handleSessionSelection(
 selectedSession
 ){
 if(!selectedSession){
-    return;
+return;
 }
 
 
 const session=
-    getMediaSession();
+getMediaSession();
 
 
 selectMediaSession(
-    selectedSession
+selectedSession
 );
 
 
 session.isLoadingTask=
-    true;
+true;
 
 session.taskLoadError=
-    null;
+null;
 
 
 renderCurrentView();
 
 
 try{
-    const data=
-        await loadMediaTaskData(
-            session.sessionId,
-            getState()
-        );
+const data=
+await loadMediaTaskData(
+    session.sessionId,
+    getState()
+);
 
-    applyMediaTaskData(
-        data
-    );
+applyMediaTaskData(
+    data
+);
 
 }catch(error){
-    console.error(
-        'Media task load failed:',
-        error
-    );
+console.error(
+    'Media task load failed:',
+    error
+);
 
-    session.taskLoadError=
-        error instanceof Error
-            ?error.message
-            :'Unable to prepare media task.';
+session.taskLoadError=
+    error instanceof Error
+        ?error.message
+        :'Unable to prepare media task.';
 
 }finally{
-    session.isLoadingTask=
-        false;
+session.isLoadingTask=
+false;
 
-    renderCurrentView();
+renderCurrentView();
 }
+}
+
+
+/*==================================================*
+*Temporary Media Save*
+*==================================================*/
+
+function handleMediaSave(
+manifest
+){
+if(
+!Array.isArray(
+    manifest
+)||
+!manifest.length
+){
+return;
+}
+
+
+//------------------------------------
+// Validate Manifest
+//------------------------------------
+
+const invalidItem=
+manifest.find(
+item=>{
+    return(
+        !item?.clientMediaId||
+        !item?.sessionId||
+        !item?.file||
+        !item?.mediaKind||
+        !item?.mediaType||
+        !Array.isArray(
+            item?.studentIds
+        )||
+        !item.studentIds.length||
+        item.infoComplete!==true
+    );
+}
+);
+
+
+if(invalidItem){
+console.error(
+    'ta_media: invalid save manifest item',
+    invalidItem
+);
+
+window.alert(
+    'One or more media items are incomplete.'
+);
+
+return;
+}
+
+
+//------------------------------------
+// Test Manifest
+//------------------------------------
+
+console.log(
+    'ta_media: save manifest',
+    manifest
+);
+
+
+console.table(
+    manifest.map(
+        item=>{
+            return{
+                clientMediaId:
+                    item.clientMediaId,
+
+                sessionId:
+                    item.sessionId,
+
+                fileName:
+                    item.file?.name||
+                    '',
+
+                fileType:
+                    item.file?.type||
+                    '',
+
+                mediaKind:
+                    item.mediaKind,
+
+                mediaType:
+                    item.mediaType,
+
+                studentIds:
+                    item.studentIds.join(
+                        ', '
+                    )
+            };
+        }
+    )
+);
 }
