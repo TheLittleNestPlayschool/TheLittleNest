@@ -1,56 +1,260 @@
-.teacher-module-card[data-module-id="media"]
-.teacher-module-header{
-    padding-top:12px;
-    padding-bottom:12px;
-}
-
-.teacher-module-card[data-module-id="media"]
-.teacher-module-title{
-    font-size:1rem;
-    line-height:1.15;
-}
-
-.teacher-module-card[data-module-id="media"]
-.teacher-module-subtitle{
-    margin-top:2px;
-    font-size:.72rem;
-    line-height:1.25;
-}
-
-.teacher-module-card[data-module-id="media"]
-.teacher-module-icon{
-    font-size:1rem;
-}
+/*==================================================
+  Media Task
+==================================================*/
 
 .teacher-module-card[data-module-id="media"]
 .teacher-module-content{
     padding-top:10px;
 }
 
-/*==================================================
-  Capture Moments in Media
-==================================================*/
 
 .teacher-media{
     width:100%;
     max-width:680px;
+
     margin:0 auto;
+
     display:flex;
     flex-direction:column;
-    gap:9px;
+
+    gap:10px;
 }
 
-.teacher-media-message{
+
+/*==================================================
+  Introduction
+==================================================*/
+
+.teacher-media-intro{
+    display:flex;
+    flex-direction:column;
+
+    gap:3px;
+}
+
+
+.teacher-media-intro h3{
     margin:0;
-    padding:9px 11px;
-    background:rgba(255,255,255,.24);
-    border:1px solid rgba(255,255,255,.38);
-    border-radius:10px;
-    color:#475569;
-    font-size:.74rem;
+
+    color:#0f172a;
+
+    font-size:1.05rem;
+    font-weight:900;
+    line-height:1.2;
+}
+
+
+.teacher-media-intro p{
+    margin:0;
+
+    color:#64748b;
+
+    font-size:.72rem;
     font-weight:600;
     line-height:1.35;
 }
+
+
+/*==================================================
+  Capture Actions
+==================================================*/
+
+.teacher-media-actions{
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0,1fr)
+        );
+
+    gap:7px;
+}
+
+
+.teacher-media-action{
+    min-width:0;
+    min-height:62px;
+
+    display:flex;
+    align-items:center;
+
+    gap:8px;
+
+    padding:8px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .42
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .52
+        );
+
+    border-radius:11px;
+
+    color:#0f172a;
+
+    font:inherit;
+    text-align:left;
+
+    cursor:pointer;
+
+    transition:
+        transform .15s ease,
+        background .15s ease;
+}
+
+
+.teacher-media-action:hover{
+    transform:
+        translateY(-1px);
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .64
+        );
+}
+
+
+.teacher-media-action:active{
+    transform:
+        translateY(0);
+}
+
+
+/*==================================================
+  Capture Action Icon
+==================================================*/
+
+.teacher-media-action-icon{
+    flex:0 0 auto;
+
+    width:34px;
+    height:34px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .52
+        );
+
+    border-radius:9px;
+
+    font-size:1.15rem;
+}
+
+
+/*==================================================
+  Capture Action Text
+==================================================*/
+
+.teacher-media-action-text{
+    min-width:0;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:2px;
+}
+
+
+.teacher-media-action-text strong{
+    font-size:.68rem;
+    font-weight:900;
+}
+
+
+.teacher-media-action-text small{
+    color:#64748b;
+
+    font-size:.55rem;
+    font-weight:650;
+    line-height:1.2;
+}
+
+
+/*==================================================
+  Media Workspace
+==================================================*/
+
+.teacher-media-workspace{
+    min-height:125px;
+
+    padding:10px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .20
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .36
+        );
+
+    border-radius:11px;
+}
+
+
+/*==================================================
+  Empty State
+==================================================*/
+
+.teacher-media-empty{
+    min-height:103px;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:5px;
+
+    color:#64748b;
+
+    text-align:center;
+}
+
+
+.teacher-media-empty-icon{
+    font-size:1.4rem;
+}
+
+
+.teacher-media-empty p{
+    margin:0;
+
+    font-size:.65rem;
+    font-weight:650;
+}
+
 
 /*==================================================
   Mobile
@@ -62,8 +266,47 @@
         gap:8px;
     }
 
-    .teacher-media-message{
-        padding:8px 10px;
-        font-size:.7rem;
+
+    .teacher-media-actions{
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0,1fr)
+            );
+
+        gap:5px;
+    }
+
+
+    .teacher-media-action{
+        min-height:58px;
+
+        flex-direction:column;
+
+        justify-content:center;
+
+        gap:3px;
+
+        padding:6px;
+
+        text-align:center;
+    }
+
+
+    .teacher-media-action-icon{
+        width:28px;
+        height:28px;
+
+        font-size:.95rem;
+    }
+
+
+    .teacher-media-action-text strong{
+        font-size:.61rem;
+    }
+
+
+    .teacher-media-action-text small{
+        display:none;
     }
 }
