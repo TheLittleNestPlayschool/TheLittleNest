@@ -117,7 +117,11 @@ export function renderCurrentView(){
     //------------------------------------
 
     renderMediaPreview(
-        container
+        container,
+        {
+            refresh:
+                renderCurrentView
+        }
     );
 
 
