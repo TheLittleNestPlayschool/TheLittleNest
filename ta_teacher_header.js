@@ -12,7 +12,7 @@ export function renderTeacherHeader(
         );
 
     if(welcome){
-        welcome.textContent=
+        welcome.innerHTML=
             buildTeacherWelcome(
                 context?.teacher
             );
@@ -36,10 +36,24 @@ function buildTeacherWelcome(
         );
 
     if(!teacherName){
-        return'Welcome, Teacher';
+        return(
+            '<span class="teacher-welcome-line">'+
+            'Welcome.'+
+            '</span>'+
+            '<span class="teacher-name-line">'+
+            'Teacher'+
+            '</span>'
+        );
     }
 
-    return`Welcome, Teacher ${teacherName}`;
+    return(
+        '<span class="teacher-welcome-line">'+
+        'Welcome.'+
+        '</span>'+
+        '<span class="teacher-name-line">'+
+        `Teacher ${teacherName}`+
+        '</span>'
+    );
 }
 
 
