@@ -35,7 +35,20 @@ taskLoadError:null,
 
 items:[],
 
-activeMediaId:null
+activeMediaId:null,
+
+//------------------------------------
+// Save State
+//------------------------------------
+
+isSaving:false,
+
+saveError:null,
+
+saveProgress:{
+    completed:0,
+    total:0
+}
 };
 
 
@@ -67,8 +80,8 @@ mediaSession.selectedSession=
 session||null;
 
 mediaSession.sessionId=
-    session?.id||
-    null;
+session?.id||
+null;
 }
 
 
@@ -77,19 +90,19 @@ mediaSession.selectedSession=
 null;
 
 mediaSession.sessionId=
-    null;
+null;
 
 mediaSession.user=
-    null;
+null;
 
 mediaSession.studentsBySession=
-    [];
+[];
 
 mediaSession.studentsByLocation=
-    [];
+[];
 
 mediaSession.taskLoadError=
-    null;
+null;
 }
 
 
@@ -105,18 +118,18 @@ data?.user||
 null;
 
 mediaSession.studentsBySession=
-    Array.isArray(
-        data?.studentsBySession
-    )
-        ?data.studentsBySession
-        :[];
+Array.isArray(
+data?.studentsBySession
+)
+?data.studentsBySession
+:[];
 
 mediaSession.studentsByLocation=
-    Array.isArray(
-        data?.studentsByLocation
-    )
-        ?data.studentsByLocation
-        :[];
+Array.isArray(
+data?.studentsByLocation
+)
+?data.studentsByLocation
+:[];
 }
 
 
@@ -129,36 +142,42 @@ files
 ){
 files.forEach(
 file=>{
-    const item={
-        id:
-            createMediaId(),
+const item={
+id:
+createMediaId(),
 
-        file:
-            file,
+file:
+    file,
 
-        previewUrl:
-            URL.createObjectURL(
-                file
-            ),
+previewUrl:
+    URL.createObjectURL(
+        file
+    ),
 
-        mediaKind:
-            getMediaKind(
-                file
-            ),
+mediaKind:
+    getMediaKind(
+        file
+    ),
 
-        mediaType:
-            null,
+mediaType:
+    null,
 
-        studentIds:
-            [],
+studentIds:
+    [],
 
-        infoComplete:
-            false
-    };
+infoComplete:
+    false,
 
-    mediaSession.items.push(
-        item
-    );
+saveStatus:
+    'pending',
+
+saveError:
+    null
+};
+
+mediaSession.items.push(
+    item
+);
 }
 );
 }
@@ -170,44 +189,39 @@ mediaId
 const itemIndex=
 mediaSession.items.findIndex(
 item=>{
-    return(
-        item.id===
-        mediaId
-    );
+return(
+item.id===
+mediaId
+);
 }
 );
 
-
 if(itemIndex===-1){
-    return;
+return;
 }
-
 
 const item=
 mediaSession.items[
-    itemIndex
+itemIndex
 ];
 
-
 if(item?.previewUrl){
-    URL.revokeObjectURL(
-        item.previewUrl
-    );
+URL.revokeObjectURL(
+item.previewUrl
+);
 }
 
-
 mediaSession.items.splice(
-    itemIndex,
-    1
+itemIndex,
+1
 );
 
-
 if(
-    mediaSession.activeMediaId===
-    mediaId
+mediaSession.activeMediaId===
+mediaId
 ){
-    mediaSession.activeMediaId=
-        null;
+mediaSession.activeMediaId=
+null;
 }
 }
 
@@ -234,12 +248,12 @@ return null;
 }
 
 return(
-    mediaSession.items.find(
-        item=>
-            item.id===
-            mediaSession.activeMediaId
-    )||
-    null
+mediaSession.items.find(
+item=>
+item.id===
+mediaSession.activeMediaId
+)||
+null
 );
 }
 
@@ -255,14 +269,14 @@ const item=
 getActiveMedia();
 
 if(!item){
-    return;
+return;
 }
 
 item.mediaType=
-    mediaType;
+mediaType;
 
 updateInfoComplete(
-    item
+item
 );
 }
 
@@ -274,50 +288,47 @@ const item=
 getActiveMedia();
 
 if(!item){
-    return;
+return;
 }
 
 const normalizedStudentId=
-    Number(
-        studentId
-    );
-
+Number(
+studentId
+);
 
 const alreadySelected=
-    item.studentIds.some(
-        selectedId=>{
-            return(
-                Number(
-                    selectedId
-                )===
-                normalizedStudentId
-            );
-        }
-    );
-
+item.studentIds.some(
+selectedId=>{
+return(
+Number(
+selectedId
+)===
+normalizedStudentId
+);
+}
+);
 
 if(alreadySelected){
-    item.studentIds=
-        item.studentIds.filter(
-            selectedId=>{
-                return(
-                    Number(
-                        selectedId
-                    )!==
-                    normalizedStudentId
-                );
-            }
-        );
+item.studentIds=
+item.studentIds.filter(
+selectedId=>{
+return(
+Number(
+selectedId
+)!==
+normalizedStudentId
+);
+}
+);
 
 }else{
-    item.studentIds.push(
-        normalizedStudentId
-    );
+item.studentIds.push(
+normalizedStudentId
+);
 }
 
-
 updateInfoComplete(
-    item
+item
 );
 }
 
@@ -327,12 +338,194 @@ const item=
 getActiveMedia();
 
 if(!item){
-    return;
+return;
 }
 
 updateInfoComplete(
-    item
+item
 );
+}
+
+
+/*==================================================*
+*Save Manifest*
+*==================================================*/
+
+export function buildMediaSaveManifest(){
+const sessionId=
+mediaSession.sessionId;
+
+if(!sessionId){
+return[];
+}
+
+return mediaSession.items.map(
+item=>{
+return{
+clientMediaId:
+    item.id,
+
+sessionId:
+    sessionId,
+
+file:
+    item.file,
+
+mediaKind:
+    item.mediaKind,
+
+mediaType:
+    item.mediaType,
+
+studentIds:
+    [
+        ...item.studentIds
+    ],
+
+infoComplete:
+    item.infoComplete,
+
+saveStatus:
+    item.saveStatus,
+
+saveError:
+    item.saveError
+};
+}
+);
+}
+
+
+/*==================================================*
+*Save State*
+*==================================================*/
+
+export function startMediaSave(){
+mediaSession.isSaving=
+true;
+
+mediaSession.saveError=
+null;
+
+mediaSession.saveProgress={
+completed:0,
+total:mediaSession.items.length
+};
+
+mediaSession.items.forEach(
+item=>{
+item.saveStatus=
+'pending';
+
+item.saveError=
+null;
+}
+);
+}
+
+
+export function markMediaItemSaving(
+mediaId
+){
+const item=
+mediaSession.items.find(
+item=>{
+return(
+item.id===
+mediaId
+);
+}
+);
+
+if(!item){
+return;
+}
+
+item.saveStatus=
+'saving';
+
+item.saveError=
+null;
+}
+
+
+export function markMediaItemSaved(
+mediaId
+){
+const item=
+mediaSession.items.find(
+item=>{
+return(
+item.id===
+mediaId
+);
+}
+);
+
+if(!item){
+return;
+}
+
+item.saveStatus=
+'saved';
+
+item.saveError=
+null;
+
+mediaSession.saveProgress.completed=
+mediaSession.items.filter(
+item=>{
+return(
+item.saveStatus===
+'saved'
+);
+}
+).length;
+}
+
+
+export function markMediaItemSaveError(
+mediaId,
+errorMessage
+){
+const item=
+mediaSession.items.find(
+item=>{
+return(
+item.id===
+mediaId
+);
+}
+);
+
+if(!item){
+return;
+}
+
+item.saveStatus=
+'error';
+
+item.saveError=
+errorMessage||
+'Unable to save media.';
+}
+
+
+export function finishMediaSave(){
+mediaSession.isSaving=
+false;
+}
+
+
+export function failMediaSave(
+errorMessage
+){
+mediaSession.isSaving=
+false;
+
+mediaSession.saveError=
+errorMessage||
+'Unable to save media.';
 }
 
 
