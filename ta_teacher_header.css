@@ -140,13 +140,13 @@ display:grid;
 
 grid-template-columns:
 auto
-minmax(0,1fr)
+auto
 auto;
 
 align-items:center;
 justify-content:center;
 
-column-gap:2px;
+column-gap:3px;
 }
 
 /*==================================================*
