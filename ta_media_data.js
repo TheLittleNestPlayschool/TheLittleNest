@@ -1,214 +1,292 @@
-
 const MEDIA_SESSION_API=
-    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_get_session';
+'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_get_session';
 
 const MEDIA_TASK_API=
-    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_get_media_task';
+'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_get_media_task';
+
+const MEDIA_PREPARE_UPLOAD_API=
+'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_prepare_media_upload';
 
 
 export async function loadMediaSessions(
-    state
+state
 ){
-    const response=
-        await fetch(
-            MEDIA_SESSION_API,
-            {
-                method:
-                    'GET',
+const response=
+await fetch(
+MEDIA_SESSION_API,
+{
+method:
+'GET',
 
-                headers:
-                    buildRequestHeaders(
-                        state
-                    )
-            }
-        );
-
-
-    const responseData=
-        await readResponseData(
-            response
-        );
+headers:
+    buildRequestHeaders(
+        state
+    )
+}
+);
 
 
-    if(!response.ok){
-        throw new Error(
-            getApiErrorMessage(
-                responseData,
-                'Unable to load sessions.'
-            )
-        );
-    }
+const responseData=
+await readResponseData(
+    response
+);
 
 
-    return{
-        sessions:
-            Array.isArray(
-                responseData?.sessions
-            )
-                ?responseData.sessions
-                :[]
-    };
+if(!response.ok){
+throw new Error(
+    getApiErrorMessage(
+        responseData,
+        'Unable to load sessions.'
+    )
+);
+}
+
+
+return{
+sessions:
+    Array.isArray(
+        responseData?.sessions
+    )
+        ?responseData.sessions
+        :[]
+};
 }
 
 
 export async function loadMediaTaskData(
-    sessionId,
-    state
+sessionId,
+state
 ){
-    const url=
-        new URL(
-            MEDIA_TASK_API
-        );
+const url=
+new URL(
+MEDIA_TASK_API
+);
 
 
-    url.searchParams.set(
-        'session_id',
-        sessionId
-    );
+url.searchParams.set(
+'session_id',
+sessionId
+);
 
 
-    const response=
-        await fetch(
-            url.toString(),
-            {
-                method:
-                    'GET',
+const response=
+await fetch(
+url.toString(),
+{
+method:
+    'GET',
 
-                headers:
-                    buildRequestHeaders(
-                        state
-                    )
-            }
-        );
-
-
-    const responseData=
-        await readResponseData(
-            response
-        );
+headers:
+    buildRequestHeaders(
+        state
+    )
+}
+);
 
 
-    if(!response.ok){
-        throw new Error(
-            getApiErrorMessage(
-                responseData,
-                'Unable to load media task.'
-            )
-        );
-    }
+const responseData=
+await readResponseData(
+response
+);
 
 
-    return{
-        user:
-            responseData?.user||
-            null,
+if(!response.ok){
+throw new Error(
+    getApiErrorMessage(
+        responseData,
+        'Unable to load media task.'
+    )
+);
+}
 
-        studentsBySession:
+
+return{
+user:
+    responseData?.user||
+    null,
+
+studentsBySession:
+    Array.isArray(
+        responseData
+            ?.students_by_session
+    )
+        ?responseData
+            .students_by_session
+        :[],
+
+studentsByLocation:
+    Array.isArray(
+        responseData
+            ?.students_by_location
+    )
+        ?responseData
+            .students_by_location
+        :(
             Array.isArray(
                 responseData
-                    ?.students_by_session
+                    ?.student_by_location
             )
                 ?responseData
-                    .students_by_session
-                :[],
+                    .student_by_location
+                :[]
+        )
+};
+}
 
-        studentsByLocation:
-            Array.isArray(
-                responseData
-                    ?.students_by_location
-            )
-                ?responseData
-                    .students_by_location
-                :(
-                    Array.isArray(
-                        responseData
-                            ?.student_by_location
-                    )
-                        ?responseData
-                            .student_by_location
-                        :[]
-                )
-    };
+
+export async function prepareMediaUpload(
+mediaItem,
+sessionId,
+mediaGroupId,
+state
+){
+const response=
+await fetch(
+MEDIA_PREPARE_UPLOAD_API,
+{
+method:
+    'POST',
+
+headers:{
+    ...buildRequestHeaders(
+        state
+    ),
+
+    'Content-Type':
+        'application/json'
+},
+
+body:
+    JSON.stringify({
+        session_id:
+            sessionId,
+
+        student_ids:
+            mediaItem.studentIds,
+
+        file_name:
+            mediaItem.file.name,
+
+        content_type:
+            mediaItem.file.type,
+
+        media_type:
+            mediaItem.mediaType,
+
+        media_kind:
+            mediaItem.mediaKind,
+
+        media_group_id:
+            mediaGroupId
+    })
+}
+);
+
+
+const responseData=
+await readResponseData(
+response
+);
+
+
+if(!response.ok){
+throw new Error(
+    getApiErrorMessage(
+        responseData,
+        'Unable to prepare media upload.'
+    )
+);
+}
+
+
+return{
+uploadTargets:
+    Array.isArray(
+        responseData?.upload_targets
+    )
+        ?responseData.upload_targets
+        :[]
+};
 }
 
 
 function buildRequestHeaders(
-    state
+state
 ){
-    const headers={
-        Accept:
-            'application/json'
-    };
+const headers={
+Accept:
+'application/json'
+};
 
 
-    const authToken=
-        getAuthToken(
-            state
-        );
+const authToken=
+getAuthToken(
+state
+);
 
 
-    if(authToken){
-        headers.Authorization=
-            `Bearer ${authToken}`;
-    }
+if(authToken){
+headers.Authorization=
+    `Bearer ${authToken}`;
+}
 
 
-    return headers;
+return headers;
 }
 
 
 function getAuthToken(
-    state
+state
 ){
-    return(
-        state?.authToken||
-        state?.auth_token||
-        state?.context?.authToken||
-        state?.context?.auth_token||
-        window.localStorage.getItem(
-            'authToken'
-        )||
-        window.localStorage.getItem(
-            'auth_token'
-        )||
-        ''
-    );
+return(
+state?.authToken||
+state?.auth_token||
+state?.context?.authToken||
+state?.context?.auth_token||
+window.localStorage.getItem(
+    'authToken'
+)||
+window.localStorage.getItem(
+    'auth_token'
+)||
+''
+);
 }
 
 
 async function readResponseData(
-    response
+response
 ){
-    const responseText=
-        await response.text();
+const responseText=
+await response.text();
 
 
-    if(!responseText){
-        return null;
-    }
+if(!responseText){
+return null;
+}
 
 
-    try{
-        return JSON.parse(
-            responseText
-        );
+try{
+return JSON.parse(
+    responseText
+);
 
-    }catch(error){
-        return{
-            message:
-                responseText
-        };
-    }
+}catch(error){
+return{
+    message:
+        responseText
+};
+}
 }
 
 
 function getApiErrorMessage(
-    responseData,
-    fallbackMessage
+responseData,
+fallbackMessage
 ){
-    return(
-        responseData?.message||
-        responseData?.error||
-        fallbackMessage
-    );
+return(
+responseData?.message||
+responseData?.error||
+fallbackMessage
+);
 }
