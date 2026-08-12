@@ -11,7 +11,13 @@ import{
 getMediaSession,
 setAvailableSessions,
 selectMediaSession,
-applyMediaTaskData
+applyMediaTaskData,
+startMediaSave,
+markMediaItemSaving,
+markMediaItemSaved,
+markMediaItemSaveError,
+finishMediaSave,
+failMediaSave
 }from'./ta_media_session.js';
 
 import{
@@ -30,6 +36,10 @@ renderMediaCapture
 import{
 renderMediaPreview
 }from'./ta_media_preview.js';
+
+import{
+uploadMediaItem
+}from'./ta_media_upload.js';
 
 
 export async function renderMediaModule(
@@ -56,36 +66,36 @@ session.isLoadingSessions=
 true;
 
 session.sessionLoadError=
-    null;
+null;
 
 renderCurrentView();
 
 try{
-    const data=
-        await loadMediaSessions(
-            getState()
-        );
+const data=
+await loadMediaSessions(
+getState()
+);
 
-    setAvailableSessions(
-        data.sessions
-    );
+setAvailableSessions(
+    data.sessions
+);
 
 }catch(error){
-    console.error(
-        'Media sessions load failed:',
-        error
-    );
+console.error(
+'Media sessions load failed:',
+error
+);
 
-    session.sessionLoadError=
-        error instanceof Error
-            ?error.message
-            :'Unable to load sessions.';
+session.sessionLoadError=
+    error instanceof Error
+        ?error.message
+        :'Unable to load sessions.';
 
 }finally{
-    session.isLoadingSessions=
-        false;
+session.isLoadingSessions=
+false;
 
-    renderCurrentView();
+renderCurrentView();
 }
 
 return;
@@ -138,17 +148,17 @@ document.createElement(
 );
 
 message.className=
-    'teacher-media-message';
+'teacher-media-message';
 
 message.textContent=
-    'Loading sessions...';
+'Loading sessions...';
 
 container.appendChild(
-    message
+message
 );
 
 workspace.appendChild(
-    container
+container
 );
 
 return;
@@ -168,17 +178,17 @@ document.createElement(
 );
 
 message.className=
-    'teacher-media-message teacher-media-message-error';
+'teacher-media-message teacher-media-message-error';
 
 message.textContent=
-    session.sessionLoadError;
+session.sessionLoadError;
 
 container.appendChild(
-    message
+message
 );
 
 workspace.appendChild(
-    container
+container
 );
 
 return;
@@ -195,21 +205,21 @@ if(
 renderMediaSessionSelect(
 container,
 {
-    sessions:
-        session.availableSessions,
+sessions:
+session.availableSessions,
 
-    selectedSession:
-        session.selectedSession,
+selectedSession:
+    session.selectedSession,
 
-    actions:{
-        selectSession:
-            handleSessionSelection
-    }
+actions:{
+    selectSession:
+        handleSessionSelection
+}
 }
 );
 
 workspace.appendChild(
-    container
+container
 );
 
 return;
@@ -229,17 +239,17 @@ document.createElement(
 );
 
 message.className=
-    'teacher-media-message';
+'teacher-media-message';
 
 message.textContent=
-    'Preparing media task...';
+'Preparing media task...';
 
 container.appendChild(
-    message
+message
 );
 
 workspace.appendChild(
-    container
+container
 );
 
 return;
@@ -259,17 +269,17 @@ document.createElement(
 );
 
 message.className=
-    'teacher-media-message teacher-media-message-error';
+'teacher-media-message teacher-media-message-error';
 
 message.textContent=
-    session.taskLoadError;
+session.taskLoadError;
 
 container.appendChild(
-    message
+message
 );
 
 workspace.appendChild(
-    container
+container
 );
 
 return;
@@ -283,11 +293,11 @@ return;
 renderMediaCapture(
 container,
 {
-    refresh:
-        renderCurrentView,
+refresh:
+    renderCurrentView,
 
-    saveMedia:
-        handleMediaSave
+saveMedia:
+    handleMediaSave
 }
 );
 
@@ -299,8 +309,8 @@ container,
 renderMediaPreview(
 container,
 {
-    refresh:
-        renderCurrentView
+refresh:
+    renderCurrentView
 }
 );
 
@@ -345,24 +355,24 @@ renderCurrentView();
 try{
 const data=
 await loadMediaTaskData(
-    session.sessionId,
-    getState()
+session.sessionId,
+getState()
 );
 
 applyMediaTaskData(
-    data
+data
 );
 
 }catch(error){
 console.error(
-    'Media task load failed:',
-    error
+'Media task load failed:',
+error
 );
 
 session.taskLoadError=
-    error instanceof Error
-        ?error.message
-        :'Unable to prepare media task.';
+error instanceof Error
+?error.message
+:'Unable to prepare media task.';
 
 }finally{
 session.isLoadingTask=
@@ -374,15 +384,26 @@ renderCurrentView();
 
 
 /*==================================================*
-*Temporary Media Save*
+*Media Save*
 *==================================================*/
 
-function handleMediaSave(
+async function handleMediaSave(
 manifest
 ){
+const session=
+getMediaSession();
+
+
+if(
+session.isSaving
+){
+return;
+}
+
+
 if(
 !Array.isArray(
-    manifest
+manifest
 )||
 !manifest.length
 ){
@@ -397,30 +418,30 @@ return;
 const invalidItem=
 manifest.find(
 item=>{
-    return(
-        !item?.clientMediaId||
-        !item?.sessionId||
-        !item?.file||
-        !item?.mediaKind||
-        !item?.mediaType||
-        !Array.isArray(
-            item?.studentIds
-        )||
-        !item.studentIds.length||
-        item.infoComplete!==true
-    );
+return(
+!item?.clientMediaId||
+!item?.sessionId||
+!item?.file||
+!item?.mediaKind||
+!item?.mediaType||
+!Array.isArray(
+item?.studentIds
+)||
+!item.studentIds.length||
+item.infoComplete!==true
+);
 }
 );
 
 
 if(invalidItem){
 console.error(
-    'ta_media: invalid save manifest item',
-    invalidItem
+'ta_media: invalid save manifest item',
+invalidItem
 );
 
 window.alert(
-    'One or more media items are incomplete.'
+'One or more media items are incomplete.'
 );
 
 return;
@@ -428,45 +449,143 @@ return;
 
 
 //------------------------------------
-// Test Manifest
+// Avoid Saving Completed Batch Again
 //------------------------------------
 
-console.log(
-    'ta_media: save manifest',
-    manifest
+const alreadySaved=
+session.items.length>0&&
+session.items.every(
+item=>{
+return(
+item.saveStatus===
+'saved'
+);
+}
 );
 
 
-console.table(
-    manifest.map(
-        item=>{
-            return{
-                clientMediaId:
-                    item.clientMediaId,
+if(alreadySaved){
+return;
+}
 
-                sessionId:
-                    item.sessionId,
 
-                fileName:
-                    item.file?.name||
-                    '',
+//------------------------------------
+// Start Batch
+//------------------------------------
 
-                fileType:
-                    item.file?.type||
-                    '',
+startMediaSave();
 
-                mediaKind:
-                    item.mediaKind,
+renderCurrentView();
 
-                mediaType:
-                    item.mediaType,
 
-                studentIds:
-                    item.studentIds.join(
-                        ', '
-                    )
-            };
-        }
-    )
+try{
+
+//------------------------------------
+// Process Media One At A Time
+//------------------------------------
+
+for(
+const manifestItem
+of manifest
+){
+    const mediaId=
+        manifestItem.clientMediaId;
+
+
+    //--------------------------------
+    // Saving
+    //--------------------------------
+
+    markMediaItemSaving(
+        mediaId
+    );
+
+    renderCurrentView();
+
+
+    try{
+
+        //--------------------------------
+        // Upload Item
+        //--------------------------------
+
+        await uploadMediaItem(
+            {
+                ...manifestItem,
+
+                id:
+                    mediaId
+            },
+            manifestItem.sessionId,
+            mediaId
+        );
+
+
+        //--------------------------------
+        // Saved
+        //--------------------------------
+
+        markMediaItemSaved(
+            mediaId
+        );
+
+        renderCurrentView();
+
+
+    }catch(error){
+        const errorMessage=
+            error instanceof Error
+                ?error.message
+                :'Unable to save media.';
+
+
+        console.error(
+            'Media item save failed:',
+            {
+                mediaId,
+                error
+            }
+        );
+
+
+        markMediaItemSaveError(
+            mediaId,
+            errorMessage
+        );
+
+
+        throw error;
+    }
+}
+
+
+//------------------------------------
+// Batch Complete
+//------------------------------------
+
+finishMediaSave();
+
+renderCurrentView();
+
+
+}catch(error){
+const errorMessage=
+error instanceof Error
+?error.message
+:'Unable to save media.';
+
+
+failMediaSave(
+errorMessage
 );
+
+
+console.error(
+'Media save failed:',
+error
+);
+
+
+renderCurrentView();
+}
 }
