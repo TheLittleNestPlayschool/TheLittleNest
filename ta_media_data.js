@@ -7,6 +7,9 @@ const MEDIA_TASK_API=
 const MEDIA_PREPARE_UPLOAD_API=
 'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_prepare_media_upload';
 
+const MEDIA_SAVE_API=
+'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_save_media';
+
 
 export async function loadMediaSessions(
 state
@@ -19,36 +22,36 @@ method:
 'GET',
 
 headers:
-    buildRequestHeaders(
-        state
-    )
+buildRequestHeaders(
+state
+)
 }
 );
 
 
 const responseData=
 await readResponseData(
-    response
+response
 );
 
 
 if(!response.ok){
 throw new Error(
-    getApiErrorMessage(
-        responseData,
-        'Unable to load sessions.'
-    )
+getApiErrorMessage(
+responseData,
+'Unable to load sessions.'
+)
 );
 }
 
 
 return{
 sessions:
-    Array.isArray(
-        responseData?.sessions
-    )
-        ?responseData.sessions
-        :[]
+Array.isArray(
+responseData?.sessions
+)
+?responseData.sessions
+:[]
 };
 }
 
@@ -74,12 +77,12 @@ await fetch(
 url.toString(),
 {
 method:
-    'GET',
+'GET',
 
 headers:
-    buildRequestHeaders(
-        state
-    )
+buildRequestHeaders(
+state
+)
 }
 );
 
@@ -92,44 +95,44 @@ response
 
 if(!response.ok){
 throw new Error(
-    getApiErrorMessage(
-        responseData,
-        'Unable to load media task.'
-    )
+getApiErrorMessage(
+responseData,
+'Unable to load media task.'
+)
 );
 }
 
 
 return{
 user:
-    responseData?.user||
-    null,
+responseData?.user||
+null,
 
 studentsBySession:
-    Array.isArray(
-        responseData
-            ?.students_by_session
-    )
-        ?responseData
-            .students_by_session
-        :[],
+Array.isArray(
+responseData
+?.students_by_session
+)
+?responseData
+.students_by_session
+:[],
 
 studentsByLocation:
-    Array.isArray(
-        responseData
-            ?.students_by_location
-    )
-        ?responseData
-            .students_by_location
-        :(
-            Array.isArray(
-                responseData
-                    ?.student_by_location
-            )
-                ?responseData
-                    .student_by_location
-                :[]
-        )
+Array.isArray(
+responseData
+?.students_by_location
+)
+?responseData
+.students_by_location
+:(
+Array.isArray(
+responseData
+?.student_by_location
+)
+?responseData
+.student_by_location
+:[]
+)
 };
 }
 
@@ -145,40 +148,40 @@ await fetch(
 MEDIA_PREPARE_UPLOAD_API,
 {
 method:
-    'POST',
+'POST',
 
 headers:{
-    ...buildRequestHeaders(
-        state
-    ),
+...buildRequestHeaders(
+state
+),
 
-    'Content-Type':
-        'application/json'
+'Content-Type':
+'application/json'
 },
 
 body:
-    JSON.stringify({
-        session_id:
-            sessionId,
+JSON.stringify({
+session_id:
+sessionId,
 
-        student_ids:
-            mediaItem.studentIds,
+student_ids:
+mediaItem.studentIds,
 
-        file_name:
-            mediaItem.file.name,
+file_name:
+mediaItem.file.name,
 
-        content_type:
-            mediaItem.file.type,
+content_type:
+mediaItem.file.type,
 
-        media_type:
-            mediaItem.mediaType,
+media_type:
+mediaItem.mediaType,
 
-        media_kind:
-            mediaItem.mediaKind,
+media_kind:
+mediaItem.mediaKind,
 
-        media_group_id:
-            mediaGroupId
-    })
+media_group_id:
+mediaGroupId
+})
 }
 );
 
@@ -191,22 +194,101 @@ response
 
 if(!response.ok){
 throw new Error(
-    getApiErrorMessage(
-        responseData,
-        'Unable to prepare media upload.'
-    )
+getApiErrorMessage(
+responseData,
+'Unable to prepare media upload.'
+)
 );
 }
 
 
 return{
 uploadTargets:
-    Array.isArray(
-        responseData?.upload_targets
-    )
-        ?responseData.upload_targets
-        :[]
+Array.isArray(
+responseData?.upload_targets
+)
+?responseData.upload_targets
+:[]
 };
+}
+
+
+export async function saveMediaRecord(
+mediaItem,
+uploadTarget,
+sessionId,
+mediaGroupId,
+state
+){
+const response=
+await fetch(
+MEDIA_SAVE_API,
+{
+method:
+'POST',
+
+headers:{
+...buildRequestHeaders(
+state
+),
+
+'Content-Type':
+'application/json'
+},
+
+body:
+JSON.stringify({
+session_id:
+sessionId,
+
+student_id:
+uploadTarget.student_id,
+
+parent_id:
+uploadTarget.parent_id,
+
+media_group_id:
+mediaGroupId,
+
+media_type:
+mediaItem.mediaType,
+
+media_kind:
+mediaItem.mediaKind,
+
+file_name:
+mediaItem.file.name,
+
+content_type:
+mediaItem.file.type,
+
+file_size:
+mediaItem.file.size,
+
+file_key:
+uploadTarget.file_key
+})
+}
+);
+
+
+const responseData=
+await readResponseData(
+response
+);
+
+
+if(!response.ok){
+throw new Error(
+getApiErrorMessage(
+responseData,
+'Unable to save media record.'
+)
+);
+}
+
+
+return responseData;
 }
 
 
@@ -227,7 +309,7 @@ state
 
 if(authToken){
 headers.Authorization=
-    `Bearer ${authToken}`;
+`Bearer ${authToken}`;
 }
 
 
@@ -244,10 +326,10 @@ state?.auth_token||
 state?.context?.authToken||
 state?.context?.auth_token||
 window.localStorage.getItem(
-    'authToken'
+'authToken'
 )||
 window.localStorage.getItem(
-    'auth_token'
+'auth_token'
 )||
 ''
 );
@@ -268,13 +350,13 @@ return null;
 
 try{
 return JSON.parse(
-    responseText
+responseText
 );
 
 }catch(error){
 return{
-    message:
-        responseText
+message:
+responseText
 };
 }
 }
