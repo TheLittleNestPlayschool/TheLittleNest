@@ -4,28 +4,40 @@ getState
 
 import{
 prepareMediaUpload,
-saveMediaRecord
+saveMediaRecords
 }from'./ta_media_data.js';
 
 
-export async function uploadMediaItem(
-mediaItem,
-sessionId,
-mediaGroupId
+/*==================================================*
+*Upload Media Batch*
+*==================================================*/
+
+export async function uploadMediaBatch(
+manifest
 ){
 const state=
 getState();
 
 
+if(
+!Array.isArray(
+manifest
+)||
+!manifest.length
+){
+throw new Error(
+'No media items are available to upload.'
+);
+}
+
+
 //------------------------------------
-// Prepare Upload Targets
+// Prepare Entire Batch
 //------------------------------------
 
 const prepared=
 await prepareMediaUpload(
-mediaItem,
-sessionId,
-mediaGroupId,
+manifest,
 state
 );
 
@@ -46,56 +58,206 @@ throw new Error(
 
 
 //------------------------------------
-// Upload For Each Student
+// Match Files To Upload Targets
 //------------------------------------
 
-const savedRecords=[];
+const mediaRecords=[];
 
 
 for(
 const uploadTarget
 of uploadTargets
 ){
+
+    const manifestItem=
+        findManifestItem(
+            manifest,
+            uploadTarget
+        );
+
+
+    if(!manifestItem){
+        throw new Error(
+            `Unable to locate media file for ${uploadTarget.file_name||'upload target'}.`
+        );
+    }
+
+
     //--------------------------------
     // Upload File To AWS
     //--------------------------------
 
     await uploadFileToAws(
-        mediaItem.file,
+        manifestItem.file,
         uploadTarget.signed_url
     );
 
 
     //--------------------------------
-    // Save Xano Record
+    // Build Xano Save Record
     //--------------------------------
 
-    const savedRecord=
-        await saveMediaRecord(
-            mediaItem,
+    mediaRecords.push(
+        buildMediaRecord(
             uploadTarget,
-            sessionId,
-            mediaGroupId,
-            state
-        );
-
-
-    savedRecords.push(
-        savedRecord
+            manifestItem
+        )
     );
 }
 
 
+//------------------------------------
+// Save Entire Batch To Xano
+//------------------------------------
+
+if(!mediaRecords.length){
+throw new Error(
+'No uploaded media records are available to save.'
+);
+}
+
+
+const saveResult=
+await saveMediaRecords(
+mediaRecords,
+state
+);
+
+
 return{
-mediaItemId:
-mediaItem.id,
-
-mediaGroupId,
-
-savedRecords
+uploadTargets,
+mediaRecords,
+saveResult
 };
 }
 
+
+/*==================================================*
+*Match Manifest Item*
+*==================================================*/
+
+function findManifestItem(
+manifest,
+uploadTarget
+){
+const mediaGroupId=
+String(
+uploadTarget?.media_group_id||
+''
+);
+
+
+if(mediaGroupId){
+const groupMatch=
+manifest.find(
+item=>{
+return(
+String(
+item?.clientMediaId||
+item?.id||
+''
+)===
+mediaGroupId
+);
+}
+);
+
+
+if(groupMatch){
+return groupMatch;
+}
+}
+
+
+//------------------------------------
+// Fallback To File Name
+//------------------------------------
+
+const fileName=
+uploadTarget?.file_name||
+'';
+
+
+if(!fileName){
+return null;
+}
+
+
+return(
+manifest.find(
+item=>{
+return(
+item?.file?.name===
+fileName
+);
+}
+)||
+null
+);
+}
+
+
+/*==================================================*
+*Build Save Record*
+*==================================================*/
+
+function buildMediaRecord(
+uploadTarget,
+manifestItem
+){
+return{
+student_id:
+uploadTarget.student_id,
+
+parent_id:
+uploadTarget.parent_id,
+
+session_id:
+uploadTarget.session_id||
+manifestItem.sessionId,
+
+media_group_id:
+uploadTarget.media_group_id||
+manifestItem.clientMediaId||
+manifestItem.id||
+'',
+
+media_type:
+uploadTarget.media_type||
+manifestItem.mediaType||
+'',
+
+media_kind:
+uploadTarget.media_kind||
+manifestItem.mediaKind||
+'',
+
+file_name:
+uploadTarget.file_name||
+manifestItem.file?.name||
+'',
+
+content_type:
+uploadTarget.content_type||
+manifestItem.file?.type||
+'',
+
+file_size:
+Number(
+uploadTarget.file_size||
+manifestItem.file?.size||
+0
+),
+
+file_key:
+uploadTarget.file_key
+};
+}
+
+
+/*==================================================*
+*AWS Upload*
+*==================================================*/
 
 async function uploadFileToAws(
 file,
