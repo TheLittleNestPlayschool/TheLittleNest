@@ -38,7 +38,7 @@ renderMediaPreview
 }from'./ta_media_preview.js';
 
 import{
-uploadMediaItem
+uploadMediaBatch
 }from'./ta_media_upload.js';
 
 
@@ -77,7 +77,7 @@ getState()
 );
 
 setAvailableSessions(
-    data.sessions
+data.sessions
 );
 
 }catch(error){
@@ -87,9 +87,9 @@ error
 );
 
 session.sessionLoadError=
-    error instanceof Error
-        ?error.message
-        :'Unable to load sessions.';
+error instanceof Error
+?error.message
+:'Unable to load sessions.';
 
 }finally{
 session.isLoadingSessions=
@@ -209,11 +209,11 @@ sessions:
 session.availableSessions,
 
 selectedSession:
-    session.selectedSession,
+session.selectedSession,
 
 actions:{
-    selectSession:
-        handleSessionSelection
+selectSession:
+handleSessionSelection
 }
 }
 );
@@ -294,10 +294,10 @@ renderMediaCapture(
 container,
 {
 refresh:
-    renderCurrentView,
+renderCurrentView,
 
 saveMedia:
-    handleMediaSave
+handleMediaSave
 }
 );
 
@@ -310,7 +310,7 @@ renderMediaPreview(
 container,
 {
 refresh:
-    renderCurrentView
+renderCurrentView
 }
 );
 
@@ -475,88 +475,45 @@ return;
 
 startMediaSave();
 
+
+//------------------------------------
+// Mark All Items Saving
+//------------------------------------
+
+manifest.forEach(
+item=>{
+markMediaItemSaving(
+item.clientMediaId
+);
+}
+);
+
+
 renderCurrentView();
 
 
 try{
 
 //------------------------------------
-// Process Media One At A Time
+// Upload Entire Batch
 //------------------------------------
 
-for(
-const manifestItem
-of manifest
-){
-    const mediaId=
-        manifestItem.clientMediaId;
+await uploadMediaBatch(
+manifest
+);
 
 
-    //--------------------------------
-    // Saving
-    //--------------------------------
+//------------------------------------
+// Mark All Items Saved
+//------------------------------------
 
-    markMediaItemSaving(
-        mediaId
-    );
-
-    renderCurrentView();
-
-
-    try{
-
-        //--------------------------------
-        // Upload Item
-        //--------------------------------
-
-        await uploadMediaItem(
-            {
-                ...manifestItem,
-
-                id:
-                    mediaId
-            },
-            manifestItem.sessionId,
-            mediaId
-        );
-
-
-        //--------------------------------
-        // Saved
-        //--------------------------------
-
-        markMediaItemSaved(
-            mediaId
-        );
-
-        renderCurrentView();
-
-
-    }catch(error){
-        const errorMessage=
-            error instanceof Error
-                ?error.message
-                :'Unable to save media.';
-
-
-        console.error(
-            'Media item save failed:',
-            {
-                mediaId,
-                error
-            }
-        );
-
-
-        markMediaItemSaveError(
-            mediaId,
-            errorMessage
-        );
-
-
-        throw error;
-    }
+manifest.forEach(
+item=>{
+markMediaItemSaved(
+item.clientMediaId
+);
 }
+);
 
 
 //------------------------------------
@@ -575,14 +532,51 @@ error instanceof Error
 :'Unable to save media.';
 
 
-failMediaSave(
-errorMessage
+console.error(
+'Media batch save failed:',
+error
 );
 
 
-console.error(
-'Media save failed:',
-error
+//------------------------------------
+// Mark Unsaved Items As Error
+//------------------------------------
+
+manifest.forEach(
+item=>{
+const currentItem=
+session.items.find(
+sessionItem=>{
+return(
+sessionItem.id===
+item.clientMediaId
+);
+}
+);
+
+
+if(
+currentItem?.saveStatus===
+'saved'
+){
+return;
+}
+
+
+markMediaItemSaveError(
+item.clientMediaId,
+errorMessage
+);
+}
+);
+
+
+//------------------------------------
+// Fail Batch
+//------------------------------------
+
+failMediaSave(
+errorMessage
 );
 
 
