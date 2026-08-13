@@ -137,12 +137,27 @@ responseData
 }
 
 
+/*==================================================*
+*Prepare Media Upload Batch*
+*==================================================*/
+
 export async function prepareMediaUpload(
-mediaItem,
-sessionId,
-mediaGroupId,
+manifest,
 state
 ){
+const mediaItems=
+buildPrepareMediaItems(
+manifest
+);
+
+
+if(!mediaItems.length){
+throw new Error(
+'No media items are available to prepare.'
+);
+}
+
+
 const response=
 await fetch(
 MEDIA_PREPARE_UPLOAD_API,
@@ -161,26 +176,8 @@ state
 
 body:
 JSON.stringify({
-session_id:
-sessionId,
-
-student_ids:
-mediaItem.studentIds,
-
-file_name:
-mediaItem.file.name,
-
-content_type:
-mediaItem.file.type,
-
-media_type:
-mediaItem.mediaType,
-
-media_kind:
-mediaItem.mediaKind,
-
-media_group_id:
-mediaGroupId
+media_items:
+mediaItems
 })
 }
 );
@@ -213,13 +210,26 @@ responseData?.upload_targets
 }
 
 
-export async function saveMediaRecord(
-mediaItem,
-uploadTarget,
-sessionId,
-mediaGroupId,
+/*==================================================*
+*Save Media Records Batch*
+*==================================================*/
+
+export async function saveMediaRecords(
+mediaRecords,
 state
 ){
+if(
+!Array.isArray(
+mediaRecords
+)||
+!mediaRecords.length
+){
+throw new Error(
+'No media records are available to save.'
+);
+}
+
+
 const response=
 await fetch(
 MEDIA_SAVE_API,
@@ -238,35 +248,8 @@ state
 
 body:
 JSON.stringify({
-session_id:
-sessionId,
-
-student_id:
-uploadTarget.student_id,
-
-parent_id:
-uploadTarget.parent_id,
-
-media_group_id:
-mediaGroupId,
-
-media_type:
-mediaItem.mediaType,
-
-media_kind:
-mediaItem.mediaKind,
-
-file_name:
-mediaItem.file.name,
-
-content_type:
-mediaItem.file.type,
-
-file_size:
-mediaItem.file.size,
-
-file_key:
-uploadTarget.file_key
+media_records:
+mediaRecords
 })
 }
 );
@@ -282,7 +265,7 @@ if(!response.ok){
 throw new Error(
 getApiErrorMessage(
 responseData,
-'Unable to save media record.'
+'Unable to save media records.'
 )
 );
 }
@@ -291,6 +274,71 @@ responseData,
 return responseData;
 }
 
+
+/*==================================================*
+*Prepare Payload*
+*==================================================*/
+
+function buildPrepareMediaItems(
+manifest
+){
+if(
+!Array.isArray(
+manifest
+)
+){
+return[];
+}
+
+
+return manifest.map(
+item=>{
+return{
+session_id:
+item.sessionId,
+
+student_ids:
+Array.isArray(
+item.studentIds
+)
+?item.studentIds
+:[],
+
+file_name:
+item.file?.name||
+'',
+
+content_type:
+item.file?.type||
+'',
+
+media_type:
+item.mediaType||
+'',
+
+media_kind:
+item.mediaKind||
+'',
+
+media_group_id:
+item.clientMediaId||
+item.id||
+'',
+
+file_size:
+Number(
+item.file?.size||
+0
+)
+};
+}
+);
+}
+
+
+/*==================================================*
+*Request Headers*
+*==================================================*/
 
 function buildRequestHeaders(
 state
@@ -335,6 +383,10 @@ window.localStorage.getItem(
 );
 }
 
+
+/*==================================================*
+*Response Helpers*
+*==================================================*/
 
 async function readResponseData(
 response
