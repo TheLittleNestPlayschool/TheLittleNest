@@ -153,10 +153,8 @@ export async function loadTeacherResourceFormsData(
         forms:
             Array.isArray(
                 responseData
-                ?.teacher_resource_forms
             )
                 ?responseData
-                .teacher_resource_forms
                 :[]
     };
 }
