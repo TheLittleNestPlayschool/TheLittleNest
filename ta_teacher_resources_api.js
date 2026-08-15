@@ -64,13 +64,11 @@ export async function loadTeacherResourceDownloads(
             TEACHER_RESOURCE_DOWNLOAD_ENDPOINT
         );
 
-    blocks.forEach(
-        block=>{
-            url.searchParams.append(
-                'blocks[]',
-                block
-            );
-        }
+    url.searchParams.set(
+        'blocks',
+        JSON.stringify(
+            blocks
+        )
     );
 
     const response=
