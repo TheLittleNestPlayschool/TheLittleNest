@@ -58,9 +58,6 @@ async function loadTeacherResourceSessions(
         const response=
             await fetch(
                 TEACHER_RESOURCE_SESSIONS_ENDPOINT,
-                {
-                    credentials:'include'
-                }
             );
 
         if(!response.ok){
