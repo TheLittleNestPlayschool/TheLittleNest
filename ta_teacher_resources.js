@@ -246,10 +246,7 @@ function renderSessionGroupSelector(
         'teacher-resource-session-area';
 
     sessionGroups.forEach(
-        (
-            group,
-            index
-        )=>{
+        group=>{
             const button=
                 document.createElement(
                     'button'
@@ -288,12 +285,6 @@ function renderSessionGroupSelector(
             selector.appendChild(
                 button
             );
-
-            if(index===0){
-                button.classList.add(
-                    'is-active'
-                );
-            }
         }
     );
 
@@ -304,13 +295,6 @@ function renderSessionGroupSelector(
     container.appendChild(
         sessionArea
     );
-
-    if(sessionGroups.length){
-        renderSelectedSessionGroup(
-            sessionArea,
-            sessionGroups[0]
-        );
-    }
 }
 
 function setActiveRangeButton(
@@ -404,44 +388,8 @@ function createSessionButton(
     button.dataset.sessionNum=
         session.session_num;
 
-    const title=
-        document.createElement(
-            'span'
-        );
-
-    title.className=
-        'teacher-resource-session-title';
-
-    title.textContent=
+    button.textContent=
         `Session ${session.session_num}`;
-
-    const description=
-        document.createElement(
-            'span'
-        );
-
-    description.className=
-        'teacher-resource-session-description';
-
-    description.textContent=
-        [
-            session.lesson_1_title,
-            session.lesson_2_title
-        ]
-            .filter(
-                Boolean
-            )
-            .join(
-                ' • '
-            );
-
-    button.appendChild(
-        title
-    );
-
-    button.appendChild(
-        description
-    );
 
     return button;
 }
