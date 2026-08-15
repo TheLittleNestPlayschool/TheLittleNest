@@ -24,6 +24,10 @@ import{
     renderTeacherResourcesMenu
 }from'./ta_teacher_resources_menu.js';
 
+import{
+    renderTeacherResourceForms
+}from'./ta_teacher_resources_forms.js';
+
 /*==================================================
   Teacher Resources Module
 ==================================================*/
@@ -62,9 +66,10 @@ export async function renderTeacherResourcesModule(
                 },
 
             onForms:
-                ()=>{
-                    showFormsResources(
-                        resourceContent
+                async()=>{
+                    await showFormsResources(
+                        resourceContent,
+                        state
                     );
                 }
         }
@@ -235,26 +240,17 @@ async function showSessionResources(
   Forms Resources
 ==================================================*/
 
-function showFormsResources(
-    content
+async function showFormsResources(
+    content,
+    state
 ){
     clearResourceContent(
         content
     );
 
-    const message=
-        document.createElement(
-            'p'
-        );
-
-    message.className=
-        'teacher-resources-message';
-
-    message.textContent=
-        'Forms will be available here.';
-
-    content.appendChild(
-        message
+    await renderTeacherResourceForms(
+        content,
+        state
     );
 }
 
