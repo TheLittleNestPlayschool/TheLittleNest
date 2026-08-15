@@ -4,6 +4,9 @@ const TEACHER_RESOURCE_SESSIONS_ENDPOINT=
 const TEACHER_RESOURCE_DOWNLOAD_ENDPOINT=
     'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_teacher_resource_download';
 
+const TEACHER_RESOURCE_FORMS_ENDPOINT=
+    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_teacher_resource_forms';
+
 /*==================================================
   Load Teacher Resource Sessions
 ==================================================*/
@@ -107,6 +110,53 @@ export async function loadTeacherResourceDownloads(
             )
                 ?responseData
                 .signed_files
+                :[]
+    };
+}
+
+/*==================================================
+  Load Teacher Resource Forms
+==================================================*/
+
+export async function loadTeacherResourceFormsData(
+    state
+){
+    const response=
+        await fetch(
+            TEACHER_RESOURCE_FORMS_ENDPOINT,
+            {
+                method:
+                    'GET',
+
+                headers:
+                    buildRequestHeaders(
+                        state
+                    )
+            }
+        );
+
+    const responseData=
+        await readResponseData(
+            response
+        );
+
+    if(!response.ok){
+        throw new Error(
+            getApiErrorMessage(
+                responseData,
+                'Unable to load forms.'
+            )
+        );
+    }
+
+    return{
+        forms:
+            Array.isArray(
+                responseData
+                ?.teacher_resource_forms
+            )
+                ?responseData
+                .teacher_resource_forms
                 :[]
     };
 }
