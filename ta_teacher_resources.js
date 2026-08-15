@@ -4,7 +4,7 @@ import{
 }from'./ta_ui.js';
 
 const TEACHER_RESOURCE_SESSIONS_ENDPOINT=
-    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_teacher_resource_sessions';
+    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_teacher_resources';
 
 export async function renderTeacherResourcesModule(){
     clearWorkspace();
@@ -57,7 +57,7 @@ async function loadTeacherResourceSessions(
     try{
         const response=
             await fetch(
-                TEACHER_RESOURCE_SESSIONS_ENDPOINT,
+                TEACHER_RESOURCE_SESSIONS_ENDPOINT
             );
 
         if(!response.ok){
