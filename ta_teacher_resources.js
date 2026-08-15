@@ -20,6 +20,10 @@ import{
     downloadTeacherResourceBlocks
 }from'./ta_teacher_resources_download.js';
 
+import{
+    renderTeacherResourcesMenu
+}from'./ta_teacher_resources_menu.js';
+
 /*==================================================
   Teacher Resources Module
 ==================================================*/
@@ -39,28 +43,46 @@ export async function renderTeacherResourcesModule(
     const container=
         createTeacherResourcesContainer();
 
-    const status=
-        createLoadingStatus();
-
-    container.appendChild(
-        status
-    );
+    const resourceContent=
+        createResourceContent();
 
     workspace.appendChild(
         container
     );
 
-    updateTeacherResourcesLiveStatus();
-
-    await loadTeacherResources(
+    renderTeacherResourcesMenu(
         container,
-        status,
-        state
+        {
+            onSessions:
+                async()=>{
+                    await showSessionResources(
+                        resourceContent,
+                        state
+                    );
+                },
+
+            onForms:
+                ()=>{
+                    showFormsResources(
+                        resourceContent
+                    );
+                }
+        }
     );
+
+    container.appendChild(
+        resourceContent
+    );
+
+    renderResourceStartMessage(
+        resourceContent
+    );
+
+    updateTeacherResourcesLiveStatus();
 }
 
 /*==================================================
-  Container
+  Main Container
 ==================================================*/
 
 function createTeacherResourcesContainer(){
@@ -75,30 +97,81 @@ function createTeacherResourcesContainer(){
     return container;
 }
 
-function createLoadingStatus(){
-    const status=
+/*==================================================
+  Resource Content
+==================================================*/
+
+function createResourceContent(){
+    const content=
+        document.createElement(
+            'div'
+        );
+
+    content.className=
+        'teacher-resource-content';
+
+    return content;
+}
+
+function clearResourceContent(
+    content
+){
+    if(!content){
+        return;
+    }
+
+    content.innerHTML=
+        '';
+}
+
+/*==================================================
+  Start Message
+==================================================*/
+
+function renderResourceStartMessage(
+    content
+){
+    clearResourceContent(
+        content
+    );
+
+    const message=
         document.createElement(
             'p'
         );
 
-    status.className=
+    message.className=
         'teacher-resources-message';
 
-    status.textContent=
-        'Loading sessions...';
+    message.textContent=
+        'Choose the resources you would like to download.';
 
-    return status;
+    content.appendChild(
+        message
+    );
 }
 
 /*==================================================
-  Load Resources
+  Session Resources
 ==================================================*/
 
-async function loadTeacherResources(
-    container,
-    status,
+async function showSessionResources(
+    content,
     state
 ){
+    clearResourceContent(
+        content
+    );
+
+    const status=
+        createLoadingStatus(
+            'Loading sessions...'
+        );
+
+    content.appendChild(
+        status
+    );
+
     try{
         const resourceData=
             await loadTeacherResourceSessionsData(
@@ -116,7 +189,8 @@ async function loadTeacherResources(
 
         if(!sessions.length){
             renderEmptyMessage(
-                container
+                content,
+                'No sessions are currently available.'
             );
 
             return;
@@ -132,7 +206,7 @@ async function loadTeacherResources(
         );
 
         renderSessionRangeSelector(
-            container,
+            content,
             sessionGroups,
             async(
                 blocks,
@@ -158,11 +232,60 @@ async function loadTeacherResources(
 }
 
 /*==================================================
+  Forms Resources
+==================================================*/
+
+function showFormsResources(
+    content
+){
+    clearResourceContent(
+        content
+    );
+
+    const message=
+        document.createElement(
+            'p'
+        );
+
+    message.className=
+        'teacher-resources-message';
+
+    message.textContent=
+        'Forms will be available here.';
+
+    content.appendChild(
+        message
+    );
+}
+
+/*==================================================
+  Status
+==================================================*/
+
+function createLoadingStatus(
+    message
+){
+    const status=
+        document.createElement(
+            'p'
+        );
+
+    status.className=
+        'teacher-resources-message';
+
+    status.textContent=
+        message;
+
+    return status;
+}
+
+/*==================================================
   Empty State
 ==================================================*/
 
 function renderEmptyMessage(
-    container
+    content,
+    message
 ){
     const emptyMessage=
         document.createElement(
@@ -173,9 +296,9 @@ function renderEmptyMessage(
         'teacher-resources-message';
 
     emptyMessage.textContent=
-        'No sessions are currently available.';
+        message;
 
-    container.appendChild(
+    content.appendChild(
         emptyMessage
     );
 }
