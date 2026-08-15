@@ -6,6 +6,15 @@ import{
 const TEACHER_RESOURCE_SESSIONS_ENDPOINT=
     'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_teacher_resources';
 
+/*==================================================
+  Teacher Resources State
+==================================================*/
+
+const teacherResourceState={
+    selectedRanges:
+        new Set()
+};
+
 export async function renderTeacherResourcesModule(
     state
 ){
@@ -112,6 +121,10 @@ async function loadTeacherResourceSessions(
                 sessions
             );
 
+        cleanSelectedRanges(
+            sessionGroups
+        );
+
         renderSessionRangeSelector(
             container,
             sessionGroups
@@ -203,6 +216,51 @@ function buildSessionGroups(
 }
 
 /*==================================================
+  Selected Range State
+==================================================*/
+
+function getRangeKey(
+    group
+){
+    return(
+        `${group.start}-${group.end}`
+    );
+}
+
+function cleanSelectedRanges(
+    sessionGroups
+){
+    const availableRanges=
+        new Set(
+            sessionGroups.map(
+                group=>
+                    getRangeKey(
+                        group
+                    )
+            )
+        );
+
+    Array.from(
+        teacherResourceState
+            .selectedRanges
+    ).forEach(
+        key=>{
+            if(
+                !availableRanges.has(
+                    key
+                )
+            ){
+                teacherResourceState
+                    .selectedRanges
+                    .delete(
+                        key
+                    );
+            }
+        }
+    );
+}
+
+/*==================================================
   Session Range Selector
 ==================================================*/
 
@@ -210,9 +268,6 @@ function renderSessionRangeSelector(
     container,
     sessionGroups
 ){
-    const selectedRanges=
-        new Set();
-
     const heading=
         document.createElement(
             'h3'
@@ -251,14 +306,6 @@ function renderSessionRangeSelector(
     downloadButton.className=
         'teacher-resource-download-button';
 
-    downloadButton.disabled=
-        true;
-
-    updateDownloadButton(
-        downloadButton,
-        selectedRanges
-    );
-
     sessionGroups.forEach(
         group=>{
             const button=
@@ -266,18 +313,21 @@ function renderSessionRangeSelector(
                     group
                 );
 
+            restoreRangeSelection(
+                button,
+                group
+            );
+
             button.addEventListener(
                 'click',
                 ()=>{
                     toggleRangeSelection(
                         button,
-                        group,
-                        selectedRanges
+                        group
                     );
 
                     updateDownloadButton(
-                        downloadButton,
-                        selectedRanges
+                        downloadButton
                     );
                 }
             );
@@ -286,6 +336,10 @@ function renderSessionRangeSelector(
                 button
             );
         }
+    );
+
+    updateDownloadButton(
+        downloadButton
     );
 
     downloadArea.appendChild(
@@ -325,6 +379,11 @@ function createRangeButton(
     button.dataset.rangeEnd=
         group.end;
 
+    button.setAttribute(
+        'aria-pressed',
+        'false'
+    );
+
     const check=
         document.createElement(
             'span'
@@ -358,23 +417,57 @@ function createRangeButton(
     return button;
 }
 
-function toggleRangeSelection(
+function restoreRangeSelection(
     button,
-    group,
-    selectedRanges
+    group
 ){
     const key=
-        `${group.start}-${group.end}`;
+        getRangeKey(
+            group
+        );
 
     const isSelected=
-        selectedRanges.has(
-            key
+        teacherResourceState
+            .selectedRanges
+            .has(
+                key
+            );
+
+    button.classList.toggle(
+        'is-selected',
+        isSelected
+    );
+
+    button.setAttribute(
+        'aria-pressed',
+        isSelected
+            ?'true'
+            :'false'
+    );
+}
+
+function toggleRangeSelection(
+    button,
+    group
+){
+    const key=
+        getRangeKey(
+            group
         );
 
+    const isSelected=
+        teacherResourceState
+            .selectedRanges
+            .has(
+                key
+            );
+
     if(isSelected){
-        selectedRanges.delete(
-            key
-        );
+        teacherResourceState
+            .selectedRanges
+            .delete(
+                key
+            );
 
         button.classList.remove(
             'is-selected'
@@ -388,9 +481,11 @@ function toggleRangeSelection(
         return;
     }
 
-    selectedRanges.add(
-        key
-    );
+    teacherResourceState
+        .selectedRanges
+        .add(
+            key
+        );
 
     button.classList.add(
         'is-selected'
@@ -403,11 +498,12 @@ function toggleRangeSelection(
 }
 
 function updateDownloadButton(
-    button,
-    selectedRanges
+    button
 ){
     const count=
-        selectedRanges.size;
+        teacherResourceState
+            .selectedRanges
+            .size;
 
     button.disabled=
         count===0;
