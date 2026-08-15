@@ -1,10 +1,12 @@
-
 import{
     getWorkspace,
     clearWorkspace
 }from'./ta_ui.js';
 
-export function renderTeacherResourcesModule(){
+const TEACHER_RESOURCE_SESSIONS_ENDPOINT=
+    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_teacher_resource_sessions';
+
+export async function renderTeacherResourcesModule(){
     clearWorkspace();
 
     const workspace=getWorkspace();
@@ -21,19 +23,19 @@ export function renderTeacherResourcesModule(){
     container.className=
         'teacher-resources';
 
-    const message=
+    const status=
         document.createElement(
             'p'
         );
 
-    message.className=
+    status.className=
         'teacher-resources-message';
 
-    message.textContent=
-        'Teacher resources will be available here.';
+    status.textContent=
+        'Loading sessions...';
 
     container.appendChild(
-        message
+        status
     );
 
     workspace.appendChild(
@@ -41,6 +43,121 @@ export function renderTeacherResourcesModule(){
     );
 
     updateTeacherResourcesLiveStatus();
+
+    await loadTeacherResourceSessions(
+        container,
+        status
+    );
+}
+
+async function loadTeacherResourceSessions(
+    container,
+    status
+){
+    try{
+        const response=
+            await fetch(
+                TEACHER_RESOURCE_SESSIONS_ENDPOINT,
+                {
+                    credentials:'include'
+                }
+            );
+
+        if(!response.ok){
+            throw new Error(
+                `Session request failed: ${response.status}`
+            );
+        }
+
+        const data=
+            await response.json();
+
+        const sessions=
+            Array.isArray(
+                data.session_details
+            )
+                ? data.session_details
+                : [];
+
+        status.remove();
+
+        if(sessions.length===0){
+            const emptyMessage=
+                document.createElement(
+                    'p'
+                );
+
+            emptyMessage.className=
+                'teacher-resources-message';
+
+            emptyMessage.textContent=
+                'No sessions are currently available.';
+
+            container.appendChild(
+                emptyMessage
+            );
+
+            return;
+        }
+
+        sessions.forEach(session=>{
+            const card=
+                document.createElement(
+                    'article'
+                );
+
+            card.className=
+                'teacher-resource-session';
+
+            const title=
+                document.createElement(
+                    'h3'
+                );
+
+            title.className=
+                'teacher-resource-session-title';
+
+            title.textContent=
+                `Session ${session.session_num}`;
+
+            const description=
+                document.createElement(
+                    'p'
+                );
+
+            description.className=
+                'teacher-resource-session-description';
+
+            description.textContent=
+                [
+                    session.lesson_1_title,
+                    session.lesson_2_title
+                ]
+                    .filter(Boolean)
+                    .join(' • ');
+
+            card.appendChild(
+                title
+            );
+
+            card.appendChild(
+                description
+            );
+
+            container.appendChild(
+                card
+            );
+        });
+
+    }catch(error){
+        console.error(
+            'Teacher resource sessions failed:',
+            error
+        );
+
+        status.textContent=
+            'Unable to load sessions.';
+    }
 }
 
 function updateTeacherResourcesLiveStatus(){
