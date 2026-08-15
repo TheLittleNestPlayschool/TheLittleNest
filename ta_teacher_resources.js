@@ -29,6 +29,13 @@ import{
 }from'./ta_teacher_resources_forms.js';
 
 /*==================================================
+  Module State
+==================================================*/
+
+let activeTeacherResource=
+    null;
+
+/*==================================================
   Teacher Resources Module
 ==================================================*/
 
@@ -57,8 +64,14 @@ export async function renderTeacherResourcesModule(
     renderTeacherResourcesMenu(
         container,
         {
+            activeResource:
+                activeTeacherResource,
+
             onSessions:
                 async()=>{
+                    activeTeacherResource=
+                        'sessions';
+
                     await showSessionResources(
                         resourceContent,
                         state
@@ -67,6 +80,9 @@ export async function renderTeacherResourcesModule(
 
             onForms:
                 async()=>{
+                    activeTeacherResource=
+                        'forms';
+
                     await showFormsResources(
                         resourceContent,
                         state
@@ -79,9 +95,29 @@ export async function renderTeacherResourcesModule(
         resourceContent
     );
 
-    renderResourceStartMessage(
-        resourceContent
-    );
+    if(
+        activeTeacherResource===
+        'sessions'
+    ){
+        await showSessionResources(
+            resourceContent,
+            state
+        );
+
+    }else if(
+        activeTeacherResource===
+        'forms'
+    ){
+        await showFormsResources(
+            resourceContent,
+            state
+        );
+
+    }else{
+        renderResourceStartMessage(
+            resourceContent
+        );
+    }
 
     updateTeacherResourcesLiveStatus();
 }
