@@ -37,7 +37,7 @@
     margin:0 auto;
     display:flex;
     flex-direction:column;
-    gap:9px;
+    gap:10px;
 }
 
 .teacher-resources-message{
@@ -53,30 +53,164 @@
 }
 
 /*==================================================
-  Curriculum Sessions
+  Range Selector
+==================================================*/
+
+.teacher-resource-range-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:8px;
+}
+
+.teacher-resource-range-button{
+    appearance:none;
+    -webkit-appearance:none;
+
+    width:100%;
+    min-width:0;
+
+    padding:8px 6px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.52),
+            rgba(255,255,255,.24)
+        );
+
+    border:1px solid rgba(255,255,255,.58);
+    border-radius:10px;
+
+    box-shadow:
+        0 2px 7px rgba(71,85,105,.08),
+        inset 0 1px 0 rgba(255,255,255,.55);
+
+    color:#475569;
+
+    font-family:inherit;
+    font-size:.68rem;
+    font-weight:800;
+    line-height:1;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:
+        transform .15s ease,
+        background .15s ease,
+        border-color .15s ease,
+        box-shadow .15s ease;
+}
+
+.teacher-resource-range-button:hover{
+    transform:translateY(-1px);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.68),
+            rgba(255,255,255,.34)
+        );
+
+    border-color:rgba(255,255,255,.78);
+
+    box-shadow:
+        0 4px 10px rgba(71,85,105,.11),
+        inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+.teacher-resource-range-button.is-active{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.82),
+            rgba(255,255,255,.48)
+        );
+
+    border-color:rgba(255,255,255,.9);
+
+    color:#1e293b;
+
+    box-shadow:
+        0 4px 12px rgba(71,85,105,.14),
+        inset 0 1px 0 rgba(255,255,255,.85);
+}
+
+/*==================================================
+  Selected Session Area
+==================================================*/
+
+.teacher-resource-session-area{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.teacher-resource-session-area:empty{
+    display:none;
+}
+
+.teacher-resource-session-group-title{
+    margin:4px 2px 0;
+
+    color:#334155;
+
+    font-size:.74rem;
+    font-weight:800;
+    line-height:1.2;
+}
+
+.teacher-resource-session-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px;
+}
+
+/*==================================================
+  Session Buttons
 ==================================================*/
 
 .teacher-resource-session{
-    padding:10px 12px;
-    background:rgba(255,255,255,.32);
-    border:1px solid rgba(255,255,255,.42);
-    border-radius:10px;
-}
+    appearance:none;
+    -webkit-appearance:none;
 
-.teacher-resource-session-title{
-    margin:0;
+    width:100%;
+    min-width:0;
+
+    padding:8px 9px;
+
+    background:rgba(255,255,255,.34);
+    border:1px solid rgba(255,255,255,.5);
+    border-radius:9px;
+
     color:#334155;
-    font-size:.8rem;
+
+    font-family:inherit;
+    font-size:.67rem;
     font-weight:800;
-    line-height:1.25;
+    line-height:1.15;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:
+        transform .15s ease,
+        background .15s ease,
+        border-color .15s ease,
+        box-shadow .15s ease;
 }
 
-.teacher-resource-session-description{
-    margin:3px 0 0;
-    color:#64748b;
-    font-size:.7rem;
-    font-weight:600;
-    line-height:1.35;
+.teacher-resource-session:hover{
+    transform:translateY(-1px);
+
+    background:rgba(255,255,255,.52);
+
+    border-color:rgba(255,255,255,.72);
+
+    box-shadow:
+        0 3px 8px rgba(71,85,105,.08);
 }
 
 /*==================================================
@@ -94,15 +228,24 @@
         font-size:.7rem;
     }
 
+    .teacher-resource-range-grid{
+        gap:6px;
+    }
+
+    .teacher-resource-range-button{
+        padding:7px 4px;
+        border-radius:9px;
+        font-size:.63rem;
+    }
+
+    .teacher-resource-session-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:5px;
+    }
+
     .teacher-resource-session{
-        padding:9px 10px;
-    }
-
-    .teacher-resource-session-title{
-        font-size:.76rem;
-    }
-
-    .teacher-resource-session-description{
-        font-size:.68rem;
+        padding:7px 6px;
+        border-radius:8px;
+        font-size:.63rem;
     }
 }
