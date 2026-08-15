@@ -1,4 +1,3 @@
-
 /*==================================================
   Teacher Resources Menu
 ==================================================*/
@@ -77,6 +76,11 @@ export function renderTeacherResourcesMenu(
         menu
     );
 
+    setActiveResource(
+        menu,
+        options.activeResource
+    );
+
     return{
         menu,
         sessionsButton,
@@ -143,6 +147,29 @@ function createResourceButton(
 /*==================================================
   Active Resource
 ==================================================*/
+
+function setActiveResource(
+    menu,
+    resourceId
+){
+    if(!resourceId){
+        return;
+    }
+
+    const activeButton=
+        menu.querySelector(
+            `.teacher-resource-menu-button[data-resource="${resourceId}"]`
+        );
+
+    if(!activeButton){
+        return;
+    }
+
+    setActiveResourceButton(
+        menu,
+        activeButton
+    );
+}
 
 function setActiveResourceButton(
     menu,
