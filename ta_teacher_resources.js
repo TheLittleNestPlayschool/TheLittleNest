@@ -3,8 +3,9 @@ import{
     clearWorkspace
 }from'./ta_ui.js';
 
-const TEACHER_RESOURCE_SESSIONS_ENDPOINT=
-    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_teacher_resources';
+import{
+    loadTeacherResourceSessionsData
+}from'./ta_teacher_resources_api.js';
 
 /*==================================================
   Teacher Resources State
@@ -14,6 +15,10 @@ const teacherResourceState={
     selectedRanges:
         new Set()
 };
+
+/*==================================================
+  Teacher Resources Module
+==================================================*/
 
 export async function renderTeacherResourcesModule(
     state
@@ -63,47 +68,26 @@ export async function renderTeacherResourcesModule(
     );
 }
 
+/*==================================================
+  Load Teacher Resource Sessions
+==================================================*/
+
 async function loadTeacherResourceSessions(
     container,
     status,
     state
 ){
     try{
-        const response=
-            await fetch(
-                TEACHER_RESOURCE_SESSIONS_ENDPOINT,
-                {
-                    method:
-                    'GET',
-
-                    headers:
-                    buildRequestHeaders(
-                        state
-                    )
-                }
+        const resourceData=
+            await loadTeacherResourceSessionsData(
+                state
             );
-
-        const responseData=
-            await readResponseData(
-                response
-            );
-
-        if(!response.ok){
-            throw new Error(
-                getApiErrorMessage(
-                    responseData,
-                    'Unable to load sessions.'
-                )
-            );
-        }
 
         const sessions=
             Array.isArray(
-                responseData
-                ?.session_details
+                resourceData?.sessions
             )
-                ?responseData
-                .session_details
+                ?resourceData.sessions
                 :[];
 
         status.remove();
@@ -534,87 +518,6 @@ function renderEmptyMessage(
 
     container.appendChild(
         emptyMessage
-    );
-}
-
-/*==================================================
-  Request Headers
-==================================================*/
-
-function buildRequestHeaders(
-    state
-){
-    const headers={
-        Accept:
-        'application/json'
-    };
-
-    const authToken=
-        getAuthToken(
-            state
-        );
-
-    if(authToken){
-        headers.Authorization=
-            `Bearer ${authToken}`;
-    }
-
-    return headers;
-}
-
-function getAuthToken(
-    state
-){
-    return(
-        state?.authToken||
-        state?.auth_token||
-        state?.context?.authToken||
-        state?.context?.auth_token||
-        window.localStorage.getItem(
-            'authToken'
-        )||
-        window.localStorage.getItem(
-            'auth_token'
-        )||
-        ''
-    );
-}
-
-/*==================================================
-  Response Helpers
-==================================================*/
-
-async function readResponseData(
-    response
-){
-    const responseText=
-        await response.text();
-
-    if(!responseText){
-        return null;
-    }
-
-    try{
-        return JSON.parse(
-            responseText
-        );
-
-    }catch(error){
-        return{
-            message:
-            responseText
-        };
-    }
-}
-
-function getApiErrorMessage(
-    responseData,
-    fallbackMessage
-){
-    return(
-        responseData?.message||
-        responseData?.error||
-        fallbackMessage
     );
 }
 
