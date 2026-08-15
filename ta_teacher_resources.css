@@ -776,3 +776,193 @@
         font-size:.72rem;
     }
 }
+
+/*==================================================
+  Teacher Resources Menu
+==================================================*/
+
+.teacher-resource-menu{
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(
+                0,
+                1fr
+            )
+        );
+
+    gap:8px;
+}
+
+.teacher-resource-menu-button{
+    min-width:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:7px;
+
+    padding:
+        9px
+        12px;
+
+    border:1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .58
+        );
+
+    border-radius:11px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .30
+        );
+
+    color:#475569;
+
+    font-family:inherit;
+
+    font-size:.72rem;
+    font-weight:800;
+    line-height:1;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 3px 9px
+        rgba(
+            15,
+            23,
+            42,
+            .05
+        );
+
+    transition:
+        background .16s ease,
+        border-color .16s ease,
+        color .16s ease,
+        transform .16s ease,
+        box-shadow .16s ease;
+}
+
+.teacher-resource-menu-button:hover{
+    transform:
+        translateY(
+            -1px
+        );
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .45
+        );
+
+    border-color:
+        rgba(
+            255,
+            255,
+            255,
+            .80
+        );
+}
+
+.teacher-resource-menu-button.is-active{
+    background:
+        rgba(
+            204,
+            251,
+            241,
+            .72
+        );
+
+    border-color:
+        rgba(
+            13,
+            148,
+            136,
+            .44
+        );
+
+    color:#0f766e;
+
+    box-shadow:
+        0 4px 12px
+        rgba(
+            13,
+            148,
+            136,
+            .10
+        );
+}
+
+.teacher-resource-menu-icon{
+    flex:0 0 auto;
+
+    font-size:.9rem;
+    line-height:1;
+}
+
+.teacher-resource-menu-label{
+    min-width:0;
+
+    overflow:hidden;
+
+    white-space:nowrap;
+
+    text-overflow:ellipsis;
+}
+
+/*==================================================
+  Teacher Resource Content
+==================================================*/
+
+.teacher-resource-content{
+    width:100%;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:10px;
+}
+
+/*==================================================
+  Mobile
+==================================================*/
+
+@media(max-width:600px){
+
+    .teacher-resource-menu{
+        gap:6px;
+    }
+
+    .teacher-resource-menu-button{
+        gap:5px;
+
+        padding:
+            8px
+            7px;
+
+        font-size:.66rem;
+    }
+
+    .teacher-resource-menu-icon{
+        font-size:.82rem;
+    }
+
+    .teacher-resource-content{
+        gap:9px;
+    }
+}
