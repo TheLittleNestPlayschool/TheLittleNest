@@ -1,297 +1,181 @@
-.teacher-module-card[data-module-id="teacher_resources"]
-.teacher-module-header{
-    padding-top:12px;
-    padding-bottom:12px;
-}
-
-.teacher-module-card[data-module-id="teacher_resources"]
-.teacher-module-title{
-    font-size:1rem;
-    line-height:1.15;
-}
-
-.teacher-module-card[data-module-id="teacher_resources"]
-.teacher-module-subtitle{
-    margin-top:2px;
-    font-size:.72rem;
-    line-height:1.25;
-}
-
-.teacher-module-card[data-module-id="teacher_resources"]
-.teacher-module-icon{
-    font-size:1rem;
-}
-
-.teacher-module-card[data-module-id="teacher_resources"]
-.teacher-module-content{
-    padding-top:10px;
-}
-
 /*==================================================
-  Teacher Resources
+  Teacher Resource Download Progress
 ==================================================*/
 
-.teacher-resources{
-    width:100%;
-    max-width:680px;
-    margin:0 auto;
+.teacher-resource-download-overlay{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:rgba(15,23,42,.12);
+    backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
+}
+
+.teacher-resource-download-progress{
+    width:min(340px,calc(100vw - 40px));
+
     display:flex;
     flex-direction:column;
-    gap:11px;
-}
-
-.teacher-resources-message{
-    margin:0;
-    padding:9px 11px;
-    background:rgba(255,255,255,.24);
-    border:1px solid rgba(255,255,255,.38);
-    border-radius:10px;
-    color:#475569;
-    font-size:.74rem;
-    font-weight:600;
-    line-height:1.35;
-}
-
-.teacher-resource-selector-title{
-    margin:1px 2px 0;
-    color:#334155;
-    font-size:.76rem;
-    font-weight:800;
-    line-height:1.25;
-}
-
-/*==================================================
-  Session Range Grid
-==================================================*/
-
-.teacher-resource-range-grid{
-    display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:7px;
-}
-
-/*==================================================
-  Session Range Button
-==================================================*/
-
-.teacher-resource-range-button{
-    appearance:none;
-    -webkit-appearance:none;
-
-    position:relative;
-
-    display:flex;
     align-items:center;
-    justify-content:center;
 
-    width:100%;
-    min-width:0;
+    padding:24px 22px 20px;
 
-    padding:9px 7px;
+    background:rgba(255,255,255,.72);
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.52),
-            rgba(255,255,255,.28)
-        );
+    border:1px solid rgba(255,255,255,.82);
 
-    border:1px solid rgba(255,255,255,.62);
-    border-radius:10px;
+    border-radius:20px;
 
     box-shadow:
-        0 2px 7px rgba(71,85,105,.07),
-        inset 0 1px 0 rgba(255,255,255,.62);
+        0 18px 50px rgba(15,23,42,.18);
 
-    color:#475569;
+    backdrop-filter:
+        blur(18px);
 
-    font-family:inherit;
+    -webkit-backdrop-filter:
+        blur(18px);
 
-    cursor:pointer;
-
-    transition:
-        transform .15s ease,
-        background .15s ease,
-        border-color .15s ease,
-        box-shadow .15s ease,
-        color .15s ease;
-}
-
-.teacher-resource-range-button:hover{
-    transform:translateY(-1px);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.7),
-            rgba(255,255,255,.38)
-        );
-
-    border-color:rgba(255,255,255,.82);
-
-    box-shadow:
-        0 4px 10px rgba(71,85,105,.1),
-        inset 0 1px 0 rgba(255,255,255,.75);
-}
-
-/*==================================================
-  Selected Range
-==================================================*/
-
-.teacher-resource-range-button.is-selected{
-    background:
-        linear-gradient(
-            145deg,
-            rgba(220,252,231,.88),
-            rgba(209,250,229,.7)
-        );
-
-    border-color:rgba(74,222,128,.7);
-
-    color:#166534;
-
-    box-shadow:
-        0 3px 9px rgba(34,197,94,.11),
-        inset 0 1px 0 rgba(255,255,255,.72);
-}
-
-.teacher-resource-range-button.is-selected:hover{
-    background:
-        linear-gradient(
-            145deg,
-            rgba(220,252,231,.96),
-            rgba(209,250,229,.82)
-        );
-
-    border-color:rgba(34,197,94,.78);
-}
-
-/*==================================================
-  Range Check
-==================================================*/
-
-.teacher-resource-range-check{
-    position:absolute;
-
-    top:50%;
-    left:8px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    width:14px;
-    height:14px;
-
-    border:1px solid rgba(100,116,139,.32);
-    border-radius:4px;
-
-    background:rgba(255,255,255,.55);
-
-    color:transparent;
-
-    font-size:.58rem;
-    font-weight:900;
-    line-height:1;
-
-    transform:translateY(-50%);
-
-    transition:
-        background .15s ease,
-        border-color .15s ease,
-        color .15s ease;
-}
-
-.teacher-resource-range-button.is-selected
-.teacher-resource-range-check{
-    background:#22c55e;
-    border-color:#22c55e;
-    color:#fff;
-}
-
-/*==================================================
-  Range Label
-==================================================*/
-
-.teacher-resource-range-label{
-    display:block;
-
-    padding-left:13px;
-
-    font-size:.66rem;
-    font-weight:800;
-    line-height:1;
     text-align:center;
 }
 
-/*==================================================
-  Download Area
-==================================================*/
+.teacher-resource-download-spinner{
+    width:34px;
+    height:34px;
 
-.teacher-resource-download-area{
-    display:flex;
-    justify-content:flex-end;
+    margin-bottom:14px;
 
-    padding-top:2px;
+    border-radius:50%;
+
+    border:3px solid
+        rgba(15,118,110,.16);
+
+    border-top-color:
+        #0f9f8f;
+
+    animation:
+        teacherResourceDownloadSpin
+        .8s linear infinite;
 }
 
-.teacher-resource-download-button{
-    appearance:none;
-    -webkit-appearance:none;
+.teacher-resource-download-spinner.is-complete{
+    animation:none;
 
-    min-width:150px;
+    border:none;
 
-    padding:9px 14px;
+    width:38px;
+    height:38px;
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(15,118,110,.96),
-            rgba(13,148,136,.9)
-        );
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    border:1px solid rgba(15,118,110,.5);
+    background:rgba(34,197,94,.14);
+
+    color:#15803d;
+
+    font-size:1.25rem;
+    font-weight:900;
+}
+
+.teacher-resource-download-spinner.is-complete::before{
+    content:'✓';
+}
+
+.teacher-resource-download-spinner.is-error{
+    animation:none;
+
+    border:none;
+
+    width:38px;
+    height:38px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(239,68,68,.12);
+
+    color:#dc2626;
+
+    font-size:1.15rem;
+    font-weight:900;
+}
+
+.teacher-resource-download-spinner.is-error::before{
+    content:'!';
+}
+
+.teacher-resource-download-progress-title{
+    color:#1e293b;
+
+    font-size:1rem;
+    font-weight:800;
+
+    line-height:1.2;
+}
+
+.teacher-resource-download-progress-status{
+    margin-top:7px;
+
+    color:#64748b;
+
+    font-size:.76rem;
+    font-weight:600;
+
+    line-height:1.4;
+}
+
+.teacher-resource-download-done-button{
+    min-width:120px;
+
+    margin-top:18px;
+    padding:9px 18px;
+
+    border:1px solid
+        rgba(15,159,143,.34);
+
     border-radius:10px;
 
-    box-shadow:
-        0 4px 10px rgba(15,118,110,.15);
+    background:#0f9f8f;
 
-    color:#fff;
+    color:white;
 
-    font-family:inherit;
-    font-size:.69rem;
+    font-size:.75rem;
     font-weight:800;
-    line-height:1;
 
     cursor:pointer;
 
+    box-shadow:
+        0 6px 16px rgba(15,159,143,.18);
+
     transition:
         transform .15s ease,
-        filter .15s ease,
         opacity .15s ease,
-        box-shadow .15s ease;
+        filter .15s ease;
 }
 
-.teacher-resource-download-button:hover:not(:disabled){
+.teacher-resource-download-done-button:hover:not(:disabled){
     transform:translateY(-1px);
     filter:brightness(1.04);
-
-    box-shadow:
-        0 5px 12px rgba(15,118,110,.2);
 }
 
-.teacher-resource-download-button:disabled{
-    background:rgba(203,213,225,.62);
-
-    border-color:rgba(203,213,225,.7);
-
+.teacher-resource-download-done-button:disabled{
+    opacity:.35;
+    cursor:default;
     box-shadow:none;
+}
 
-    color:#94a3b8;
-
-    cursor:not-allowed;
-
-    opacity:.9;
+@keyframes teacherResourceDownloadSpin{
+    to{
+        transform:rotate(360deg);
+    }
 }
 
 /*==================================================
@@ -300,55 +184,17 @@
 
 @media(max-width:600px){
 
-    .teacher-resources{
-        gap:9px;
+    .teacher-resource-download-progress{
+        width:min(310px,calc(100vw - 32px));
+        padding:21px 18px 18px;
+        border-radius:18px;
     }
 
-    .teacher-resources-message{
-        padding:8px 10px;
-        font-size:.7rem;
+    .teacher-resource-download-progress-title{
+        font-size:.92rem;
     }
 
-    .teacher-resource-selector-title{
+    .teacher-resource-download-progress-status{
         font-size:.72rem;
-    }
-
-    .teacher-resource-range-grid{
-        gap:5px;
-    }
-
-    .teacher-resource-range-button{
-        padding:8px 4px;
-        border-radius:9px;
-    }
-
-    .teacher-resource-range-check{
-        left:5px;
-
-        width:12px;
-        height:12px;
-
-        border-radius:3px;
-
-        font-size:.52rem;
-    }
-
-    .teacher-resource-range-label{
-        padding-left:10px;
-
-        font-size:.6rem;
-    }
-
-    .teacher-resource-download-area{
-        justify-content:stretch;
-    }
-
-    .teacher-resource-download-button{
-        width:100%;
-        min-width:0;
-
-        padding:9px 12px;
-
-        font-size:.66rem;
     }
 }
