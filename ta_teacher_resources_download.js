@@ -3,6 +3,13 @@ import{
 }from'./ta_teacher_resources_api.js';
 
 /*==================================================
+  Download Settings
+==================================================*/
+
+const DOWNLOAD_DELAY=
+    1200;
+
+/*==================================================
   Download Selected Resource Blocks
 ==================================================*/
 
@@ -43,6 +50,11 @@ export async function downloadTeacherResourceBlocks(
             )
                 ?downloadData
                     .signedFiles
+                    .filter(
+                        signedUrl=>
+                            typeof signedUrl==='string'&&
+                            signedUrl
+                    )
                 :[];
 
         if(!signedFiles.length){
@@ -52,7 +64,8 @@ export async function downloadTeacherResourceBlocks(
         }
 
         await triggerSignedDownloads(
-            signedFiles
+            signedFiles,
+            downloadButton
         );
 
         setDownloadSuccessState(
@@ -60,7 +73,7 @@ export async function downloadTeacherResourceBlocks(
         );
 
         await wait(
-            1200
+            1500
         );
 
     }catch(error){
@@ -74,7 +87,7 @@ export async function downloadTeacherResourceBlocks(
         );
 
         await wait(
-            1800
+            2000
         );
 
     }finally{
@@ -90,26 +103,40 @@ export async function downloadTeacherResourceBlocks(
 ==================================================*/
 
 async function triggerSignedDownloads(
-    signedFiles
+    signedFiles,
+    downloadButton
 ){
+    const total=
+        signedFiles.length;
+
     for(
-        const signedUrl
-        of signedFiles
+        let index=0;
+        index<total;
+        index++
     ){
-        if(
-            typeof signedUrl!=='string'||
-            !signedUrl
-        ){
-            continue;
-        }
+        const signedUrl=
+            signedFiles[
+                index
+            ];
+
+        updateDownloadProgress(
+            downloadButton,
+            index+1,
+            total
+        );
 
         triggerSignedDownload(
             signedUrl
         );
 
-        await wait(
-            250
-        );
+        if(
+            index<
+            total-1
+        ){
+            await wait(
+                DOWNLOAD_DELAY
+            );
+        }
     }
 }
 
@@ -138,8 +165,11 @@ function triggerSignedDownload(
 
     link.click();
 
-    document.body.removeChild(
-        link
+    window.setTimeout(
+        ()=>{
+            link.remove();
+        },
+        500
     );
 }
 
@@ -161,6 +191,19 @@ function setDownloadPreparingState(
         'Preparing Downloads...';
 }
 
+function updateDownloadProgress(
+    button,
+    current,
+    total
+){
+    if(!button){
+        return;
+    }
+
+    button.textContent=
+        `Downloading ${current} of ${total}...`;
+}
+
 function setDownloadSuccessState(
     button
 ){
@@ -169,7 +212,7 @@ function setDownloadSuccessState(
     }
 
     button.textContent=
-        'Downloads Started';
+        'Downloads Complete';
 }
 
 function setDownloadErrorState(
