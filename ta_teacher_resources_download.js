@@ -7,7 +7,7 @@ import{
 ==================================================*/
 
 const DOWNLOAD_DELAY=
-    1200;
+    2000;
 
 /*==================================================
   Download Selected Resource Blocks
@@ -32,9 +32,16 @@ export async function downloadTeacherResourceBlocks(
             ?.textContent||
         'Download Selected';
 
+    const progressOverlay=
+        createDownloadProgressOverlay();
+
     try{
-        setDownloadPreparingState(
+        setDownloadButtonBusy(
             downloadButton
+        );
+
+        setProgressPreparing(
+            progressOverlay
         );
 
         const downloadData=
@@ -65,15 +72,12 @@ export async function downloadTeacherResourceBlocks(
 
         await triggerSignedDownloads(
             signedFiles,
-            downloadButton
+            progressOverlay
         );
 
-        setDownloadSuccessState(
-            downloadButton
-        );
-
-        await wait(
-            1500
+        setProgressComplete(
+            progressOverlay,
+            signedFiles.length
         );
 
     }catch(error){
@@ -82,12 +86,8 @@ export async function downloadTeacherResourceBlocks(
             error
         );
 
-        setDownloadErrorState(
-            downloadButton
-        );
-
-        await wait(
-            2000
+        setProgressError(
+            progressOverlay
         );
 
     }finally{
@@ -104,7 +104,7 @@ export async function downloadTeacherResourceBlocks(
 
 async function triggerSignedDownloads(
     signedFiles,
-    downloadButton
+    progressOverlay
 ){
     const total=
         signedFiles.length;
@@ -120,7 +120,7 @@ async function triggerSignedDownloads(
             ];
 
         updateDownloadProgress(
-            downloadButton,
+            progressOverlay,
             index+1,
             total
         );
@@ -174,10 +174,202 @@ function triggerSignedDownload(
 }
 
 /*==================================================
-  Download Button State
+  Progress Overlay
 ==================================================*/
 
-function setDownloadPreparingState(
+function createDownloadProgressOverlay(){
+    removeExistingProgressOverlay();
+
+    const overlay=
+        document.createElement(
+            'div'
+        );
+
+    overlay.className=
+        'teacher-resource-download-overlay';
+
+    const panel=
+        document.createElement(
+            'div'
+        );
+
+    panel.className=
+        'teacher-resource-download-progress';
+
+    const spinner=
+        document.createElement(
+            'div'
+        );
+
+    spinner.className=
+        'teacher-resource-download-spinner';
+
+    const title=
+        document.createElement(
+            'div'
+        );
+
+    title.className=
+        'teacher-resource-download-progress-title';
+
+    title.textContent=
+        'Preparing Downloads';
+
+    const status=
+        document.createElement(
+            'div'
+        );
+
+    status.className=
+        'teacher-resource-download-progress-status';
+
+    status.textContent=
+        'Getting your session files ready...';
+
+    const doneButton=
+        document.createElement(
+            'button'
+        );
+
+    doneButton.type=
+        'button';
+
+    doneButton.className=
+        'teacher-resource-download-done-button';
+
+    doneButton.textContent=
+        'All Done';
+
+    doneButton.disabled=
+        true;
+
+    doneButton.addEventListener(
+        'click',
+        ()=>{
+            overlay.remove();
+        }
+    );
+
+    panel.appendChild(
+        spinner
+    );
+
+    panel.appendChild(
+        title
+    );
+
+    panel.appendChild(
+        status
+    );
+
+    panel.appendChild(
+        doneButton
+    );
+
+    overlay.appendChild(
+        panel
+    );
+
+    document.body.appendChild(
+        overlay
+    );
+
+    return{
+        overlay,
+        panel,
+        spinner,
+        title,
+        status,
+        doneButton
+    };
+}
+
+function removeExistingProgressOverlay(){
+    const existing=
+        document.querySelector(
+            '.teacher-resource-download-overlay'
+        );
+
+    if(existing){
+        existing.remove();
+    }
+}
+
+/*==================================================
+  Progress States
+==================================================*/
+
+function setProgressPreparing(
+    progressOverlay
+){
+    progressOverlay.title.textContent=
+        'Preparing Downloads';
+
+    progressOverlay.status.textContent=
+        'Getting your session files ready...';
+
+    progressOverlay.doneButton.disabled=
+        true;
+}
+
+function updateDownloadProgress(
+    progressOverlay,
+    current,
+    total
+){
+    progressOverlay.title.textContent=
+        'Downloading Sessions';
+
+    progressOverlay.status.textContent=
+        `Downloading ${current} of ${total}`;
+
+    progressOverlay.doneButton.disabled=
+        true;
+}
+
+function setProgressComplete(
+    progressOverlay,
+    total
+){
+    progressOverlay.spinner.classList.add(
+        'is-complete'
+    );
+
+    progressOverlay.title.textContent=
+        'Downloads Complete';
+
+    progressOverlay.status.textContent=
+        `${total} files have been sent to your Downloads folder.`;
+
+    progressOverlay.doneButton.disabled=
+        false;
+}
+
+function setProgressError(
+    progressOverlay
+){
+    progressOverlay.spinner.classList.add(
+        'is-error'
+    );
+
+    progressOverlay.title.textContent=
+        'Download Problem';
+
+    progressOverlay.status.textContent=
+        'Some files could not be prepared. Please try again.';
+
+    progressOverlay.doneButton.textContent=
+        'Close';
+
+    progressOverlay.doneButton.disabled=
+        false;
+}
+
+/*==================================================
+  Main Download Button
+==================================================*/
+
+function setDownloadButtonBusy(
     button
 ){
     if(!button){
@@ -188,42 +380,7 @@ function setDownloadPreparingState(
         true;
 
     button.textContent=
-        'Preparing Downloads...';
-}
-
-function updateDownloadProgress(
-    button,
-    current,
-    total
-){
-    if(!button){
-        return;
-    }
-
-    button.textContent=
-        `Downloading ${current} of ${total}...`;
-}
-
-function setDownloadSuccessState(
-    button
-){
-    if(!button){
-        return;
-    }
-
-    button.textContent=
-        'Downloads Complete';
-}
-
-function setDownloadErrorState(
-    button
-){
-    if(!button){
-        return;
-    }
-
-    button.textContent=
-        'Download Failed';
+        'Downloading...';
 }
 
 function restoreDownloadButton(
