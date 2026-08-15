@@ -11,7 +11,8 @@ export async function renderTeacherResourcesModule(
 ){
     clearWorkspace();
 
-    const workspace=getWorkspace();
+    const workspace=
+        getWorkspace();
 
     if(!workspace){
         return;
@@ -111,7 +112,7 @@ async function loadTeacherResourceSessions(
                 sessions
             );
 
-        renderSessionGroupSelector(
+        renderSessionRangeSelector(
             container,
             sessionGroups
         );
@@ -190,142 +191,27 @@ function buildSessionGroups(
         }
     );
 
-    const groupList=
-        Array.from(
-            groups.values()
-        ).sort(
-            (
-                a,
-                b
-            )=>
-                a.start-b.start
-        );
-
-    groupList.forEach(
-        group=>{
-            group.sessions.sort(
-                (
-                    a,
-                    b
-                )=>
-                    Number(
-                        a.session_num
-                    )-
-                    Number(
-                        b.session_num
-                    )
-            );
-        }
+    return Array.from(
+        groups.values()
+    ).sort(
+        (
+            a,
+            b
+        )=>
+            a.start-b.start
     );
-
-    return groupList;
 }
 
 /*==================================================
-  Group Selector
+  Session Range Selector
 ==================================================*/
 
-function renderSessionGroupSelector(
+function renderSessionRangeSelector(
     container,
     sessionGroups
 ){
-    const selector=
-        document.createElement(
-            'div'
-        );
-
-    selector.className=
-        'teacher-resource-range-grid';
-
-    const sessionArea=
-        document.createElement(
-            'div'
-        );
-
-    sessionArea.className=
-        'teacher-resource-session-area';
-
-    sessionGroups.forEach(
-        group=>{
-            const button=
-                document.createElement(
-                    'button'
-                );
-
-            button.type=
-                'button';
-
-            button.className=
-                'teacher-resource-range-button';
-
-            button.textContent=
-                `${group.start}–${group.end}`;
-
-            button.dataset.rangeStart=
-                group.start;
-
-            button.dataset.rangeEnd=
-                group.end;
-
-            button.addEventListener(
-                'click',
-                ()=>{
-                    setActiveRangeButton(
-                        selector,
-                        button
-                    );
-
-                    renderSelectedSessionGroup(
-                        sessionArea,
-                        group
-                    );
-                }
-            );
-
-            selector.appendChild(
-                button
-            );
-        }
-    );
-
-    container.appendChild(
-        selector
-    );
-
-    container.appendChild(
-        sessionArea
-    );
-}
-
-function setActiveRangeButton(
-    selector,
-    activeButton
-){
-    const buttons=
-        selector.querySelectorAll(
-            '.teacher-resource-range-button'
-        );
-
-    buttons.forEach(
-        button=>{
-            button.classList.toggle(
-                'is-active',
-                button===activeButton
-            );
-        }
-    );
-}
-
-/*==================================================
-  Selected Session Group
-==================================================*/
-
-function renderSelectedSessionGroup(
-    sessionArea,
-    group
-){
-    sessionArea.innerHTML=
-        '';
+    const selectedRanges=
+        new Set();
 
     const heading=
         document.createElement(
@@ -333,10 +219,10 @@ function renderSelectedSessionGroup(
         );
 
     heading.className=
-        'teacher-resource-session-group-title';
+        'teacher-resource-selector-title';
 
     heading.textContent=
-        `Sessions ${group.start}–${group.end}`;
+        'Select session numbers to download';
 
     const grid=
         document.createElement(
@@ -344,14 +230,57 @@ function renderSelectedSessionGroup(
         );
 
     grid.className=
-        'teacher-resource-session-grid';
+        'teacher-resource-range-grid';
 
-    group.sessions.forEach(
-        session=>{
+    const downloadArea=
+        document.createElement(
+            'div'
+        );
+
+    downloadArea.className=
+        'teacher-resource-download-area';
+
+    const downloadButton=
+        document.createElement(
+            'button'
+        );
+
+    downloadButton.type=
+        'button';
+
+    downloadButton.className=
+        'teacher-resource-download-button';
+
+    downloadButton.disabled=
+        true;
+
+    updateDownloadButton(
+        downloadButton,
+        selectedRanges
+    );
+
+    sessionGroups.forEach(
+        group=>{
             const button=
-                createSessionButton(
-                    session
+                createRangeButton(
+                    group
                 );
+
+            button.addEventListener(
+                'click',
+                ()=>{
+                    toggleRangeSelection(
+                        button,
+                        group,
+                        selectedRanges
+                    );
+
+                    updateDownloadButton(
+                        downloadButton,
+                        selectedRanges
+                    );
+                }
+            );
 
             grid.appendChild(
                 button
@@ -359,17 +288,25 @@ function renderSelectedSessionGroup(
         }
     );
 
-    sessionArea.appendChild(
+    downloadArea.appendChild(
+        downloadButton
+    );
+
+    container.appendChild(
         heading
     );
 
-    sessionArea.appendChild(
+    container.appendChild(
         grid
+    );
+
+    container.appendChild(
+        downloadArea
     );
 }
 
-function createSessionButton(
-    session
+function createRangeButton(
+    group
 ){
     const button=
         document.createElement(
@@ -380,18 +317,105 @@ function createSessionButton(
         'button';
 
     button.className=
-        'teacher-resource-session';
+        'teacher-resource-range-button';
 
-    button.dataset.sessionId=
-        session.id;
+    button.dataset.rangeStart=
+        group.start;
 
-    button.dataset.sessionNum=
-        session.session_num;
+    button.dataset.rangeEnd=
+        group.end;
 
-    button.textContent=
-        `Session ${session.session_num}`;
+    const check=
+        document.createElement(
+            'span'
+        );
+
+    check.className=
+        'teacher-resource-range-check';
+
+    check.textContent=
+        '✓';
+
+    const label=
+        document.createElement(
+            'span'
+        );
+
+    label.className=
+        'teacher-resource-range-label';
+
+    label.textContent=
+        `${group.start}–${group.end}`;
+
+    button.appendChild(
+        check
+    );
+
+    button.appendChild(
+        label
+    );
 
     return button;
+}
+
+function toggleRangeSelection(
+    button,
+    group,
+    selectedRanges
+){
+    const key=
+        `${group.start}-${group.end}`;
+
+    const isSelected=
+        selectedRanges.has(
+            key
+        );
+
+    if(isSelected){
+        selectedRanges.delete(
+            key
+        );
+
+        button.classList.remove(
+            'is-selected'
+        );
+
+        button.setAttribute(
+            'aria-pressed',
+            'false'
+        );
+
+        return;
+    }
+
+    selectedRanges.add(
+        key
+    );
+
+    button.classList.add(
+        'is-selected'
+    );
+
+    button.setAttribute(
+        'aria-pressed',
+        'true'
+    );
+}
+
+function updateDownloadButton(
+    button,
+    selectedRanges
+){
+    const count=
+        selectedRanges.size;
+
+    button.disabled=
+        count===0;
+
+    button.textContent=
+        count>0
+            ?`Download Selected (${count})`
+            :'Download Selected';
 }
 
 /*==================================================
@@ -503,13 +527,15 @@ function getApiErrorMessage(
 ==================================================*/
 
 function updateTeacherResourcesLiveStatus(){
-    const card=document.querySelector(
-        '.teacher-module-card[data-module-id="teacher_resources"]'
-    );
+    const card=
+        document.querySelector(
+            '.teacher-module-card[data-module-id="teacher_resources"]'
+        );
 
-    const subtitle=card?.querySelector(
-        '.teacher-module-subtitle'
-    );
+    const subtitle=
+        card?.querySelector(
+            '.teacher-module-subtitle'
+        );
 
     if(!subtitle){
         return;
