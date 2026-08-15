@@ -59,26 +59,31 @@ export async function loadTeacherResourceDownloads(
     blocks,
     state
 ){
+    const url=
+        new URL(
+            TEACHER_RESOURCE_DOWNLOAD_ENDPOINT
+        );
+
+    blocks.forEach(
+        block=>{
+            url.searchParams.append(
+                'blocks[]',
+                block
+            );
+        }
+    );
+
     const response=
         await fetch(
-            TEACHER_RESOURCE_DOWNLOAD_ENDPOINT,
+            url.toString(),
             {
                 method:
-                    'POST',
+                    'GET',
 
-                headers:{
-                    ...buildRequestHeaders(
+                headers:
+                    buildRequestHeaders(
                         state
-                    ),
-
-                    'Content-Type':
-                        'application/json'
-                },
-
-                body:
-                    JSON.stringify({
-                        blocks
-                    })
+                    )
             }
         );
 
