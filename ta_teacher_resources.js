@@ -99,19 +99,8 @@ async function loadTeacherResourceSessions(
         status.remove();
 
         if(!sessions.length){
-            const emptyMessage=
-                document.createElement(
-                    'p'
-                );
-
-            emptyMessage.className=
-                'teacher-resources-message';
-
-            emptyMessage.textContent=
-                'No sessions are currently available.';
-
-            container.appendChild(
-                emptyMessage
+            renderEmptyMessage(
+                container
             );
 
             return;
@@ -122,111 +111,9 @@ async function loadTeacherResourceSessions(
                 sessions
             );
 
-        sessionGroups.forEach(
-            group=>{
-                const groupSection=
-                    document.createElement(
-                        'section'
-                    );
-
-                groupSection.className=
-                    'teacher-resource-group';
-
-                const groupTitle=
-                    document.createElement(
-                        'h3'
-                    );
-
-                groupTitle.className=
-                    'teacher-resource-group-title';
-
-                groupTitle.textContent=
-                    `Sessions ${group.start}–${group.end}`;
-
-                const grid=
-                    document.createElement(
-                        'div'
-                    );
-
-                grid.className=
-                    'teacher-resource-session-grid';
-
-                group.sessions.forEach(
-                    session=>{
-                        const button=
-                            document.createElement(
-                                'button'
-                            );
-
-                        button.type=
-                            'button';
-
-                        button.className=
-                            'teacher-resource-session';
-
-                        button.dataset.sessionId=
-                            session.id;
-
-                        button.dataset.sessionNum=
-                            session.session_num;
-
-                        const title=
-                            document.createElement(
-                                'span'
-                            );
-
-                        title.className=
-                            'teacher-resource-session-title';
-
-                        title.textContent=
-                            `Session ${session.session_num}`;
-
-                        const description=
-                            document.createElement(
-                                'span'
-                            );
-
-                        description.className=
-                            'teacher-resource-session-description';
-
-                        description.textContent=
-                            [
-                                session.lesson_1_title,
-                                session.lesson_2_title
-                            ]
-                                .filter(
-                                    Boolean
-                                )
-                                .join(
-                                    ' • '
-                                );
-
-                        button.appendChild(
-                            title
-                        );
-
-                        button.appendChild(
-                            description
-                        );
-
-                        grid.appendChild(
-                            button
-                        );
-                    }
-                );
-
-                groupSection.appendChild(
-                    groupTitle
-                );
-
-                groupSection.appendChild(
-                    grid
-                );
-
-                container.appendChild(
-                    groupSection
-                );
-            }
+        renderSessionGroupSelector(
+            container,
+            sessionGroups
         );
 
     }catch(error){
@@ -303,14 +190,282 @@ function buildSessionGroups(
         }
     );
 
-    return Array.from(
-        groups.values()
-    ).sort(
+    const groupList=
+        Array.from(
+            groups.values()
+        ).sort(
+            (
+                a,
+                b
+            )=>
+                a.start-b.start
+        );
+
+    groupList.forEach(
+        group=>{
+            group.sessions.sort(
+                (
+                    a,
+                    b
+                )=>
+                    Number(
+                        a.session_num
+                    )-
+                    Number(
+                        b.session_num
+                    )
+            );
+        }
+    );
+
+    return groupList;
+}
+
+/*==================================================
+  Group Selector
+==================================================*/
+
+function renderSessionGroupSelector(
+    container,
+    sessionGroups
+){
+    const selector=
+        document.createElement(
+            'div'
+        );
+
+    selector.className=
+        'teacher-resource-range-grid';
+
+    const sessionArea=
+        document.createElement(
+            'div'
+        );
+
+    sessionArea.className=
+        'teacher-resource-session-area';
+
+    sessionGroups.forEach(
         (
-            a,
-            b
-        )=>
-            a.start-b.start
+            group,
+            index
+        )=>{
+            const button=
+                document.createElement(
+                    'button'
+                );
+
+            button.type=
+                'button';
+
+            button.className=
+                'teacher-resource-range-button';
+
+            button.textContent=
+                `${group.start}–${group.end}`;
+
+            button.dataset.rangeStart=
+                group.start;
+
+            button.dataset.rangeEnd=
+                group.end;
+
+            button.addEventListener(
+                'click',
+                ()=>{
+                    setActiveRangeButton(
+                        selector,
+                        button
+                    );
+
+                    renderSelectedSessionGroup(
+                        sessionArea,
+                        group
+                    );
+                }
+            );
+
+            selector.appendChild(
+                button
+            );
+
+            if(index===0){
+                button.classList.add(
+                    'is-active'
+                );
+            }
+        }
+    );
+
+    container.appendChild(
+        selector
+    );
+
+    container.appendChild(
+        sessionArea
+    );
+
+    if(sessionGroups.length){
+        renderSelectedSessionGroup(
+            sessionArea,
+            sessionGroups[0]
+        );
+    }
+}
+
+function setActiveRangeButton(
+    selector,
+    activeButton
+){
+    const buttons=
+        selector.querySelectorAll(
+            '.teacher-resource-range-button'
+        );
+
+    buttons.forEach(
+        button=>{
+            button.classList.toggle(
+                'is-active',
+                button===activeButton
+            );
+        }
+    );
+}
+
+/*==================================================
+  Selected Session Group
+==================================================*/
+
+function renderSelectedSessionGroup(
+    sessionArea,
+    group
+){
+    sessionArea.innerHTML=
+        '';
+
+    const heading=
+        document.createElement(
+            'h3'
+        );
+
+    heading.className=
+        'teacher-resource-session-group-title';
+
+    heading.textContent=
+        `Sessions ${group.start}–${group.end}`;
+
+    const grid=
+        document.createElement(
+            'div'
+        );
+
+    grid.className=
+        'teacher-resource-session-grid';
+
+    group.sessions.forEach(
+        session=>{
+            const button=
+                createSessionButton(
+                    session
+                );
+
+            grid.appendChild(
+                button
+            );
+        }
+    );
+
+    sessionArea.appendChild(
+        heading
+    );
+
+    sessionArea.appendChild(
+        grid
+    );
+}
+
+function createSessionButton(
+    session
+){
+    const button=
+        document.createElement(
+            'button'
+        );
+
+    button.type=
+        'button';
+
+    button.className=
+        'teacher-resource-session';
+
+    button.dataset.sessionId=
+        session.id;
+
+    button.dataset.sessionNum=
+        session.session_num;
+
+    const title=
+        document.createElement(
+            'span'
+        );
+
+    title.className=
+        'teacher-resource-session-title';
+
+    title.textContent=
+        `Session ${session.session_num}`;
+
+    const description=
+        document.createElement(
+            'span'
+        );
+
+    description.className=
+        'teacher-resource-session-description';
+
+    description.textContent=
+        [
+            session.lesson_1_title,
+            session.lesson_2_title
+        ]
+            .filter(
+                Boolean
+            )
+            .join(
+                ' • '
+            );
+
+    button.appendChild(
+        title
+    );
+
+    button.appendChild(
+        description
+    );
+
+    return button;
+}
+
+/*==================================================
+  Empty State
+==================================================*/
+
+function renderEmptyMessage(
+    container
+){
+    const emptyMessage=
+        document.createElement(
+            'p'
+        );
+
+    emptyMessage.className=
+        'teacher-resources-message';
+
+    emptyMessage.textContent=
+        'No sessions are currently available.';
+
+    container.appendChild(
+        emptyMessage
     );
 }
 
