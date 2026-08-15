@@ -117,57 +117,114 @@ async function loadTeacherResourceSessions(
             return;
         }
 
-        sessions.forEach(
-            session=>{
-                const card=
+        const sessionGroups=
+            buildSessionGroups(
+                sessions
+            );
+
+        sessionGroups.forEach(
+            group=>{
+                const groupSection=
                     document.createElement(
-                        'article'
+                        'section'
                     );
 
-                card.className=
-                    'teacher-resource-session';
+                groupSection.className=
+                    'teacher-resource-group';
 
-                const title=
+                const groupTitle=
                     document.createElement(
                         'h3'
                     );
 
-                title.className=
-                    'teacher-resource-session-title';
+                groupTitle.className=
+                    'teacher-resource-group-title';
 
-                title.textContent=
-                    `Session ${session.session_num}`;
+                groupTitle.textContent=
+                    `Sessions ${group.start}–${group.end}`;
 
-                const description=
+                const grid=
                     document.createElement(
-                        'p'
+                        'div'
                     );
 
-                description.className=
-                    'teacher-resource-session-description';
+                grid.className=
+                    'teacher-resource-session-grid';
 
-                description.textContent=
-                    [
-                        session.lesson_1_title,
-                        session.lesson_2_title
-                    ]
-                        .filter(
-                            Boolean
-                        )
-                        .join(
-                            ' • '
+                group.sessions.forEach(
+                    session=>{
+                        const button=
+                            document.createElement(
+                                'button'
+                            );
+
+                        button.type=
+                            'button';
+
+                        button.className=
+                            'teacher-resource-session';
+
+                        button.dataset.sessionId=
+                            session.id;
+
+                        button.dataset.sessionNum=
+                            session.session_num;
+
+                        const title=
+                            document.createElement(
+                                'span'
+                            );
+
+                        title.className=
+                            'teacher-resource-session-title';
+
+                        title.textContent=
+                            `Session ${session.session_num}`;
+
+                        const description=
+                            document.createElement(
+                                'span'
+                            );
+
+                        description.className=
+                            'teacher-resource-session-description';
+
+                        description.textContent=
+                            [
+                                session.lesson_1_title,
+                                session.lesson_2_title
+                            ]
+                                .filter(
+                                    Boolean
+                                )
+                                .join(
+                                    ' • '
+                                );
+
+                        button.appendChild(
+                            title
                         );
 
-                card.appendChild(
-                    title
+                        button.appendChild(
+                            description
+                        );
+
+                        grid.appendChild(
+                            button
+                        );
+                    }
                 );
 
-                card.appendChild(
-                    description
+                groupSection.appendChild(
+                    groupTitle
+                );
+
+                groupSection.appendChild(
+                    grid
                 );
 
                 container.appendChild(
-                    card
+                    groupSection
                 );
             }
         );
@@ -181,6 +238,80 @@ async function loadTeacherResourceSessions(
         status.textContent=
             'Unable to load sessions.';
     }
+}
+
+/*==================================================
+  Session Groups
+==================================================*/
+
+function buildSessionGroups(
+    sessions
+){
+    const groups=
+        new Map();
+
+    sessions.forEach(
+        session=>{
+            const sessionNum=
+                Number(
+                    session.session_num
+                );
+
+            if(
+                !Number.isFinite(
+                    sessionNum
+                )||
+                sessionNum<1
+            ){
+                return;
+            }
+
+            const groupIndex=
+                Math.floor(
+                    (sessionNum-1)/10
+                );
+
+            const start=
+                (groupIndex*10)+1;
+
+            const end=
+                start+9;
+
+            if(
+                !groups.has(
+                    groupIndex
+                )
+            ){
+                groups.set(
+                    groupIndex,
+                    {
+                        start,
+                        end,
+                        sessions:[]
+                    }
+                );
+            }
+
+            groups
+                .get(
+                    groupIndex
+                )
+                .sessions
+                .push(
+                    session
+                );
+        }
+    );
+
+    return Array.from(
+        groups.values()
+    ).sort(
+        (
+            a,
+            b
+        )=>
+            a.start-b.start
+    );
 }
 
 /*==================================================
