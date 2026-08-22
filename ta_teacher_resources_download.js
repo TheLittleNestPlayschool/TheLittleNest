@@ -1,5 +1,6 @@
 import{
-    loadTeacherResourceDownloads
+    loadTeacherResourceDownloads,
+    loadTeacherResourceFormDownloads
 }from'./ta_teacher_resources_api.js';
 
 /*==================================================
@@ -83,6 +84,110 @@ export async function downloadTeacherResourceBlocks(
     }catch(error){
         console.error(
             'Teacher resource download failed:',
+            error
+        );
+
+        setProgressError(
+            progressOverlay
+        );
+
+    }finally{
+        restoreDownloadButton(
+            downloadButton,
+            originalText
+        );
+    }
+}
+
+/*==================================================
+  Download Selected Forms
+==================================================*/
+
+export async function downloadTeacherResourceForms(
+    formsId,
+    state,
+    downloadButton
+){
+    if(
+        !Array.isArray(
+            formsId
+        )||
+        !formsId.length
+    ){
+        return;
+    }
+
+    const originalText=
+        downloadButton
+            ?.textContent||
+        'Download Selected';
+
+    const progressOverlay=
+        createDownloadProgressOverlay();
+
+    try{
+        setDownloadButtonBusy(
+            downloadButton
+        );
+
+        setProgressPreparing(
+            progressOverlay
+        );
+
+        const downloadData=
+            await loadTeacherResourceFormDownloads(
+                formsId,
+                state
+            );
+
+        const signedFiles=
+            Array.isArray(
+                downloadData
+                    ?.signedFiles
+            )
+                ?downloadData
+                    .signedFiles
+                    .map(
+                        signedFile=>{
+                            if(
+                                typeof signedFile===
+                                'string'
+                            ){
+                                return signedFile;
+                            }
+
+                            return(
+                                signedFile?.url||
+                                ''
+                            );
+                        }
+                    )
+                    .filter(
+                        signedUrl=>
+                            typeof signedUrl==='string'&&
+                            signedUrl
+                    )
+                :[];
+
+        if(!signedFiles.length){
+            throw new Error(
+                'No form files were available to download.'
+            );
+        }
+
+        await triggerSignedDownloads(
+            signedFiles,
+            progressOverlay
+        );
+
+        setProgressComplete(
+            progressOverlay,
+            signedFiles.length
+        );
+
+    }catch(error){
+        console.error(
+            'Teacher resource form download failed:',
             error
         );
 
@@ -224,7 +329,7 @@ function createDownloadProgressOverlay(){
         'teacher-resource-download-progress-status';
 
     status.textContent=
-        'Getting your session files ready...';
+        'Getting your files ready...';
 
     const doneButton=
         document.createElement(
@@ -306,7 +411,7 @@ function setProgressPreparing(
         'Preparing Downloads';
 
     progressOverlay.status.textContent=
-        'Getting your session files ready...';
+        'Getting your files ready...';
 
     progressOverlay.doneButton.disabled=
         true;
@@ -318,7 +423,7 @@ function updateDownloadProgress(
     total
 ){
     progressOverlay.title.textContent=
-        'Downloading Sessions';
+        'Downloading Files';
 
     progressOverlay.status.textContent=
         `Downloading ${current} of ${total}`;
