@@ -114,7 +114,7 @@ export async function downloadTeacherResourceForms(
         )||
         !formsId.length
     ){
-        return;
+        return false;
     }
 
     const originalText=
@@ -185,6 +185,8 @@ export async function downloadTeacherResourceForms(
             signedFiles.length
         );
 
+        return true;
+
     }catch(error){
         console.error(
             'Teacher resource form download failed:',
@@ -194,6 +196,8 @@ export async function downloadTeacherResourceForms(
         setProgressError(
             progressOverlay
         );
+
+        return false;
 
     }finally{
         restoreDownloadButton(
