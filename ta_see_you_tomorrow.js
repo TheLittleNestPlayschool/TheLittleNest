@@ -153,6 +153,14 @@ function renderTomorrowSchedule(
     container,
     tomorrowSchedule
 ){
+    const headingRow=
+        document.createElement(
+            'div'
+        );
+
+    headingRow.className=
+        'teacher-see-you-tomorrow-heading-row';
+
     const heading=
         document.createElement(
             'div'
@@ -164,8 +172,21 @@ function renderTomorrowSchedule(
     heading.textContent=
         'Tomorrow\'s Students';
 
-    container.appendChild(
+    const copyButton=
+        createCopyButton(
+            tomorrowSchedule
+        );
+
+    headingRow.appendChild(
         heading
+    );
+
+    headingRow.appendChild(
+        copyButton
+    );
+
+    container.appendChild(
+        headingRow
     );
 
     tomorrowSchedule.forEach(
@@ -179,6 +200,125 @@ function renderTomorrowSchedule(
                 sessionCard
             );
         }
+    );
+}
+
+/*==================================================
+  Copy Tomorrow List
+==================================================*/
+
+function createCopyButton(
+    tomorrowSchedule
+){
+    const button=
+        document.createElement(
+            'button'
+        );
+
+    button.type=
+        'button';
+
+    button.className=
+        'teacher-see-you-tomorrow-copy-button';
+
+    button.textContent=
+        '📋 Copy List';
+
+    button.addEventListener(
+        'click',
+        async()=>{
+            const copyText=
+                buildTomorrowCopyText(
+                    tomorrowSchedule
+                );
+
+            try{
+                await navigator.clipboard.writeText(
+                    copyText
+                );
+
+                button.textContent=
+                    '✓ Copied';
+
+                window.setTimeout(
+                    ()=>{
+                        button.textContent=
+                            '📋 Copy List';
+                    },
+                    1800
+                );
+
+            }catch(error){
+                console.error(
+                    'Unable to copy tomorrow list:',
+                    error
+                );
+
+                button.textContent=
+                    'Copy Failed';
+
+                window.setTimeout(
+                    ()=>{
+                        button.textContent=
+                            '📋 Copy List';
+                    },
+                    1800
+                );
+            }
+        }
+    );
+
+    return button;
+}
+
+function buildTomorrowCopyText(
+    tomorrowSchedule
+){
+    const lines=[
+        'See You Tomorrow! 🌟',
+        ''
+    ];
+
+    tomorrowSchedule.forEach(
+        (
+            session,
+            index
+        )=>{
+            lines.push(
+                formatSessionTime(
+                    session?.start_time,
+                    session?.end_time
+                )
+            );
+
+            const students=
+                Array.isArray(
+                    session?.students
+                )
+                    ?session.students
+                    :[];
+
+            students.forEach(
+                student=>{
+                    lines.push(
+                        `• ${student?.name||'Student'}`
+                    );
+                }
+            );
+
+            if(
+                index<
+                tomorrowSchedule.length-1
+            ){
+                lines.push(
+                    ''
+                );
+            }
+        }
+    );
+
+    return lines.join(
+        '\n'
     );
 }
 
