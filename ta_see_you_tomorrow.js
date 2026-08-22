@@ -3,10 +3,6 @@ import{
     clearWorkspace
 }from'./ta_ui.js';
 
-import{
-    loadSeeYouTomorrowData
-}from'./ta_see_you_tomorrow_api.js';
-
 /*==================================================
   See You Tomorrow Module
 ==================================================*/
