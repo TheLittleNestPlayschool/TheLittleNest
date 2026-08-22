@@ -30,19 +30,13 @@ export async function renderEnrollmentModule(
     container.className=
         'teacher-enrollment';
 
-    const message=
-        document.createElement(
-            'p'
+    const loadingMessage=
+        createMessage(
+            'Loading enrollment...'
         );
 
-    message.className=
-        'teacher-enrollment-message';
-
-    message.textContent=
-        'Loading enrollment...';
-
     container.appendChild(
-        message
+        loadingMessage
     );
 
     workspace.appendChild(
@@ -66,13 +60,23 @@ export async function renderEnrollmentModule(
                 ?enrollmentData.sessions
                 :[];
 
-        message.textContent=
-            `${franchise?.branch_name||
-            franchise?.name||
-            'Branch'} — ${sessions.length} sessions available`;
+        const parents=
+            Array.isArray(
+                enrollmentData?.parents
+            )
+                ?enrollmentData.parents
+                :[];
+
+        loadingMessage.remove();
+
+        renderParentStep(
+            container,
+            parents
+        );
 
         updateEnrollmentLiveStatus(
-            sessions.length
+            sessions.length,
+            franchise
         );
 
     }catch(error){
@@ -81,7 +85,7 @@ export async function renderEnrollmentModule(
             error
         );
 
-        message.textContent=
+        loadingMessage.textContent=
             'Unable to load enrollment.';
 
         updateEnrollmentErrorStatus();
@@ -123,6 +127,205 @@ async function loadEnrollmentData(
     }
 
     return responseData;
+}
+
+/*==================================================
+  Parent Step
+==================================================*/
+
+function renderParentStep(
+    container,
+    parents
+){
+    const step=
+        document.createElement(
+            'section'
+        );
+
+    step.className=
+        'teacher-enrollment-parent-step';
+
+    const heading=
+        document.createElement(
+            'h3'
+        );
+
+    heading.className=
+        'teacher-enrollment-step-title';
+
+    heading.textContent=
+        'Parent';
+
+    const description=
+        document.createElement(
+            'p'
+        );
+
+    description.className=
+        'teacher-enrollment-step-description';
+
+    description.textContent=
+        'Choose an existing parent or enter a new parent.';
+
+    const select=
+        createParentSelect(
+            parents
+        );
+
+    const divider=
+        document.createElement(
+            'div'
+        );
+
+    divider.className=
+        'teacher-enrollment-divider';
+
+    divider.textContent=
+        'or';
+
+    const newParentButton=
+        document.createElement(
+            'button'
+        );
+
+    newParentButton.type=
+        'button';
+
+    newParentButton.className=
+        'teacher-enrollment-new-parent-button';
+
+    newParentButton.textContent=
+        '+ New Parent';
+
+    newParentButton.addEventListener(
+        'click',
+        ()=>{
+            select.value=
+                '';
+
+            select.dispatchEvent(
+                new Event(
+                    'change'
+                )
+            );
+
+            newParentButton.classList.add(
+                'is-selected'
+            );
+        }
+    );
+
+    select.addEventListener(
+        'change',
+        ()=>{
+            if(select.value){
+                newParentButton.classList.remove(
+                    'is-selected'
+                );
+            }
+        }
+    );
+
+    step.appendChild(
+        heading
+    );
+
+    step.appendChild(
+        description
+    );
+
+    step.appendChild(
+        select
+    );
+
+    step.appendChild(
+        divider
+    );
+
+    step.appendChild(
+        newParentButton
+    );
+
+    container.appendChild(
+        step
+    );
+}
+
+/*==================================================
+  Parent Select
+==================================================*/
+
+function createParentSelect(
+    parents
+){
+    const select=
+        document.createElement(
+            'select'
+        );
+
+    select.className=
+        'teacher-enrollment-parent-select';
+
+    const placeholder=
+        document.createElement(
+            'option'
+        );
+
+    placeholder.value=
+        '';
+
+    placeholder.textContent=
+        'Select Existing Parent';
+
+    select.appendChild(
+        placeholder
+    );
+
+    parents.forEach(
+        parent=>{
+            const option=
+                document.createElement(
+                    'option'
+                );
+
+            option.value=
+                String(
+                    parent?.id||
+                    ''
+                );
+
+            option.textContent=
+                parent?.full_name||
+                'Parent';
+
+            select.appendChild(
+                option
+            );
+        }
+    );
+
+    return select;
+}
+
+/*==================================================
+  Message
+==================================================*/
+
+function createMessage(
+    text
+){
+    const message=
+        document.createElement(
+            'p'
+        );
+
+    message.className=
+        'teacher-enrollment-message';
+
+    message.textContent=
+        text;
+
+    return message;
 }
 
 /*==================================================
@@ -210,7 +413,8 @@ function getApiErrorMessage(
 ==================================================*/
 
 function updateEnrollmentLiveStatus(
-    sessionCount
+    sessionCount,
+    franchise
 ){
     const card=
         document.querySelector(
@@ -223,6 +427,18 @@ function updateEnrollmentLiveStatus(
         );
 
     if(!subtitle){
+        return;
+    }
+
+    const branchName=
+        franchise?.branch_name||
+        franchise?.name||
+        '';
+
+    if(branchName){
+        subtitle.textContent=
+            `${branchName} — ready to enroll.`;
+
         return;
     }
 
