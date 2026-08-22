@@ -2,6 +2,10 @@ import{
     loadTeacherResourceFormsData
 }from'./ta_teacher_resources_api.js';
 
+import{
+    downloadTeacherResourceForms
+}from'./ta_teacher_resources_download.js';
+
 /*==================================================
   Render Teacher Resource Forms
 ==================================================*/
@@ -57,7 +61,8 @@ export async function renderTeacherResourceForms(
 
         renderFormsList(
             container,
-            forms
+            forms,
+            state
         );
 
     }catch(error){
@@ -77,8 +82,12 @@ export async function renderTeacherResourceForms(
 
 function renderFormsList(
     container,
-    forms
+    forms,
+    state
 ){
+    const selectedFormIds=
+        new Set();
+
     const heading=
         document.createElement(
             'h3'
@@ -88,7 +97,7 @@ function renderFormsList(
         'teacher-resource-selector-title';
 
     heading.textContent=
-        'Select a form to download';
+        'Select forms to download';
 
     const list=
         document.createElement(
@@ -98,15 +107,40 @@ function renderFormsList(
     list.className=
         'teacher-resource-forms-list';
 
+    const downloadButton=
+        createDownloadButton();
+
     forms.forEach(
         form=>{
             const item=
                 createFormItem(
-                    form
+                    form,
+                    selectedFormIds,
+                    downloadButton
                 );
 
             list.appendChild(
                 item
+            );
+        }
+    );
+
+    downloadButton.addEventListener(
+        'click',
+        async()=>{
+            const formsId=
+                Array.from(
+                    selectedFormIds
+                );
+
+            if(!formsId.length){
+                return;
+            }
+
+            await downloadTeacherResourceForms(
+                formsId,
+                state,
+                downloadButton
             );
         }
     );
@@ -118,6 +152,10 @@ function renderFormsList(
     container.appendChild(
         list
     );
+
+    container.appendChild(
+        downloadButton
+    );
 }
 
 /*==================================================
@@ -125,7 +163,9 @@ function renderFormsList(
 ==================================================*/
 
 function createFormItem(
-    form
+    form,
+    selectedFormIds,
+    downloadButton
 ){
     const item=
         document.createElement(
@@ -143,6 +183,11 @@ function createFormItem(
 
     item.dataset.fileName=
         form.file_name||'';
+
+    item.setAttribute(
+        'aria-pressed',
+        'false'
+    );
 
     const text=
         document.createElement(
@@ -194,7 +239,7 @@ function createFormItem(
         'teacher-resource-form-download-icon';
 
     icon.textContent=
-        '⬇';
+        '○';
 
     item.appendChild(
         text
@@ -204,7 +249,116 @@ function createFormItem(
         icon
     );
 
+    item.addEventListener(
+        'click',
+        ()=>{
+            const formId=
+                Number(
+                    form.id
+                );
+
+            if(
+                !Number.isFinite(
+                    formId
+                )
+            ){
+                return;
+            }
+
+            if(
+                selectedFormIds.has(
+                    formId
+                )
+            ){
+                selectedFormIds.delete(
+                    formId
+                );
+
+                item.classList.remove(
+                    'is-selected'
+                );
+
+                item.setAttribute(
+                    'aria-pressed',
+                    'false'
+                );
+
+                icon.textContent=
+                    '○';
+
+            }else{
+                selectedFormIds.add(
+                    formId
+                );
+
+                item.classList.add(
+                    'is-selected'
+                );
+
+                item.setAttribute(
+                    'aria-pressed',
+                    'true'
+                );
+
+                icon.textContent=
+                    '✓';
+            }
+
+            updateDownloadButton(
+                downloadButton,
+                selectedFormIds.size
+            );
+        }
+    );
+
     return item;
+}
+
+/*==================================================
+  Download Button
+==================================================*/
+
+function createDownloadButton(){
+    const button=
+        document.createElement(
+            'button'
+        );
+
+    button.type=
+        'button';
+
+    button.className=
+        'teacher-resource-download-button teacher-resource-form-download-button';
+
+    button.textContent=
+        'Download Selected';
+
+    button.disabled=
+        true;
+
+    return button;
+}
+
+function updateDownloadButton(
+    button,
+    selectedCount
+){
+    if(!button){
+        return;
+    }
+
+    button.disabled=
+        selectedCount===0;
+
+    if(selectedCount===0){
+        button.textContent=
+            'Download Selected';
+
+        return;
+    }
+
+    button.textContent=
+        `Download Selected (${selectedCount})`;
 }
 
 /*==================================================
