@@ -1,7 +1,3 @@
-/*==================================================
-  See You Tomorrow Module Card
-==================================================*/
-
 .teacher-module-card[data-module-id="see_tomorrow"]
 .teacher-module-header{
     padding-top:12px;
@@ -48,12 +44,40 @@
   Main Heading
 ==================================================*/
 
+.teacher-see-you-tomorrow-heading-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
 .teacher-see-you-tomorrow-heading{
     padding:0 2px;
     color:#334155;
     font-size:.82rem;
     font-weight:800;
     line-height:1.25;
+}
+
+/*==================================================
+  Copy Button
+==================================================*/
+
+.teacher-see-you-tomorrow-copy-button{
+    flex-shrink:0;
+    padding:6px 10px;
+    border:1px solid rgba(255,255,255,.48);
+    border-radius:9px;
+    background:rgba(255,255,255,.34);
+    color:#475569;
+    font-size:.68rem;
+    font-weight:800;
+    line-height:1.2;
+    cursor:pointer;
+}
+
+.teacher-see-you-tomorrow-copy-button:active{
+    transform:scale(.97);
 }
 
 /*==================================================
@@ -176,6 +200,11 @@
 
     .teacher-see-you-tomorrow-heading{
         font-size:.78rem;
+    }
+
+    .teacher-see-you-tomorrow-copy-button{
+        padding:5px 9px;
+        font-size:.65rem;
     }
 
     .teacher-see-you-tomorrow-session{
