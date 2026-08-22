@@ -146,10 +146,47 @@ function renderFormsList(
                 return;
             }
 
-            await downloadTeacherResourceForms(
-                formsId,
-                state,
-                downloadButton
+            const downloadComplete=
+                await downloadTeacherResourceForms(
+                    formsId,
+                    state,
+                    downloadButton
+                );
+
+            if(!downloadComplete){
+                return;
+            }
+
+            selectedFormIds.clear();
+
+            list.querySelectorAll(
+                '.teacher-resource-form-item'
+            ).forEach(
+                item=>{
+                    item.classList.remove(
+                        'is-selected'
+                    );
+
+                    item.setAttribute(
+                        'aria-pressed',
+                        'false'
+                    );
+
+                    const icon=
+                        item.querySelector(
+                            '.teacher-resource-form-download-icon'
+                        );
+
+                    if(icon){
+                        icon.textContent=
+                            '○';
+                    }
+                }
+            );
+
+            updateDownloadButton(
+                downloadButton,
+                0
             );
         }
     );
