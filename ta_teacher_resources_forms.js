@@ -7,6 +7,13 @@ import{
 }from'./ta_teacher_resources_download.js';
 
 /*==================================================
+  Forms State
+==================================================*/
+
+const selectedFormIds=
+    new Set();
+
+/*==================================================
   Render Teacher Resource Forms
 ==================================================*/
 
@@ -85,9 +92,6 @@ function renderFormsList(
     forms,
     state
 ){
-    const selectedFormIds=
-        new Set();
-
     const heading=
         document.createElement(
             'h3'
@@ -123,6 +127,11 @@ function renderFormsList(
                 item
             );
         }
+    );
+
+    updateDownloadButton(
+        downloadButton,
+        selectedFormIds.size
     );
 
     downloadButton.addEventListener(
@@ -184,9 +193,21 @@ function createFormItem(
     item.dataset.fileName=
         form.file_name||'';
 
+    const formId=
+        Number(
+            form.id
+        );
+
+    const isSelected=
+        selectedFormIds.has(
+            formId
+        );
+
     item.setAttribute(
         'aria-pressed',
-        'false'
+        isSelected
+            ?'true'
+            :'false'
     );
 
     const text=
@@ -239,7 +260,15 @@ function createFormItem(
         'teacher-resource-form-download-icon';
 
     icon.textContent=
-        '○';
+        isSelected
+            ?'✓'
+            :'○';
+
+    if(isSelected){
+        item.classList.add(
+            'is-selected'
+        );
+    }
 
     item.appendChild(
         text
@@ -252,11 +281,6 @@ function createFormItem(
     item.addEventListener(
         'click',
         ()=>{
-            const formId=
-                Number(
-                    form.id
-                );
-
             if(
                 !Number.isFinite(
                     formId
