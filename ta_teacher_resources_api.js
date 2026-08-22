@@ -7,6 +7,10 @@ const TEACHER_RESOURCE_DOWNLOAD_ENDPOINT=
 const TEACHER_RESOURCE_FORMS_ENDPOINT=
     'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_teacher_resource_forms';
 
+const TEACHER_RESOURCE_FORM_DOWNLOAD_ENDPOINT=
+    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_teacher_resource_form_download';
+
+
 /*==================================================
   Load Teacher Resource Sessions
 ==================================================*/
@@ -53,6 +57,7 @@ export async function loadTeacherResourceSessionsData(
                 :[]
     };
 }
+
 
 /*==================================================
   Download Teacher Resource Sessions
@@ -114,6 +119,7 @@ export async function loadTeacherResourceDownloads(
     };
 }
 
+
 /*==================================================
   Load Teacher Resource Forms
 ==================================================*/
@@ -159,6 +165,68 @@ export async function loadTeacherResourceFormsData(
     };
 }
 
+
+/*==================================================
+  Download Teacher Resource Forms
+==================================================*/
+
+export async function loadTeacherResourceFormDownloads(
+    formsId,
+    state
+){
+    const url=
+        new URL(
+            TEACHER_RESOURCE_FORM_DOWNLOAD_ENDPOINT
+        );
+
+    url.searchParams.set(
+        'forms_id',
+        JSON.stringify(
+            formsId
+        )
+    );
+
+    const response=
+        await fetch(
+            url.toString(),
+            {
+                method:
+                    'GET',
+
+                headers:
+                    buildRequestHeaders(
+                        state
+                    )
+            }
+        );
+
+    const responseData=
+        await readResponseData(
+            response
+        );
+
+    if(!response.ok){
+        throw new Error(
+            getApiErrorMessage(
+                responseData,
+                'Unable to prepare form downloads.'
+            )
+        );
+    }
+
+    return{
+        signedFiles:
+            Array.isArray(
+                responseData
+                ?.signed_files
+            )
+                ?responseData
+                .signed_files
+                :[]
+    };
+}
+
+
 /*==================================================
   Request Headers
 ==================================================*/
@@ -201,6 +269,7 @@ function getAuthToken(
         ''
     );
 }
+
 
 /*==================================================
   Response Helpers
