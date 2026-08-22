@@ -37,19 +37,205 @@
     margin:0 auto;
     display:flex;
     flex-direction:column;
-    gap:9px;
+    gap:10px;
 }
+
+/*==================================================
+  Enrollment Message
+==================================================*/
 
 .teacher-enrollment-message{
     margin:0;
-    padding:9px 11px;
+    padding:10px 12px;
     background:rgba(255,255,255,.24);
     border:1px solid rgba(255,255,255,.38);
-    border-radius:10px;
+    border-radius:11px;
     color:#475569;
     font-size:.74rem;
     font-weight:600;
     line-height:1.35;
+}
+
+/*==================================================
+  Parent Step
+==================================================*/
+
+.teacher-enrollment-parent-step{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+
+/*==================================================
+  Step Heading
+==================================================*/
+
+.teacher-enrollment-step-title{
+    margin:0;
+    color:#172033;
+    font-size:1rem;
+    font-weight:800;
+    line-height:1.2;
+}
+
+.teacher-enrollment-step-description{
+    margin:-3px 0 1px;
+    color:#475569;
+    font-size:.75rem;
+    font-weight:500;
+    line-height:1.35;
+}
+
+/*==================================================
+  Parent Select
+==================================================*/
+
+.teacher-enrollment-parent-select{
+    width:100%;
+    min-height:42px;
+    padding:9px 38px 9px 12px;
+
+    appearance:none;
+    -webkit-appearance:none;
+
+    border:1px solid rgba(255,255,255,.58);
+    border-radius:11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.54),
+            rgba(255,255,255,.32)
+        );
+
+    color:#334155;
+
+    font-family:inherit;
+    font-size:.76rem;
+    font-weight:700;
+
+    outline:none;
+    cursor:pointer;
+
+    box-shadow:
+        0 3px 12px rgba(15,23,42,.05);
+
+    background-image:
+        linear-gradient(
+            45deg,
+            transparent 50%,
+            #64748b 50%
+        ),
+        linear-gradient(
+            135deg,
+            #64748b 50%,
+            transparent 50%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.54),
+            rgba(255,255,255,.32)
+        );
+
+    background-position:
+        calc(100% - 17px) 18px,
+        calc(100% - 12px) 18px,
+        0 0;
+
+    background-size:
+        5px 5px,
+        5px 5px,
+        100% 100%;
+
+    background-repeat:no-repeat;
+}
+
+.teacher-enrollment-parent-select:focus{
+    border-color:rgba(20,184,166,.55);
+
+    box-shadow:
+        0 0 0 2px rgba(20,184,166,.10),
+        0 3px 12px rgba(15,23,42,.05);
+}
+
+/*==================================================
+  Divider
+==================================================*/
+
+.teacher-enrollment-divider{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    color:#64748b;
+    font-size:.68rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+}
+
+.teacher-enrollment-divider::before,
+.teacher-enrollment-divider::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:rgba(255,255,255,.48);
+}
+
+/*==================================================
+  New Parent Button
+==================================================*/
+
+.teacher-enrollment-new-parent-button{
+    width:100%;
+    min-height:42px;
+
+    padding:9px 12px;
+
+    border:1px solid rgba(255,255,255,.56);
+    border-radius:11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.40),
+            rgba(255,255,255,.24)
+        );
+
+    color:#334155;
+
+    font-family:inherit;
+    font-size:.76rem;
+    font-weight:800;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 3px 12px rgba(15,23,42,.04);
+
+    transition:
+        transform .12s ease,
+        background .12s ease,
+        border-color .12s ease;
+}
+
+.teacher-enrollment-new-parent-button:active{
+    transform:scale(.985);
+}
+
+.teacher-enrollment-new-parent-button.is-selected{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(20,184,166,.20),
+            rgba(255,255,255,.35)
+        );
+
+    border-color:rgba(20,184,166,.48);
+
+    color:#0f766e;
 }
 
 /*==================================================
@@ -59,11 +245,45 @@
 @media(max-width:600px){
 
     .teacher-enrollment{
-        gap:8px;
+        gap:9px;
     }
 
     .teacher-enrollment-message{
         padding:8px 10px;
         font-size:.7rem;
+    }
+
+    .teacher-enrollment-parent-step{
+        gap:8px;
+    }
+
+    .teacher-enrollment-step-title{
+        font-size:.94rem;
+    }
+
+    .teacher-enrollment-step-description{
+        font-size:.71rem;
+    }
+
+    .teacher-enrollment-parent-select{
+        min-height:40px;
+        padding-top:8px;
+        padding-bottom:8px;
+        font-size:.72rem;
+
+        background-position:
+            calc(100% - 17px) 17px,
+            calc(100% - 12px) 17px,
+            0 0;
+    }
+
+    .teacher-enrollment-divider{
+        font-size:.64rem;
+    }
+
+    .teacher-enrollment-new-parent-button{
+        min-height:40px;
+        padding:8px 10px;
+        font-size:.72rem;
     }
 }
