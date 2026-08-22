@@ -3,6 +3,9 @@ import{
     clearWorkspace
 }from'./ta_ui.js';
 
+const SEE_YOU_TOMORROW_API=
+    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_see_you_tomorrow';
+
 /*==================================================
   See You Tomorrow Module
 ==================================================*/
@@ -94,6 +97,52 @@ export async function renderSeeYouTomorrowModule(
 
         updateSeeYouTomorrowErrorStatus();
     }
+}
+
+/*==================================================
+  Load See You Tomorrow Data
+==================================================*/
+
+async function loadSeeYouTomorrowData(
+    state
+){
+    const response=
+        await fetch(
+            SEE_YOU_TOMORROW_API,
+            {
+                method:
+                    'GET',
+
+                headers:
+                    buildRequestHeaders(
+                        state
+                    )
+            }
+        );
+
+    const responseData=
+        await readResponseData(
+            response
+        );
+
+    if(!response.ok){
+        throw new Error(
+            getApiErrorMessage(
+                responseData
+            )
+        );
+    }
+
+    return{
+        tomorrowSchedule:
+            Array.isArray(
+                responseData
+                    ?.tomorrow_schedule
+            )
+                ?responseData
+                    .tomorrow_schedule
+                :[]
+    };
 }
 
 /*==================================================
@@ -259,7 +308,8 @@ function createStudentRow(
         'teacher-see-you-tomorrow-student';
 
     row.dataset.studentId=
-        student?.id||'';
+        student?.id||
+        '';
 
     const icon=
         document.createElement(
@@ -443,6 +493,86 @@ function formatTime(
 
     return(
         `${displayHour}:${minuteValue} ${period}`
+    );
+}
+
+/*==================================================
+  Request Headers
+==================================================*/
+
+function buildRequestHeaders(
+    state
+){
+    const headers={
+        Accept:
+            'application/json'
+    };
+
+    const authToken=
+        getAuthToken(
+            state
+        );
+
+    if(authToken){
+        headers.Authorization=
+            `Bearer ${authToken}`;
+    }
+
+    return headers;
+}
+
+function getAuthToken(
+    state
+){
+    return(
+        state?.authToken||
+        state?.auth_token||
+        state?.context?.authToken||
+        state?.context?.auth_token||
+        window.localStorage.getItem(
+            'authToken'
+        )||
+        window.localStorage.getItem(
+            'auth_token'
+        )||
+        ''
+    );
+}
+
+/*==================================================
+  Response Helpers
+==================================================*/
+
+async function readResponseData(
+    response
+){
+    const responseText=
+        await response.text();
+
+    if(!responseText){
+        return null;
+    }
+
+    try{
+        return JSON.parse(
+            responseText
+        );
+
+    }catch(error){
+        return{
+            message:
+                responseText
+        };
+    }
+}
+
+function getApiErrorMessage(
+    responseData
+){
+    return(
+        responseData?.message||
+        responseData?.error||
+        'Unable to load tomorrow\'s students.'
     );
 }
 
