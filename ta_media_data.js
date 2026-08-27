@@ -10,7 +10,6 @@ const MEDIA_PREPARE_UPLOAD_API=
 const MEDIA_SAVE_API=
 'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_save_media';
 
-
 export async function loadMediaSessions(
 state
 ){
@@ -18,9 +17,7 @@ const response=
 await fetch(
 MEDIA_SESSION_API,
 {
-method:
-'GET',
-
+method:'GET',
 headers:
 buildRequestHeaders(
 state
@@ -28,12 +25,10 @@ state
 }
 );
 
-
 const responseData=
 await readResponseData(
 response
 );
-
 
 if(!response.ok){
 throw new Error(
@@ -43,7 +38,6 @@ responseData,
 )
 );
 }
-
 
 return{
 sessions:
@@ -55,7 +49,6 @@ responseData?.sessions
 };
 }
 
-
 export async function loadMediaTaskData(
 sessionId,
 state
@@ -65,20 +58,16 @@ new URL(
 MEDIA_TASK_API
 );
 
-
 url.searchParams.set(
 'session_id',
 sessionId
 );
 
-
 const response=
 await fetch(
 url.toString(),
 {
-method:
-'GET',
-
+method:'GET',
 headers:
 buildRequestHeaders(
 state
@@ -86,12 +75,10 @@ state
 }
 );
 
-
 const responseData=
 await readResponseData(
 response
 );
-
 
 if(!response.ok){
 throw new Error(
@@ -101,7 +88,6 @@ responseData,
 )
 );
 }
-
 
 return{
 user:
@@ -136,10 +122,7 @@ responseData
 };
 }
 
-
-/*==================================================*
-*Prepare Media Upload Batch*
-*==================================================*/
+/*  Prepare Media Upload Batch */
 
 export async function prepareMediaUpload(
 manifest,
@@ -150,26 +133,22 @@ buildPrepareMediaItems(
 manifest
 );
 
-
 if(!mediaItems.length){
 throw new Error(
 'No media items are available to prepare.'
 );
 }
 
-
 const response=
 await fetch(
 MEDIA_PREPARE_UPLOAD_API,
 {
-method:
-'POST',
+method:'POST',
 
 headers:{
 ...buildRequestHeaders(
 state
 ),
-
 'Content-Type':
 'application/json'
 },
@@ -182,12 +161,10 @@ mediaItems
 }
 );
 
-
 const responseData=
 await readResponseData(
 response
 );
-
 
 if(!response.ok){
 throw new Error(
@@ -198,21 +175,24 @@ responseData,
 );
 }
 
-
 return{
 uploadTargets:
 Array.isArray(
 responseData?.upload_targets
 )
 ?responseData.upload_targets
+:[],
+
+mediaRecords:
+Array.isArray(
+responseData?.media_records
+)
+?responseData.media_records
 :[]
 };
 }
 
-
-/*==================================================*
-*Save Media Records Batch*
-*==================================================*/
+/*  Save Media Records Batch */
 
 export async function saveMediaRecords(
 mediaRecords,
@@ -229,19 +209,16 @@ throw new Error(
 );
 }
 
-
 const response=
 await fetch(
 MEDIA_SAVE_API,
 {
-method:
-'POST',
+method:'POST',
 
 headers:{
 ...buildRequestHeaders(
 state
 ),
-
 'Content-Type':
 'application/json'
 },
@@ -254,12 +231,10 @@ mediaRecords
 }
 );
 
-
 const responseData=
 await readResponseData(
 response
 );
-
 
 if(!response.ok){
 throw new Error(
@@ -270,14 +245,10 @@ responseData,
 );
 }
 
-
 return responseData;
 }
 
-
-/*==================================================*
-*Prepare Payload*
-*==================================================*/
+/*  Prepare Payload */
 
 function buildPrepareMediaItems(
 manifest
@@ -289,7 +260,6 @@ manifest
 ){
 return[];
 }
-
 
 return manifest.map(
 item=>{
@@ -335,10 +305,7 @@ item.file?.size||
 );
 }
 
-
-/*==================================================*
-*Request Headers*
-*==================================================*/
+/*  Request Headers */
 
 function buildRequestHeaders(
 state
@@ -348,22 +315,18 @@ Accept:
 'application/json'
 };
 
-
 const authToken=
 getAuthToken(
 state
 );
-
 
 if(authToken){
 headers.Authorization=
 `Bearer ${authToken}`;
 }
 
-
 return headers;
 }
-
 
 function getAuthToken(
 state
@@ -383,10 +346,7 @@ window.localStorage.getItem(
 );
 }
 
-
-/*==================================================*
-*Response Helpers*
-*==================================================*/
+/*  Response Helpers */
 
 async function readResponseData(
 response
@@ -394,11 +354,9 @@ response
 const responseText=
 await response.text();
 
-
 if(!responseText){
 return null;
 }
-
 
 try{
 return JSON.parse(
@@ -412,7 +370,6 @@ responseText
 };
 }
 }
-
 
 function getApiErrorMessage(
 responseData,
