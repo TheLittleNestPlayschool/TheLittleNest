@@ -165,7 +165,7 @@ head_office_messages:{
     description:'Communicate directly with head office.',
     renderer:renderHeadOfficeMessagesModule,
     isAvailable:true,
-    isVisible:true
+    isVisible:false
 },
 
 teacher_information:{
