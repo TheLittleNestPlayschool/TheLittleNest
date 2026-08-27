@@ -11,7 +11,6 @@ import{
 renderMediaStudents
 }from'./ta_media_students.js';
 
-
 export function renderMediaPreview(
 container,
 actions
@@ -19,11 +18,9 @@ actions
 const item=
 getActiveMedia();
 
-
 if(!item){
 return;
 }
-
 
 //------------------------------------
 // Overlay
@@ -36,7 +33,6 @@ document.createElement(
 
 overlay.className=
 'teacher-media-overlay';
-
 
 overlay.addEventListener(
 'click',
@@ -54,7 +50,6 @@ actions
 }
 );
 
-
 //------------------------------------
 // Editor Panel
 //------------------------------------
@@ -66,7 +61,6 @@ document.createElement(
 
 panel.className=
 'teacher-media-editor-panel';
-
 
 //------------------------------------
 // Header
@@ -80,7 +74,6 @@ document.createElement(
 header.className=
 'teacher-media-editor-header';
 
-
 const heading=
 document.createElement(
 'div'
@@ -88,7 +81,6 @@ document.createElement(
 
 heading.className=
 'teacher-media-editor-heading';
-
 
 const title=
 document.createElement(
@@ -98,7 +90,6 @@ document.createElement(
 title.textContent=
 'Media Details';
 
-
 const fileName=
 document.createElement(
 'span'
@@ -107,7 +98,6 @@ document.createElement(
 fileName.textContent=
 item.file?.name||'';
 
-
 heading.appendChild(
 title
 );
@@ -115,7 +105,6 @@ title
 heading.appendChild(
 fileName
 );
-
 
 const closeButton=
 document.createElement(
@@ -131,7 +120,6 @@ closeButton.className=
 closeButton.textContent=
 '×';
 
-
 closeButton.addEventListener(
 'click',
 ()=>{
@@ -141,7 +129,6 @@ actions
 }
 );
 
-
 header.appendChild(
 heading
 );
@@ -150,11 +137,9 @@ header.appendChild(
 closeButton
 );
 
-
 panel.appendChild(
 header
 );
-
 
 //------------------------------------
 // Large Preview
@@ -167,7 +152,6 @@ document.createElement(
 
 preview.className=
 'teacher-media-large-preview';
-
 
 if(
 item.mediaKind===
@@ -190,7 +174,6 @@ true;
 video.preload=
 'metadata';
 
-
 preview.appendChild(
 video
 );
@@ -207,17 +190,14 @@ item.previewUrl;
 image.alt=
 'Selected media preview';
 
-
 preview.appendChild(
 image
 );
 }
 
-
 panel.appendChild(
 preview
 );
-
 
 //------------------------------------
 // Media Type
@@ -230,7 +210,6 @@ actions
 )
 );
 
-
 //------------------------------------
 // Students
 //------------------------------------
@@ -238,12 +217,11 @@ actions
 const mediaSession=
 getMediaSession();
 
-
 renderMediaStudents(
 panel,
 {
 students:
-mediaSession.studentsByLocation,
+mediaSession.studentsBySession,
 
 selectedStudentIds:
 item.studentIds,
@@ -268,7 +246,6 @@ console.log(
 }
 );
 
-
 //------------------------------------
 // Done
 //------------------------------------
@@ -280,7 +257,6 @@ document.createElement(
 
 actionsRow.className=
 'teacher-media-editor-actions';
-
 
 const doneButton=
 document.createElement(
@@ -296,11 +272,9 @@ doneButton.className=
 doneButton.textContent=
 'Done';
 
-
 doneButton.disabled=
 !item.mediaType||
 !item.studentIds.length;
-
 
 doneButton.addEventListener(
 'click',
@@ -313,7 +287,6 @@ actions
 }
 );
 
-
 actionsRow.appendChild(
 doneButton
 );
@@ -321,7 +294,6 @@ doneButton
 panel.appendChild(
 actionsRow
 );
-
 
 //------------------------------------
 // Render
@@ -335,7 +307,6 @@ container.appendChild(
 overlay
 );
 }
-
 
 /*==================================================*
 *Media Type*
@@ -353,7 +324,6 @@ document.createElement(
 section.className=
 'teacher-media-type-selector';
 
-
 const heading=
 document.createElement(
 'strong'
@@ -362,7 +332,6 @@ document.createElement(
 heading.textContent=
 'Type';
 
-
 const select=
 document.createElement(
 'select'
@@ -370,7 +339,6 @@ document.createElement(
 
 select.className=
 'teacher-media-type-select';
-
 
 //------------------------------------
 // Placeholder
@@ -389,11 +357,9 @@ placeholder.textContent=
 placeholder.disabled=
 true;
 
-
 select.appendChild(
 placeholder
 );
-
 
 //------------------------------------
 // Media
@@ -410,11 +376,9 @@ mediaOption.value=
 mediaOption.textContent=
 'Media';
 
-
 select.appendChild(
 mediaOption
 );
-
 
 //------------------------------------
 // Art
@@ -431,11 +395,9 @@ artOption.value=
 artOption.textContent=
 'Art';
 
-
 select.appendChild(
 artOption
 );
-
 
 //------------------------------------
 // Current Value
@@ -444,7 +406,6 @@ artOption
 select.value=
 item.mediaType||
 '';
-
 
 //------------------------------------
 // Change
@@ -465,7 +426,6 @@ actions.refresh();
 }
 );
 
-
 section.appendChild(
 heading
 );
@@ -474,10 +434,8 @@ section.appendChild(
 select
 );
 
-
 return section;
 }
-
 
 function closeEditor(
 actions
