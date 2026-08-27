@@ -17,7 +17,8 @@ markMediaItemSaving,
 markMediaItemSaved,
 markMediaItemSaveError,
 finishMediaSave,
-failMediaSave
+failMediaSave,
+clearMediaSaveProgress
 }from'./ta_media_session.js';
 
 import{
@@ -40,6 +41,19 @@ renderMediaPreview
 import{
 uploadMediaBatch
 }from'./ta_media_upload.js';
+
+
+const SAVE_PROGRESS_REFRESH_MS=
+100;
+
+const SAVE_COMPLETE_DISPLAY_MS=
+1800;
+
+let saveProgressTimer=
+null;
+
+let saveCompleteTimer=
+null;
 
 
 export async function renderMediaModule(
@@ -316,6 +330,16 @@ renderCurrentView
 
 
 //------------------------------------
+// Save Progress Overlay
+//------------------------------------
+
+renderMediaSaveOverlay(
+container,
+session
+);
+
+
+//------------------------------------
 // Render
 //------------------------------------
 
@@ -470,6 +494,13 @@ return;
 
 
 //------------------------------------
+// Clear Old Completion Timer
+//------------------------------------
+
+clearSaveCompleteTimer();
+
+
+//------------------------------------
 // Start Batch
 //------------------------------------
 
@@ -490,6 +521,8 @@ item.clientMediaId
 
 
 renderCurrentView();
+
+startSaveProgressUpdates();
 
 
 try{
@@ -522,7 +555,11 @@ item.clientMediaId
 
 finishMediaSave();
 
+stopSaveProgressUpdates();
+
 renderCurrentView();
+
+scheduleSaveCompleteClear();
 
 
 }catch(error){
@@ -580,6 +617,333 @@ errorMessage
 );
 
 
+stopSaveProgressUpdates();
+
 renderCurrentView();
+
+scheduleSaveCompleteClear(
+3000
+);
 }
+}
+
+
+/*==================================================*
+*Save Progress Overlay*
+*==================================================*/
+
+function renderMediaSaveOverlay(
+container,
+session
+){
+const progress=
+session.saveProgress||
+{};
+
+if(!progress.visible){
+return;
+}
+
+
+const overlay=
+document.createElement(
+'div'
+);
+
+overlay.className=
+'teacher-media-save-overlay';
+
+overlay.dataset.stage=
+progress.stage||
+'idle';
+
+
+const panel=
+document.createElement(
+'div'
+);
+
+panel.className=
+'teacher-media-save-panel';
+
+
+const indicator=
+document.createElement(
+'div'
+);
+
+indicator.className=
+'teacher-media-save-indicator';
+
+
+if(
+progress.stage===
+'complete'
+){
+indicator.textContent=
+'✓';
+
+}else if(
+progress.stage===
+'error'
+){
+indicator.textContent=
+'!';
+
+}else{
+const spinner=
+document.createElement(
+'span'
+);
+
+spinner.className=
+'teacher-media-save-spinner';
+
+indicator.appendChild(
+spinner
+);
+}
+
+
+const title=
+document.createElement(
+'h3'
+);
+
+title.className=
+'teacher-media-save-title';
+
+title.textContent=
+getSaveProgressTitle(
+progress.stage
+);
+
+
+const message=
+document.createElement(
+'p'
+);
+
+message.className=
+'teacher-media-save-message';
+
+message.textContent=
+progress.message||
+'Working...';
+
+
+panel.appendChild(
+indicator
+);
+
+panel.appendChild(
+title
+);
+
+panel.appendChild(
+message
+);
+
+
+overlay.appendChild(
+panel
+);
+
+container.appendChild(
+overlay
+);
+}
+
+
+function updateMediaSaveOverlay(){
+const session=
+getMediaSession();
+
+const progress=
+session.saveProgress||
+{};
+
+
+const overlay=
+document.querySelector(
+'.teacher-media-save-overlay'
+);
+
+
+if(
+!progress.visible
+){
+if(overlay){
+overlay.remove();
+}
+
+return;
+}
+
+
+if(!overlay){
+renderCurrentView();
+
+return;
+}
+
+
+overlay.dataset.stage=
+progress.stage||
+'idle';
+
+
+const title=
+overlay.querySelector(
+'.teacher-media-save-title'
+);
+
+const message=
+overlay.querySelector(
+'.teacher-media-save-message'
+);
+
+const indicator=
+overlay.querySelector(
+'.teacher-media-save-indicator'
+);
+
+
+if(title){
+title.textContent=
+getSaveProgressTitle(
+progress.stage
+);
+}
+
+
+if(message){
+message.textContent=
+progress.message||
+'Working...';
+}
+
+
+if(indicator){
+if(
+progress.stage===
+'complete'
+){
+indicator.innerHTML=
+'✓';
+
+}else if(
+progress.stage===
+'error'
+){
+indicator.innerHTML=
+'!';
+
+}else if(
+!indicator.querySelector(
+'.teacher-media-save-spinner'
+)
+){
+indicator.innerHTML=
+'<span class="teacher-media-save-spinner"></span>';
+}
+}
+}
+
+
+function getSaveProgressTitle(
+stage
+){
+switch(stage){
+
+case'complete':
+return'Media Saved';
+
+case'error':
+return'Unable to Save';
+
+case'saving':
+return'Saving Media';
+
+case'uploading':
+return'Uploading Media';
+
+case'preparing':
+return'Preparing Media';
+
+default:
+return'Saving Media';
+}
+}
+
+
+/*==================================================*
+*Progress Updates*
+*==================================================*/
+
+function startSaveProgressUpdates(){
+stopSaveProgressUpdates();
+
+saveProgressTimer=
+window.setInterval(
+()=>{
+updateMediaSaveOverlay();
+},
+SAVE_PROGRESS_REFRESH_MS
+);
+}
+
+
+function stopSaveProgressUpdates(){
+if(
+saveProgressTimer===
+null
+){
+return;
+}
+
+window.clearInterval(
+saveProgressTimer
+);
+
+saveProgressTimer=
+null;
+}
+
+
+function scheduleSaveCompleteClear(
+delay=
+SAVE_COMPLETE_DISPLAY_MS
+){
+clearSaveCompleteTimer();
+
+saveCompleteTimer=
+window.setTimeout(
+()=>{
+saveCompleteTimer=
+null;
+
+clearMediaSaveProgress();
+
+renderCurrentView();
+},
+delay
+);
+}
+
+
+function clearSaveCompleteTimer(){
+if(
+saveCompleteTimer===
+null
+){
+return;
+}
+
+window.clearTimeout(
+saveCompleteTimer
+);
+
+saveCompleteTimer=
+null;
 }
