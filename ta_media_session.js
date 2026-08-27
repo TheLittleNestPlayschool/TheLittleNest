@@ -46,6 +46,10 @@ isSaving:false,
 saveError:null,
 
 saveProgress:{
+    visible:false,
+    stage:'idle',
+    message:'',
+    current:0,
     completed:0,
     total:0
 }
@@ -408,6 +412,10 @@ mediaSession.saveError=
 null;
 
 mediaSession.saveProgress={
+visible:true,
+stage:'preparing',
+message:'Preparing media...',
+current:0,
 completed:0,
 total:mediaSession.items.length
 };
@@ -421,6 +429,43 @@ item.saveError=
 null;
 }
 );
+}
+
+
+export function setMediaSaveProgress({
+stage,
+message,
+current,
+total
+}={}){
+if(stage!==undefined){
+mediaSession.saveProgress.stage=
+stage;
+}
+
+if(message!==undefined){
+mediaSession.saveProgress.message=
+message;
+}
+
+if(current!==undefined){
+mediaSession.saveProgress.current=
+Number(
+current
+)||
+0;
+}
+
+if(total!==undefined){
+mediaSession.saveProgress.total=
+Number(
+total
+)||
+0;
+}
+
+mediaSession.saveProgress.visible=
+true;
 }
 
 
@@ -484,48 +529,57 @@ item.saveStatus===
 }
 
 
-export function markMediaItemSaveError(
-mediaId,
-errorMessage
-){
-const item=
-mediaSession.items.find(
-item=>{
-return(
-item.id===
-mediaId
-);
-}
-);
-
-if(!item){
-return;
-}
-
-item.saveStatus=
-'error';
-
-item.saveError=
-errorMessage||
-'Unable to save media.';
-}
-
-
 export function finishMediaSave(){
 mediaSession.isSaving=
 false;
+
+mediaSession.saveProgress.visible=
+true;
+
+mediaSession.saveProgress.stage=
+'complete';
+
+mediaSession.saveProgress.message=
+'Media saved.';
+
+mediaSession.saveProgress.current=
+mediaSession.saveProgress.total;
 }
 
 
 export function failMediaSave(
 errorMessage
 ){
+const message=
+errorMessage||
+'Unable to save media.';
+
 mediaSession.isSaving=
 false;
 
 mediaSession.saveError=
-errorMessage||
-'Unable to save media.';
+message;
+
+mediaSession.saveProgress.visible=
+true;
+
+mediaSession.saveProgress.stage=
+'error';
+
+mediaSession.saveProgress.message=
+message;
+}
+
+
+export function clearMediaSaveProgress(){
+mediaSession.saveProgress={
+visible:false,
+stage:'idle',
+message:'',
+current:0,
+completed:0,
+total:0
+};
 }
 
 
