@@ -1,73 +1,125 @@
+import{
+getModule
+}from'./ta_module_registry.js';
+
 const STANDARD_LAYOUT_MODE=
-    'standard';
+'standard';
+
+/*  Build Stage Plan */
 
 export function buildStagePlan(
-    priorityList
+priorityList
 ){
-    const normalizedPriorityList=
-        Array.isArray(priorityList)
-            ?priorityList
-            :[];
+const normalizedPriorityList=
+Array.isArray(priorityList)
+?priorityList
+:[];
 
-    const modules=
-        normalizedPriorityList.map(
-            (
-                priorityItem,
-                index
-            )=>{
-                const modulePlan=
-                    normalizePriorityItem(
-                        priorityItem
-                    );
+/*  Remove Hidden Modules */
 
-                return{
-                    ...modulePlan,
+const visiblePriorityList=
+normalizedPriorityList.filter(
+priorityItem=>{
+const moduleId=
+getPriorityItemId(
+priorityItem
+);
 
-                    state:
-                        index===0
-                            ?'active'
-                            :'collapsed'
-                };
-            }
-        );
+const module=
+getModule(
+moduleId
+);
 
-    return{
-        context:null,
+return(
+module&&
+module.isVisible!==false
+);
+}
+);
 
-        layoutMode:
-            STANDARD_LAYOUT_MODE,
+/*  Build Visible Modules */
 
-        modules
-    };
+const modules=
+visiblePriorityList.map(
+(priorityItem,index)=>{
+const modulePlan=
+normalizePriorityItem(
+priorityItem
+);
+
+return{
+...modulePlan,
+state:
+index===0
+?'active'
+:'collapsed'
+};
+}
+);
+
+return{
+context:null,
+layoutMode:
+STANDARD_LAYOUT_MODE,
+modules
+};
 }
 
-function normalizePriorityItem(
-    priorityItem
+/*  Get Priority Item ID */
+
+function getPriorityItemId(
+priorityItem
 ){
-    if(
-        typeof priorityItem===
-        'string'
-    ){
-        return{
-            id:priorityItem
-        };
-    }
+if(
+typeof priorityItem===
+'string'
+){
+return priorityItem;
+}
 
-    if(
-        priorityItem&&
-        typeof priorityItem===
-        'object'&&
-        priorityItem.id
-    ){
-        return{
-            ...priorityItem
-        };
-    }
+if(
+priorityItem&&
+typeof priorityItem===
+'object'
+){
+return priorityItem.id||'';
+}
 
-    return{
-        id:String(
-            priorityItem||
-            ''
-        )
-    };
+return String(
+priorityItem||
+''
+);
+}
+
+/*  Normalize Priority Item */
+
+function normalizePriorityItem(
+priorityItem
+){
+if(
+typeof priorityItem===
+'string'
+){
+return{
+id:priorityItem
+};
+}
+
+if(
+priorityItem&&
+typeof priorityItem===
+'object'&&
+priorityItem.id
+){
+return{
+...priorityItem
+};
+}
+
+return{
+id:String(
+priorityItem||
+''
+)
+};
 }
