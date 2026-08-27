@@ -1,6 +1,6 @@
-/*==================================================*
-*Media Task Styles*
-*==================================================*/
+/*==================================================
+Media Task Styles
+==================================================*/
 
 @import url('./ta_media_capture.css');
 @import url('./ta_media_preview.css');
@@ -8,9 +8,9 @@
 @import url('./ta_media_students.css');
 
 
-/*==================================================*
-*Media Task*
-*==================================================*/
+/*==================================================
+Media Task
+==================================================*/
 
 .teacher-module-card[data-module-id="media"]
 .teacher-module-content{
@@ -33,9 +33,9 @@
 }
 
 
-/*==================================================*
-*General Messages*
-*==================================================*/
+/*==================================================
+General Messages
+==================================================*/
 
 .teacher-media-message{
     margin:0;
@@ -73,13 +73,317 @@
 }
 
 
-/*==================================================*
-*Mobile*
-*==================================================*/
+/*==================================================
+Media Save Overlay
+==================================================*/
+
+.teacher-media-save-overlay{
+    position:absolute;
+
+    inset:0;
+
+    z-index:50;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:18px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .10
+        );
+
+    backdrop-filter:
+        blur(3px);
+
+    -webkit-backdrop-filter:
+        blur(3px);
+
+    border-radius:12px;
+}
+
+
+.teacher-media-save-panel{
+    width:min(
+        260px,
+        calc(100% - 28px)
+    );
+
+    padding:18px 18px 16px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    gap:8px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .78
+        );
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .88
+        );
+
+    border-radius:16px;
+
+    box-shadow:
+        0 16px 40px
+        rgba(
+            15,
+            23,
+            42,
+            .20
+        );
+
+    text-align:center;
+}
+
+
+/*==================================================
+Save Indicator
+==================================================*/
+
+.teacher-media-save-indicator{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#0f766e;
+
+    font-size:1.55rem;
+    font-weight:900;
+    line-height:1;
+}
+
+
+.teacher-media-save-spinner{
+    width:28px;
+    height:28px;
+
+    display:block;
+
+    border:
+        3px solid
+        rgba(
+            15,
+            118,
+            110,
+            .18
+        );
+
+    border-top-color:
+        rgba(
+            15,
+            118,
+            110,
+            .90
+        );
+
+    border-radius:50%;
+
+    animation:
+        teacher-media-save-spin
+        .72s
+        linear
+        infinite;
+}
+
+
+/*==================================================
+Save Text
+==================================================*/
+
+.teacher-media-save-title{
+    margin:0;
+
+    color:#0f172a;
+
+    font-size:.92rem;
+    font-weight:850;
+    line-height:1.2;
+}
+
+
+.teacher-media-save-message{
+    margin:0;
+
+    color:#475569;
+
+    font-size:.70rem;
+    font-weight:650;
+    line-height:1.35;
+}
+
+
+/*==================================================
+Save Complete
+==================================================*/
+
+.teacher-media-save-overlay[
+    data-stage="complete"
+]
+.teacher-media-save-panel{
+    background:
+        rgba(
+            240,
+            253,
+            250,
+            .88
+        );
+}
+
+
+.teacher-media-save-overlay[
+    data-stage="complete"
+]
+.teacher-media-save-indicator{
+    color:#0f766e;
+}
+
+
+/*==================================================
+Save Error
+==================================================*/
+
+.teacher-media-save-overlay[
+    data-stage="error"
+]
+.teacher-media-save-panel{
+    background:
+        rgba(
+            254,
+            242,
+            242,
+            .90
+        );
+}
+
+
+.teacher-media-save-overlay[
+    data-stage="error"
+]
+.teacher-media-save-indicator{
+    color:#b91c1c;
+}
+
+
+.teacher-media-save-overlay[
+    data-stage="error"
+]
+.teacher-media-save-title{
+    color:#991b1b;
+}
+
+
+.teacher-media-save-overlay[
+    data-stage="error"
+]
+.teacher-media-save-message{
+    color:#7f1d1d;
+}
+
+
+/*==================================================
+Spinner Motion
+==================================================*/
+
+@keyframes teacher-media-save-spin{
+
+    from{
+        transform:
+            rotate(0deg);
+    }
+
+    to{
+        transform:
+            rotate(360deg);
+    }
+
+}
+
+
+/*==================================================
+Reduced Motion
+==================================================*/
+
+@media(prefers-reduced-motion:reduce){
+
+    .teacher-media-save-spinner{
+        animation:none;
+    }
+
+}
+
+
+/*==================================================
+Mobile
+==================================================*/
 
 @media(max-width:600px){
 
     .teacher-media{
         gap:8px;
+    }
+
+    .teacher-media-save-overlay{
+        padding:12px;
+    }
+
+    .teacher-media-save-panel{
+        width:min(
+            240px,
+            calc(100% - 18px)
+        );
+
+        padding:
+            16px
+            14px
+            14px;
+
+        border-radius:14px;
+    }
+
+    .teacher-media-save-indicator{
+        width:38px;
+        height:38px;
+
+        font-size:1.4rem;
+    }
+
+    .teacher-media-save-spinner{
+        width:26px;
+        height:26px;
+    }
+
+    .teacher-media-save-title{
+        font-size:.86rem;
+    }
+
+    .teacher-media-save-message{
+        font-size:.66rem;
     }
 }
