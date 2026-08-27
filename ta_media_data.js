@@ -263,6 +263,11 @@ return[];
 
 return manifest.map(
 item=>{
+const mediaGroupId=
+item.clientMediaId||
+item.id||
+'';
+
 return{
 session_id:
 item.sessionId,
@@ -278,6 +283,12 @@ file_name:
 item.file?.name||
 '',
 
+stored_file_name:
+createStoredFileName(
+item.file,
+mediaGroupId
+),
+
 content_type:
 item.file?.type||
 '',
@@ -291,9 +302,7 @@ item.mediaKind||
 '',
 
 media_group_id:
-item.clientMediaId||
-item.id||
-'',
+mediaGroupId,
 
 file_size:
 Number(
@@ -302,6 +311,92 @@ item.file?.size||
 )
 };
 }
+);
+}
+
+/*  Stored File Name */
+
+function createStoredFileName(
+file,
+mediaGroupId
+){
+const now=
+new Date();
+
+const datePart=
+[
+now.getFullYear(),
+padNumber(
+now.getMonth()+1
+),
+padNumber(
+now.getDate()
+)
+].join('');
+
+const timePart=
+[
+padNumber(
+now.getHours()
+),
+padNumber(
+now.getMinutes()
+),
+padNumber(
+now.getSeconds()
+)
+].join('');
+
+const extension=
+getFileExtension(
+file?.name
+);
+
+const baseName=
+`${datePart}_${timePart}_${mediaGroupId}`;
+
+return extension
+?`${baseName}.${extension}`
+:baseName;
+}
+
+function getFileExtension(
+fileName
+){
+const normalizedFileName=
+String(
+fileName||
+''
+);
+
+const lastDotIndex=
+normalizedFileName.lastIndexOf(
+'.'
+);
+
+if(
+lastDotIndex===-1||
+lastDotIndex===
+normalizedFileName.length-1
+){
+return'';
+}
+
+return normalizedFileName
+.slice(
+lastDotIndex+1
+)
+.toLowerCase();
+}
+
+function padNumber(
+value
+){
+return String(
+value
+).padStart(
+2,
+'0'
 );
 }
 
