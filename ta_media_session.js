@@ -529,6 +529,33 @@ item.saveStatus===
 }
 
 
+export function markMediaItemSaveError(
+mediaId,
+errorMessage
+){
+const item=
+mediaSession.items.find(
+item=>{
+return(
+item.id===
+mediaId
+);
+}
+);
+
+if(!item){
+return;
+}
+
+item.saveStatus=
+'error';
+
+item.saveError=
+errorMessage||
+'Unable to save media.';
+}
+
+
 export function finishMediaSave(){
 mediaSession.isSaving=
 false;
