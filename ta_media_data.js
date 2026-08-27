@@ -96,27 +96,21 @@ null,
 
 studentsBySession:
 Array.isArray(
-responseData
-?.students_by_session
+responseData?.students_by_session
 )
-?responseData
-.students_by_session
+?responseData.students_by_session
 :[],
 
 studentsByLocation:
 Array.isArray(
-responseData
-?.students_by_location
+responseData?.students_by_location
 )
-?responseData
-.students_by_location
+?responseData.students_by_location
 :(
 Array.isArray(
-responseData
-?.student_by_location
+responseData?.student_by_location
 )
-?responseData
-.student_by_location
+?responseData.student_by_location
 :[]
 )
 };
@@ -280,10 +274,6 @@ item.studentIds
 :[],
 
 file_name:
-item.file?.name||
-'',
-
-stored_file_name:
 createStoredFileName(
 item.file,
 mediaGroupId
