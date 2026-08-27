@@ -6,7 +6,8 @@ markMediaItemSaved,
 markMediaItemSaveError,
 finishMediaSave,
 failMediaSave,
-clearMediaSaveProgress
+clearMediaSaveProgress,
+clearSavedMedia
 }from'./ta_media_session.js';
 
 import{
@@ -48,7 +49,8 @@ if(
 return;
 }
 
-const invalidItem=findInvalidManifestItem(
+const invalidItem=
+findInvalidManifestItem(
 manifest
 );
 
@@ -199,21 +201,6 @@ refresh();
 },
 delay
 );
-}
-
-function clearSavedMedia(){
-const session=getMediaSession();
-
-session.items.forEach(item=>{
-if(item?.previewUrl){
-URL.revokeObjectURL(
-item.previewUrl
-);
-}
-});
-
-session.items=[];
-session.activeMediaId=null;
 }
 
 function clearSaveCompleteTimer(){
