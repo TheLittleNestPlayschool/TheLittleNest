@@ -13,7 +13,6 @@ import{
 createMediaGrid
 }from'./ta_media_capture_grid.js';
 
-
 export function renderMediaCapture(
 container,
 actions
@@ -23,11 +22,9 @@ createMediaInput(
     actions
 );
 
-
 container.appendChild(
     input
 );
-
 
 container.appendChild(
     createUploadButton(
@@ -35,14 +32,10 @@ container.appendChild(
     )
 );
 
-
 const session=
 getMediaSession();
 
-
-//------------------------------------
-// Nothing Selected Yet
-//------------------------------------
+/*  Nothing Selected Yet */
 
 if(
     !session.items.length
@@ -50,10 +43,7 @@ if(
     return;
 }
 
-
-//------------------------------------
-// Media Instructions
-//------------------------------------
+/*  Media Instructions */
 
 container.appendChild(
     createMediaInstruction(
@@ -61,10 +51,7 @@ container.appendChild(
     )
 );
 
-
-//------------------------------------
-// Selected Media
-//------------------------------------
+/*  Selected Media */
 
 container.appendChild(
     createMediaGrid(
@@ -72,10 +59,21 @@ container.appendChild(
     )
 );
 
+/*  Save Media */
 
-//------------------------------------
-// Save Media
-//------------------------------------
+const hasUnsavedItems=
+session.items.some(
+    item=>{
+        return(
+            item.saveStatus!==
+            'saved'
+        );
+    }
+);
+
+if(!hasUnsavedItems){
+    return;
+}
 
 const saveButton=
 createSaveButton(
@@ -83,10 +81,8 @@ createSaveButton(
     actions
 );
 
-
 if(saveButton){
     container.appendChild(
         saveButton
     );
-}
 }
