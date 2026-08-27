@@ -7,6 +7,10 @@ prepareMediaUpload,
 saveMediaRecords
 }from'./ta_media_data.js';
 
+import{
+setMediaSaveProgress
+}from'./ta_media_session.js';
+
 
 /*==================================================*
 *Upload Media Batch*
@@ -35,6 +39,13 @@ throw new Error(
 // Prepare Entire Batch
 //------------------------------------
 
+setMediaSaveProgress({
+stage:'preparing',
+message:'Preparing media...',
+current:0
+});
+
+
 const prepared=
 await prepareMediaUpload(
 manifest,
@@ -58,6 +69,19 @@ throw new Error(
 
 
 //------------------------------------
+// Set Upload Progress
+//------------------------------------
+
+setMediaSaveProgress({
+stage:'uploading',
+message:
+    `Uploading 1 of ${uploadTargets.length}...`,
+current:0,
+total:uploadTargets.length
+});
+
+
+//------------------------------------
 // Match Files To Upload Targets
 //------------------------------------
 
@@ -65,9 +89,15 @@ const mediaRecords=[];
 
 
 for(
-const uploadTarget
-of uploadTargets
+let uploadIndex=0;
+uploadIndex<uploadTargets.length;
+uploadIndex+=1
 ){
+    const uploadTarget=
+        uploadTargets[
+            uploadIndex
+        ];
+
 
     const manifestItem=
         findManifestItem(
@@ -81,6 +111,19 @@ of uploadTargets
             `Unable to locate media file for ${uploadTarget.file_name||'upload target'}.`
         );
     }
+
+
+    //--------------------------------
+    // Show Current Upload
+    //--------------------------------
+
+    setMediaSaveProgress({
+        stage:'uploading',
+        message:
+            `Uploading ${uploadIndex+1} of ${uploadTargets.length}...`,
+        current:uploadIndex+1,
+        total:uploadTargets.length
+    });
 
 
     //--------------------------------
@@ -115,6 +158,14 @@ throw new Error(
 'No uploaded media records are available to save.'
 );
 }
+
+
+setMediaSaveProgress({
+stage:'saving',
+message:'Saving media records...',
+current:uploadTargets.length,
+total:uploadTargets.length
+});
 
 
 const saveResult=
