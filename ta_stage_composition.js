@@ -1,7 +1,7 @@
-const TASKS_ABOVE_LIVING=5;
-
 const ANCHORED_LAST_MODULE_ID=
 'teacher_information';
+
+/*  Compose Stage Plan */
 
 export function composeStagePlan(
 stagePlan
@@ -12,43 +12,47 @@ Array.isArray(stagePlan?.modules)
 :[];
 
 if(modules.length===0){
-    return{
-        ...stagePlan,
-        modules:[]
-    };
-}
-
-const livingModule=
-    findLivingModule(
-        modules
-    );
-
-if(!livingModule){
-    return{
-        ...stagePlan,
-        modules:[]
-    };
-}
-
-const arrangedModules=
-    livingModule.id===
-    ANCHORED_LAST_MODULE_ID
-        ?arrangeWithAnchoredModuleLiving(
-            modules,
-            livingModule
-        )
-        :arrangeWithAnchoredModuleLast(
-            modules,
-            livingModule
-        );
-
 return{
-    ...stagePlan,
-    modules:arrangedModules
+...stagePlan,
+modules:[]
 };
 }
 
-function findLivingModule(modules){
+const livingModule=
+findLivingModule(
+modules
+);
+
+if(!livingModule){
+return{
+...stagePlan,
+modules:[]
+};
+}
+
+const arrangedModules=
+livingModule.id===
+ANCHORED_LAST_MODULE_ID
+?arrangeWithAnchoredModuleLiving(
+modules,
+livingModule
+)
+:arrangeWithAnchoredModuleLast(
+modules,
+livingModule
+);
+
+return{
+...stagePlan,
+modules:arrangedModules
+};
+}
+
+/*  Find Living Module */
+
+function findLivingModule(
+modules
+){
 const activeModule=
 modules.find(modulePlan=>{
 return(
@@ -58,11 +62,13 @@ modulePlan.state==='expanded'
 });
 
 return(
-    activeModule||
-    modules[0]||
-    null
+activeModule||
+modules[0]||
+null
 );
 }
+
+/*  Anchored Module Last */
 
 function arrangeWithAnchoredModuleLast(
 modules,
@@ -77,54 +83,65 @@ ANCHORED_LAST_MODULE_ID
 });
 
 const rotatingModules=
-    modules.filter(modulePlan=>{
-        return(
-            modulePlan.id!==
-            ANCHORED_LAST_MODULE_ID
-        );
-    });
+modules.filter(modulePlan=>{
+return(
+modulePlan.id!==
+ANCHORED_LAST_MODULE_ID
+);
+});
 
 const livingIndex=
-    rotatingModules.findIndex(
-        modulePlan=>{
-            return(
-                modulePlan.id===
-                livingModule.id
-            );
-        }
-    );
+rotatingModules.findIndex(
+modulePlan=>{
+return(
+modulePlan.id===
+livingModule.id
+);
+}
+);
+
+const totalOtherModules=
+modules.length-1;
+
+const aboveCount=
+Math.floor(
+totalOtherModules/2
+);
 
 const arrangedModules=
-    arrangeAroundLiving(
-        rotatingModules,
-        livingIndex>=0
-            ?livingIndex
-            :0
-    );
+arrangeAroundLiving(
+rotatingModules,
+livingIndex>=0
+?livingIndex
+:0,
+aboveCount
+);
 
 if(!anchoredModule){
-    return arrangedModules;
+return arrangedModules;
 }
 
 const nextDistance=
-    getNextDistance(
-        arrangedModules
-    );
+getNextDistance(
+arrangedModules
+);
 
 arrangedModules.push(
-    createPositionedModule(
-        anchoredModule,
-        {
-            side:'next',
-            distance:nextDistance,
-            position:
-                `next-${nextDistance}`
-        }
-    )
+createPositionedModule(
+anchoredModule,
+{
+side:'next',
+distance:nextDistance,
+position:
+`next-${nextDistance}`
+}
+)
 );
 
 return arrangedModules;
 }
+
+/*  Anchored Module Living */
 
 function arrangeWithAnchoredModuleLiving(
 modules,
@@ -138,189 +155,184 @@ ANCHORED_LAST_MODULE_ID
 );
 });
 
+const totalOtherModules=
+otherModules.length;
+
 const aboveCount=
-    Math.min(
-        TASKS_ABOVE_LIVING,
-        otherModules.length
-    );
+Math.floor(
+totalOtherModules/2
+);
+
+const belowCount=
+totalOtherModules-
+aboveCount;
 
 const aboveModules=
-    otherModules.slice(
-        Math.max(
-            0,
-            otherModules.length-
-            aboveCount
-        )
-    );
+otherModules.slice(
+Math.max(
+0,
+otherModules.length-
+aboveCount
+)
+);
 
 const belowModules=
-    otherModules.slice(
-        0,
-        Math.max(
-            0,
-            otherModules.length-
-            aboveCount
-        )
-    );
+otherModules.slice(
+0,
+belowCount
+);
 
 const arrangedModules=[];
 
 aboveModules.forEach(
-    (
-        modulePlan,
-        positionIndex
-    )=>{
-        const distance=
-            aboveCount-
-            positionIndex;
+(modulePlan,positionIndex)=>{
+const distance=
+aboveCount-
+positionIndex;
 
-        arrangedModules.push(
-            createPositionedModule(
-                modulePlan,
-                {
-                    side:'previous',
-                    distance,
-                    position:
-                        `previous-${distance}`
-                }
-            )
-        );
-    }
+arrangedModules.push(
+createPositionedModule(
+modulePlan,
+{
+side:'previous',
+distance,
+position:
+`previous-${distance}`
+}
+)
+);
+}
 );
 
 arrangedModules.push(
-    createPositionedModule(
-        livingModule,
-        {
-            side:'living',
-            distance:0,
-            position:'living'
-        }
-    )
+createPositionedModule(
+livingModule,
+{
+side:'living',
+distance:0,
+position:'living'
+}
+)
 );
 
 belowModules.forEach(
-    (
-        modulePlan,
-        positionIndex
-    )=>{
-        const distance=
-            positionIndex+1;
+(modulePlan,positionIndex)=>{
+const distance=
+positionIndex+1;
 
-        arrangedModules.push(
-            createPositionedModule(
-                modulePlan,
-                {
-                    side:'next',
-                    distance,
-                    position:
-                        `next-${distance}`
-                }
-            )
-        );
-    }
+arrangedModules.push(
+createPositionedModule(
+modulePlan,
+{
+side:'next',
+distance,
+position:
+`next-${distance}`
+}
+)
+);
+}
 );
 
 return arrangedModules;
 }
 
+/*  Arrange Around Living */
+
 function arrangeAroundLiving(
 modules,
-livingIndex
+livingIndex,
+aboveCount
 ){
 const moduleCount=
 modules.length;
 
 if(moduleCount===0){
-    return[];
+return[];
 }
 
-const aboveCount=
-    Math.min(
-        TASKS_ABOVE_LIVING,
-        moduleCount-1
-    );
+const safeAboveCount=
+Math.min(
+aboveCount,
+moduleCount-1
+);
 
 const aboveIndices=
-    getAboveIndices(
-        moduleCount,
-        livingIndex,
-        aboveCount
-    );
+getAboveIndices(
+moduleCount,
+livingIndex,
+safeAboveCount
+);
 
 const reservedIndices=
-    new Set([
-        livingIndex,
-        ...aboveIndices
-    ]);
+new Set([
+livingIndex,
+...aboveIndices
+]);
 
 const belowIndices=
-    getBelowIndices(
-        moduleCount,
-        livingIndex,
-        reservedIndices
-    );
+getBelowIndices(
+moduleCount,
+livingIndex,
+reservedIndices
+);
 
 const arrangedModules=[];
 
 aboveIndices.forEach(
-    (
-        moduleIndex,
-        positionIndex
-    )=>{
-        const distance=
-            aboveCount-
-            positionIndex;
+(moduleIndex,positionIndex)=>{
+const distance=
+safeAboveCount-
+positionIndex;
 
-        arrangedModules.push(
-            createPositionedModule(
-                modules[moduleIndex],
-                {
-                    side:'previous',
-                    distance,
-                    position:
-                        `previous-${distance}`
-                }
-            )
-        );
-    }
+arrangedModules.push(
+createPositionedModule(
+modules[moduleIndex],
+{
+side:'previous',
+distance,
+position:
+`previous-${distance}`
+}
+)
+);
+}
 );
 
 arrangedModules.push(
-    createPositionedModule(
-        modules[livingIndex],
-        {
-            side:'living',
-            distance:0,
-            position:'living'
-        }
-    )
+createPositionedModule(
+modules[livingIndex],
+{
+side:'living',
+distance:0,
+position:'living'
+}
+)
 );
 
 belowIndices.forEach(
-    (
-        moduleIndex,
-        positionIndex
-    )=>{
-        const distance=
-            positionIndex+1;
+(moduleIndex,positionIndex)=>{
+const distance=
+positionIndex+1;
 
-        arrangedModules.push(
-            createPositionedModule(
-                modules[moduleIndex],
-                {
-                    side:'next',
-                    distance,
-                    position:
-                        `next-${distance}`
-                }
-            )
-        );
-    }
+arrangedModules.push(
+createPositionedModule(
+modules[moduleIndex],
+{
+side:'next',
+distance,
+position:
+`next-${distance}`
+}
+)
+);
+}
 );
 
 return arrangedModules;
 }
+
+/*  Previous Indices */
 
 function getAboveIndices(
 moduleCount,
@@ -330,20 +342,22 @@ aboveCount
 const indices=[];
 
 for(
-    let distance=aboveCount;
-    distance>=1;
-    distance-=1
+let distance=aboveCount;
+distance>=1;
+distance-=1
 ){
-    indices.push(
-        wrapIndex(
-            livingIndex-distance,
-            moduleCount
-        )
-    );
+indices.push(
+wrapIndex(
+livingIndex-distance,
+moduleCount
+)
+);
 }
 
 return indices;
 }
+
+/*  Next Indices */
 
 function getBelowIndices(
 moduleCount,
@@ -353,31 +367,33 @@ reservedIndices
 const indices=[];
 
 for(
-    let step=1;
-    step<moduleCount;
-    step+=1
+let step=1;
+step<moduleCount;
+step+=1
 ){
-    const moduleIndex=
-        wrapIndex(
-            livingIndex+step,
-            moduleCount
-        );
+const moduleIndex=
+wrapIndex(
+livingIndex+step,
+moduleCount
+);
 
-    if(
-        reservedIndices.has(
-            moduleIndex
-        )
-    ){
-        continue;
-    }
+if(
+reservedIndices.has(
+moduleIndex
+)
+){
+continue;
+}
 
-    indices.push(
-        moduleIndex
-    );
+indices.push(
+moduleIndex
+);
 }
 
 return indices;
 }
+
+/*  Next Distance */
 
 function getNextDistance(
 arrangedModules
@@ -395,23 +411,24 @@ modulePlan.stageSide===
 return nextModules.length+1;
 }
 
+/*  Position Module */
+
 function createPositionedModule(
 modulePlan,
 stagePosition
 ){
 return{
 ...modulePlan,
-
-    stageSide:
-        stagePosition.side,
-
-    stageDistance:
-        stagePosition.distance,
-
-    stagePosition:
-        stagePosition.position
+stageSide:
+stagePosition.side,
+stageDistance:
+stagePosition.distance,
+stagePosition:
+stagePosition.position
 };
 }
+
+/*  Wrap Index */
 
 function wrapIndex(
 index,
