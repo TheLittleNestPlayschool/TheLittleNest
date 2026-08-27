@@ -11,6 +11,10 @@ import{
 setMediaSaveProgress
 }from'./ta_media_session.js';
 
+import{
+createMediaThumbnail
+}from'./ta_media_thumbnail.js';
+
 /*  Upload Media Batch */
 
 export async function uploadMediaBatch(
@@ -37,6 +41,11 @@ stage:'preparing',
 message:'Preparing media...',
 current:0
 });
+
+const thumbnails=
+await createThumbnails(
+manifest
+);
 
 const prepared=
 await prepareMediaUpload(
@@ -114,6 +123,26 @@ await uploadFileToAws(
 manifestItem.file,
 uploadTarget.signed_url
 );
+
+/*  Upload Thumbnail */
+
+const thumbnail=
+thumbnails.get(
+String(
+uploadTarget.media_group_id||
+''
+)
+);
+
+if(
+thumbnail&&
+uploadTarget.thumbnail_signed_url
+){
+await uploadFileToAws(
+thumbnail,
+uploadTarget.thumbnail_signed_url
+);
+}
 }
 
 /*  Save Student Media Records */
@@ -136,6 +165,47 @@ uploadTargets,
 mediaRecords,
 saveResult
 };
+}
+
+/*  Create Thumbnails */
+
+async function createThumbnails(
+manifest
+){
+const thumbnails=
+new Map();
+
+for(
+const item
+of manifest
+){
+const mediaGroupId=
+String(
+item?.clientMediaId||
+item?.id||
+''
+);
+
+if(!mediaGroupId){
+continue;
+}
+
+const thumbnail=
+await createMediaThumbnail(
+item.file
+);
+
+if(!thumbnail){
+continue;
+}
+
+thumbnails.set(
+mediaGroupId,
+thumbnail
+);
+}
+
+return thumbnails;
 }
 
 /*  Match Manifest Item */
