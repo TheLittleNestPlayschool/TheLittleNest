@@ -16,9 +16,37 @@ export function buildOverdueAttendanceQueue(
                 .sessionAttendanceCompletions
         );
 
+    const locationStudents=
+        Array.isArray(
+            snapshot?.locationStudents
+        )
+            ?snapshot.locationStudents
+            :[];
+
     const overdueAttendance=
         endedOccurrences
             .filter(occurrence=>{
+                const hasStudents=
+                    locationStudents.some(
+                        student=>{
+                            return(
+                                student?.is_active!==false&&
+                                Number(
+                                    student
+                                        ?.session_enrolled
+                                )===
+                                Number(
+                                    occurrence
+                                        .sessionId
+                                )
+                            );
+                        }
+                    );
+
+                if(!hasStudents){
+                    return false;
+                }
+
                 const completionKey=
                     createCompletionKey(
                         occurrence
