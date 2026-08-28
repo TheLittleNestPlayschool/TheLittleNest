@@ -1,182 +1,176 @@
 export function renderTeacherHeader(
-    context
+context
 ){
-    const welcome=
-        document.getElementById(
-            'teacherWelcome'
-        );
+const welcome=
+document.getElementById(
+'teacherWelcome'
+);
 
-    const saying=
-        document.getElementById(
-            'teacherSaying'
-        );
+const saying=
+document.getElementById(
+'teacherSaying'
+);
 
-    if(welcome){
-        welcome.innerHTML=
-            buildTeacherWelcome(
-                context?.teacher
-            );
-    }
-
-    if(saying){
-        saying.innerHTML=
-            buildTeacherQuote(
-                context
-            );
-    }
+if(welcome){
+welcome.innerHTML=
+buildTeacherWelcome(
+context?.teacher
+);
 }
 
+if(saying){
+saying.innerHTML=
+buildTeacherQuote(
+context
+);
+}
+}
+
+/*  Teacher Welcome */
 
 function buildTeacherWelcome(
-    teacher
+teacher
 ){
-    const teacherName=
-        getTeacherDisplayName(
-            teacher
-        );
+const teacherName=
+getTeacherDisplayName(
+teacher
+);
 
-    if(!teacherName){
-        return(
-            '<span class="teacher-welcome-line">'+
-            'Welcome.'+
-            '</span>'+
-            '<span class="teacher-name-line">'+
-            'Teacher'+
-            '</span>'
-        );
-    }
-
-    return(
-        '<span class="teacher-welcome-line">'+
-        'Welcome.'+
-        '</span>'+
-        '<span class="teacher-name-line">'+
-        `Teacher ${escapeHtml(
-            teacherName
-        )}`+
-        '</span>'
-    );
+if(!teacherName){
+return(
+'<span class="teacher-welcome-line">'+
+'Welcome.'+
+'</span>'+
+'<span class="teacher-name-line">'+
+'Teacher'+
+'</span>'
+);
 }
 
+return(
+'<span class="teacher-welcome-line">'+
+'Welcome.'+
+'</span>'+
+'<span class="teacher-name-line">'+
+`Teacher ${escapeHtml(
+teacherName
+)}`+
+'</span>'
+);
+}
+
+/*  Teacher Quote */
 
 function buildTeacherQuote(
-    context
+context
 ){
-    const quote=
-        context?.teacher_quotes||
-        null;
+const quote=
+Array.isArray(
+context?.teacher_quotes
+)
+?context.teacher_quotes[0]||null
+:context?.teacher_quotes||null;
 
-    const emojis=
-        Array.isArray(
-            context?.emojis
-        )
-            ?context.emojis
-            :[];
+const emojis=
+Array.isArray(
+context?.emojis
+)
+?context.emojis
+:[];
 
-    const line1=
-        quote?.quote_line_1||
-        "You're making";
+const line1=
+quote?.quote_line_1||
+"You're making";
 
-    const line2=
-        quote?.quote_line_2||
-        'a difference';
+const line2=
+quote?.quote_line_2||
+'a difference';
 
-    const emoji1=
-        emojis?.[0]?.emoji||
-        '✨';
+const emoji1=
+emojis?.[0]?.emoji||
+'✨';
 
-    const emoji2=
-        emojis?.[1]?.emoji||
-        '🌟';
+const emoji2=
+emojis?.[1]?.emoji||
+'🌟';
 
-    return(
-        '<div class="teacher-quote-layout">'+
-
-            '<div class="teacher-quote-mark teacher-quote-mark-open">'+
-                '“'+
-            '</div>'+
-
-            '<div class="teacher-quote-content">'+
-
-                '<div class="teacher-quote-copy">'+
-
-                    '<div class="teacher-quote-line">'+
-                        escapeHtml(
-                            line1
-                        )+
-                    '</div>'+
-
-                    '<div class="teacher-quote-line">'+
-                        escapeHtml(
-                            line2
-                        )+
-                    '</div>'+
-
-                '</div>'+
-
-                '<div class="teacher-quote-emojis">'+
-
-                    '<span class="teacher-quote-emoji">'+
-                        escapeHtml(
-                            emoji1
-                        )+
-                    '</span>'+
-
-                    '<span class="teacher-quote-emoji">'+
-                        escapeHtml(
-                            emoji2
-                        )+
-                    '</span>'+
-
-                '</div>'+
-
-            '</div>'+
-
-            '<div class="teacher-quote-mark teacher-quote-mark-close">'+
-                '”'+
-            '</div>'+
-
-        '</div>'
-    );
+return(
+'<div class="teacher-quote-layout">'+
+'<div class="teacher-quote-mark teacher-quote-mark-open">'+
+'“'+
+'</div>'+
+'<div class="teacher-quote-content">'+
+'<div class="teacher-quote-copy">'+
+'<div class="teacher-quote-line">'+
+escapeHtml(
+line1
+)+
+'</div>'+
+'<div class="teacher-quote-line">'+
+escapeHtml(
+line2
+)+
+'</div>'+
+'</div>'+
+'<div class="teacher-quote-emojis">'+
+'<span class="teacher-quote-emoji">'+
+escapeHtml(
+emoji1
+)+
+'</span>'+
+'<span class="teacher-quote-emoji">'+
+escapeHtml(
+emoji2
+)+
+'</span>'+
+'</div>'+
+'</div>'+
+'<div class="teacher-quote-mark teacher-quote-mark-close">'+
+'”'+
+'</div>'+
+'</div>'
+);
 }
 
+/*  Teacher Name */
 
 function getTeacherDisplayName(
-    teacher
+teacher
 ){
-    return(
-        teacher?.preferred_name||
-        teacher?.first_name||
-        teacher?.name||
-        ''
-    );
+return(
+teacher?.preferred_name||
+teacher?.first_name||
+teacher?.name||
+''
+);
 }
 
+/*  Escape HTML */
 
 function escapeHtml(
-    value
+value
 ){
-    return String(
-        value??''
-    )
-        .replaceAll(
-            '&',
-            '&amp;'
-        )
-        .replaceAll(
-            '<',
-            '&lt;'
-        )
-        .replaceAll(
-            '>',
-            '&gt;'
-        )
-        .replaceAll(
-            '"',
-            '&quot;'
-        )
-        .replaceAll(
-            "'",
-            '&#039;'
-        );
+return String(
+value??''
+)
+.replaceAll(
+'&',
+'&amp;'
+)
+.replaceAll(
+'<',
+'&lt;'
+)
+.replaceAll(
+'>',
+'&gt;'
+)
+.replaceAll(
+'"',
+'&quot;'
+)
+.replaceAll(
+"'",
+'&#039;'
+);
 }
