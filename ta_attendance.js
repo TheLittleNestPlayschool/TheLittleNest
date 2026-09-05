@@ -77,7 +77,10 @@ function renderCurrentView(){
         return;
     }
     const expectedStudents=attendanceSession.attendanceData?.expected_students||[];
-    if(attendanceSession.attendanceData&&expectedStudents.length===0){return;}
+    if(attendanceSession.attendanceData&&expectedStudents.length===0){
+        workspace.textContent='No attendance due';
+        return;
+    }
     const context={
         state:getState(),
         session:attendanceSession,
