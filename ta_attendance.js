@@ -29,6 +29,12 @@ let completionTimer=null;
 export async function renderAttendanceModule(taskContext=null){
     const state=getState();
     const attendanceContext=buildAttendanceContext(taskContext,state);
+    if(attendanceAlreadyComplete(attendanceContext,state)){
+        clearCompletionTimer();
+        attendanceSession=createAttendanceSession(attendanceContext);
+        clearWorkspace();
+        return;
+    }
     if(!attendanceSessionMatches(attendanceSession,attendanceContext)){
         clearCompletionTimer();
         attendanceSession=createAttendanceSession(attendanceContext);
@@ -49,6 +55,13 @@ export async function renderAttendanceModule(taskContext=null){
     }
     clearWorkspace();
     renderCurrentView();
+}
+
+function attendanceAlreadyComplete(attendanceContext,state){
+    return(state.sessionAttendanceCompletions||[]).some(record=>{
+        return record?.attendance_date===attendanceContext.attendanceDate&&
+            String(record?.session_id)===String(attendanceContext.sessionId);
+    });
 }
 
 function renderCurrentView(){
