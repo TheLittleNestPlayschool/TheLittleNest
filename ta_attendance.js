@@ -76,6 +76,8 @@ function renderCurrentView(){
         workspace.textContent=attendanceSession.loadError;
         return;
     }
+    const expectedStudents=attendanceSession.attendanceData?.expected_students||[];
+    if(attendanceSession.attendanceData&&expectedStudents.length===0){return;}
     const context={
         state:getState(),
         session:attendanceSession,
