@@ -51,8 +51,10 @@ export function renderMomentsModule(){
         status.textContent='Saving...';
         try{
             await apiRequest(API_URLS.postStudentMoment,{method:'POST',body:{student_id:studentId,session_id:state.relevantSession?.id||null,moment}});
+            select.value='';
             textarea.value='';
             status.textContent='Moment saved.';
+            select.focus();
         }catch(error){
             status.textContent=error?.message||'Unable to save moment.';
         }finally{
