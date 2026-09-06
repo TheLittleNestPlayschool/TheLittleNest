@@ -19,6 +19,10 @@ renderMomentsModule
 }from'./ta_moments.js';
 
 import{
+renderClassExperienceModule
+}from'./ta_class_experience.js';
+
+import{
 renderStudentReflectionModule
 }from'./ta_student_reflection.js';
 
@@ -83,12 +87,23 @@ observations:{
 moments:{
     id:'moments',
     icon:'✨',
-    title:'Moments',
-    subtitle:'Save something special from today.',
-    description:'Record something meaningful from the session.',
+    title:'Add a Moment',
+    subtitle:'Save something personal about a child.',
+    description:'Record a child-specific moment exactly as it happened.',
     renderer:renderMomentsModule,
     isAvailable:true,
-    isVisible:false
+    isVisible:true
+},
+
+class_experience:{
+    id:'class_experience',
+    icon:'🌱',
+    title:'Add Class Experience',
+    subtitle:'Capture something extra from this class.',
+    description:"Record something that happened in class that wasn't already captured by the planned session.",
+    renderer:renderClassExperienceModule,
+    isAvailable:true,
+    isVisible:true
 },
 
 reflection:{
