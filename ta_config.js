@@ -22,7 +22,13 @@ const API_URLS = {
         `${API_BASE_URL}/ta_get_all_teachers`,
 
     postAttendance:
-        `${API_BASE_URL}/ta_post_attendance`
+        `${API_BASE_URL}/ta_post_attendance`,
+
+    postStudentMoment:
+        `${API_BASE_URL}/ta_post_student_moment`,
+
+    postSessionExperience:
+        `${API_BASE_URL}/ta_post_session_experience`
 
 };
 
