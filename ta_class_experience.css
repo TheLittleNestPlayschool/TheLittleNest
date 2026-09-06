@@ -1,0 +1,18 @@
+.teacher-module-card[data-module-id="class_experience"] .teacher-module-header{padding-top:12px;padding-bottom:12px}
+.teacher-module-card[data-module-id="class_experience"] .teacher-module-title{font-size:1rem;line-height:1.15}
+.teacher-module-card[data-module-id="class_experience"] .teacher-module-subtitle{margin-top:2px;font-size:.72rem;line-height:1.25}
+.teacher-module-card[data-module-id="class_experience"] .teacher-module-icon{font-size:1rem}
+.teacher-module-card[data-module-id="class_experience"] .teacher-module-content{padding-top:10px}
+.teacher-class-experience{width:100%;max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.teacher-class-experience-heading{display:flex;flex-direction:column;gap:4px;padding:12px 14px;background:rgba(255,255,255,.26);border:1px solid rgba(255,255,255,.42);border-radius:12px;color:#475569}
+.teacher-class-experience-heading strong{font-size:.95rem;color:#334155}
+.teacher-class-experience-heading span{font-size:.74rem;line-height:1.4}
+.teacher-class-experience-field{display:flex;flex-direction:column;gap:6px;color:#475569;font-size:.74rem;font-weight:700}
+.teacher-class-experience-select,.teacher-class-experience-text{width:100%;box-sizing:border-box;border:1px solid rgba(148,163,184,.45);border-radius:12px;background:rgba(255,255,255,.72);color:#334155;font:inherit;padding:10px 12px;outline:none}
+.teacher-class-experience-text{resize:vertical;min-height:116px;font-weight:500;line-height:1.45}
+.teacher-class-experience-select:focus,.teacher-class-experience-text:focus{border-color:rgba(100,116,139,.7);box-shadow:0 0 0 3px rgba(148,163,184,.12)}
+.teacher-class-experience-actions{display:flex;justify-content:flex-end}
+.teacher-class-experience-save{border:0;border-radius:999px;padding:10px 16px;background:#fff;color:#475569;font-size:.76rem;font-weight:800;box-shadow:0 6px 18px rgba(71,85,105,.12);cursor:pointer}
+.teacher-class-experience-save:disabled{opacity:.55;cursor:default}
+.teacher-class-experience-status{min-height:1em;margin:0;color:#64748b;font-size:.72rem;font-weight:700}
+@media(max-width:600px){.teacher-class-experience{gap:10px}.teacher-class-experience-heading{padding:10px 12px}.teacher-class-experience-actions{justify-content:stretch}.teacher-class-experience-save{width:100%}}
