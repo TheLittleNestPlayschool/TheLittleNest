@@ -4,9 +4,10 @@ import{API_URLS,APP_CONFIG}from'./ta_config.js';
 const DB_NAME='tlnp_usage';
 const DB_VERSION=1;
 const STORE_NAME='sessions';
-const SCHEMA_VERSION=1;
+const SCHEMA_VERSION=2;
 const IDLE_TIMEOUT_MS=60000;
 const PERSIST_DELAY_MS=250;
+const RELEVANT_SESSION_MODULES=new Set(['moments','attendance','media']);
 
 let currentSession=null;
 let activeStartedAt=null;
@@ -118,7 +119,8 @@ function handleChange(event){
     const target=event.target instanceof Element?event.target:null;
     if(!target){return;}
     const targetInfo=getTargetInfo(target);
-    const data={...(targetInfo.data||{}),field_name:target.getAttribute('name')||target.id||null};
+    const control=targetInfo.control||getControlKey(target);
+    const data={...(targetInfo.data||{}),field_name:control};
     if(target instanceof HTMLInputElement||target instanceof HTMLTextAreaElement){
         data.input_type=target instanceof HTMLInputElement?target.type:'textarea';
         if(target instanceof HTMLInputElement&&(target.type==='checkbox'||target.type==='radio')){
@@ -138,23 +140,124 @@ function getMeaningfulTarget(rawTarget){
 
 function getTargetInfo(target){
     const moduleCard=target.closest?.('[data-module-id]')||null;
-    const action=target.dataset?.action||target.getAttribute?.('name')||null;
-    return{
-        module:moduleCard?.dataset?.moduleId||null,
+    const moduleId=moduleCard?.dataset?.moduleId||null;
+    const control=getControlKey(target);
+    const entityContext=getEntityContext(target,moduleCard,moduleId);
+    const stageZone=target.closest?.('[data-stage-zone]')?.dataset?.stageZone||null;
+    const action=getAction(target,control);
+    return compactObject({
+        module:moduleId,
         action,
+        control,
         target:target.tagName?target.tagName.toLowerCase():null,
         target_id:target.id||null,
+        student_id:entityContext.student_id,
+        session_id:entityContext.session_id,
         data:{
             class_name:target.classList?Array.from(target.classList).slice(0,8).join(' '):null,
             role:target.getAttribute?.('role')||null,
             aria_label:target.getAttribute?.('aria-label')||null,
+            stage_zone:stageZone,
             stage_position:moduleCard?.dataset?.stagePosition||null,
             stage_side:moduleCard?.dataset?.stageSide||null,
-            stage_distance:moduleCard?.dataset?.stageDistance||null,
-            student_id:target.dataset?.studentId||null,
-            session_id:target.dataset?.sessionId||null
+            stage_distance:moduleCard?.dataset?.stageDistance||null
         }
-    };
+    })||{};
+}
+
+function getEntityContext(target,moduleCard,moduleId){
+    const context={};
+    const entityNode=target.closest?.('[data-student-id],[data-session-id]')||target;
+    const directStudentId=toPositiveInteger(entityNode?.dataset?.studentId);
+    const directSessionId=toPositiveInteger(entityNode?.dataset?.sessionId);
+    if(directStudentId){context.student_id=directStudentId;}
+    if(directSessionId){context.session_id=directSessionId;}
+
+    if(target instanceof HTMLSelectElement){applySelectEntityContext(target,context);}
+    if(moduleCard){
+        moduleCard.querySelectorAll('select').forEach(select=>{
+            if(select instanceof HTMLSelectElement){applySelectEntityContext(select,context);}
+        });
+    }
+
+    if(!context.session_id&&RELEVANT_SESSION_MODULES.has(moduleId)){
+        const relevantSessionId=toPositiveInteger(currentSession?.session_context?.relevant_session_id);
+        if(relevantSessionId){context.session_id=relevantSessionId;}
+    }
+
+    return context;
+}
+
+function applySelectEntityContext(select,context){
+    const selectedId=toPositiveInteger(select.value);
+    if(!selectedId){return;}
+    const control=getControlKey(select);
+    if(isStudentControl(control)){context.student_id=selectedId;}
+    if(isSessionControl(control)){context.session_id=selectedId;}
+}
+
+function isStudentControl(control){return/(student|child|learner)/i.test(control||'');}
+function isSessionControl(control){return/(session|class_session)/i.test(control||'');}
+
+function getControlKey(target){
+    const explicit=target.dataset?.analyticsControl||target.dataset?.action||target.getAttribute?.('name')||target.id||'';
+    if(explicit){return normalizeKey(explicit);}
+    const label=getControlLabel(target);
+    if(label){return normalizeKey(label);}
+    const className=target.classList?Array.from(target.classList).find(name=>name.startsWith('teacher-')):'';
+    return className?normalizeKey(className.replace(/^teacher-/,'')):null;
+}
+
+function getControlLabel(target){
+    const aria=target.getAttribute?.('aria-label');
+    if(aria){return aria;}
+    if(target instanceof HTMLButtonElement){return target.textContent?.trim()||'';}
+    if(target instanceof HTMLInputElement||target instanceof HTMLTextAreaElement){
+        if(target.placeholder){return target.placeholder;}
+    }
+    const label=target.closest?.('label');
+    if(label){
+        const span=label.querySelector('span');
+        const text=(span?.textContent||label.textContent||'').trim();
+        if(text){return text;}
+    }
+    return'';
+}
+
+function getAction(target,control){
+    const explicit=target.dataset?.action||target.getAttribute?.('name');
+    if(explicit){return normalizeKey(explicit);}
+    if(target.classList?.contains('teacher-module-header')){return'select_module';}
+    if(target.classList?.contains('teacher-stage-layout-toggle')){return'toggle_layout';}
+    if(target instanceof HTMLButtonElement&&control){return control;}
+    return null;
+}
+
+function normalizeKey(value){
+    const normalized=String(value||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'');
+    return normalized||null;
+}
+
+function toPositiveInteger(value){
+    const number=Number(value);
+    return Number.isInteger(number)&&number>0?number:null;
+}
+
+function compactObject(value){
+    if(Array.isArray(value)){
+        const result=value.map(item=>compactObject(item)).filter(item=>item!==undefined);
+        return result.length?result:undefined;
+    }
+    if(value&&typeof value==='object'){
+        const result={};
+        Object.entries(value).forEach(([key,item])=>{
+            const cleaned=compactObject(item);
+            if(cleaned!==undefined){result[key]=cleaned;}
+        });
+        return Object.keys(result).length?result:undefined;
+    }
+    if(value===null||value===undefined||value===''){return undefined;}
+    return value;
 }
 
 /*   activity timing*/
@@ -271,10 +374,11 @@ function addEvent(type,details={}){
     if(!currentSession||sessionFinalized){return;}
     const now=Date.now();
     const event={seq:currentSession.events.length+1,type,at_ms:Math.max(0,now-currentSession.started_at),occurred_at:now};
-    ['module','action','target','target_id','duration_ms','data'].forEach(field=>{
+    ['module','action','control','target','target_id','student_id','session_id','duration_ms','data'].forEach(field=>{
         if(details[field]!==undefined&&details[field]!==null){event[field]=details[field];}
     });
-    currentSession.events.push(event);
+    const cleanedEvent=compactObject(event)||event;
+    currentSession.events.push(cleanedEvent);
     currentSession.last_event_at=now;
     currentSession.event_count=currentSession.events.length;
     schedulePersist();
@@ -320,7 +424,7 @@ function buildStoredSnapshot(){
         total_duration_ms:currentSession.ended_at?currentSession.total_duration_ms:Math.max(0,now-currentSession.started_at),
         active_duration_ms:activeDuration,
         event_count:currentSession.events.length,
-        events:currentSession.events.map(event=>({...event})),
+        events:currentSession.events.map(event=>({...event,data:event.data?{...event.data}:undefined})),
         session_context:{...currentSession.session_context}
     };
 }
