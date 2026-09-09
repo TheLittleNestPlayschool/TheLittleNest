@@ -1,24 +1,8 @@
-import{
-    requireTeacherLogin
-}from'./ta_api.js';
-
-import{
-    setRelevantSession,
-    getState
-}from'./ta_state.js';
-
-import{
-    startTeacherExperience
-}from'./ta_experience_director.js';
-
-import{
-    startupDebug
-}from'./ta_startup_debug.js';
-
-import{
-    getRelevantSession
-}from'./ta_startup_helpers.js';
-
+import{requireTeacherLogin}from'./ta_api.js';
+import{setRelevantSession,getState}from'./ta_state.js';
+import{startTeacherExperience}from'./ta_experience_director.js';
+import{startupDebug}from'./ta_startup_debug.js';
+import{getRelevantSession}from'./ta_startup_helpers.js';
 import{
     loadTeacherContext,
     loadTeacherState,
@@ -26,17 +10,18 @@ import{
     loadAttendanceCompletions,
     loadLocationStudents
 }from'./ta_startup_load.js';
-
+import{renderTeacherHeader}from'./ta_teacher_header.js';
 import{
-    renderTeacherHeader
-}from'./ta_teacher_header.js';
-
+    startAnalyticsSession,
+    setAnalyticsContext,
+    trackAnalyticsEvent,
+    markAnalyticsReady
+}from'./ta_analytics.js';
 
 const teacherStatus=
     document.getElementById(
         'teacherStatus'
     );
-
 
 export async function startTeacherApp(){
     startupDebug.begin();
@@ -51,7 +36,6 @@ export async function startTeacherApp(){
             'login',
             'Teacher login was not found.'
         );
-
         return;
     }
 
@@ -59,11 +43,13 @@ export async function startTeacherApp(){
         'login'
     );
 
-    try{
-        //------------------------------------
-        // Teacher Context
-        //------------------------------------
+    await startAnalyticsSession();
+    trackAnalyticsEvent(
+        'login_validated'
+    );
 
+    try{
+        /*   teacher context*/
         teacherStatus.textContent=
             "Loading today's context...";
 
@@ -74,11 +60,7 @@ export async function startTeacherApp(){
             context
         );
 
-
-        //------------------------------------
-        // Teacher State
-        //------------------------------------
-
+        /*   teacher state*/
         teacherStatus.textContent=
             'Determining teacher state...';
 
@@ -87,11 +69,7 @@ export async function startTeacherApp(){
                 context
             );
 
-
-        //------------------------------------
-        // Relevant Session
-        //------------------------------------
-
+        /*   relevant session*/
         startupDebug.start(
             'relevantSession',
             'Choose relevant session'
@@ -113,11 +91,7 @@ export async function startTeacherApp(){
                 :'No relevant session'
         );
 
-
-        //------------------------------------
-        // Relevant Session Attendance
-        //------------------------------------
-
+        /*   relevant session attendance*/
         if(relevantSession?.id){
             teacherStatus.textContent=
                 'Loading session attendance...';
@@ -127,50 +101,79 @@ export async function startTeacherApp(){
             relevantSession
         );
 
-
-        //------------------------------------
-        // Attendance History
-        //------------------------------------
-
+        /*   attendance history*/
         teacherStatus.textContent=
             'Loading attendance history...';
 
         await loadAttendanceCompletions();
 
-
-        //------------------------------------
-        // Location Students
-        //------------------------------------
-
+        /*   location students*/
         teacherStatus.textContent=
             'Loading location students...';
 
         await loadLocationStudents();
 
-
-        //------------------------------------
-        // State Ready
-        //------------------------------------
-
+        /*   state ready*/
         startupDebug.start(
             'stateReady',
             'Prepare Teacher App state'
         );
 
+        const state=getState();
+
         console.log(
             'Teacher App State:',
-            getState()
+            state
         );
+
+        setAnalyticsContext({
+            teacher_state:
+                state.teacherState
+                    ?.teacher_state||
+                null,
+            relevant_session_id:
+                state.relevantSession
+                    ?.id||
+                null,
+            today_day_name:
+                state.context
+                    ?.today_day_name||
+                null,
+            current_time:
+                state.context
+                    ?.current_time||
+                null,
+            expected_student_count:
+                Array.isArray(
+                    state.expectedStudents
+                )
+                    ?state.expectedStudents.length
+                    :0,
+            attendance_record_count:
+                Array.isArray(
+                    state.attendanceRecords
+                )
+                    ?state.attendanceRecords.length
+                    :0,
+            attendance_completion_count:
+                Array.isArray(
+                    state.sessionAttendanceCompletions
+                )
+                    ?state.sessionAttendanceCompletions.length
+                    :0,
+            location_student_count:
+                Array.isArray(
+                    state.locationStudents
+                )
+                    ?state.locationStudents.length
+                    :0
+        });
 
         startupDebug.finish(
             'stateReady'
         );
 
-
-        //------------------------------------
-        // Experience Director and Stage
-        //------------------------------------
-
+        /*   experience director and stage*/
         teacherStatus.textContent=
             'Building Teacher Experience...';
 
@@ -187,20 +190,29 @@ export async function startTeacherApp(){
             'experience'
         );
 
-
-        //------------------------------------
-        // Startup Complete
-        //------------------------------------
-
+        /*   startup complete*/
         teacherStatus.textContent=
             'Teacher session loaded.';
 
+        markAnalyticsReady();
         startupDebug.complete();
 
     }catch(error){
         console.error(
             'Teacher app startup failed:',
             error
+        );
+
+        trackAnalyticsEvent(
+            'startup_failed',
+            {
+                data:{
+                    message:
+                        error instanceof Error
+                            ?error.message
+                            :'Unable to load Teacher App.'
+                }
+            }
         );
 
         startupDebug.note(
