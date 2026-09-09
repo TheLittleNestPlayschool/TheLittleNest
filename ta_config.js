@@ -1,54 +1,40 @@
-
-const API_BASE_URL =
+const API_BASE_URL=
     'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0';
 
-const API_URLS = {
-
+const API_URLS={
     getContext:
         `${API_BASE_URL}/ta_get_context`,
-
     determineTeacherState:
         `${API_BASE_URL}/ta_determine_teacher_state`,
-
     getSessionAttendance:
         `${API_BASE_URL}/ta_get_session_attendance`,
-
     getSessionAttendanceCompletions:
         `${API_BASE_URL}/ta_get_session_attendance_completions`,
-
     getLocationStudents:
         `${API_BASE_URL}/ta_get_location_students`,
-
     getAllTeachers:
         `${API_BASE_URL}/ta_get_all_teachers`,
-
     postAttendance:
         `${API_BASE_URL}/ta_post_attendance`,
-
     postStudentMoment:
         `${API_BASE_URL}/ta_post_student_moment`,
-
     postSessionExperience:
-        `${API_BASE_URL}/ta_post_session_experience`
-
+        `${API_BASE_URL}/ta_post_session_experience`,
+    usageSession:
+        `${API_BASE_URL}/ta_usage_session`
 };
 
-const APP_CONFIG = {
-
+const APP_CONFIG={
     loginPage:
         'ta_loginteacher.html',
-
     timeZone:
-        'Asia/Manila'
-
+        'Asia/Manila',
+    appVersion:
+        '1.0.0'
 };
 
-export {
-
+export{
     API_BASE_URL,
-
     API_URLS,
-
     APP_CONFIG
-
 };
