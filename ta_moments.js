@@ -1,4 +1,3 @@
-
 import{getWorkspace,clearWorkspace}from'./ta_ui.js';
 import{getState}from'./ta_state.js';
 import{apiRequest}from'./ta_api.js';
@@ -47,10 +46,12 @@ export function renderMomentsModule(){
         const moment=textarea.value.trim();
         if(!studentId){status.textContent='Please select a student.';select.focus();return;}
         if(!moment){status.textContent='Enter the moment first.';textarea.focus();return;}
+        const student=students.find(item=>String(item?.id)===String(studentId));
+        const sessionId=getStudentSessionId(student,state);
         saveButton.disabled=true;
         status.textContent='Saving...';
         try{
-            await apiRequest(API_URLS.postStudentMoment,{method:'POST',body:{student_id:studentId,session_id:state.relevantSession?.id||null,moment}});
+            await apiRequest(API_URLS.postStudentMoment,{method:'POST',body:{student_id:studentId,session_id:sessionId,moment}});
             select.value='';
             textarea.value='';
             status.textContent='Moment saved.';
@@ -61,6 +62,21 @@ export function renderMomentsModule(){
             saveButton.disabled=false;
         }
     });
+}
+
+function getStudentSessionId(student,state){
+    const enrolledSessionId=Number(student?.session_enrolled);
+    if(Number.isFinite(enrolledSessionId)&&enrolledSessionId>0){
+        return enrolledSessionId;
+    }
+    const relevantSessionId=Number(state?.relevantSession?.id);
+    if(!Number.isFinite(relevantSessionId)||relevantSessionId<=0){
+        return null;
+    }
+    const belongsToRelevantSession=(state?.expectedStudents||[]).some(item=>{
+        return String(item?.id)===String(student?.id);
+    });
+    return belongsToRelevantSession?relevantSessionId:null;
 }
 
 function getStudentName(student){
