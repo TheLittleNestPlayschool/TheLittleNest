@@ -6,6 +6,7 @@ taskContext:null,
 availableSessions:[],
 selectedSession:null,
 sessionId:null,
+sessionDate:null,
 isLoadingSessions:false,
 sessionLoadError:null,
 
@@ -56,14 +57,16 @@ session
 ){
 mediaSession.selectedSession=
 session||null;
-
 mediaSession.sessionId=
 session?.id||null;
+mediaSession.sessionDate=
+session?.session_date||null;
 }
 
 export function clearSelectedMediaSession(){
 mediaSession.selectedSession=null;
 mediaSession.sessionId=null;
+mediaSession.sessionDate=null;
 mediaSession.user=null;
 mediaSession.studentsBySession=[];
 mediaSession.studentsByLocation=[];
@@ -271,7 +274,13 @@ export function buildMediaSaveManifest(){
 const sessionId=
 mediaSession.sessionId;
 
-if(!sessionId){
+const sessionDate=
+mediaSession.sessionDate;
+
+if(
+!sessionId||
+!sessionDate
+){
 return[];
 }
 
@@ -280,6 +289,7 @@ item=>{
 return{
 clientMediaId:item.id,
 sessionId,
+sessionDate,
 file:item.file,
 mediaKind:item.mediaKind,
 mediaType:item.mediaType,
