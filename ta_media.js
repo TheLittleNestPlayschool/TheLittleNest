@@ -129,6 +129,13 @@ document.createElement(
 container.className=
 'teacher-media';
 
+if(session.sessionId){
+container.dataset.sessionId=
+String(
+session.sessionId
+);
+}
+
 /*  Loading Sessions */
 
 if(session.isLoadingSessions){
