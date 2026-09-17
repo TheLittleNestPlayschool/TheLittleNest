@@ -313,40 +313,24 @@ function createStoredFileName(
 file,
 mediaGroupId
 ){
-const now=
-new Date();
-
-const datePart=
-[
-now.getFullYear(),
-padNumber(
-now.getMonth()+1
-),
-padNumber(
-now.getDate()
-)
-].join('');
-
-const timePart=
-[
-padNumber(
-now.getHours()
-),
-padNumber(
-now.getMinutes()
-),
-padNumber(
-now.getSeconds()
-)
-].join('');
-
 const extension=
 getFileExtension(
 file?.name
 );
 
+const normalizedMediaGroupId=
+String(
+mediaGroupId||
+''
+)
+.trim()
+.replace(
+/[^a-zA-Z0-9_-]/g,
+'_'
+);
+
 const baseName=
-`${datePart}_${timePart}_${mediaGroupId}`;
+`media_${normalizedMediaGroupId}`;
 
 return extension
 ?`${baseName}.${extension}`
@@ -380,17 +364,6 @@ return normalizedFileName
 lastDotIndex+1
 )
 .toLowerCase();
-}
-
-function padNumber(
-value
-){
-return String(
-value
-).padStart(
-2,
-'0'
-);
 }
 
 /*  Request Headers */
