@@ -102,7 +102,18 @@ function renderCurrentView(){
         case'complete':renderAttendanceComplete(workspace,context);break;
         default:renderAttendanceIntro(workspace,context);
     }
+    applyAttendanceAnalyticsContext(workspace);
     updateAttendanceLiveStatus();
+}
+
+function applyAttendanceAnalyticsContext(workspace){
+    const sessionId=Number(attendanceSession.taskContext?.sessionId);
+    if(!Number.isFinite(sessionId)||sessionId<=0){return;}
+    Array.from(workspace.children).forEach(child=>{
+        if(child instanceof HTMLElement){
+            child.dataset.sessionId=String(sessionId);
+        }
+    });
 }
 
 function showView(view){
