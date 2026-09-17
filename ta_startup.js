@@ -165,7 +165,18 @@ export async function startTeacherApp(){
                 Array.isArray(
                     state.locationStudents
                 )
-                    ?state.locationStudents.length
+                    ?state.locationStudents.filter(
+                        student=>{
+                            const isActive=
+                                student?.is_active;
+
+                            return(
+                                isActive===true||
+                                isActive===1||
+                                isActive==='1'
+                            );
+                        }
+                    ).length
                     :0
         });
 
