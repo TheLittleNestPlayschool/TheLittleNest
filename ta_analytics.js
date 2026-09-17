@@ -7,7 +7,6 @@ const STORE_NAME='sessions';
 const SCHEMA_VERSION=2;
 const IDLE_TIMEOUT_MS=60000;
 const PERSIST_DELAY_MS=250;
-const RELEVANT_SESSION_MODULES=new Set(['moments','attendance','media']);
 
 let currentSession=null;
 let activeStartedAt=null;
@@ -142,7 +141,7 @@ function getTargetInfo(target){
     const moduleCard=target.closest?.('[data-module-id]')||null;
     const moduleId=moduleCard?.dataset?.moduleId||null;
     const control=getControlKey(target);
-    const entityContext=getEntityContext(target,moduleCard,moduleId);
+    const entityContext=getEntityContext(target,moduleCard);
     const stageZone=target.closest?.('[data-stage-zone]')?.dataset?.stageZone||null;
     const action=getAction(target,control);
     return compactObject({
@@ -165,7 +164,7 @@ function getTargetInfo(target){
     })||{};
 }
 
-function getEntityContext(target,moduleCard,moduleId){
+function getEntityContext(target,moduleCard){
     const context={};
     const entityNode=target.closest?.('[data-student-id],[data-session-id]')||target;
     const directStudentId=toPositiveInteger(entityNode?.dataset?.studentId);
@@ -178,11 +177,6 @@ function getEntityContext(target,moduleCard,moduleId){
         moduleCard.querySelectorAll('select').forEach(select=>{
             if(select instanceof HTMLSelectElement){applySelectEntityContext(select,context);}
         });
-    }
-
-    if(!context.session_id&&RELEVANT_SESSION_MODULES.has(moduleId)){
-        const relevantSessionId=toPositiveInteger(currentSession?.session_context?.relevant_session_id);
-        if(relevantSessionId){context.session_id=relevantSessionId;}
     }
 
     return context;
