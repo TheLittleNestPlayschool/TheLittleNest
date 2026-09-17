@@ -217,11 +217,17 @@ actions
 const mediaSession=
 getMediaSession();
 
+const students=
+mediaSession.showAllStudents===true
+?getActiveLocationStudents(
+mediaSession.studentsByLocation
+)
+:mediaSession.studentsBySession;
+
 renderMediaStudents(
 panel,
 {
-students:
-mediaSession.studentsBySession,
+students,
 
 selectedStudentIds:
 item.studentIds,
@@ -238,9 +244,8 @@ actions.refresh();
 
 findStudent:
 ()=>{
-console.log(
-'ta_media: find student'
-);
+mediaSession.showAllStudents=true;
+actions.refresh();
 }
 }
 }
@@ -437,9 +442,41 @@ select
 return section;
 }
 
+function getActiveLocationStudents(
+students
+){
+if(!Array.isArray(students)){
+return[];
+}
+
+return students.filter(
+student=>{
+if(!student?.id){
+return false;
+}
+
+const isActive=
+student.is_active;
+
+return(
+isActive===undefined||
+isActive===null||
+isActive===true||
+isActive===1||
+isActive==='1'
+);
+}
+);
+}
+
 function closeEditor(
 actions
 ){
+const mediaSession=
+getMediaSession();
+
+mediaSession.showAllStudents=false;
+
 clearActiveMedia();
 
 actions.refresh();
