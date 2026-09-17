@@ -41,6 +41,15 @@ export function renderMomentsModule(){
         option.textContent=getStudentName(student);
         select.appendChild(option);
     });
+    select.addEventListener('change',()=>{
+        const student=students.find(item=>String(item?.id)===String(select.value));
+        const sessionId=getStudentSessionId(student,state);
+        if(sessionId){
+            container.dataset.sessionId=String(sessionId);
+        }else{
+            delete container.dataset.sessionId;
+        }
+    });
     saveButton.addEventListener('click',async()=>{
         const studentId=Number(select.value);
         const moment=textarea.value.trim();
@@ -53,6 +62,7 @@ export function renderMomentsModule(){
         try{
             await apiRequest(API_URLS.postStudentMoment,{method:'POST',body:{student_id:studentId,session_id:sessionId,moment}});
             select.value='';
+            delete container.dataset.sessionId;
             textarea.value='';
             status.textContent='Moment saved.';
             select.focus();
