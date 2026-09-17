@@ -266,6 +266,9 @@ return{
 session_id:
 item.sessionId,
 
+session_date:
+item.sessionDate,
+
 student_ids:
 Array.isArray(
 item.studentIds
