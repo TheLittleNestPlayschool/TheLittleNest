@@ -1,3 +1,4 @@
+
 export function buildReceiptUploadContext(
     taskContext,
     state
