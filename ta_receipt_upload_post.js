@@ -1,3 +1,4 @@
+
 const RECEIPT_UPLOAD_API=
     'https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_post_receipt_upload';
 
