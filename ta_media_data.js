@@ -1,14 +1,14 @@
 const MEDIA_SESSION_API=
-'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_get_session';
+'https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_get_session';
 
 const MEDIA_TASK_API=
-'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_get_media_task';
+'https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_get_media_task';
 
 const MEDIA_PREPARE_UPLOAD_API=
-'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_prepare_media_upload';
+'https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_prepare_media_upload';
 
 const MEDIA_SAVE_API=
-'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_save_media';
+'https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_save_media';
 
 export async function loadMediaSessions(
 state
