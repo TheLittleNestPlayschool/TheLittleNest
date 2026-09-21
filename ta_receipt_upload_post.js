@@ -1,5 +1,5 @@
 const RECEIPT_UPLOAD_API=
-    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_post_receipt_upload';
+    'https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_post_receipt_upload';
 
 
 export async function postReceiptUpload(
