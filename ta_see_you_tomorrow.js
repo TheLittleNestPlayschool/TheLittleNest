@@ -4,7 +4,7 @@ import{
 }from'./ta_ui.js';
 
 const SEE_YOU_TOMORROW_API=
-    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_see_you_tomorrow';
+    'https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_see_you_tomorrow';
 
 /*==================================================
   See You Tomorrow Module
