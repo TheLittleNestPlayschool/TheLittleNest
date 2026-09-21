@@ -1,14 +1,14 @@
 const TEACHER_RESOURCE_SESSIONS_ENDPOINT=
-    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_teacher_resources';
+    'https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_teacher_resources';
 
 const TEACHER_RESOURCE_DOWNLOAD_ENDPOINT=
-    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_teacher_resource_download';
+    'https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_teacher_resource_download';
 
 const TEACHER_RESOURCE_FORMS_ENDPOINT=
-    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_teacher_resource_forms';
+    'https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_teacher_resource_forms';
 
 const TEACHER_RESOURCE_FORM_DOWNLOAD_ENDPOINT=
-    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_teacher_resource_form_download';
+    'https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_teacher_resource_form_download';
 
 
 /*==================================================
