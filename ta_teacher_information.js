@@ -4,7 +4,7 @@ import{
 }from'./ta_ui.js';
 
 const TEACHER_INFORMATION_ENDPOINT=
-    'https://x8ki-letl-twmt.n7.xano.io/api:EpDLPKN0/ta_get_teacher_display';
+    'https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_get_teacher_display';
 
 let teacherInformationSession=
     createTeacherInformationSession();
