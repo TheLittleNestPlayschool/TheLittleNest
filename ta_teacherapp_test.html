@@ -1,27 +1,13 @@
-
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        TLNP Teachers
-    </title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TLNP Teachers TEST</title>
     <link rel="stylesheet" href="background.css">
-
     <link rel="stylesheet" href="ta_teacherapp.css">
     <link rel="stylesheet" href="ta_teacher_header.css">
     <link rel="stylesheet" href="ta_teacher_design_system.css">
-
     <link rel="stylesheet" href="ta_stage.css">
     <link rel="stylesheet" href="ta_stage_card.css">
     <link rel="stylesheet" href="ta_stage_motion.css">
@@ -29,7 +15,6 @@
     <link rel="stylesheet" href="ta_stage_waiting_cards.css">
     <link rel="stylesheet" href="ta_stage_living.css">
     <link rel="stylesheet" href="ta_stage_mobile.css">
-
     <link rel="stylesheet" href="ta_attendance.css">
     <link rel="stylesheet" href="ta_media.css">
     <link rel="stylesheet" href="ta_observations.css">
@@ -43,84 +28,34 @@
     <link rel="stylesheet" href="ta_enrollment.css">
     <link rel="stylesheet" href="ta_receipt_upload.css">
     <link rel="stylesheet" href="ta_teacher_resources.css">
-
 </head>
-
 <body>
-
-    <div
-        class="app-background"
-        aria-hidden="true"
-    >
+    <div class="app-background" aria-hidden="true">
         <div class="cloud-blob top-left"></div>
         <div class="cloud-blob top-right"></div>
         <div class="gradient-overlay"></div>
     </div>
-
+    <div style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#111;color:#fff;text-align:center;padding:5px 10px;font:700 12px Arial,sans-serif;letter-spacing:1.5px;">TEACHER APP TEST</div>
     <main class="teacher-app">
-
         <div class="teacher-shell">
-
             <header class="teacher-shell-header">
-
                 <div class="teacher-shell-welcome">
-
-                    <div
-                        id="teacherWelcome"
-                        class="teacher-shell-welcome-title"
-                    ></div>
-
+                    <div id="teacherWelcome" class="teacher-shell-welcome-title"></div>
                 </div>
-
                 <div class="teacher-shell-brand">
-
-                    <img
-                        src="mainlogo1.png"
-                        alt="The Little Nest Playschool"
-                        class="teacher-shell-logo"
-                    >
-
+                    <img src="mainlogo1.png" alt="The Little Nest Playschool" class="teacher-shell-logo">
                 </div>
-
-                <div
-                    id="teacherSaying"
-                    class="teacher-shell-saying"
-                ></div>
-
+                <div id="teacherSaying" class="teacher-shell-saying"></div>
             </header>
-
             <div class="teacher-shell-body">
-
-                <p
-                    id="teacherStatus"
-                    class="teacher-status"
-                    aria-live="polite"
-                >
-                    Loading teacher session...
-                </p>
-
-                <section
-                    id="teacherStage"
-                    class="teacher-stage"
-                    aria-live="polite"
-                ></section>
-
+                <p id="teacherStatus" class="teacher-status" aria-live="polite">Loading teacher session...</p>
+                <section id="teacherStage" class="teacher-stage" aria-live="polite"></section>
             </div>
-
         </div>
-
     </main>
-
     <script type="module">
-
-        import {
-            startTeacherApp
-        } from './ta_startup.js';
-
+        import {startTeacherApp} from './ta_startup.js';
         startTeacherApp();
-
     </script>
-
 </body>
-
 </html>
