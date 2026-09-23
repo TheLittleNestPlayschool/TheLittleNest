@@ -74,6 +74,7 @@ if(!workspace)return;
 workspace.innerHTML='';
 const state=getState();
 const sessions=getTodaySessions(state);
+const attendanceDate=getTodayDate();
 const container=document.createElement('section');
 container.className='attendance-experience attendance-introduction';
 const eyebrow=document.createElement('p');
@@ -106,11 +107,12 @@ const button=document.createElement('button');
 button.type='button';
 button.className='attendance-secondary-button';
 button.disabled=complete;
-button.textContent=complete?`${getSessionLabel(session)} · Completed`:getSessionLabel(session);
+const sessionLabel=`${formatAttendanceDate(attendanceDate)} — ${getSessionLabel(session)}`;
+button.textContent=complete?`${sessionLabel} · Completed`:sessionLabel;
 if(!complete){
 button.addEventListener('click',()=>{
 showingDailySessions=false;
-openAttendanceContext(buildAttendanceContext({attendanceDate:getTodayDate(),sessionId:session.id,session},state),state);
+openAttendanceContext(buildAttendanceContext({attendanceDate,sessionId:session.id,session},state),state);
 });
 }
 container.appendChild(button);
@@ -209,6 +211,12 @@ const start=getSessionStart(session);
 const end=String(session?.end_time_slot||session?.end_time||session?.session_end||session?.time_end||'');
 if(start&&end)return`${start} - ${end}`;
 return start||end||`Session ${session?.id||''}`;
+}
+
+function formatAttendanceDate(dateValue){
+const date=new Date(`${dateValue}T12:00:00+08:00`);
+if(Number.isNaN(date.getTime()))return dateValue;
+return new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Manila',month:'short',day:'numeric'}).format(date);
 }
 
 function isFalseValue(value){
