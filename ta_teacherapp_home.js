@@ -2,6 +2,7 @@ import{setActiveWorkspace}from'./ta_ui.js';
 import{getState}from'./ta_state.js';
 import{renderAttendanceModule}from'./ta_attendance.js';
 import{renderMediaModule}from'./ta_media.js';
+import{clearSelectedMediaSession,clearSavedMedia,clearMediaSaveProgress}from'./ta_media_session.js';
 import{renderMomentsModule}from'./ta_moments.js';
 import{renderClassExperienceModule}from'./ta_class_experience.js';
 import{renderSeeYouTomorrowModule}from'./ta_see_you_tomorrow.js';
@@ -62,7 +63,14 @@ stage.innerHTML=`
 <button type="button" class="teacher-home-back" id="teacherHomeBack">← Back</button>
 <div id="teacherHomeWorkspace"></div>
 </section>`;
-document.getElementById('teacherHomeBack')?.addEventListener('click',renderTeacherHome);
+document.getElementById('teacherHomeBack')?.addEventListener('click',()=>{
+if(taskId==='media'){
+clearSelectedMediaSession();
+clearSavedMedia();
+clearMediaSaveProgress();
+}
+renderTeacherHome();
+});
 setActiveWorkspace('teacherHomeWorkspace');
 try{
 await Promise.resolve(task.renderer(getState()));
