@@ -6,7 +6,6 @@ import{renderMomentsModule}from'./ta_moments.js';
 import{renderClassExperienceModule}from'./ta_class_experience.js';
 import{renderSeeYouTomorrowModule}from'./ta_see_you_tomorrow.js';
 import{renderReceiptUploadModule}from'./ta_receipt_upload.js';
-import{renderEnrollmentModule}from'./ta_enrollment.js';
 import{renderTeacherResourcesModule}from'./ta_teacher_resources.js';
 import{renderTeacherInformationModule}from'./ta_teacher_information.js';
 
@@ -17,7 +16,7 @@ const tasks=[
 {id:'class_experience',icon:'🌱',title:'Class Experience',subtitle:'Capture something extra from class.',renderer:renderClassExperienceModule},
 {id:'see_tomorrow',icon:'🌞',title:'See You Tomorrow!',subtitle:"Prepare tomorrow's class lists.",renderer:renderSeeYouTomorrowModule},
 {id:'receipt_upload',icon:'🧾',title:'Receipt Upload',subtitle:'Capture and save a receipt.',renderer:renderReceiptUploadModule},
-{id:'enrollment',icon:'📝',title:'Enrollment',subtitle:'Enroll a new student.',renderer:renderEnrollmentModule},
+{id:'enrollment',icon:'📝',title:'Enrollment',subtitle:'Enroll a new student.',comingSoon:true},
 {id:'teacher_resources',icon:'📂',title:'Teacher Resources',subtitle:'Sessions, worksheets, and forms.',renderer:renderTeacherResourcesModule},
 {id:'teacher_information',icon:'👩‍🏫',title:'Teacher Information',subtitle:'View teacher information.',renderer:renderTeacherInformationModule}
 ];
@@ -36,15 +35,17 @@ stage.innerHTML=`
 ${tasks.map(buildTaskButton).join('')}
 </div>
 </section>`;
-stage.querySelectorAll('[data-test-task]').forEach(button=>{
+stage.querySelectorAll('[data-test-task]:not([disabled])').forEach(button=>{
 button.addEventListener('click',()=>openTask(button.dataset.testTask));
 });
 }
 
 function buildTaskButton(task){
 const status=task.id==='attendance'?getAttendanceStatus():'';
+const comingSoon=task.comingSoon===true;
 return`
-<button type="button" class="teacher-test-task" data-test-task="${task.id}">
+<button type="button" class="teacher-test-task${comingSoon?' is-coming-soon':''}" data-test-task="${task.id}" ${comingSoon?'disabled aria-disabled="true"':''}>
+${comingSoon?'<span class="teacher-test-coming-soon">Coming Soon</span>':''}
 <span class="teacher-test-task-icon">${task.icon}</span>
 <span class="teacher-test-task-title">${task.title}</span>
 <span class="teacher-test-task-subtitle">${task.subtitle}</span>
@@ -55,7 +56,7 @@ ${status?`<span class="teacher-test-task-status">${status}</span>`:''}
 async function openTask(taskId){
 const task=tasks.find(item=>item.id===taskId);
 const stage=document.getElementById('teacherStage');
-if(!task||!stage)return;
+if(!task||!stage||task.comingSoon)return;
 stage.innerHTML=`
 <section class="teacher-test-module">
 <button type="button" class="teacher-test-back" id="teacherTestBack">← Back</button>
