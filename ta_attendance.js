@@ -81,30 +81,26 @@ eyebrow.textContent='Today’s Attendance';
 const title=document.createElement('h3');
 title.className='attendance-experience-title';
 title.textContent='Choose a session.';
-const description=document.createElement('p');
-description.className='attendance-experience-description';
-description.textContent='Completed sessions stay visible and cannot be opened again.';
 container.appendChild(eyebrow);
 container.appendChild(title);
-container.appendChild(description);
-if(!sessions.length){
-const empty=document.createElement('p');
-empty.className='attendance-empty-message';
-empty.textContent='No sessions are scheduled for today.';
-container.appendChild(empty);
 workspace.appendChild(container);
+if(!sessions.length){
+appendNoAttendanceMessage(container);
 return;
 }
-const loading=document.createElement('p');
-loading.className='attendance-empty-message';
-loading.textContent='Checking today’s attendance...';
-container.appendChild(loading);
-workspace.appendChild(container);
-const completionBySession=await getTodaySessionCompletionMap(sessions,state);
+const statusBySession=await getTodaySessionStatusMap(sessions,state);
 if(!showingDailySessions)return;
-loading.remove();
-sessions.forEach(session=>{
-const complete=completionBySession.get(String(session.id))===true;
+const visibleSessions=sessions.filter(session=>{
+const status=statusBySession.get(String(session.id));
+return status?.hasAttendance===true||status?.complete===true;
+});
+if(!visibleSessions.length){
+appendNoAttendanceMessage(container);
+return;
+}
+visibleSessions.forEach(session=>{
+const status=statusBySession.get(String(session.id))||{};
+const complete=status.complete===true;
 const button=document.createElement('button');
 button.type='button';
 button.className='attendance-secondary-button';
@@ -120,27 +116,35 @@ container.appendChild(button);
 });
 }
 
-async function getTodaySessionCompletionMap(sessions,state){
+function appendNoAttendanceMessage(container){
+const empty=document.createElement('p');
+empty.className='attendance-empty-message';
+empty.textContent='No attendance due';
+container.appendChild(empty);
+}
+
+async function getTodaySessionStatusMap(sessions,state){
 const today=getTodayDate();
-const completionMap=new Map();
+const statusMap=new Map();
 await Promise.all(sessions.map(async session=>{
 const key=String(session.id);
 if(isSessionCompleteToday(session,state)){
-completionMap.set(key,true);
+statusMap.set(key,{complete:true,hasAttendance:true});
 return;
 }
 try{
 const attendanceContext=buildAttendanceContext({attendanceDate:today,sessionId:session.id,session},state);
 const attendanceData=await loadAttendanceData(attendanceContext,state);
+const expectedStudents=Array.isArray(attendanceData?.expected_students)?attendanceData.expected_students:[];
 const complete=isAttendanceDataComplete(attendanceData);
-completionMap.set(key,complete);
+statusMap.set(key,{complete,hasAttendance:expectedStudents.length>0});
 if(complete)markSessionAttendanceComplete(today,session.id);
 }catch(error){
 console.error('Attendance status check failed:',session.id,error);
-completionMap.set(key,false);
+statusMap.set(key,{complete:false,hasAttendance:true});
 }
 }));
-return completionMap;
+return statusMap;
 }
 
 function isAttendanceDataComplete(attendanceData){
@@ -198,12 +202,12 @@ return String(session?.start_time_slot||session?.start_time||session?.session_st
 }
 
 function getSessionLabel(session){
+const name=String(session?.name||'').trim();
+if(name)return name;
 const start=getSessionStart(session);
 const end=String(session?.end_time_slot||session?.end_time||session?.session_end||session?.time_end||'');
-const name=String(session?.name||'').trim();
-const time=start&&end?`${start} - ${end}`:start||end;
-if(name&&time)return`${name} · ${time}`;
-return name||time||`Session ${session?.id||''}`;
+if(start&&end)return`${start} - ${end}`;
+return start||end||`Session ${session?.id||''}`;
 }
 
 function isFalseValue(value){
