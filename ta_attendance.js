@@ -21,7 +21,7 @@ clearCompletionTimer();
 showingDailySessions=true;
 attendanceSession=createAttendanceSession();
 clearWorkspace();
-renderDailySessionSelect();
+await renderDailySessionSelect();
 return;
 }
 showingDailySessions=false;
@@ -33,7 +33,7 @@ if(attendanceAlreadyComplete(attendanceContext,state)){
 clearCompletionTimer();
 attendanceSession=createAttendanceSession(attendanceContext);
 clearWorkspace();
-renderDailySessionSelect();
+await renderDailySessionSelect();
 return;
 }
 if(!attendanceSessionMatches(attendanceSession,attendanceContext)){
@@ -44,13 +44,22 @@ clearWorkspace();
 renderCurrentView();
 try{
 const attendanceData=await loadAttendanceData(attendanceContext,state);
+if(isAttendanceDataComplete(attendanceData)){
+markSessionAttendanceComplete(attendanceContext.attendanceDate,attendanceContext.sessionId);
+showingDailySessions=true;
+attendanceSession=createAttendanceSession();
+await renderDailySessionSelect();
+return;
+}
 applyAttendanceData(attendanceSession,attendanceData);
 }catch(error){
 console.error('Attendance load failed:',error);
 attendanceSession.loadError=error instanceof Error?error.message:'Unable to load attendance.';
 }finally{
+if(!showingDailySessions){
 attendanceSession.isLoading=false;
 renderCurrentView();
+}
 }
 return;
 }
@@ -58,7 +67,7 @@ clearWorkspace();
 renderCurrentView();
 }
 
-function renderDailySessionSelect(){
+async function renderDailySessionSelect(){
 const workspace=getWorkspace();
 if(!workspace)return;
 workspace.innerHTML='';
@@ -86,8 +95,16 @@ container.appendChild(empty);
 workspace.appendChild(container);
 return;
 }
+const loading=document.createElement('p');
+loading.className='attendance-empty-message';
+loading.textContent='Checking today’s attendance...';
+container.appendChild(loading);
+workspace.appendChild(container);
+const completionBySession=await getTodaySessionCompletionMap(sessions,state);
+if(!showingDailySessions)return;
+loading.remove();
 sessions.forEach(session=>{
-const complete=isSessionCompleteToday(session,state);
+const complete=completionBySession.get(String(session.id))===true;
 const button=document.createElement('button');
 button.type='button';
 button.className='attendance-secondary-button';
@@ -101,7 +118,37 @@ openAttendanceContext(buildAttendanceContext({attendanceDate:getTodayDate(),sess
 }
 container.appendChild(button);
 });
-workspace.appendChild(container);
+}
+
+async function getTodaySessionCompletionMap(sessions,state){
+const today=getTodayDate();
+const completionMap=new Map();
+await Promise.all(sessions.map(async session=>{
+const key=String(session.id);
+if(isSessionCompleteToday(session,state)){
+completionMap.set(key,true);
+return;
+}
+try{
+const attendanceContext=buildAttendanceContext({attendanceDate:today,sessionId:session.id,session},state);
+const attendanceData=await loadAttendanceData(attendanceContext,state);
+const complete=isAttendanceDataComplete(attendanceData);
+completionMap.set(key,complete);
+if(complete)markSessionAttendanceComplete(today,session.id);
+}catch(error){
+console.error('Attendance status check failed:',session.id,error);
+completionMap.set(key,false);
+}
+}));
+return completionMap;
+}
+
+function isAttendanceDataComplete(attendanceData){
+const expectedStudents=Array.isArray(attendanceData?.expected_students)?attendanceData.expected_students:[];
+const attendanceRecords=Array.isArray(attendanceData?.attendance_records)?attendanceData.attendance_records:[];
+if(!expectedStudents.length||!attendanceRecords.length)return false;
+const recordedStudentIds=new Set(attendanceRecords.map(record=>String(record?.student_id||record?.student?.id||'')).filter(Boolean));
+return expectedStudents.every(student=>recordedStudentIds.has(String(student?.id||'')));
 }
 
 function getTodaySessions(state){
