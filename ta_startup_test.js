@@ -29,3 +29,5 @@ console.error('Teacher test app startup failed:',error);
 teacherStatus.textContent=error instanceof Error?error.message:'Unable to load Teacher App.';
 }
 }
+
+/*   sequential test build verification*/
