@@ -23,6 +23,7 @@ Media Task
 
     width:100%;
     max-width:680px;
+    max-height:calc(100dvh - 185px);
 
     margin:0 auto;
 
@@ -30,6 +31,11 @@ Media Task
     flex-direction:column;
 
     gap:10px;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+    overscroll-behavior-y:contain;
+    -webkit-overflow-scrolling:touch;
 }
 
 
@@ -347,6 +353,7 @@ Mobile
 
     .teacher-media{
         gap:8px;
+        max-height:calc(100dvh - 170px);
     }
 
     .teacher-media-save-overlay{
