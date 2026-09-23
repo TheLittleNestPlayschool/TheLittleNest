@@ -15,6 +15,11 @@ import{
 createMediaThumbnail
 }from'./ta_media_thumbnail.js';
 
+import{
+isMultipartUploadTarget,
+uploadMultipartFile
+}from'./ta_media_multipart.js';
+
 /*  Upload Media Batch */
 
 export async function uploadMediaBatch(
@@ -119,10 +124,34 @@ current:uploadIndex+1,
 total:uploadTargets.length
 });
 
+if(
+isMultipartUploadTarget(
+uploadTarget
+)
+){
+await uploadMultipartFile(
+manifestItem.file,
+uploadTarget,
+state,
+{
+onProgress:({partNumber,totalParts})=>{
+setMediaSaveProgress({
+stage:'uploading',
+message:
+`Uploading ${uploadIndex+1} of ${uploadTargets.length} · video part ${partNumber} of ${totalParts}...`,
+current:uploadIndex+1,
+total:uploadTargets.length
+});
+}
+}
+);
+
+}else{
 await uploadFileToAws(
 manifestItem.file,
 uploadTarget.signed_url
 );
+}
 
 /*  Upload Thumbnail */
 
