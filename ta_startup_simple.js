@@ -3,7 +3,7 @@ import{setRelevantSession}from'./ta_state.js';
 import{getRelevantSession}from'./ta_startup_helpers.js';
 import{loadTeacherContext,loadTeacherState,loadRelevantSessionAttendance,loadAttendanceCompletions,loadLocationStudents}from'./ta_startup_load.js';
 import{renderTeacherHeader}from'./ta_teacher_header.js';
-import{renderTeacherHome}from'./ta_teacherapp_home.js';
+import{renderTeacherHome}from'./ta_teacherapp_home.js?v=20261101-roster-intake';
 
 const teacherStatus=document.getElementById('teacherStatus');
 
