@@ -52,3 +52,4 @@ textarea.addEventListener('input',()=>{drafts[kind]=textarea.value;updateReviewB
 reviewBtn.addEventListener('click',()=>{if(!textarea.value.trim())return;drafts[kind]=textarea.value;editor.hidden=true;root.querySelector('.teacher-roster-choices').hidden=true;review.hidden=false;$('teacherRosterReviewKind').textContent=kind==='roster'?'Weekly Roster':'Calendar Update';$('teacherRosterPreview').textContent=textarea.value.trim()});
 $('teacherRosterEdit').addEventListener('click',()=>{review.hidden=true;editor.hidden=false;root.querySelector('.teacher-roster-choices').hidden=false;textarea.focus()});
 }
+
