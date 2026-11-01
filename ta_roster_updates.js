@@ -1,4 +1,6 @@
 import{getWorkspace,clearWorkspace}from'./ta_ui.js';
+import{apiRequest}from'./ta_api.js';
+const ROSTER_SUBMIT_API='https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_weekly_roster_submit';
 
 /*   Teacher class roster and calendar update intake*/
 export function renderRosterUpdatesModule(){
@@ -27,12 +29,14 @@ root.innerHTML=`
 <p class="teacher-roster-description" id="teacherRosterReviewKind">Weekly Roster</p>
 <pre class="teacher-roster-preview" id="teacherRosterPreview"></pre>
 <button type="button" class="teacher-roster-secondary" id="teacherRosterEdit">← Back to Edit</button>
-<p class="teacher-roster-not-ready" role="status">The form is ready for review. Sending to head office will be enabled when the Xano submission endpoint is connected.</p>
-<button type="button" class="teacher-roster-action" disabled>Submit to Head Office</button>
+<p class="teacher-roster-not-ready" id="teacherRosterStatus" role="status" hidden></p>
+<button type="button" class="teacher-roster-action" id="teacherRosterSubmit">Submit to Head Office</button>
 </div>`;
 workspace.append(root);
 const $=id=>root.querySelector('#'+id),textarea=$('teacherRosterText'),reviewBtn=$('teacherRosterReview');
-const editor=root.querySelector('.teacher-roster-editor'),review=root.querySelector('.teacher-roster-review');
+const editor=root.querySelector('.teacher-roster-editor'),review=root.querySelector('.teacher-roster-review'),submitBtn=$('teacherRosterSubmit'),status=$('teacherRosterStatus');
+let submitting=false;
+function setStatus(message){status.textContent=message;status.hidden=!message;}
 function updateReviewButton(){reviewBtn.disabled=!textarea.value.trim()}
 function showKind(next){
 drafts[kind]=textarea.value;
@@ -48,7 +52,20 @@ updateReviewButton();
 }
 root.querySelectorAll('[data-roster-kind]').forEach(button=>button.addEventListener('click',()=>showKind(button.dataset.rosterKind)));
 textarea.addEventListener('input',()=>{drafts[kind]=textarea.value;updateReviewButton()});
-reviewBtn.addEventListener('click',()=>{if(!textarea.value.trim())return;drafts[kind]=textarea.value;editor.hidden=true;root.querySelector('.teacher-roster-choices').hidden=true;review.hidden=false;$('teacherRosterReviewKind').textContent=kind==='roster'?'Weekly Roster':'Calendar Update';$('teacherRosterPreview').textContent=textarea.value.trim()});
-$('teacherRosterEdit').addEventListener('click',()=>{review.hidden=true;editor.hidden=false;root.querySelector('.teacher-roster-choices').hidden=false;textarea.focus()});
+reviewBtn.addEventListener('click',()=>{if(!textarea.value.trim())return;drafts[kind]=textarea.value;editor.hidden=true;root.querySelector('.teacher-roster-choices').hidden=true;review.hidden=false;setStatus('');submitBtn.disabled=kind!=='roster';submitBtn.textContent=kind==='roster'?'Submit to Head Office':'Calendar Update — Coming Soon';$('teacherRosterReviewKind').textContent=kind==='roster'?'Weekly Roster':'Calendar Update';$('teacherRosterPreview').textContent=textarea.value.trim()});
+$('teacherRosterEdit').addEventListener('click',()=>{if(submitting)return;setStatus('');review.hidden=true;editor.hidden=false;root.querySelector('.teacher-roster-choices').hidden=false;textarea.focus()});
+submitBtn.addEventListener('click',async()=>{
+if(submitting||kind!=='roster')return;
+const rosterText=drafts.roster.trim();if(!rosterText)return;
+submitting=true;submitBtn.disabled=true;submitBtn.textContent='Submitting…';$('teacherRosterEdit').disabled=true;setStatus('');
+try{
+const result=await apiRequest(ROSTER_SUBMIT_API,{method:'POST',body:{roster_text:rosterText}});
+if(!result?.weekly_roster?.id)throw new Error('Submission response did not confirm a saved roster. Please check before resubmitting.');
+setStatus('Weekly roster submitted successfully. Reference #'+result.weekly_roster.id+'.');
+submitBtn.textContent='Submitted';drafts.roster='';
+}catch(error){setStatus(error instanceof Error?error.message:'Unable to submit roster.');submitBtn.disabled=false;submitBtn.textContent='Submit to Head Office';}
+finally{submitting=false;$('teacherRosterEdit').disabled=false;}
+});
+
 }
 
