@@ -61,16 +61,16 @@ textarea.value=drafts[kind];updateReviewButton();
 }
 root.querySelectorAll('[data-roster-kind]').forEach(button=>button.addEventListener('click',()=>showKind(button.dataset.rosterKind)));
 textarea.addEventListener('input',()=>{drafts[kind]=textarea.value;updateReviewButton()});
-reviewBtn.addEventListener('click',()=>{if(!textarea.value.trim())return;drafts[kind]=textarea.value;editor.hidden=true;root.querySelector('.teacher-roster-choices').hidden=true;review.hidden=false;submitBtn.disabled=kind!=='roster';submitBtn.textContent=kind==='roster'?'Submit to Head Office':'Calendar Update — Coming Soon';$('teacherRosterReviewKind').textContent=kind==='roster'?'Weekly Roster':'Calendar Update';$('teacherRosterPreview').textContent=textarea.value.trim()});
+reviewBtn.addEventListener('click',()=>{if(!textarea.value.trim())return;drafts[kind]=textarea.value;editor.hidden=true;root.querySelector('.teacher-roster-choices').hidden=true;review.hidden=false;submitBtn.disabled=false;submitBtn.textContent='Submit to Head Office';$('teacherRosterReviewKind').textContent=kind==='roster'?'Weekly Roster':'Calendar Update';$('teacherRosterPreview').textContent=textarea.value.trim()});
 popupOk.addEventListener('click',()=>{const done=popupTitle.textContent==='Done';closePopup();if(done)document.getElementById('teacherHomeBack')?.click();});
 submitBtn.addEventListener('click',async()=>{
-if(submitting||kind!=='roster')return;
-const rosterText=drafts.roster.trim();if(!rosterText)return;
-submitting=true;submitBtn.disabled=true;showPopup('Submitting…','Sending your weekly roster.','⏳',null);
+if(submitting)return;
+const rosterText=drafts[kind].trim();if(!rosterText)return;
+submitting=true;submitBtn.disabled=true;showPopup('Submitting…',kind==='roster'?'Sending your weekly roster.':'Sending your calendar update.','⏳',null);
 try{
 const result=await apiRequest(ROSTER_SUBMIT_API,{method:'POST',body:{roster_text:rosterText}});
 if(!result?.weekly_roster?.id)throw new Error('Submission response did not confirm a saved roster. Please check before resubmitting.');
-drafts.roster='';showPopup('Done','Your weekly roster has been sent to head office.','✓');
+drafts[kind]='';showPopup('Done',kind==='roster'?'Your weekly roster has been sent to head office.':'Your calendar update has been sent to head office.','✓');
 }catch(error){
 showPopup('Unable to submit',error instanceof Error?error.message:'Unable to submit roster.','!', 'OK');
 submitBtn.disabled=false;
