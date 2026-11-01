@@ -8,6 +8,7 @@ import{renderSeeYouTomorrowModule}from'./ta_see_you_tomorrow.js';
 import{renderReceiptUploadModule}from'./ta_receipt_upload.js';
 import{renderTeacherResourcesModule}from'./ta_teacher_resources.js';
 import{renderTeacherInformationModule}from'./ta_teacher_information.js';
+import{renderRosterUpdatesModule}from'./ta_roster_updates.js';
 
 const tasks=[
 {id:'attendance',icon:'📋',title:'Attendance',subtitle:'Record session attendance.',renderer:renderAttendanceModule},
@@ -15,6 +16,7 @@ const tasks=[
 {id:'moments',icon:'✨',title:'Moments',subtitle:'Save a moment about a child.',renderer:renderMomentsModule},
 {id:'class_experience',icon:'🌱',title:'Class Experience',subtitle:'Capture something extra from class.',renderer:renderClassExperienceModule},
 {id:'see_tomorrow',icon:'🌞',title:'See You Tomorrow!',subtitle:"Prepare tomorrow's class lists.",renderer:renderSeeYouTomorrowModule},
+{id:'roster_updates',icon:'📅',title:'Class Rosters & Updates',subtitle:'Submit a roster or report a calendar change.',renderer:renderRosterUpdatesModule},
 {id:'receipt_upload',icon:'🧾',title:'Receipt Upload',subtitle:'Capture and save a receipt.',renderer:renderReceiptUploadModule},
 {id:'enrollment',icon:'📝',title:'Enrollment',subtitle:'Enroll a new student.',comingSoon:true},
 {id:'teacher_resources',icon:'📂',title:'Teacher Resources',subtitle:'Sessions, worksheets, and forms.',renderer:renderTeacherResourcesModule},
@@ -41,7 +43,7 @@ button.addEventListener('click',()=>openTask(button.dataset.teacherTask));
 }
 
 function buildTaskButton(task){
-const status=task.id==='attendance'?getAttendanceStatus():'';
+const status=task.id==='attendance'?getAttendanceStatus():task.id==='roster_updates'?'Preview only':'';
 const comingSoon=task.comingSoon===true;
 return`
 <button type="button" class="teacher-home-task${comingSoon?' is-coming-soon':''}" data-teacher-task="${task.id}" ${comingSoon?'disabled aria-disabled="true"':''}>
