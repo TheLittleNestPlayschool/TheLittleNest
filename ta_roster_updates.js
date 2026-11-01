@@ -31,11 +31,11 @@ root.innerHTML=`
 <button type="button" class="teacher-roster-action" id="teacherRosterSubmit">Submit and Save</button>
 </div>
 <div id="teacherRosterPopup" role="dialog" aria-modal="true" aria-labelledby="teacherRosterPopupTitle" hidden style="position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(26,38,47,.32);padding:20px;backdrop-filter:blur(5px)">
-<div style="width:min(340px,100%);border-radius:22px;background:#fff;padding:30px 24px;text-align:center;box-shadow:0 20px 65px rgba(25,39,48,.22)">
+<div style="width:min(340px,100%);height:245px;box-sizing:border-box;border-radius:22px;background:#fff;padding:24px;text-align:center;box-shadow:0 20px 65px rgba(25,39,48,.22);display:flex;flex-direction:column;align-items:center;justify-content:center">
 <div id="teacherRosterPopupIcon" style="font-size:34px;margin-bottom:10px">⏳</div>
 <h3 id="teacherRosterPopupTitle" style="margin:0 0 10px;color:#263449;font-size:1.3rem">Submitting…</h3>
 <p id="teacherRosterPopupMessage" style="margin:0;color:#637282;font-size:.92rem;line-height:1.5">Sending your weekly roster.</p>
-<button type="button" id="teacherRosterPopupOk" class="teacher-roster-action" style="width:100%;margin-top:22px" hidden>OK</button>
+<button type="button" id="teacherRosterPopupOk" class="teacher-roster-action" style="width:100%;margin-top:auto" hidden>OK</button>
 </div>
 </div>`;
 workspace.append(root);
