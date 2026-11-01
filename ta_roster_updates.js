@@ -10,7 +10,7 @@ let kind='roster';
 const root=document.createElement('section');
 root.className='teacher-roster-updates';
 root.innerHTML=`
-<div class="teacher-roster-heading"><div class="teacher-roster-heading-icon" aria-hidden="true">📋</div><div><h2>Class Rosters &amp; Updates</h2><p>Keep head office informed about your classes and schedule.</p></div></div>
+<div class="teacher-roster-heading"><div class="teacher-roster-heading-icon" aria-hidden="true">📋</div><div><h2>Class Rosters &amp; Updates</h2></div></div>
 <div class="teacher-roster-choices" aria-label="Choose what to send">
 <button type="button" class="teacher-roster-choice is-active" data-roster-kind="roster" aria-pressed="true"><span class="teacher-roster-choice-icon" aria-hidden="true">📋</span><strong>Weekly Roster</strong><small>Paste your class list</small></button>
 <button type="button" class="teacher-roster-choice" data-roster-kind="update" aria-pressed="false"><span class="teacher-roster-choice-icon" aria-hidden="true">🗓️</span><strong>Calendar Update</strong><small>Report a change</small></button>
@@ -19,8 +19,7 @@ root.innerHTML=`
 <h3 id="teacherRosterFormTitle">Submit Weekly Roster</h3>
 <p class="teacher-roster-description" id="teacherRosterFormHelp">Copy your current Facebook class roster and paste it below. A complete week or a partial roster is fine.</p>
 <label class="teacher-roster-label" for="teacherRosterText">Paste class roster</label>
-<textarea id="teacherRosterText" class="teacher-roster-textarea" rows="9" spellcheck="false" placeholder="Paste the class roster from Facebook here…"></textarea>
-<p class="teacher-roster-private-note">Your location and teacher identity will be attached when submissions are enabled.</p>
+<textarea id="teacherRosterText" class="teacher-roster-textarea" rows="5" spellcheck="false" placeholder="Paste the class roster from Facebook here…"></textarea>
 <button type="button" class="teacher-roster-action" id="teacherRosterReview" disabled>Review Submission <span aria-hidden="true">→</span></button>
 </div>
 <div class="teacher-roster-review" hidden>
