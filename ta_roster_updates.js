@@ -28,7 +28,7 @@ root.innerHTML=`
 <h3>Review Your Submission</h3>
 <p class="teacher-roster-description" id="teacherRosterReviewKind">Weekly Roster</p>
 <pre class="teacher-roster-preview" id="teacherRosterPreview"></pre>
-<button type="button" class="teacher-roster-action" id="teacherRosterSubmit">Submit to Head Office</button>
+<button type="button" class="teacher-roster-action" id="teacherRosterSubmit">Submit and Save</button>
 </div>
 <div id="teacherRosterPopup" role="dialog" aria-modal="true" aria-labelledby="teacherRosterPopupTitle" hidden style="position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(26,38,47,.32);padding:20px;backdrop-filter:blur(5px)">
 <div style="width:min(340px,100%);border-radius:22px;background:#fff;padding:30px 24px;text-align:center;box-shadow:0 20px 65px rgba(25,39,48,.22)">
@@ -61,7 +61,7 @@ textarea.value=drafts[kind];updateReviewButton();
 }
 root.querySelectorAll('[data-roster-kind]').forEach(button=>button.addEventListener('click',()=>showKind(button.dataset.rosterKind)));
 textarea.addEventListener('input',()=>{drafts[kind]=textarea.value;updateReviewButton()});
-reviewBtn.addEventListener('click',()=>{if(!textarea.value.trim())return;drafts[kind]=textarea.value;editor.hidden=true;root.querySelector('.teacher-roster-choices').hidden=true;review.hidden=false;submitBtn.disabled=false;submitBtn.textContent='Submit to Head Office';$('teacherRosterReviewKind').textContent=kind==='roster'?'Weekly Roster':'Calendar Update';$('teacherRosterPreview').textContent=textarea.value.trim()});
+reviewBtn.addEventListener('click',()=>{if(!textarea.value.trim())return;drafts[kind]=textarea.value;editor.hidden=true;root.querySelector('.teacher-roster-choices').hidden=true;review.hidden=false;submitBtn.disabled=false;submitBtn.textContent='Submit and Save';$('teacherRosterReviewKind').textContent=kind==='roster'?'Weekly Roster':'Calendar Update';$('teacherRosterPreview').textContent=textarea.value.trim()});
 popupOk.addEventListener('click',()=>{const done=popupTitle.textContent==='Done';closePopup();if(done)document.getElementById('teacherHomeBack')?.click();});
 submitBtn.addEventListener('click',async()=>{
 if(submitting)return;
