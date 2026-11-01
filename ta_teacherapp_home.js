@@ -9,7 +9,7 @@ import{renderSeeYouTomorrowModule}from'./ta_see_you_tomorrow.js';
 import{renderReceiptUploadModule}from'./ta_receipt_upload.js';
 import{renderTeacherResourcesModule}from'./ta_teacher_resources.js';
 import{renderTeacherInformationModule}from'./ta_teacher_information.js';
-import{renderRosterUpdatesModule}from'./ta_roster_updates.js';
+import{renderRosterUpdatesModule}from'./ta_roster_updates.js?v=20261101-roster-submit';
 
 const tasks=[
 {id:'attendance',icon:'📋',title:'Attendance',subtitle:'Record session attendance.',renderer:renderAttendanceModule},
@@ -44,7 +44,7 @@ button.addEventListener('click',()=>openTask(button.dataset.teacherTask));
 }
 
 function buildTaskButton(task){
-const status=task.id==='attendance'?getAttendanceStatus():task.id==='roster_updates'?'Preview only':'';
+const status=task.id==='attendance'?getAttendanceStatus():'';
 const comingSoon=task.comingSoon===true;
 return`
 <button type="button" class="teacher-home-task${comingSoon?' is-coming-soon':''}" data-teacher-task="${task.id}" ${comingSoon?'disabled aria-disabled="true"':''}>
