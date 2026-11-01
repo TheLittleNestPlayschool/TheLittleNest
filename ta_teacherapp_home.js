@@ -9,7 +9,7 @@ import{renderSeeYouTomorrowModule}from'./ta_see_you_tomorrow.js';
 import{renderReceiptUploadModule}from'./ta_receipt_upload.js';
 import{renderTeacherResourcesModule}from'./ta_teacher_resources.js';
 import{renderTeacherInformationModule}from'./ta_teacher_information.js';
-import{renderRosterUpdatesModule}from'./ta_roster_updates.js?v=20261101-roster-submit';
+import{renderRosterUpdatesModule}from'./ta_roster_updates.js?v=20261101-roster-popup';
 
 const tasks=[
 {id:'attendance',icon:'📋',title:'Attendance',subtitle:'Record session attendance.',renderer:renderAttendanceModule},
