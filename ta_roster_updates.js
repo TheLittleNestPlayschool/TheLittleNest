@@ -72,14 +72,6 @@ root.querySelector('label[for="teacherRosterText"]').textContent=roster?'Paste c
 textarea.placeholder=roster?'Paste the class roster from Facebook here…':'Example: We are closed Tuesday due to a power interruption. Or: Wednesday 1:30 PM now has 2 enrolled children.';
 textarea.value=drafts[kind];updateReviewButton();
 }
-root.querySelectorAll('[data-roster-kind]').forEach(button=>{const active=button.dataset.rosterKind===kind;button.classList.toggle('is-active',active);button.setAttribute('aria-pressed',String(active))});
-const roster=kind==='roster';
-$('teacherRosterFormTitle').textContent=roster?'Submit Weekly Roster':'Report Calendar Update';
-$('teacherRosterFormHelp').textContent=roster?'Copy your current Facebook class roster and paste it below. A complete week or a partial roster is fine.':'Tell head office what changed. Include the date or day and session time when relevant.';
-root.querySelector('label[for="teacherRosterText"]').textContent=roster?'Paste class roster':'What has changed?';
-textarea.placeholder=roster?'Paste the class roster from Facebook here…':'Example: We are closed Tuesday due to a power interruption. Or: Wednesday 1:30 PM now has 2 enrolled children.';
-textarea.value=drafts[kind];updateReviewButton();
-}
 root.querySelectorAll('[data-roster-kind]').forEach(button=>button.addEventListener('click',()=>showKind(button.dataset.rosterKind)));
 textarea.addEventListener('input',()=>{drafts[kind]=textarea.value;updateReviewButton()});
 reviewBtn.addEventListener('click',()=>{if(!textarea.value.trim())return;drafts[kind]=textarea.value;editor.hidden=true;root.querySelector('.teacher-roster-choices').hidden=true;review.hidden=false;submitBtn.disabled=false;submitBtn.textContent='Submit and Save';$('teacherRosterReviewKind').textContent=kind==='roster'?'Weekly Roster':'Calendar Update';$('teacherRosterPreview').textContent=textarea.value.trim()});
