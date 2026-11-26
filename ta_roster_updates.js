@@ -1,5 +1,6 @@
 import{getWorkspace,clearWorkspace}from'./ta_ui.js';
 import{apiRequest}from'./ta_api.js';
+import{getEffectiveDate}from'./ta_startup_helpers.js';
 const ROSTER_SUBMIT_API='https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_weekly_roster_submit';
 const CALENDAR_READ_API='https://x58r-xped-p4y6.n7e.xano.io/api:EpDLPKN0/ta_session_calendar';
 
@@ -91,7 +92,7 @@ submitBtn.disabled=false;
 });
 /*   Teacher read-only availability calendar — same display as NestHub*/
 const dayNames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const calTodayParts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Manila',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+const calTodayParts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Manila',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(getEffectiveDate());
 const calTodayFields=Object.fromEntries(calTodayParts.map(p=>[p.type,p.value]));
 const calToday=new Date(Number(calTodayFields.year),Number(calTodayFields.month)-1,Number(calTodayFields.day),12);
 function calendarKey(date){return date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0')}
