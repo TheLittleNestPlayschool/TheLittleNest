@@ -7,7 +7,8 @@ markMediaItemSaveError,
 finishMediaSave,
 failMediaSave,
 clearMediaSaveProgress,
-clearSavedMedia
+clearSavedMedia,
+clearSelectedMediaSession
 }from'./ta_media_session.js';
 
 import{
@@ -195,9 +196,10 @@ clearMediaSaveProgress();
 
 if(clearMedia){
 clearSavedMedia();
+clearSelectedMediaSession();
 }
 
-refresh();
+if(document.querySelector('.teacher-media'))refresh();
 },
 delay
 );
