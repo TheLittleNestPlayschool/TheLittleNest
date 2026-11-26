@@ -1,3 +1,11 @@
+import{getState}from'./ta_state.js';
+
+export function getEffectiveDate(){
+    const context=getState().context;
+    const timestamp=Number(context?.effective_datetime);
+    return context?.training_mode===true&&Number.isFinite(timestamp)&&timestamp>0?new Date(timestamp):new Date();
+}
+
 export function getResultDetail(
     result
 ){
@@ -67,18 +75,16 @@ export function getRelevantSession(
 
 export function getTodayDate(){
     return formatManilaDate(
-        new Date()
+        getEffectiveDate()
     );
 }
 
 
 export function getSevenDaysAgo(){
     const date=
-        new Date();
+        getEffectiveDate();
 
-    date.setDate(
-        date.getDate()-7
-    );
+    date.setTime(date.getTime()-7*86400000);
 
     return formatManilaDate(
         date
