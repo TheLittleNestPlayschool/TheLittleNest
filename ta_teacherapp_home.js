@@ -7,7 +7,6 @@ import{getTodayDate}from'./ta_startup_helpers.js';
 import{renderAttendanceModule}from'./ta_attendance.js';
 import{renderMediaModule}from'./ta_media.js';
 import{renderMomentsModule}from'./ta_moments.js';
-import{renderClassExperienceModule}from'./ta_class_experience.js';
 import{renderSeeYouTomorrowModule}from'./ta_see_you_tomorrow.js';
 import{renderReceiptUploadModule}from'./ta_receipt_upload.js';
 import{renderTeacherResourcesModule}from'./ta_teacher_resources.js';
@@ -15,10 +14,9 @@ import{renderTeacherInformationModule}from'./ta_teacher_information.js';
 import{renderRosterUpdatesModule}from'./ta_roster_updates.js?v=20261105-calendar-view';
 
 const tasks=[
-{id:'attendance',icon:'📋',title:'Attendance',subtitle:'Record session attendance.',renderer:renderAttendanceModule},
+{id:'attendance',icon:'📋',title:'Attendance',subtitle:'Record class experiences and attendance.',renderer:renderAttendanceModule},
 {id:'media',icon:'📷',title:'Capture Media',subtitle:'Photos, videos, and artwork.',renderer:renderMediaModule},
 {id:'moments',icon:'✨',title:'Moments',subtitle:'Save a moment about a child.',renderer:renderMomentsModule},
-{id:'class_experience',icon:'🌱',title:'Class Experience',subtitle:'Capture something extra from class.',renderer:renderClassExperienceModule},
 {id:'see_tomorrow',icon:'🌞',title:'See You Tomorrow!',subtitle:"Prepare tomorrow's class lists.",renderer:renderSeeYouTomorrowModule},
 {id:'roster_updates',icon:'📅',title:'Class Rosters & Updates',subtitle:'Submit a roster or report a calendar change.',renderer:renderRosterUpdatesModule},
 {id:'receipt_upload',icon:'🧾',title:'Receipt Upload',subtitle:'Capture and save a receipt.',renderer:renderReceiptUploadModule},
