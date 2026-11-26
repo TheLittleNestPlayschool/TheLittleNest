@@ -6,6 +6,7 @@ import{renderAttendanceIntro}from'./ta_attendance_intro.js';
 import{renderAttendanceReview}from'./ta_attendance_review.js';
 import{renderAttendanceComplete}from'./ta_attendance_complete.js';
 import{buildAttendanceContext,getTodayDate}from'./ta_attendance_context.js';
+import{getEffectiveDate}from'./ta_startup_helpers.js';
 import{loadAttendanceData}from'./ta_attendance_data.js';
 import{createAttendanceSession,attendanceSessionMatches,applyAttendanceData,getAllAttendanceStudents,addAttendanceStudent,removeAttendanceStudent,selectAttendanceStatus,attendanceIsComplete,buildAttendanceDraft}from'./ta_attendance_session.js';
 
@@ -161,11 +162,22 @@ return expectedStudents.every(student=>recordedStudentIds.has(String(student?.id
 function getTodaySessions(state){
 const sessions=Array.isArray(state?.context?.sessions)?state.context.sessions:[];
 const dayName=state?.context?.today_day_name||getTodayDayName();
+const now=getEffectiveDate();
+const currentTime=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Manila',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(now);
+const currentMinutes=timeToMinutes(currentTime);
 return sessions.filter(session=>{
 if(!session?.id)return false;
 if(isFalseValue(session.is_active)||isFalseValue(session.display))return false;
-return isScheduledForDay(session,dayName);
+const endMinutes=timeToMinutes(session.end_time_slot||session.end_time||session.session_end||session.time_end);
+return isScheduledForDay(session,dayName)&&endMinutes!==null&&currentMinutes!==null&&endMinutes<=currentMinutes;
 }).sort(compareSessionTimes);
+}
+
+function timeToMinutes(value){
+const match=String(value??'').trim().match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+if(!match)return null;
+const hour=Number(match[1]),minute=Number(match[2]);
+return hour<24&&minute<60?hour*60+minute:null;
 }
 
 function isScheduledForDay(session,dayName){
@@ -193,7 +205,7 @@ return aliases[value]||value;
 }
 
 function getTodayDayName(){
-return new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Manila',weekday:'long'}).format(new Date());
+return new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Manila',weekday:'long'}).format(getEffectiveDate());
 }
 
 function compareSessionTimes(first,second){
