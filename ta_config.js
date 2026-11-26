@@ -21,6 +21,8 @@ const API_URLS={
         `${API_BASE_URL}/ta_post_student_moment`,
     postSessionExperience:
         `${API_BASE_URL}/ta_post_session_experience`,
+    setTrainingTime:
+        `${API_BASE_URL}/ta_training_set_time`,
     usageSession:
         `${API_BASE_URL}/ta_usage_session`
 };
