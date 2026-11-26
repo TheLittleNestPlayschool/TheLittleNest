@@ -38,7 +38,7 @@ stage.innerHTML=`
 <p>Choose a task below.</p>
 </div>
 <div class="teacher-home-grid">
-${getState().context?.training_mode===true?buildTaskButton({id:'training_time',icon:'🕒',title:'Set Current Time',subtitle:'Training Mode · '+getState().context.current_time}):''}
+${getState().context?.training_mode===true?buildTaskButton({id:'training_time',icon:'🕒',title:'Set Current Date &amp; Time',subtitle:'Training Mode · '+getTodayDate()+' · '+getState().context.current_time}):''}
 ${tasks.map(buildTaskButton).join('')}
 </div>
 </section>`;
@@ -96,32 +96,35 @@ const context=getState().context;
 const stage=document.getElementById('teacherStage');
 if(!stage||context?.training_mode!==true)return;
 const current=/^([01]\d|2[0-3]):[0-5]\d$/.test(context.current_time)?context.current_time:'';
-const date=getTodayDate();
+const currentDate=getTodayDate();
 stage.innerHTML=`<section class="teacher-home-module">
 <button type="button" class="teacher-home-back" id="teacherHomeBack">← Back</button>
 <form class="teacher-home-task" id="trainingTimeForm" style="cursor:default;max-width:360px;margin:0 auto;gap:14px;padding:24px">
 <span class="teacher-home-task-icon">🕒</span>
-<span class="teacher-home-task-title">Set Current Time</span>
-<span class="teacher-home-task-subtitle">Training Mode · ${date}</span>
+<span class="teacher-home-task-title">Set Current Date &amp; Time</span>
+<span class="teacher-home-task-subtitle">Training Mode · ${currentDate} · ${current}</span>
+<label for="trainingDateInput">Simulated date</label>
+<input type="date" id="trainingDateInput" value="${currentDate}" required style="font:inherit;padding:10px;border:1px solid #cbd5e1;border-radius:12px;background:white;color:#334155">
 <label for="trainingTimeInput">Simulated time</label>
 <input type="time" id="trainingTimeInput" value="${current}" required style="font:inherit;padding:10px;border:1px solid #cbd5e1;border-radius:12px;background:white;color:#334155">
-<button type="submit" class="teacher-home-back" style="margin:0">Set Time</button>
-<span id="trainingTimeStatus" class="teacher-home-task-subtitle" role="status">NestGuide will reload using this time.</span>
+<button type="submit" class="teacher-home-back" style="margin:0">Apply Date &amp; Time</button>
+<span id="trainingTimeStatus" class="teacher-home-task-subtitle" role="status">NestGuide will reload using this date and time.</span>
 </form></section>`;
 document.getElementById('teacherHomeBack').addEventListener('click',renderTeacherHome);
 const form=document.getElementById('trainingTimeForm');
 form.addEventListener('submit',async event=>{
 event.preventDefault();
+const date=document.getElementById('trainingDateInput').value;
 const time=document.getElementById('trainingTimeInput').value;
 const timestamp=Date.parse(date+'T'+time+':00+08:00');
 const status=document.getElementById('trainingTimeStatus');
 const submit=form.querySelector('button[type="submit"]');
-if(!Number.isFinite(timestamp)){status.textContent='Enter a valid time.';return;}
+if(!date||!time||!Number.isFinite(timestamp)){status.textContent='Enter a valid date and time.';return;}
 submit.disabled=true;
-status.textContent='Setting training time…';
+status.textContent='Setting training date and time…';
 try{
 await apiRequest(API_URLS.setTrainingTime,{method:'POST',body:{training_datetime:timestamp}});
 window.location.reload();
-}catch(error){status.textContent=error.message||'Unable to set training time.';submit.disabled=false;}
+}catch(error){status.textContent=error.message||'Unable to set training date and time.';submit.disabled=false;}
 });
 }
