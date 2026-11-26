@@ -1,3 +1,5 @@
+import{getTodayDate}from'./ta_startup_helpers.js';
+
 const MANILA_TIME_ZONE='Asia/Manila';
 
 export function renderMediaSessionSelect(container,context){
@@ -158,9 +160,5 @@ return value===false||value===0||value==='0'||String(value||'').trim().toLowerCa
 }
 
 function getLocalDateValue(){
-const now=new Date();
-const year=now.getFullYear();
-const month=String(now.getMonth()+1).padStart(2,'0');
-const day=String(now.getDate()).padStart(2,'0');
-return`${year}-${month}-${day}`;
+return getTodayDate();
 }
