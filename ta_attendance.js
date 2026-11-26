@@ -2,7 +2,8 @@ import{getState,markSessionAttendanceComplete}from'./ta_state.js';
 import{getWorkspace,clearWorkspace}from'./ta_ui.js';
 import{renderInlineStudentPicker}from'./ta_student_picker.js';
 import{postAttendance}from'./ta_attendance_post.js';
-import{renderAttendanceIntro}from'./ta_attendance_intro.js';
+import{apiRequest}from'./ta_api.js';
+import{API_URLS}from'./ta_config.js';
 import{renderAttendanceReview}from'./ta_attendance_review.js';
 import{renderAttendanceComplete}from'./ta_attendance_complete.js';
 import{buildAttendanceContext,getTodayDate}from'./ta_attendance_context.js';
@@ -257,10 +258,94 @@ const context={state:getState(),session:attendanceSession,taskContext:attendance
 switch(attendanceSession.view){
 case'review':renderAttendanceReview(workspace,context);break;
 case'complete':renderAttendanceComplete(workspace,context);break;
-default:renderAttendanceIntro(workspace,context);
+default:renderAttendanceExperience(workspace,context);
 }
 applyAttendanceAnalyticsContext(workspace);
 updateAttendanceLiveStatus();
+}
+
+/*   Optional class experience before attendance*/
+function renderAttendanceExperience(workspace,context){
+const session=context.session;
+const task=context.taskContext;
+const container=document.createElement('section');
+container.className='teacher-class-experience attendance-experience';
+container.innerHTML=`
+<div class="teacher-class-experience-heading">
+<strong>Class Experience</strong>
+<span class="attendance-class-label"></span>
+</div>
+<h3 class="attendance-experience-title">Did anything extra happen in class?</h3>
+<p class="attendance-experience-description">Tell us about learning experiences that were not part of the planned session. These will be included in the developmental records of the children who attended.</p>
+<label class="teacher-class-experience-field">
+<span>What happened?</span>
+<textarea class="teacher-class-experience-text" rows="4" placeholder="Describe the additional activity or experience..."></textarea>
+</label>
+<div class="attendance-saved-experiences" style="display:flex;flex-direction:column;gap:6px"></div>
+<button type="button" class="attendance-primary-button attendance-experience-continue">Save &amp; Continue</button>
+<button type="button" class="attendance-secondary-button attendance-experience-another">Save &amp; Add Another</button>
+<button type="button" class="attendance-secondary-button attendance-experience-skip">No Additional Experience — Continue</button>
+<p class="teacher-class-experience-status" role="status" aria-live="polite"></p>`;
+workspace.appendChild(container);
+const label=container.querySelector('.attendance-class-label');
+label.textContent=`${formatAttendanceDate(task.attendanceDate)} — ${getSessionLabel(task.session||context.state.context?.sessions?.find(item=>String(item.id)===String(task.sessionId))||{id:task.sessionId})}`;
+const textarea=container.querySelector('textarea');
+const savedList=container.querySelector('.attendance-saved-experiences');
+const saveContinue=container.querySelector('.attendance-experience-continue');
+const saveAnother=container.querySelector('.attendance-experience-another');
+const skip=container.querySelector('.attendance-experience-skip');
+const status=container.querySelector('.teacher-class-experience-status');
+session.classExperienceNotes=session.classExperienceNotes||[];
+textarea.value=session.classExperienceDraft||'';
+function refreshControls(){
+const busy=session.classExperienceSaving===true;
+const hasText=Boolean(textarea.value.trim());
+textarea.disabled=busy;
+saveContinue.disabled=busy||!hasText;
+saveAnother.disabled=busy||!hasText;
+skip.disabled=busy||hasText;
+skip.textContent=session.classExperienceNotes.length?'Continue to Attendance':'No Additional Experience — Continue';
+savedList.replaceChildren();
+session.classExperienceNotes.forEach(note=>{
+const item=document.createElement('p');
+item.className='attendance-empty-message';
+item.textContent='✓ '+note;
+savedList.appendChild(item);
+});
+}
+textarea.addEventListener('input',()=>{session.classExperienceDraft=textarea.value;refreshControls();});
+skip.addEventListener('click',()=>{
+if(session.classExperienceSaving||textarea.value.trim())return;
+context.actions.begin();
+});
+async function saveExperience(continueAfterSave){
+const experienceRaw=textarea.value.trim();
+if(!experienceRaw||session.classExperienceSaving)return;
+session.classExperienceSaving=true;
+status.textContent='Analyzing and saving class experience…';
+const back=document.getElementById('teacherHomeBack');
+if(back)back.disabled=true;
+refreshControls();
+try{
+const result=await apiRequest(API_URLS.postSessionExperience,{method:'POST',body:{session_id:Number(task.sessionId),session_date:task.attendanceDate,experience_raw:experienceRaw}});
+const processed=result?.session_experience1?.ai_processed===true||result?.session_experience?.ai_processed===true||Boolean(result?.experience_ai?.category_weights);
+if(!processed)throw new Error('The analysis was not confirmed. Please check the saved experience before retrying.');
+session.classExperienceNotes.push(experienceRaw);
+session.classExperienceDraft='';
+textarea.value='';
+status.textContent='Class experience saved.';
+if(continueAfterSave&&attendanceSession===session&&container.isConnected)context.actions.begin();
+}catch(error){
+status.textContent=error instanceof Error?error.message:'Unable to save class experience.';
+}finally{
+session.classExperienceSaving=false;
+if(back)back.disabled=false;
+if(container.isConnected)refreshControls();
+}
+}
+saveContinue.addEventListener('click',()=>saveExperience(true));
+saveAnother.addEventListener('click',()=>saveExperience(false));
+refreshControls();
 }
 
 function applyAttendanceAnalyticsContext(workspace){
