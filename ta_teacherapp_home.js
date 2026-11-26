@@ -1,6 +1,9 @@
 
 import{setActiveWorkspace}from'./ta_ui.js';
 import{getState}from'./ta_state.js';
+import{apiRequest}from'./ta_api.js';
+import{API_URLS}from'./ta_config.js';
+import{getTodayDate}from'./ta_startup_helpers.js';
 import{renderAttendanceModule}from'./ta_attendance.js';
 import{renderMediaModule}from'./ta_media.js';
 import{renderMomentsModule}from'./ta_moments.js';
@@ -35,6 +38,7 @@ stage.innerHTML=`
 <p>Choose a task below.</p>
 </div>
 <div class="teacher-home-grid">
+${getState().context?.training_mode===true?buildTaskButton({id:'training_time',icon:'🕒',title:'Set Current Time',subtitle:'Training Mode · '+getState().context.current_time}):''}
 ${tasks.map(buildTaskButton).join('')}
 </div>
 </section>`;
@@ -57,6 +61,7 @@ ${status?`<span class="teacher-home-task-status">${status}</span>`:''}
 }
 
 async function openTask(taskId){
+if(taskId==='training_time'){renderTrainingTime();return;}
 const task=tasks.find(item=>item.id===taskId);
 const stage=document.getElementById('teacherStage');
 if(!task||!stage||task.comingSoon)return;
@@ -81,7 +86,42 @@ const state=getState();
 const completions=Array.isArray(state.sessionAttendanceCompletions)?state.sessionAttendanceCompletions:[];
 const relevant=state.relevantSession;
 if(!relevant?.id)return'';
-const today=new Date().toISOString().slice(0,10);
+const today=state.context?.training_mode===true?getTodayDate():new Date().toISOString().slice(0,10);
 const complete=completions.some(record=>String(record?.session_id)===String(relevant.id)&&record?.attendance_date===today);
 return complete?'Completed':'';
+}
+
+function renderTrainingTime(){
+const context=getState().context;
+const stage=document.getElementById('teacherStage');
+if(!stage||context?.training_mode!==true)return;
+const current=/^([01]\d|2[0-3]):[0-5]\d$/.test(context.current_time)?context.current_time:'';
+const date=getTodayDate();
+stage.innerHTML=`<section class="teacher-home-module">
+<button type="button" class="teacher-home-back" id="teacherHomeBack">← Back</button>
+<form class="teacher-home-task" id="trainingTimeForm" style="cursor:default;max-width:360px;margin:0 auto;gap:14px;padding:24px">
+<span class="teacher-home-task-icon">🕒</span>
+<span class="teacher-home-task-title">Set Current Time</span>
+<span class="teacher-home-task-subtitle">Training Mode · ${date}</span>
+<label for="trainingTimeInput">Simulated time</label>
+<input type="time" id="trainingTimeInput" value="${current}" required style="font:inherit;padding:10px;border:1px solid #cbd5e1;border-radius:12px;background:white;color:#334155">
+<button type="submit" class="teacher-home-back" style="margin:0">Set Time</button>
+<span id="trainingTimeStatus" class="teacher-home-task-subtitle" role="status">NestGuide will reload using this time.</span>
+</form></section>`;
+document.getElementById('teacherHomeBack').addEventListener('click',renderTeacherHome);
+const form=document.getElementById('trainingTimeForm');
+form.addEventListener('submit',async event=>{
+event.preventDefault();
+const time=document.getElementById('trainingTimeInput').value;
+const timestamp=Date.parse(date+'T'+time+':00+08:00');
+const status=document.getElementById('trainingTimeStatus');
+const submit=form.querySelector('button[type="submit"]');
+if(!Number.isFinite(timestamp)){status.textContent='Enter a valid time.';return;}
+submit.disabled=true;
+status.textContent='Setting training time…';
+try{
+await apiRequest(API_URLS.setTrainingTime,{method:'POST',body:{training_datetime:timestamp}});
+window.location.reload();
+}catch(error){status.textContent=error.message||'Unable to set training time.';submit.disabled=false;}
+});
 }
