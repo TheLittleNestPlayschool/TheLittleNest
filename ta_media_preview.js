@@ -11,6 +11,7 @@ import{renderMediaStudents}from'./ta_media_students.js';
 export function renderMediaPreview(container,actions){
 const item=getActiveMedia();
 if(!item)return;
+setActiveMediaType('media');
 
 /*  Overlay*/
 const overlay=document.createElement('div');
@@ -62,9 +63,6 @@ preview.appendChild(image);
 }
 panel.appendChild(preview);
 
-/*  Media Type*/
-panel.appendChild(createMediaTypeSelector(item,actions));
-
 /*  Students*/
 const mediaSession=getMediaSession();
 const showingAllStudents=mediaSession.showAllStudents===true;
@@ -87,6 +85,28 @@ actions.refresh();
 }
 }
 });
+
+/*  Select all session students*/
+if(!showingAllStudents){
+const ids=[...new Set(getActiveLocationStudents(mediaSession.studentsBySession).map(student=>Number(student.id)).filter(id=>Number.isFinite(id)&&id>0))];
+const list=panel.querySelector('.teacher-media-student-list');
+if(list&&ids.length){
+const selected=new Set(item.studentIds.map(Number));
+const allSelected=ids.every(id=>selected.has(id));
+const button=document.createElement('button');
+button.type='button';
+button.className='teacher-media-student-button'+(allSelected?' is-selected':'');
+button.setAttribute('aria-pressed',String(allSelected));
+button.innerHTML='<span class="teacher-media-student-avatar">✓</span><span class="teacher-media-student-details"><strong>Select All</strong></span><span class="teacher-media-student-mark">'+(allSelected?'✓':'')+'</span>';
+button.addEventListener('click',()=>{
+ids.forEach(id=>{
+if(allSelected||!selected.has(id))toggleActiveMediaStudent(id);
+});
+actions.refresh();
+});
+list.prepend(button);
+}
+}
 
 /*  Actions*/
 const actionsRow=document.createElement('div');
@@ -112,37 +132,6 @@ panel.appendChild(actionsRow);
 /*  Render*/
 overlay.appendChild(panel);
 container.appendChild(overlay);
-}
-
-function createMediaTypeSelector(item,actions){
-const section=document.createElement('section');
-section.className='teacher-media-type-selector';
-const heading=document.createElement('strong');
-heading.textContent='Type';
-const select=document.createElement('select');
-select.className='teacher-media-type-select';
-const placeholder=document.createElement('option');
-placeholder.value='';
-placeholder.textContent='Select type...';
-placeholder.disabled=true;
-select.appendChild(placeholder);
-const mediaOption=document.createElement('option');
-mediaOption.value='media';
-mediaOption.textContent='Media';
-select.appendChild(mediaOption);
-const artOption=document.createElement('option');
-artOption.value='art';
-artOption.textContent='Art';
-select.appendChild(artOption);
-select.value=item.mediaType||'';
-select.addEventListener('change',()=>{
-if(!select.value)return;
-setActiveMediaType(select.value);
-actions.refresh();
-});
-section.appendChild(heading);
-section.appendChild(select);
-return section;
 }
 
 function getActiveLocationStudents(students){
