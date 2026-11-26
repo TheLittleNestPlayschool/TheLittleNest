@@ -32,10 +32,6 @@ container.innerHTML=`
 <span>Select Student</span>
 <select class="teacher-moments-student teacher-moments-select" disabled><option value="">Choose a student...</option></select>
 </label>
-<label class="teacher-moments-field">
-<span>Extra Student</span>
-<select class="teacher-moments-extra teacher-moments-select" disabled><option value="">Choose an extra student...</option></select>
-</label>
 <div class="teacher-moments-field teacher-moments-selected" style="display:none">
 <span>Selected Students</span>
 <div class="teacher-moments-selected-list" style="display:flex;flex-wrap:wrap;gap:6px"></div>
@@ -50,7 +46,6 @@ workspace.appendChild(container);
 const dateInput=container.querySelector('.teacher-moments-date');
 const sessionSelect=container.querySelector('.teacher-moments-session');
 const studentSelect=container.querySelector('.teacher-moments-student');
-const extraSelect=container.querySelector('.teacher-moments-extra');
 const selectedSection=container.querySelector('.teacher-moments-selected');
 const selectedList=container.querySelector('.teacher-moments-selected-list');
 const textarea=container.querySelector('.teacher-moments-text');
@@ -77,10 +72,8 @@ status.textContent='';
 function renderStudents(){
 const sessionId=Number(sessionSelect.value);
 const remaining=students.filter(student=>student?.id&&!selected.has(Number(student.id)));
-renderStudentOptions(studentSelect,sessionId?remaining.filter(student=>Number(student.session_enrolled)===sessionId):[],'Choose a student...');
-renderStudentOptions(extraSelect,sessionId?remaining.filter(student=>Number(student.session_enrolled)!==sessionId):[],'Choose an extra student...');
+renderStudentOptions(studentSelect,sessionId?remaining:[],sessionId);
 studentSelect.disabled=saving||!sessionId||studentSelect.options.length===1;
-extraSelect.disabled=saving||!sessionId||extraSelect.options.length===1;
 selectedSection.style.display=selected.size?'flex':'none';
 selectedList.replaceChildren();
 selected.forEach((student,id)=>{
@@ -106,7 +99,6 @@ renderSessions();
 dateInput.addEventListener('change',renderSessions);
 sessionSelect.addEventListener('change',resetStudents);
 studentSelect.addEventListener('change',()=>addStudent(studentSelect));
-extraSelect.addEventListener('change',()=>addStudent(extraSelect));
 
 /*   Save one moment for each selected student*/
 saveButton.addEventListener('click',async()=>{
@@ -149,10 +141,16 @@ renderStudents();
 });
 }
 
-function renderStudentOptions(select,students,placeholder){
-select.replaceChildren(new Option(placeholder,''));
-[...students].sort((a,b)=>getStudentName(a).localeCompare(getStudentName(b))).forEach(student=>{
-if(student?.id)select.add(new Option(getStudentName(student),String(student.id)));
+function renderStudentOptions(select,students,sessionId){
+select.replaceChildren(new Option('Choose a student...',''));
+const sorted=[...students].sort((a,b)=>getStudentName(a).localeCompare(getStudentName(b)));
+const groups=[['Selected Session',sorted.filter(student=>Number(student.session_enrolled)===sessionId)],['Other Sessions',sorted.filter(student=>Number(student.session_enrolled)!==sessionId)]];
+groups.forEach(([label,items])=>{
+if(!items.length)return;
+const group=document.createElement('optgroup');
+group.label=label;
+items.forEach(student=>group.appendChild(new Option(getStudentName(student),String(student.id))));
+select.appendChild(group);
 });
 }
 function getAvailableSessions(state){
