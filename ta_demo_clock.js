@@ -1,10 +1,11 @@
-const DEMO_TIME_STORAGE_KEY=
-    'teacherAppDemoTime';
+import{getState}from'./ta_state.js';
+import{apiRequest}from'./ta_api.js';
+import{API_URLS}from'./ta_config.js';
 
 let demoClockElements=null;
 
 export function initializeDemoClock(){
-    if(demoClockElements){
+    if(getState().context?.training_mode!==true||demoClockElements){
         return;
     }
 
@@ -23,14 +24,8 @@ export function initializeDemoClock(){
 }
 
 export function getDemoTime(){
-    const savedTime=
-        window.sessionStorage.getItem(
-            DEMO_TIME_STORAGE_KEY
-        );
-
-    return isValidTime(savedTime)
-        ?savedTime
-        :null;
+    const context=getState().context;
+    return context?.training_mode===true&&isValidTime(context.current_time)?context.current_time:null;
 }
 
 export function getEffectiveTime(
@@ -63,7 +58,7 @@ function createDemoClock(){
             class="teacher-demo-clock-toggle"
             aria-expanded="false"
         >
-            Demo Time
+            Set Current Time
         </button>
 
         <section
@@ -71,7 +66,7 @@ function createDemoClock(){
             hidden
         >
             <div class="teacher-demo-clock-header">
-                <strong>Demo Time</strong>
+                <strong>Set Current Time</strong>
 
                 <button
                     type="button"
@@ -101,15 +96,10 @@ function createDemoClock(){
                     type="button"
                     class="teacher-demo-clock-apply"
                 >
-                    Use This Time
+                    Set Time
                 </button>
 
-                <button
-                    type="button"
-                    class="teacher-demo-clock-reset"
-                >
-                    Use Real Time
-                </button>
+                
             </div>
         </section>
     `;
@@ -217,38 +207,28 @@ function bindDemoClockEvents(){
         }
     );
 
-    reset.addEventListener(
-        'click',
-        resetDemoTime
-    );
+
 }
 
-function applyDemoTime(time){
+async function applyDemoTime(time){
     if(!isValidTime(time)){
-        demoClockElements.status.textContent=
-            'Enter a valid time.';
-
+        demoClockElements.status.textContent='Enter a valid time.';
         return;
     }
-
-    window.sessionStorage.setItem(
-        DEMO_TIME_STORAGE_KEY,
-        time
-    );
-
-    updateDemoClockDisplay();
-
-    window.location.reload();
-}
-
-function resetDemoTime(){
-    window.sessionStorage.removeItem(
-        DEMO_TIME_STORAGE_KEY
-    );
-
-    updateDemoClockDisplay();
-
-    window.location.reload();
+    const context=getState().context;
+    if(context?.training_mode!==true)return;
+    const date=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Manila',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date(Number(context.effective_datetime)));
+    const parts=Object.fromEntries(date.map(p=>[p.type,p.value]));
+    const timestamp=Date.parse(parts.year+'-'+parts.month+'-'+parts.day+'T'+time+':00+08:00');
+    if(!Number.isFinite(timestamp))return;
+    demoClockElements.apply.disabled=true;
+    try{
+        await apiRequest(API_URLS.setTrainingTime,{method:'POST',body:{training_datetime:timestamp}});
+        window.location.reload();
+    }catch(error){
+        demoClockElements.status.textContent=error.message;
+        demoClockElements.apply.disabled=false;
+    }
 }
 
 function updateDemoClockDisplay(){
