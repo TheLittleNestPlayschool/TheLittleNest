@@ -1,7 +1,7 @@
 
 import{setActiveWorkspace}from'./ta_ui.js';
 import{getState}from'./ta_state.js';
-import{apiRequest}from'./ta_api.js';
+import{apiRequest,requireTeacherLogin}from'./ta_api.js';
 import{API_URLS}from'./ta_config.js';
 import{getTodayDate}from'./ta_startup_helpers.js';
 import{renderAttendanceModule}from'./ta_attendance.js';
@@ -31,6 +31,7 @@ if(!stage)return;
 setActiveWorkspace('teacherStage');
 stage.innerHTML=`
 <section class="teacher-home">
+<div style="display:flex;justify-content:flex-end"><button type="button" class="teacher-home-back" id="teacherHomeLogout" style="margin:0 0 6px;font-size:.85rem">Log out</button></div>
 <div class="teacher-home-intro">
 <h1>What would you like to do?</h1>
 <p>Choose a task below.</p>
@@ -40,6 +41,10 @@ ${getState().context?.training_mode===true?buildTaskButton({id:'training_time',i
 ${tasks.map(buildTaskButton).join('')}
 </div>
 </section>`;
+stage.querySelector('#teacherHomeLogout').addEventListener('click',()=>{
+localStorage.removeItem('authToken');
+requireTeacherLogin();
+});
 stage.querySelectorAll('[data-teacher-task]:not([disabled])').forEach(button=>{
 button.addEventListener('click',()=>openTask(button.dataset.teacherTask));
 });
